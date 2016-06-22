@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Android Performance Patterns - s5ep6 Swimming in ThreadPools | One Step, One Punch</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="Season 5 ep 6，关于线程池你应该知道的事Video Link">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android Performance Patterns - s5ep6 Swimming in ThreadPools">
+<meta property="og:url" content="http://lilei.work/2016/02/24/Android-Performance-Patterns-s5ep6-Swimming-In-ThreadPools/index.html">
+<meta property="og:site_name" content="One Step, One Punch">
+<meta property="og:description" content="Season 5 ep 6，关于线程池你应该知道的事Video Link">
+<meta property="og:image" content="http://lilei.work/../img/160224_app_s5ep6/parallel.png">
+<meta property="og:image" content="http://lilei.work/../img/160224_app_s5ep6/thread_pool_executor.png">
+<meta property="og:image" content="http://lilei.work/../img/160224_app_s5ep6/thread_is_evil.png">
+<meta property="og:image" content="http://lilei.work/../img/160224_app_s5ep6/64k.png">
+<meta property="og:image" content="http://lilei.work/../img/160224_app_s5ep6/renderscript.png">
+<meta property="og:updated_time" content="2016-02-24T12:59:36.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Android Performance Patterns - s5ep6 Swimming in ThreadPools">
+<meta name="twitter:description" content="Season 5 ep 6，关于线程池你应该知道的事Video Link">
+<meta name="twitter:image" content="http://lilei.work/../img/160224_app_s5ep6/parallel.png">
+  
+    <link rel="alternative" href="/atom.xml" title="One Step, One Punch" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="/css/style.css">
+  
+
+</head>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">One Step, One Punch</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">bequietlee#gmail.com</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://lilei.work"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-Android-Performance-Patterns-s5ep6-Swimming-In-ThreadPools" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/02/24/Android-Performance-Patterns-s5ep6-Swimming-In-ThreadPools/" class="article-date">
+  <time datetime="2016-02-24T11:30:08.000Z" itemprop="datePublished">2016-02-24</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Android Performance Patterns - s5ep6 Swimming in ThreadPools
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <blockquote>
+<p>Season 5 ep 6，关于线程池你应该知道的事<br><a href="https://www.youtube.com/watch?v=uCmHoEY1iTM&amp;index=6&amp;list=PLWz5rJ2EKKc9CBxr3BVjPTPoDPLdPIFCE" target="_blank" rel="external">Video Link</a></p>
+</blockquote>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/uCmHoEY1iTM?list=PLWz5rJ2EKKc9CBxr3BVjPTPoDPLdPIFCE" frameborder="0" allowfullscreen></iframe>
+
+<hr>
+<a id="more"></a>
+<h4 id="One-Thread-One-Thing"><a href="#One-Thread-One-Thing" class="headerlink" title="One Thread, One Thing"></a>One Thread, One Thing</h4><blockquote>
+<p>且说孔明自引一军屯于五丈原，累令人搦战，魏兵只不出。孔明乃取巾帼并妇人缟素之服，盛于大盒之内，修书一封，遣人送至魏寨。诸将不敢隐蔽，引来使入见司马懿。懿对众启盒视之，内有巾帼妇人之衣，并书一封。懿拆视其书，略曰：“仲达既为大将，统领中原之众，不思披坚执锐，以决雌雄，乃甘窟守土巢，谨避刀箭，与妇人又何异哉！今遣人送巾帼素衣至，如不出战，可再拜而受之。倘耻心未泯，犹有男子胸襟，早与批回，依期赴敌。”司马懿看毕，心中大怒，乃佯笑曰：“孔明视我为妇人耶！”即受之，令重待来使。懿问曰：“孔明寝食及事之烦简若何？”使者曰：“丞相<strong>夙兴夜寐，罚二十以上皆亲览焉。</strong>所啖之食，日不过数升。”懿顾谓诸将曰：“<strong>孔明食少事烦，其能久乎？</strong>” ——《三国演义》第一百十三回  上方谷司马受困 五丈原诸葛禳星</p>
+</blockquote>
+<p>论智计谋略，诸葛亮要胜过司马懿，然而，由于丞相不论巨细事必躬亲，只落得星落五丈原的悲惨结局。可见，人的精力是有限的，不应当把所有的任务都压在同一个人头上。在计算机科学中，这一理论同样适用。</p>
+<p>对于线程，有专门处理音频的Audio Thread，有响应IO的IO Thread，还有负责网络事务的Networking Thread，这些都是良好的编程典范。</p>
+<p>然而，存在这样的情况：当某一系列的任务数量实在太多，已经超过了单个线程所能承受的极限。这时我们应当怎么做？如果工作线程有且只能由一个，就像诸葛丞相一样不得不亲力亲为，那可就GG了。不必担心，新时代的计算机科学已经让我们习得了秘-影分身之术。</p>
+<p>看一看下面这个场景，页面里需要展示40张图片，每张图片的解码消耗4ms时间，如果只有单一线程进行操作，总共需要用掉160ms。这显然是难以接受的。</p>
+<p>如果我们用10条线程并行计算，可以把时间压缩到16ms。</p>
+<p><img src="../img/160224_app_s5ep6/parallel.png" alt=""></p>
+<hr>
+<h4 id="Thread-Pool-Executor"><a href="#Thread-Pool-Executor" class="headerlink" title="Thread Pool Executor"></a>Thread Pool Executor</h4><p>有了并发处理这一个思路，便可以借助于JAVA提供的强力工具<a href="https://docs.oracle.com/javase/7/docs/api/java/util/concurrent/ThreadPoolExecutor.html" target="_blank" rel="external"><strong>ThreadPoolExecutor</strong></a>来执行任务了。你只需要声明需要的线程数，并且把拆分好的Task传递给ThreadPoolExecutor，ThreadPoolExecutor自身会处理任务分配、线程调度、线程回收等操作。</p>
+<p><img src="../img/160224_app_s5ep6/thread_pool_executor.png" alt=""></p>
+<hr>
+<h4 id="The-More-The-Better"><a href="#The-More-The-Better" class="headerlink" title="The More, The Better?"></a>The More, The Better?</h4><blockquote>
+<p>Thread is evil</p>
+</blockquote>
+<p>并发的线程数并非越多越好，首先，一台主机能够开启的线程数是有上限的；其次，线程之间切换本身有代价（线程同步、锁与互斥、环境准备等等）；再次，跟CPU数有关，CPU越多，最大性能下可并发线程数越多。</p>
+<p>最佳线程数要在实践中通过压测等手段获知。通常我们开发中控制并行线程数=CPU数即可。</p>
+<p><img src="../img/160224_app_s5ep6/thread_is_evil.png" alt=""></p>
+<p>每条线程至少占用<code>64k</code>的内存</p>
+<p><img src="../img/160224_app_s5ep6/64k.png" alt=""></p>
+<p><code>ThreadPoolExecutor</code>的构造过程中，允许我们控制初始线程数、最大线程数。需要注意的是，通过<code>Runtime.getRuntime().availableProcessors()</code>获取到的内核数也许会小于真实CPU数——出于节约电量等考虑，Android系统会让某些CPU在空闲时处于休眠状态，这些CPU不会被计数。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">int</span> NUM_OF_CORES = Runtime.getRuntime().availableProcessors();</span><br><span class="line">mDecodeThreadPool = <span class="keyword">new</span> ThreadPoolExecutor(</span><br><span class="line">				NUM_OF_CORES &gt;&gt; <span class="number">1</span>, <span class="comment">// initial pool size</span></span><br><span class="line">				NUM_OF_CORES, <span class="comment">// max pool size</span></span><br><span class="line">				KEEP_ALIVE_TIME, <span class="comment">// keep alive time</span></span><br><span class="line">				KEEP_ALIVE_TIME_UNIT, <span class="comment">// keep alive units (seconds etc)</span></span><br><span class="line">				mDecodeTaskQueue);</span><br></pre></td></tr></table></figure>
+<hr>
+<h4 id="For-Power-Users-Like-U"><a href="#For-Power-Users-Like-U" class="headerlink" title="For Power Users Like U"></a>For Power Users Like U</h4><p><a href="http://developer.android.com/guide/topics/renderscript/compute.html" target="_blank" rel="external"><strong>RenderScript</strong></a>是专门用来进行大量并行计算的工具，当你有这方面的需求时，不妨尝试一下。</p>
+<p><img src="../img/160224_app_s5ep6/renderscript.png" alt=""></p>
+<hr>
+<h4 id="Use-Systrace-to-Analyze"><a href="#Use-Systrace-to-Analyze" class="headerlink" title="Use Systrace to Analyze"></a>Use Systrace to Analyze</h4><p>用以分析线程、内存的Systrace工具在前文已经介绍过，这里不再赘述。</p>
+<hr>
+<h3 id="Ending"><a href="#Ending" class="headerlink" title="===Ending==="></a><em>===Ending===</em></h3><hr>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://lilei.work/2016/02/24/Android-Performance-Patterns-s5ep6-Swimming-In-ThreadPools/" data-id="cipq6efst000st7su7c3jzzfq" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Android-Performance-Patterns/">Android Performance Patterns</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/技术流/">技术流</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2016/02/24/Android-Performance-Patterns-s5ep7-The-Zen-Of-IntentService/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Android Performance Patterns - s5ep7 The Zen Of IntentService
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2016/02/24/Android-Performance-Patterns-s5ep5-Getting-A-HandlerThread/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Android Performance Patterns - s5ep5 Getting A HandlerThread</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+ <section id="comments">
+   <!-- 多说评论框 start -->
+   <div class="ds-thread" data-thread-key="post-Android-Performance-Patterns-s5ep6-Swimming-In-ThreadPools" data-title="Android Performance Patterns - s5ep6 Swimming in ThreadPools" data-url="http://lilei.work/2016/02/24/Android-Performance-Patterns-s5ep6-Swimming-In-ThreadPools/"></div>
+   <!-- 多说评论框 end -->
+   <!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+   <script type="text/javascript">
+   var duoshuoQuery = {short_name:'lileiwork'};
+     (function() {
+       var ds = document.createElement('script');
+       ds.type = 'text/javascript';ds.async = true;
+       ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+       ds.charset = 'UTF-8';
+       (document.getElementsByTagName('head')[0] 
+        || document.getElementsByTagName('body')[0]).appendChild(ds);
+     })();
+     </script>
+   <!-- 多说公共JS代码 end -->
+ </section>
+ </section>
+        
+          <aside id="sidebar">
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Android-Performance-Patterns/">Android Performance Patterns</a><span class="tag-list-count">20</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/大保健/">大保健</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/工作效率/">工作效率</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/技术流/">技术流</a><span class="tag-list-count">28</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/槑/">槑</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/自动化测试/">自动化测试</a><span class="tag-list-count">2</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">June 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">April 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">March 2016</a><span class="archive-list-count">11</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/02/">February 2016</a><span class="archive-list-count">15</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">January 2016</a><span class="archive-list-count">6</span></li></ul>
+    </div>
+  </div>
+
+  
+    <div class="widget-wrap">
+	<h3 class="widget-title">Links</h3>
+	<div class="widget">
+		<ul class="entry">
+		<li><a href="http://www.dcharm.com" title="dcharm">杂七杂八by王强 - 数据分析</a></li>
+		<li><a href="http://www.lightskystreet.com" title="lightSky">lightSky's Blog</a></li>
+		<li><a href="http://androooid.github.io/index.html" title="Android小伙伴的Gitbook">Android小伙伴的Gitbook</a></li>
+		</ul>
+	</div>
+</div>
+  
+    <div class="widget-wrap">
+	<h3 class="widget-title">Recent Comments</h3>
+	<div class="widget">
+		<ul class="ds-recent-comments" data-num-items="5" data-show-avatars="0" data-show-time="1" data-show-title="1" data-show-admin="1" data-excerpt-length="70"></ul>
+	</div>
+</div>
+
+<!--多说js加载开始，一个页面只需要加载一次 -->
+<script type="text/javascript">
+if(typeof duoshuoQuery === 'undefined') {
+	  var duoshuoQuery = {short_name:"lileiwork"};
+	  (function() {
+	    var ds = document.createElement('script');
+	    ds.type = 'text/javascript';ds.async = true;
+	    ds.src = 'http://static.duoshuo.com/embed.js';
+	    ds.charset = 'UTF-8';
+	    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(ds);
+	  })();
+  }
+</script>
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2016 Li Lei<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+  </div>
+</body>
+</html>

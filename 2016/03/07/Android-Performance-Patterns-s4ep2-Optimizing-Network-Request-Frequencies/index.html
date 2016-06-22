@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Android Performance Patterns - s4ep2 Optimizing Network Request Frequencies | One Step, One Punch</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="Syncing too often, can be the worst idea for the performance of your application.Video Link">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android Performance Patterns - s4ep2 Optimizing Network Request Frequencies">
+<meta property="og:url" content="http://lilei.work/2016/03/07/Android-Performance-Patterns-s4ep2-Optimizing-Network-Request-Frequencies/index.html">
+<meta property="og:site_name" content="One Step, One Punch">
+<meta property="og:description" content="Syncing too often, can be the worst idea for the performance of your application.Video Link">
+<meta property="og:image" content="http://lilei.work/../img/160307_app_s4ep2/now_or_later.png">
+<meta property="og:image" content="http://lilei.work/../img/160307_app_s4ep2/do_not_poll.png">
+<meta property="og:image" content="http://lilei.work/../img/160307_app_s4ep2/listen.png">
+<meta property="og:image" content="http://lilei.work/../img/160307_app_s4ep2/binary.png">
+<meta property="og:image" content="http://lilei.work/../img/160307_app_s4ep2/scenery.png">
+<meta property="og:image" content="http://lilei.work/../img/160307_app_s4ep2/situations.png">
+<meta property="og:updated_time" content="2016-03-08T01:38:57.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Android Performance Patterns - s4ep2 Optimizing Network Request Frequencies">
+<meta name="twitter:description" content="Syncing too often, can be the worst idea for the performance of your application.Video Link">
+<meta name="twitter:image" content="http://lilei.work/../img/160307_app_s4ep2/now_or_later.png">
+  
+    <link rel="alternative" href="/atom.xml" title="One Step, One Punch" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="/css/style.css">
+  
+
+</head>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">One Step, One Punch</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">bequietlee#gmail.com</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://lilei.work"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-Android-Performance-Patterns-s4ep2-Optimizing-Network-Request-Frequencies" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/03/07/Android-Performance-Patterns-s4ep2-Optimizing-Network-Request-Frequencies/" class="article-date">
+  <time datetime="2016-03-07T12:11:36.000Z" itemprop="datePublished">2016-03-07</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Android Performance Patterns - s4ep2 Optimizing Network Request Frequencies
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <blockquote>
+<p>Syncing too often, can be the worst idea for the performance of your application.<br><a href="https://www.youtube.com/watch?v=nDHeuEM30ks&amp;index=12&amp;list=PLWz5rJ2EKKc9CBxr3BVjPTPoDPLdPIFCE" target="_blank" rel="external">Video Link</a></p>
+</blockquote>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/nDHeuEM30ks?list=PLWz5rJ2EKKc9CBxr3BVjPTPoDPLdPIFCE" frameborder="0" allowfullscreen></iframe>
+
+<hr>
+<a id="more"></a>
+<h4 id="Do-not-Over-Sync"><a href="#Do-not-Over-Sync" class="headerlink" title="Do not Over Sync"></a>Do not Over Sync</h4><p>对于用户来说，有些信息是要保持最新的（天气、账户余额等等），有些信息却不必时刻更新，太频繁的同步操作反而过犹不及：</p>
+<ol>
+<li>耗电量：比起待机，网络请求会消耗更多的电量</li>
+<li>网络流量：同样，会占用带宽，小心用户在收到流量账单变得抓狂</li>
+</ol>
+<hr>
+<h4 id="Sync-Less-Win-More"><a href="#Sync-Less-Win-More" class="headerlink" title="Sync Less, Win More"></a>Sync Less, Win More</h4><p>优化缓存的关键在于区分数据是当下立即需要的还是稍后请求也无伤大雅的，比如，用户进行下拉刷新，显然需要马上向服务器请求数据。而后台进行的数据下载与上传，相比之下就不那么重要。</p>
+<p><img src="../img/160307_app_s4ep2/now_or_later.png" alt=""></p>
+<hr>
+<h4 id="Don’t-Always-Poll-Just-Listen"><a href="#Don’t-Always-Poll-Just-Listen" class="headerlink" title="Don’t Always Poll, Just Listen"></a>Don’t Always Poll, Just Listen</h4><p>不要试图经常轮询Server请求新数据，这并没有什么卵用，要知道很多情况下数据在服务端根本就没有更新。</p>
+<p><img src="../img/160307_app_s4ep2/do_not_poll.png" alt=""></p>
+<p>使用诸如<a href="https://developers.google.com/cloud-messaging/" target="_blank" rel="external">Google Cloud Messaging</a>的服务进行从Server发起的push —— What the hell is this?</p>
+<p>由于天朝的特殊性，GCM无法使用，因此诞生了诸如极光推送等一系列替代品，一些有能力的大厂干脆自己实现消息推送系统，可以参考微信这篇文章：<a href="http://mp.weixin.qq.com/s?__biz=MzAwNDY1ODY2OQ==&amp;mid=207243549&amp;idx=1&amp;sn=4ebe4beb8123f1b5ab58810ac8bc5994&amp;scene=0#rd" target="_blank" rel="external">Android微信智能心跳方案</a></p>
+<p><img src="../img/160307_app_s4ep2/listen.png" alt=""></p>
+<p>如果不得不采用客户端轮询来做，考虑二进制退让算法</p>
+<p><img src="../img/160307_app_s4ep2/binary.png" alt=""></p>
+<hr>
+<h4 id="因地制宜"><a href="#因地制宜" class="headerlink" title="因地制宜"></a>因地制宜</h4><p>下面这个听起来就有一些炫酷了：根据用户当前不同的行为模式采取不同的同步策略，比如用户在驾驶时、跑步时、睡觉时……</p>
+<p><img src="../img/160307_app_s4ep2/scenery.png" alt=""></p>
+<p>比如，当你监测到用户刚刚从8小时的睡眠中醒来并开启手机时，不妨马上进行一次同步。</p>
+<p>根据是否正在充电、是否连接wifi等配置信息，调节同步时间：</p>
+<p><img src="../img/160307_app_s4ep2/situations.png" alt=""></p>
+<p>然而，场景那么多，你要怎么办呢？</p>
+<p>幸运的是，你并不需要为此实现太多复杂的逻辑，参考<a href="https://developers.google.com/android/reference/com/google/android/gms/gcm/GcmNetworkManager" target="_blank" rel="external">GCM Network Manager</a></p>
+<hr>
+<h3 id="Ending"><a href="#Ending" class="headerlink" title="===Ending==="></a><em>===Ending===</em></h3><hr>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://lilei.work/2016/03/07/Android-Performance-Patterns-s4ep2-Optimizing-Network-Request-Frequencies/" data-id="cipq6efrm0003t7su9d2nksi1" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Android-Performance-Patterns/">Android Performance Patterns</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/技术流/">技术流</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2016/03/08/Android-Performance-Patterns-s4ep3-Effective-Prefetching/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Android Performance Patterns - s4ep3 Effective Prefetching
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2016/03/07/Android-Performance-Patterns-s4ep1-Cachematters-for-networking/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Android Performance Patterns - s4ep1 Cachematters for networking</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+ <section id="comments">
+   <!-- 多说评论框 start -->
+   <div class="ds-thread" data-thread-key="post-Android-Performance-Patterns-s4ep2-Optimizing-Network-Request-Frequencies" data-title="Android Performance Patterns - s4ep2 Optimizing Network Request Frequencies" data-url="http://lilei.work/2016/03/07/Android-Performance-Patterns-s4ep2-Optimizing-Network-Request-Frequencies/"></div>
+   <!-- 多说评论框 end -->
+   <!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+   <script type="text/javascript">
+   var duoshuoQuery = {short_name:'lileiwork'};
+     (function() {
+       var ds = document.createElement('script');
+       ds.type = 'text/javascript';ds.async = true;
+       ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+       ds.charset = 'UTF-8';
+       (document.getElementsByTagName('head')[0] 
+        || document.getElementsByTagName('body')[0]).appendChild(ds);
+     })();
+     </script>
+   <!-- 多说公共JS代码 end -->
+ </section>
+ </section>
+        
+          <aside id="sidebar">
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Android-Performance-Patterns/">Android Performance Patterns</a><span class="tag-list-count">20</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/大保健/">大保健</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/工作效率/">工作效率</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/技术流/">技术流</a><span class="tag-list-count">28</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/槑/">槑</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/自动化测试/">自动化测试</a><span class="tag-list-count">2</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">June 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">April 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">March 2016</a><span class="archive-list-count">11</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/02/">February 2016</a><span class="archive-list-count">15</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">January 2016</a><span class="archive-list-count">6</span></li></ul>
+    </div>
+  </div>
+
+  
+    <div class="widget-wrap">
+	<h3 class="widget-title">Links</h3>
+	<div class="widget">
+		<ul class="entry">
+		<li><a href="http://www.dcharm.com" title="dcharm">杂七杂八by王强 - 数据分析</a></li>
+		<li><a href="http://www.lightskystreet.com" title="lightSky">lightSky's Blog</a></li>
+		<li><a href="http://androooid.github.io/index.html" title="Android小伙伴的Gitbook">Android小伙伴的Gitbook</a></li>
+		</ul>
+	</div>
+</div>
+  
+    <div class="widget-wrap">
+	<h3 class="widget-title">Recent Comments</h3>
+	<div class="widget">
+		<ul class="ds-recent-comments" data-num-items="5" data-show-avatars="0" data-show-time="1" data-show-title="1" data-show-admin="1" data-excerpt-length="70"></ul>
+	</div>
+</div>
+
+<!--多说js加载开始，一个页面只需要加载一次 -->
+<script type="text/javascript">
+if(typeof duoshuoQuery === 'undefined') {
+	  var duoshuoQuery = {short_name:"lileiwork"};
+	  (function() {
+	    var ds = document.createElement('script');
+	    ds.type = 'text/javascript';ds.async = true;
+	    ds.src = 'http://static.duoshuo.com/embed.js';
+	    ds.charset = 'UTF-8';
+	    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(ds);
+	  })();
+  }
+</script>
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2016 Li Lei<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+  </div>
+</body>
+</html>

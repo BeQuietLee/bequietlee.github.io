@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Android Performance Patterns - s5ep10 Profile GPU Rendering, M Update | One Step, One Punch</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="Season 5 的最后一期，Android M 中新增了GPU渲染分析工具光头哥，我们下一季再见！PS. 光头哥的大名是 Colt McAnlisVideo Link">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android Performance Patterns - s5ep10 Profile GPU Rendering, M Update">
+<meta property="og:url" content="http://lilei.work/2016/02/25/Android-Performance-Patterns-s5ep10-Profile-GPU-Rendering/index.html">
+<meta property="og:site_name" content="One Step, One Punch">
+<meta property="og:description" content="Season 5 的最后一期，Android M 中新增了GPU渲染分析工具光头哥，我们下一季再见！PS. 光头哥的大名是 Colt McAnlisVideo Link">
+<meta property="og:image" content="http://lilei.work/../img/160225_app_s5ep10/click_link.jpg">
+<meta property="og:image" content="http://lilei.work/../img/160225_app_s5ep10/gpu_profiling.png">
+<meta property="og:image" content="http://lilei.work/../img/160225_app_s5ep10/eight_phases.png">
+<meta property="og:image" content="http://lilei.work/../img/160225_app_s5ep10/sync_and_upload.png">
+<meta property="og:image" content="http://lilei.work/../img/160225_app_s5ep10/measure_layout.png">
+<meta property="og:image" content="http://lilei.work/../img/160225_app_s5ep10/animation.png">
+<meta property="og:image" content="http://lilei.work/../img/160225_app_s5ep10/input_handling.png">
+<meta property="og:image" content="http://lilei.work/../img/160225_app_s5ep10/misc_vsync_delay.png">
+<meta property="og:image" content="http://lilei.work/../img/160225_app_s5ep10/bigger_bar.png">
+<meta property="og:image" content="http://lilei.work/../img/160225_app_s5ep10/thank_you.png">
+<meta property="og:updated_time" content="2016-02-26T03:16:13.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Android Performance Patterns - s5ep10 Profile GPU Rendering, M Update">
+<meta name="twitter:description" content="Season 5 的最后一期，Android M 中新增了GPU渲染分析工具光头哥，我们下一季再见！PS. 光头哥的大名是 Colt McAnlisVideo Link">
+<meta name="twitter:image" content="http://lilei.work/../img/160225_app_s5ep10/click_link.jpg">
+  
+    <link rel="alternative" href="/atom.xml" title="One Step, One Punch" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="/css/style.css">
+  
+
+</head>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">One Step, One Punch</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">bequietlee#gmail.com</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://lilei.work"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-Android-Performance-Patterns-s5ep10-Profile-GPU-Rendering" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/02/25/Android-Performance-Patterns-s5ep10-Profile-GPU-Rendering/" class="article-date">
+  <time datetime="2016-02-25T13:49:59.000Z" itemprop="datePublished">2016-02-25</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Android Performance Patterns - s5ep10 Profile GPU Rendering, M Update
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <blockquote>
+<p>Season 5 的最后一期，Android M 中新增了GPU渲染分析工具<br>光头哥，我们下一季再见！<br>PS. 光头哥的大名是 Colt McAnlis<br><a href="https://www.youtube.com/watch?v=erGJw8WDV74&amp;list=PLWz5rJ2EKKc9CBxr3BVjPTPoDPLdPIFCE&amp;index=10" target="_blank" rel="external">Video Link</a></p>
+</blockquote>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/erGJw8WDV74?list=PLWz5rJ2EKKc9CBxr3BVjPTPoDPLdPIFCE" frameborder="0" allowfullscreen></iframe>
+
+<hr>
+<a id="more"></a>
+<h4 id="Why-GPU-Profile-Tool"><a href="#Why-GPU-Profile-Tool" class="headerlink" title="Why GPU Profile Tool"></a>Why GPU Profile Tool</h4><p>用户在使用app时，并不关心你的代码内部使用了多么NB的算法、多么碉堡的框架，用户最直观的体验是——你的app有没有卡顿、会不会丢帧。同网站一样，app加载的时间越长，用户流失也就越严重。因此，找到画面卡顿的原因便格外重要。</p>
+<hr>
+<h4 id="GPU-Profiling-Tool-Before-M"><a href="#GPU-Profiling-Tool-Before-M" class="headerlink" title="GPU Profiling Tool Before M"></a>GPU Profiling Tool Before M</h4><p>在笔者的Meizu手机上（Android 5.0），可以在开发者选项中开启“GPU呈现模式分析”来查看CPU绘制情况。现在笔者打开微信朋友圈的一个链接（html5页面）</p>
+<p><img src="../img/160225_app_s5ep10/click_link.jpg" alt=""></p>
+<p>结合说明，可以初步判断那一条暴增的曲线是由于Process过程所致。</p>
+<p><img src="../img/160225_app_s5ep10/gpu_profiling.png" alt=""></p>
+<hr>
+<h4 id="Strongerrrrrrr"><a href="#Strongerrrrrrr" class="headerlink" title="Strongerrrrrrr!"></a>Strongerrrrrrr!</h4><p>Android M 为我们提供了更为强大的GPU渲染分析工具，可以细化到以下8个维度，注意到1、2、4也就是上一节图中的三个维度（Process、Execute、Update），它们保持了与历史相同的颜色！</p>
+<p><img src="../img/160225_app_s5ep10/eight_phases.png" alt=""></p>
+<p>下面我们着重分析一下另外的五项指标。</p>
+<hr>
+<h4 id="Sync-amp-Upload"><a href="#Sync-amp-Upload" class="headerlink" title="Sync &amp; Upload"></a>Sync &amp; Upload</h4><p><img src="../img/160225_app_s5ep10/sync_and_upload.png" alt=""></p>
+<ul>
+<li>这项指数衡量了bitmap被同步到GPU的耗时，越大的图像，数值越高，通常处理高像素的图片时会导致飙升。</li>
+<li>减少同时展示的图片数量，或者对图片进行预处理，降低图片尺寸可以有效降低数值。</li>
+</ul>
+<hr>
+<h4 id="Measure-Layout"><a href="#Measure-Layout" class="headerlink" title="Measure / Layout"></a>Measure / Layout</h4><p><img src="../img/160225_app_s5ep10/measure_layout.png" alt=""></p>
+<ul>
+<li>过高的指数，表明页面布局过于复杂（super complex view hierarchy）</li>
+<li>也可能是由于double taxation所致（关于double layout taxation请参阅<a href="https://www.youtube.com/watch?v=dB3_vgS-Uqo" target="_blank" rel="external">Season 3 ep 8</a>）</li>
+<li>试着简化布局</li>
+</ul>
+<hr>
+<h4 id="Animation"><a href="#Animation" class="headerlink" title="Animation"></a>Animation</h4><p><img src="../img/160225_app_s5ep10/animation.png" alt=""></p>
+<ul>
+<li>若GPU在动画上的负载过高，去检查你所使用到的自定义动画</li>
+<li>谨慎使用 <a href="http://developer.android.com/guide/topics/graphics/prop-animation.html" target="_blank" rel="external"><strong>PropertyAnimation</strong></a></li>
+</ul>
+<hr>
+<h4 id="Input-Handling"><a href="#Input-Handling" class="headerlink" title="Input Handling"></a>Input Handling</h4><p><img src="../img/160225_app_s5ep10/input_handling.png" alt=""></p>
+<ul>
+<li>GPU消耗了多少时间用于处理用户输入</li>
+<li>或者说，在相应用户输入的callback中，GPU的消耗</li>
+<li>如果处理输入的逻辑过于复杂，使用<code>Worker Thread</code></li>
+</ul>
+<hr>
+<h4 id="Misc-Vsync-Delay"><a href="#Misc-Vsync-Delay" class="headerlink" title="Misc / Vsync Delay"></a>Misc / Vsync Delay</h4><p><img src="../img/160225_app_s5ep10/misc_vsync_delay.png" alt=""></p>
+<ul>
+<li>如果你从日志中看到诸如“misc vsync … skipping … frames”的信息，That’s this thing!</li>
+<li>发生在相邻两帧之间的事情，都可以归类于此</li>
+<li>使用<code>Worker Thread</code>来处理耗时操作，避免丢帧</li>
+</ul>
+<hr>
+<h4 id="A-Bigger-Bar"><a href="#A-Bigger-Bar" class="headerlink" title="A Bigger Bar"></a>A Bigger Bar</h4><p>上面提到了5个维度，加上之前的3个，一共是8个维度。要把这8个维度同时用柱状图展示出来可不是件容易的事，这对你的视力有着相当的要求。</p>
+<p>方便的是，GPU工具里贴心地适当扩宽加重了那些可能有问题的标示，你会看到一个更醒目的柱状图展示。</p>
+<p><img src="../img/160225_app_s5ep10/bigger_bar.png" alt=""></p>
+<hr>
+<h4 id="Bye-Bye-Colt-McAlnis"><a href="#Bye-Bye-Colt-McAlnis" class="headerlink" title="Bye Bye! Colt McAlnis"></a>Bye Bye! Colt McAlnis</h4><p>See you in Season 6!</p>
+<p><img src="../img/160225_app_s5ep10/thank_you.png" alt=""></p>
+<hr>
+<h3 id="Ending"><a href="#Ending" class="headerlink" title="===Ending==="></a><em>===Ending===</em></h3><hr>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://lilei.work/2016/02/25/Android-Performance-Patterns-s5ep10-Profile-GPU-Rendering/" data-id="cipq6efs6000dt7su9gez424g" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Android-Performance-Patterns/">Android Performance Patterns</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/技术流/">技术流</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2016/03/04/Changning-Swimming-Pool-Opening-Hours/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          长宁国际体操中心游泳馆开放时间
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2016/02/25/Android-Performance-Patterns-s5ep9-The-Importance-Of-Thread-Priority/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Android Performance Patterns - s5ep9 The Importance Of Thread Priority</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+ <section id="comments">
+   <!-- 多说评论框 start -->
+   <div class="ds-thread" data-thread-key="post-Android-Performance-Patterns-s5ep10-Profile-GPU-Rendering" data-title="Android Performance Patterns - s5ep10 Profile GPU Rendering, M Update" data-url="http://lilei.work/2016/02/25/Android-Performance-Patterns-s5ep10-Profile-GPU-Rendering/"></div>
+   <!-- 多说评论框 end -->
+   <!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+   <script type="text/javascript">
+   var duoshuoQuery = {short_name:'lileiwork'};
+     (function() {
+       var ds = document.createElement('script');
+       ds.type = 'text/javascript';ds.async = true;
+       ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+       ds.charset = 'UTF-8';
+       (document.getElementsByTagName('head')[0] 
+        || document.getElementsByTagName('body')[0]).appendChild(ds);
+     })();
+     </script>
+   <!-- 多说公共JS代码 end -->
+ </section>
+ </section>
+        
+          <aside id="sidebar">
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Android-Performance-Patterns/">Android Performance Patterns</a><span class="tag-list-count">20</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/大保健/">大保健</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/工作效率/">工作效率</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/技术流/">技术流</a><span class="tag-list-count">28</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/槑/">槑</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/自动化测试/">自动化测试</a><span class="tag-list-count">2</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">June 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">April 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">March 2016</a><span class="archive-list-count">11</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/02/">February 2016</a><span class="archive-list-count">15</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">January 2016</a><span class="archive-list-count">6</span></li></ul>
+    </div>
+  </div>
+
+  
+    <div class="widget-wrap">
+	<h3 class="widget-title">Links</h3>
+	<div class="widget">
+		<ul class="entry">
+		<li><a href="http://www.dcharm.com" title="dcharm">杂七杂八by王强 - 数据分析</a></li>
+		<li><a href="http://www.lightskystreet.com" title="lightSky">lightSky's Blog</a></li>
+		<li><a href="http://androooid.github.io/index.html" title="Android小伙伴的Gitbook">Android小伙伴的Gitbook</a></li>
+		</ul>
+	</div>
+</div>
+  
+    <div class="widget-wrap">
+	<h3 class="widget-title">Recent Comments</h3>
+	<div class="widget">
+		<ul class="ds-recent-comments" data-num-items="5" data-show-avatars="0" data-show-time="1" data-show-title="1" data-show-admin="1" data-excerpt-length="70"></ul>
+	</div>
+</div>
+
+<!--多说js加载开始，一个页面只需要加载一次 -->
+<script type="text/javascript">
+if(typeof duoshuoQuery === 'undefined') {
+	  var duoshuoQuery = {short_name:"lileiwork"};
+	  (function() {
+	    var ds = document.createElement('script');
+	    ds.type = 'text/javascript';ds.async = true;
+	    ds.src = 'http://static.duoshuo.com/embed.js';
+	    ds.charset = 'UTF-8';
+	    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(ds);
+	  })();
+  }
+</script>
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2016 Li Lei<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+  </div>
+</body>
+</html>

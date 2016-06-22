@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Android Performance Patterns - s5ep9 The Importance Of Thread Priority | One Step, One Punch</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="CPU同一时间只能处理有限数目的线程，赋予线程怎样的优先级，将决定其最终在CPU上得以执行的顺序光头哥回归啦！读信的样子简直不要太萌！Video Link">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android Performance Patterns - s5ep9 The Importance Of Thread Priority">
+<meta property="og:url" content="http://lilei.work/2016/02/25/Android-Performance-Patterns-s5ep9-The-Importance-Of-Thread-Priority/index.html">
+<meta property="og:site_name" content="One Step, One Punch">
+<meta property="og:description" content="CPU同一时间只能处理有限数目的线程，赋予线程怎样的优先级，将决定其最终在CPU上得以执行的顺序光头哥回归啦！读信的样子简直不要太萌！Video Link">
+<meta property="og:image" content="http://lilei.work/../img/160225_app_s5ep9/foreground_vs_background.png">
+<meta property="og:image" content="http://lilei.work/../img/160225_app_s5ep9/same_priority.png">
+<meta property="og:updated_time" content="2016-02-26T02:38:46.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Android Performance Patterns - s5ep9 The Importance Of Thread Priority">
+<meta name="twitter:description" content="CPU同一时间只能处理有限数目的线程，赋予线程怎样的优先级，将决定其最终在CPU上得以执行的顺序光头哥回归啦！读信的样子简直不要太萌！Video Link">
+<meta name="twitter:image" content="http://lilei.work/../img/160225_app_s5ep9/foreground_vs_background.png">
+  
+    <link rel="alternative" href="/atom.xml" title="One Step, One Punch" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="/css/style.css">
+  
+
+</head>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">One Step, One Punch</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">bequietlee#gmail.com</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://lilei.work"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-Android-Performance-Patterns-s5ep9-The-Importance-Of-Thread-Priority" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/02/25/Android-Performance-Patterns-s5ep9-The-Importance-Of-Thread-Priority/" class="article-date">
+  <time datetime="2016-02-25T12:57:25.000Z" itemprop="datePublished">2016-02-25</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Android Performance Patterns - s5ep9 The Importance Of Thread Priority
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <blockquote>
+<p>CPU同一时间只能处理有限数目的线程，赋予线程怎样的优先级，将决定其最终在CPU上得以执行的顺序<br>光头哥回归啦！读信的样子简直不要太萌！<br><a href="https://www.youtube.com/watch?v=NwFXVsM15Co&amp;index=9&amp;list=PLWz5rJ2EKKc9CBxr3BVjPTPoDPLdPIFCE" target="_blank" rel="external">Video Link</a></p>
+</blockquote>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/NwFXVsM15Co?list=PLWz5rJ2EKKc9CBxr3BVjPTPoDPLdPIFCE" frameborder="0" allowfullscreen></iframe>
+
+<hr>
+<a id="more"></a>
+<h4 id="Thread-Scheduling"><a href="#Thread-Scheduling" class="headerlink" title="Thread Scheduling"></a>Thread Scheduling</h4><p>线程调度是现代计算机系统必不可少的功能，Android做为独特的移动系统，在线程调度上，还有一些它与众不同的特性。</p>
+<p>Android系统中对于线程优先级的考虑，还会包括以下方面：</p>
+<ul>
+<li>Activity生命周期</li>
+<li>是否可见</li>
+<li>Activity在前台还是运行</li>
+</ul>
+<hr>
+<h4 id="Visible-vs-Invisible"><a href="#Visible-vs-Invisible" class="headerlink" title="Visible vs Invisible"></a>Visible vs Invisible</h4><p>CPU时间的90%左右，都是用以处理界面展示中的线程，只有约10%留给了后台线程</p>
+<p><img src="../img/160225_app_s5ep9/foreground_vs_background.png" alt=""></p>
+<hr>
+<h4 id="拼爹的线程"><a href="#拼爹的线程" class="headerlink" title="拼爹的线程"></a>拼爹的线程</h4><p>在线程的世界里，一样要拼爹——新创建的线程，其优先级与创建它的线程相同。</p>
+<p>也就是说，如果<code>UI Thread</code>创建了20个<code>Worker Thread</code>，那么这20个<code>Worker Thread</code>都具有相同的优先级，它们会平等竞争CPU时间。</p>
+<p><img src="../img/160225_app_s5ep9/same_priority.png" alt=""></p>
+<p>这其实是很不好的，我们知道哪些工作更重要，哪些工作相比于其它不那么重要，所以我们要主动设置线程优先级，让那些具有更高优先级的线程优先得到执行。</p>
+<hr>
+<h4 id="Priority"><a href="#Priority" class="headerlink" title="Priority"></a>Priority</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">android.os.Process.setThreadPriority(<span class="keyword">int</span>);</span><br></pre></td></tr></table></figure>
+<p>上面的方法接受<code>-20~24</code>闭区间内所有的整数作为参数，数值越小，优先级越高。为甚么采用负数呢？数值越低，表示这个线程越没有耐心，情绪越暴躁，越急切希望得到执行。</p>
+<p><code>android.os.Process</code>中为我们定义了一些表示线程优先级的常量。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span><br><span class="line">     * Standard priority of application threads.</span><br><span class="line">     * Use with &#123;<span class="doctag">@link</span> #setThreadPriority(int)&#125; and</span><br><span class="line">     * &#123;<span class="doctag">@link</span> #setThreadPriority(int, int)&#125;, &lt;b&gt;not&lt;/b&gt; with the normal</span><br><span class="line">     * &#123;<span class="doctag">@link</span> java.lang.Thread&#125; class.</span><br><span class="line">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> THREAD_PRIORITY_DEFAULT = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/*</span><br><span class="line">     * ***************************************</span><br><span class="line">     * ** Keep in sync with utils/threads.h **</span><br><span class="line">     * ***************************************</span><br><span class="line">     */</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">/**</span><br><span class="line">     * Lowest available thread priority.  Only for those who really, really</span><br><span class="line">     * don't want to run if anything else is happening.</span><br><span class="line">     * Use with &#123;<span class="doctag">@link</span> #setThreadPriority(int)&#125; and</span><br><span class="line">     * &#123;<span class="doctag">@link</span> #setThreadPriority(int, int)&#125;, &lt;b&gt;not&lt;/b&gt; with the normal</span><br><span class="line">     * &#123;<span class="doctag">@link</span> java.lang.Thread&#125; class.</span><br><span class="line">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> THREAD_PRIORITY_LOWEST = <span class="number">19</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">/**</span><br><span class="line">     * Standard priority background threads.  This gives your thread a slightly</span><br><span class="line">     * lower than normal priority, so that it will have less chance of impacting</span><br><span class="line">     * the responsiveness of the user interface.</span><br><span class="line">     * Use with &#123;<span class="doctag">@link</span> #setThreadPriority(int)&#125; and</span><br><span class="line">     * &#123;<span class="doctag">@link</span> #setThreadPriority(int, int)&#125;, &lt;b&gt;not&lt;/b&gt; with the normal</span><br><span class="line">     * &#123;<span class="doctag">@link</span> java.lang.Thread&#125; class.</span><br><span class="line">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> THREAD_PRIORITY_BACKGROUND = <span class="number">10</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">/**</span><br><span class="line">     * Standard priority of threads that are currently running a user interface</span><br><span class="line">     * that the user is interacting with.  Applications can not normally</span><br><span class="line">     * change to this priority; the system will automatically adjust your</span><br><span class="line">     * application threads as the user moves through the UI.</span><br><span class="line">     * Use with &#123;<span class="doctag">@link</span> #setThreadPriority(int)&#125; and</span><br><span class="line">     * &#123;<span class="doctag">@link</span> #setThreadPriority(int, int)&#125;, &lt;b&gt;not&lt;/b&gt; with the normal</span><br><span class="line">     * &#123;<span class="doctag">@link</span> java.lang.Thread&#125; class.</span><br><span class="line">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> THREAD_PRIORITY_FOREGROUND = -<span class="number">2</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">/**</span><br><span class="line">     * Standard priority of system display threads, involved in updating</span><br><span class="line">     * the user interface.  Applications can not</span><br><span class="line">     * normally change to this priority.</span><br><span class="line">     * Use with &#123;<span class="doctag">@link</span> #setThreadPriority(int)&#125; and</span><br><span class="line">     * &#123;<span class="doctag">@link</span> #setThreadPriority(int, int)&#125;, &lt;b&gt;not&lt;/b&gt; with the normal</span><br><span class="line">     * &#123;<span class="doctag">@link</span> java.lang.Thread&#125; class.</span><br><span class="line">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> THREAD_PRIORITY_DISPLAY = -<span class="number">4</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">/**</span><br><span class="line">     * Standard priority of the most important display threads, for compositing</span><br><span class="line">     * the screen and retrieving input events.  Applications can not normally</span><br><span class="line">     * change to this priority.</span><br><span class="line">     * Use with &#123;<span class="doctag">@link</span> #setThreadPriority(int)&#125; and</span><br><span class="line">     * &#123;<span class="doctag">@link</span> #setThreadPriority(int, int)&#125;, &lt;b&gt;not&lt;/b&gt; with the normal</span><br><span class="line">     * &#123;<span class="doctag">@link</span> java.lang.Thread&#125; class.</span><br><span class="line">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> THREAD_PRIORITY_URGENT_DISPLAY = -<span class="number">8</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span><br><span class="line">     * Standard priority of audio threads.  Applications can not normally</span><br><span class="line">     * change to this priority.</span><br><span class="line">     * Use with &#123;<span class="doctag">@link</span> #setThreadPriority(int)&#125; and</span><br><span class="line">     * &#123;<span class="doctag">@link</span> #setThreadPriority(int, int)&#125;, &lt;b&gt;not&lt;/b&gt; with the normal</span><br><span class="line">     * &#123;<span class="doctag">@link</span> java.lang.Thread&#125; class.</span><br><span class="line">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> THREAD_PRIORITY_AUDIO = -<span class="number">16</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span><br><span class="line">     * Standard priority of the most important audio threads.</span><br><span class="line">     * Applications can not normally change to this priority.</span><br><span class="line">     * Use with &#123;<span class="doctag">@link</span> #setThreadPriority(int)&#125; and</span><br><span class="line">     * &#123;<span class="doctag">@link</span> #setThreadPriority(int, int)&#125;, &lt;b&gt;not&lt;/b&gt; with the normal</span><br><span class="line">     * &#123;<span class="doctag">@link</span> java.lang.Thread&#125; class.</span><br><span class="line">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> THREAD_PRIORITY_URGENT_AUDIO = -<span class="number">19</span>;</span><br></pre></td></tr></table></figure>
+<p>此外，还有两个常量用于提高／降低优先级，记住，负数越小，优先级越高（more favorable）。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span><br><span class="line"> * Minimum increment to make a priority more favorable.</span><br><span class="line"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> THREAD_PRIORITY_MORE_FAVORABLE = -<span class="number">1</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span><br><span class="line"> * Minimum increment to make a priority less favorable.</span><br><span class="line"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> THREAD_PRIORITY_LESS_FAVORABLE = +<span class="number">1</span>;</span><br></pre></td></tr></table></figure>
+<p>有了上面的知识，你就可以在<code>UI Thread</code>启动<code>Worker Thread</code>时，通过<code>setPriority(THREAD_PRIORITY_DEFAULT + THREAD_PRIORITY_LESS_FAVORABLE * n)</code>的方式，酌情降低<code>Worker Thread</code>的优先级了。</p>
+<hr>
+<h4 id="That’s-How-We-Did-It"><a href="#That’s-How-We-Did-It" class="headerlink" title="That’s How We Did It!"></a>That’s How We Did It!</h4><p>还记得之前我们总是提到的 <strong>AsyncTask/HandlerThread/ThreadPool/IntentService</strong> 么？其中AsyncTask和IntentService已经为自动我们实现了“降低<code>Worker Thread</code>优先级”的功能，我们无需额外设置。而另外两种则没有这么周到，我们需要主动设置工作线程优先级。</p>
+<hr>
+<h3 id="Ending"><a href="#Ending" class="headerlink" title="===Ending==="></a><em>===Ending===</em></h3><hr>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://lilei.work/2016/02/25/Android-Performance-Patterns-s5ep9-The-Importance-Of-Thread-Priority/" data-id="cipq6eft60012t7suq0y7u9oz" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Android-Performance-Patterns/">Android Performance Patterns</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/技术流/">技术流</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2016/02/25/Android-Performance-Patterns-s5ep10-Profile-GPU-Rendering/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Android Performance Patterns - s5ep10 Profile GPU Rendering, M Update
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2016/02/25/Android-Performance-Patterns-s5ep8-Threading-And-Loaders/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Android Performance Patterns - s5ep8 Threading And Loaders</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+ <section id="comments">
+   <!-- 多说评论框 start -->
+   <div class="ds-thread" data-thread-key="post-Android-Performance-Patterns-s5ep9-The-Importance-Of-Thread-Priority" data-title="Android Performance Patterns - s5ep9 The Importance Of Thread Priority" data-url="http://lilei.work/2016/02/25/Android-Performance-Patterns-s5ep9-The-Importance-Of-Thread-Priority/"></div>
+   <!-- 多说评论框 end -->
+   <!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+   <script type="text/javascript">
+   var duoshuoQuery = {short_name:'lileiwork'};
+     (function() {
+       var ds = document.createElement('script');
+       ds.type = 'text/javascript';ds.async = true;
+       ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+       ds.charset = 'UTF-8';
+       (document.getElementsByTagName('head')[0] 
+        || document.getElementsByTagName('body')[0]).appendChild(ds);
+     })();
+     </script>
+   <!-- 多说公共JS代码 end -->
+ </section>
+ </section>
+        
+          <aside id="sidebar">
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Android-Performance-Patterns/">Android Performance Patterns</a><span class="tag-list-count">20</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/大保健/">大保健</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/工作效率/">工作效率</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/技术流/">技术流</a><span class="tag-list-count">28</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/槑/">槑</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/自动化测试/">自动化测试</a><span class="tag-list-count">2</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">June 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">April 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">March 2016</a><span class="archive-list-count">11</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/02/">February 2016</a><span class="archive-list-count">15</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">January 2016</a><span class="archive-list-count">6</span></li></ul>
+    </div>
+  </div>
+
+  
+    <div class="widget-wrap">
+	<h3 class="widget-title">Links</h3>
+	<div class="widget">
+		<ul class="entry">
+		<li><a href="http://www.dcharm.com" title="dcharm">杂七杂八by王强 - 数据分析</a></li>
+		<li><a href="http://www.lightskystreet.com" title="lightSky">lightSky's Blog</a></li>
+		<li><a href="http://androooid.github.io/index.html" title="Android小伙伴的Gitbook">Android小伙伴的Gitbook</a></li>
+		</ul>
+	</div>
+</div>
+  
+    <div class="widget-wrap">
+	<h3 class="widget-title">Recent Comments</h3>
+	<div class="widget">
+		<ul class="ds-recent-comments" data-num-items="5" data-show-avatars="0" data-show-time="1" data-show-title="1" data-show-admin="1" data-excerpt-length="70"></ul>
+	</div>
+</div>
+
+<!--多说js加载开始，一个页面只需要加载一次 -->
+<script type="text/javascript">
+if(typeof duoshuoQuery === 'undefined') {
+	  var duoshuoQuery = {short_name:"lileiwork"};
+	  (function() {
+	    var ds = document.createElement('script');
+	    ds.type = 'text/javascript';ds.async = true;
+	    ds.src = 'http://static.duoshuo.com/embed.js';
+	    ds.charset = 'UTF-8';
+	    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(ds);
+	  })();
+  }
+</script>
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2016 Li Lei<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+  </div>
+</body>
+</html>

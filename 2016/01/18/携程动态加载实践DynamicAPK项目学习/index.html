@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>携程动态加载实践DynamicAPK项目学习 | One Step, One Punch</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="术语宿主：Host Apk，打包运行的总项目，用于集成各个子工程，相当于android-nova壳，只有一个
+插件：Plugin，子工程，由各个业务线独立开发，可以依赖宿主提供的资源，一个宿主能够拥有多个插件">
+<meta property="og:type" content="article">
+<meta property="og:title" content="携程动态加载实践DynamicAPK项目学习">
+<meta property="og:url" content="http://lilei.work/2016/01/18/携程动态加载实践DynamicAPK项目学习/index.html">
+<meta property="og:site_name" content="One Step, One Punch">
+<meta property="og:description" content="术语宿主：Host Apk，打包运行的总项目，用于集成各个子工程，相当于android-nova壳，只有一个
+插件：Plugin，子工程，由各个业务线独立开发，可以依赖宿主提供的资源，一个宿主能够拥有多个插件">
+<meta property="og:image" content="http://lilei.work/img/160118_dynamic_apk/android-build-2.png">
+<meta property="og:image" content="http://lilei.work/img/160118_dynamic_apk/ctrip_folders.png">
+<meta property="og:image" content="http://lilei.work/img/160118_dynamic_apk/ctrip_bundle.jpg">
+<meta property="og:image" content="http://lilei.work/img/160118_dynamic_apk/hotfix_before.png">
+<meta property="og:image" content="http://lilei.work/img/160118_dynamic_apk/hotfix_after.png">
+<meta property="og:image" content="http://lilei.work/img/160118_dynamic_apk/android_build_process.png">
+<meta property="og:updated_time" content="2016-02-24T13:58:17.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="携程动态加载实践DynamicAPK项目学习">
+<meta name="twitter:description" content="术语宿主：Host Apk，打包运行的总项目，用于集成各个子工程，相当于android-nova壳，只有一个
+插件：Plugin，子工程，由各个业务线独立开发，可以依赖宿主提供的资源，一个宿主能够拥有多个插件">
+<meta name="twitter:image" content="http://lilei.work/img/160118_dynamic_apk/android-build-2.png">
+  
+    <link rel="alternative" href="/atom.xml" title="One Step, One Punch" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="/css/style.css">
+  
+
+</head>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">One Step, One Punch</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">bequietlee#gmail.com</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://lilei.work"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-携程动态加载实践DynamicAPK项目学习" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/01/18/携程动态加载实践DynamicAPK项目学习/" class="article-date">
+  <time datetime="2016-01-18T14:40:33.000Z" itemprop="datePublished">2016-01-18</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      携程动态加载实践DynamicAPK项目学习
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <hr>
+<h2 id="术语"><a href="#术语" class="headerlink" title="术语"></a>术语</h2><p><strong>宿主</strong>：Host Apk，打包运行的总项目，用于集成各个子工程，相当于<code>android-nova壳</code>，只有一个</p>
+<p><strong>插件</strong>：Plugin，子工程，由各个业务线独立开发，可以依赖<strong>宿主</strong>提供的资源，一个宿主能够拥有多个插件</p>
+<hr>
+<a id="more"></a>
+<h2 id="Andoroid-Build-流程"><a href="#Andoroid-Build-流程" class="headerlink" title="Andoroid Build 流程"></a>Andoroid Build 流程</h2><p><img src="/img/160118_dynamic_apk/android-build-2.png" alt=""></p>
+<ul>
+<li>Resource Files：项目<code>res</code>路径下的文件，包含<code>anim</code>、<code>drawable</code>、<code>layout</code>、<code>raw</code>等</li>
+<li>Source Files：项目<code>src</code>路径下(对于<code>android-nova</code>是<code>src/main/java</code>)的文件</li>
+<li>aapt: 将<code>.xml</code>文件转换为java类型</li>
+<li>Generated Source Files：由<code>aapt</code>工具生成，存储在<code>/gen</code>目录</li>
+<li>javac：java编译器，生成<code>.class</code>文件</li>
+<li>dx：将<code>.class</code>文件转换为DVM可识别的<code>dex</code>文件</li>
+<li>apkbuilder：将所有文件打包进<code>apk</code>中</li>
+<li>zipalign：将<code>apk</code>中未经压缩过的文件进行4字节对齐，以减少运行时<code>RAM</code>消耗</li>
+</ul>
+<hr>
+<h2 id="协同开发"><a href="#协同开发" class="headerlink" title="协同开发"></a>协同开发</h2><h4 id="与引用aar提供的公用UI组件之间的联系与区别"><a href="#与引用aar提供的公用UI组件之间的联系与区别" class="headerlink" title="与引用aar提供的公用UI组件之间的联系与区别"></a>与<code>引用aar提供的公用UI组件</code>之间的联系与区别</h4><ul>
+<li>本质上都是<code>classes.dex</code>与<code>res/</code>等文件的集合</li>
+<li>依赖关系不同</li>
+<li>是否包含业务逻辑</li>
+<li>最重要的一点，<code>Activity</code>注册</li>
+</ul>
+<h4 id="插件引用宿主资源"><a href="#插件引用宿主资源" class="headerlink" title="插件引用宿主资源"></a>插件引用宿主资源</h4><ul>
+<li>在<code>java</code>代码中直接用</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MainActivity</span> <span class="keyword">extends</span> <span class="title">Activity</span> </span>&#123; <span class="comment">// demo2</span></span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onCreate</span><span class="params">(Bundle savedInstanceState)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>.onCreate(savedInstanceState);</span><br><span class="line">        setContentView(R.layout.demo2_activity_main);</span><br><span class="line">        TextView textView=(TextView)findViewById(R.id.demo2_textView3);</span><br><span class="line">        textView.setText(R.string.sample_text); <span class="comment">// 宿主资源</span></span><br><span class="line">        ImageView imageView=(ImageView)findViewById(R.id.demo2_imageView2);</span><br><span class="line">        imageView.setImageResource(R.drawable.sample); <span class="comment">// 宿主资源</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>在布局文件中引用宿主资源，编译时会报错</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">/Users/leili/Documents/idea_workspace/BeQuietLee/DynamicAPK/demo2/res/layout/demo2_activity_main.xml:40: error: </span><br><span class="line">Error: No resource found that matches the given name (at <span class="string">'src'</span> with value <span class="string">'@drawable/sample'</span>).</span><br></pre></td></tr></table></figure>
+<h4 id="宿主调起插件"><a href="#宿主调起插件" class="headerlink" title="宿主调起插件"></a>宿主调起插件</h4><ul>
+<li>宿主<code>AndroidMainifest.xml</code>需要对所有插件<code>Activity</code>进行注册</li>
+</ul>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version="1.0" encoding="utf-8"?&gt;</span><br><span class="line"><span class="tag">&lt;<span class="name">manifest</span> <span class="attr">xmlns:android</span>=<span class="string">"http://schemas.android.com/apk/res/android"</span></span><br><span class="line">    <span class="attr">package</span>=<span class="string">"ctrip.android.sample"</span> &gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">application</span></span><br><span class="line">        <span class="attr">android:name</span>=<span class="string">"ctrip.android.sample.BundleBaseApplication"</span></span><br><span class="line">        <span class="attr">android:allowBackup</span>=<span class="string">"true"</span></span><br><span class="line">        <span class="attr">android:icon</span>=<span class="string">"@mipmap/ic_launcher"</span></span><br><span class="line">        <span class="attr">android:label</span>=<span class="string">"@string/app_name"</span></span><br><span class="line">         &gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">activity</span></span><br><span class="line">            <span class="attr">android:name</span>=<span class="string">".MainActivity"</span></span><br><span class="line">            <span class="attr">android:label</span>=<span class="string">"@string/app_name"</span> &gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">intent-filter</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">action</span> <span class="attr">android:name</span>=<span class="string">"android.intent.action.MAIN"</span> /&gt;</span></span><br><span class="line"></span><br><span class="line">                <span class="tag">&lt;<span class="name">category</span> <span class="attr">android:name</span>=<span class="string">"android.intent.category.LAUNCHER"</span> /&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">intent-filter</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">activity</span>&gt;</span></span><br><span class="line"></span><br><span class="line">        <span class="tag">&lt;<span class="name">activity</span></span><br><span class="line">            <span class="attr">android:name</span>=<span class="string">"ctrip.android.demo1.MainActivity"</span></span><br><span class="line">             &gt;</span></span><br><span class="line"></span><br><span class="line">        <span class="tag">&lt;/<span class="name">activity</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">activity</span></span><br><span class="line">            <span class="attr">android:name</span>=<span class="string">"ctrip.android.demo2.MainActivity"</span></span><br><span class="line">             &gt;</span></span><br><span class="line"></span><br><span class="line">        <span class="tag">&lt;/<span class="name">activity</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">application</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;/<span class="name">manifest</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>startActivity时需要写明类的完整路径</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">startActivity(<span class="keyword">new</span> Intent(getApplicationContext(), Class.forName(<span class="string">"ctrip.android.demo1.MainActivity"</span>)));</span><br></pre></td></tr></table></figure>
+<h4 id="对aapt工具的改造"><a href="#对aapt工具的改造" class="headerlink" title="对aapt工具的改造"></a>对<code>aapt</code>工具的改造</h4><p>为<code>aapt</code>增加<code>--apk-module</code>参数</p>
+<blockquote>
+<p>如前所述，资源ID其实有一个PackageID的内部字段。我们为每个插件工程指定独特的PackageID字段，这样根据资源ID就很容易判明，此资源需要从哪个插件apk中去查找并加载了。在后文的资源加载部分会有进一步阐述。</p>
+</blockquote>
+<p>通常项目中生成的<code>R.java</code>，会包含由<code>aapt</code>生成的所有资源的<code>id</code>，以<code>0x7f</code>开头</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.dianping.hui;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">final</span> <span class="class"><span class="keyword">class</span> <span class="title">R</span> </span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="class"><span class="keyword">class</span> <span class="title">anim</span> </span>&#123;</span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span> activity_exit=<span class="number">0x7f040000</span>;</span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span> back_enter=<span class="number">0x7f040001</span>;</span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span> back_exit=<span class="number">0x7f040002</span>;</span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span> booking_push_up_out=<span class="number">0x7f040003</span>;</span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span> fade_light_out=<span class="number">0x7f040004</span>;</span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span> gradient_enter=<span class="number">0x7f040005</span>;</span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span> grow_from_bottom=<span class="number">0x7f040006</span>;</span><br><span class="line">        <span class="comment">// ...</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="class"><span class="keyword">class</span> <span class="title">color</span> </span>&#123;</span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span> actionbar_title_color=<span class="number">0x7f0b0000</span>;</span><br><span class="line">        <span class="comment">// ...</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="class"><span class="keyword">class</span> <span class="title">dimen</span> </span>&#123;</span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span> action_button_height=<span class="number">0x7f0700a6</span>;</span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span> action_button_margin_between=<span class="number">0x7f0700a7</span>;</span><br><span class="line">        <span class="comment">// ...</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><code>0x7f</code>是怎么来的呢，看一下原汁原味的<code>aapt</code>中的逻辑</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">ResourceTable::ResourceTable(Bundle* bundle, <span class="keyword">const</span> String16&amp; assetsPackage, ResourceTable::PackageType type)</span><br><span class="line"><span class="keyword">ssize_t</span> packageId = <span class="number">-1</span>;</span><br><span class="line"><span class="keyword">switch</span> (mPackageType) &#123;</span><br><span class="line">    <span class="keyword">case</span> App:</span><br><span class="line">    <span class="keyword">case</span> AppFeature:</span><br><span class="line">        packageId = <span class="number">0x7f</span>;</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">case</span> System:</span><br><span class="line">        packageId = <span class="number">0x01</span>;</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">case</span> SharedLibrary:</span><br><span class="line">        packageId = <span class="number">0x00</span>;</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">default</span>:</span><br><span class="line">        assert(<span class="number">0</span>);</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>DynamicAPK中改动后的生成<code>packageId</code>的逻辑，位于<code>ResourceTable.cpp</code></p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br></pre></td><td class="code"><pre><span class="line">ResourceTable::ResourceTable(Bundle* bundle, const String16&amp; assetsPackage, ResourceTable::PackageType type)</span><br><span class="line">    : mAssetsPackage(assetsPackage)</span><br><span class="line">    , mPackageType(type)</span><br><span class="line">    , mTypeIdOffset(0)</span><br><span class="line">    , mNumLocal(0)</span><br><span class="line">    , mBundle(bundle)</span><br><span class="line">&#123;</span><br><span class="line">   </span><br><span class="line">    </span><br><span class="line">    ssize_t packageId = -1;</span><br><span class="line">    </span><br><span class="line">    switch (mPackageType) &#123;</span><br><span class="line">        case App:</span><br><span class="line">        case AppFeature:</span><br><span class="line">            packageId = 0x7f;</span><br><span class="line">            break;</span><br><span class="line">        case System:</span><br><span class="line">            packageId = 0x01;</span><br><span class="line">            break;</span><br><span class="line">        case SharedLibrary:</span><br><span class="line">            packageId = 0x00;</span><br><span class="line">            break;</span><br><span class="line">            </span><br><span class="line">//        case Voice:</span><br><span class="line">//            packageId = 0x34;</span><br><span class="line">//            break;</span><br><span class="line">//        case Call:</span><br><span class="line">//            packageId = 0x35;</span><br><span class="line">//            break;</span><br><span class="line">//        case Search:</span><br><span class="line">//            packageId = 0x36;</span><br><span class="line">//            break;</span><br><span class="line">//        case Schedule:</span><br><span class="line">//            packageId = 0x37;</span><br><span class="line">//            break;</span><br><span class="line">//        case Train:</span><br><span class="line">//            packageId = 0x38;</span><br><span class="line">//            break;</span><br><span class="line">//        case Destination:</span><br><span class="line">//            packageId = 0x44;</span><br><span class="line">//            break;</span><br><span class="line">//        case Chat:</span><br><span class="line">//            packageId = 0x46;</span><br><span class="line">//            break;</span><br><span class="line">//        case Flight:</span><br><span class="line">//            packageId = 0x52;</span><br><span class="line">//            break;</span><br><span class="line">//        case MyCtrip:</span><br><span class="line">//            packageId = 0x54;</span><br><span class="line">//            break;</span><br><span class="line">//        case Pay:</span><br><span class="line">//            packageId = 0x55;</span><br><span class="line">//            break;</span><br><span class="line">//        case Foundation:</span><br><span class="line">//            packageId = 0x56;</span><br><span class="line">//            break;</span><br><span class="line">//        case Hotel:</span><br><span class="line">//            packageId = 0x58;</span><br><span class="line">//            break;</span><br><span class="line">//        case Container:</span><br><span class="line">//            packageId = 0x61;</span><br><span class="line">//            break;</span><br><span class="line">//        case CustomerService:</span><br><span class="line">//            packageId = 0x62;</span><br><span class="line">//            break;</span><br><span class="line">//        case ThirdParty:</span><br><span class="line">//            packageId = 0x63;</span><br><span class="line">//            break;</span><br><span class="line">//        case Extend1:</span><br><span class="line">//            packageId = 0x64;</span><br><span class="line">//            break;</span><br><span class="line">//        case Extend2:</span><br><span class="line">//            packageId = 0x65;</span><br><span class="line">//            break;</span><br><span class="line">//        case Extend3:</span><br><span class="line">//            packageId = 0x66;</span><br><span class="line">//            break;</span><br><span class="line">//        case Extend4:</span><br><span class="line">//            packageId = 0x67;</span><br><span class="line">//            break;</span><br><span class="line">//        case Extend5:</span><br><span class="line">//            packageId = 0x68;</span><br><span class="line">//            break;</span><br><span class="line">//        case Extend6:</span><br><span class="line">//            packageId = 0x69;</span><br><span class="line">//            break;</span><br><span class="line">        default:</span><br><span class="line">            assert(0);</span><br><span class="line">            break;</span><br><span class="line">    &#125;</span><br><span class="line">    if(!bundle-&gt;getApkModule().isEmpty())&#123;</span><br><span class="line">        android::String8 apkmoduleVal=bundle-&gt;getApkModule();</span><br><span class="line">        packageId=apkStringToInt(apkmoduleVal);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    sp&lt;Package&gt; package = new Package(mAssetsPackage, packageId);</span><br><span class="line">    mPackages.add(assetsPackage, package);</span><br><span class="line">    mOrderedPackages.add(package);</span><br><span class="line"></span><br><span class="line">    // Every resource table always has one first entry, the bag attributes.</span><br><span class="line">    const SourcePos unknown(String8("????"), 0);</span><br><span class="line">    getType(mAssetsPackage, String16("attr"), unknown);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>如此一来，不同业务的资源被赋予了不同的id，在加载时，便进入到各个业务打出的插件包里寻找资源.</p>
+<p>在<code>sub-project-build.gradle</code>中，组装<code>--apk-module</code>参数</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line">argv &lt;&lt; <span class="string">'--apk-module'</span></span><br><span class="line">argv &lt;&lt; <span class="string">"<span class="variable">$resourceId</span>"</span></span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<h2 id="动态加载"><a href="#动态加载" class="headerlink" title="动态加载"></a>动态加载</h2><p>运行时加载资源，需要知道资源从哪个插件中获取。所有插件位于压缩包的<code>assets/baseres/</code>路径下。在运行时会在<code>/data/data/ctrip.android.sample/files/storage/{num}</code>生成对应的文件夹。</p>
+<p><img src="/img/160118_dynamic_apk/ctrip_folders.png" alt=""></p>
+<ul>
+<li><code>1</code>、<code>2</code>分别对应了<code>demo1</code>、<code>demo2</code></li>
+<li><code>meta</code>记录了下一个可用id，即<code>3</code></li>
+<li><code>1/meta</code>中保存包名<code>ctrip.android.demo1</code></li>
+<li><code>1/version_1/bundle.zip</code>就是<code>assets/baseres/ctrip_android_demo1.so</code>，可以解压缩观察</li>
+<li><code>1/version_1/bundle.dex</code>其实与<code>bundle.zip</code>解压缩拿到的<code>dex</code>是一样的</li>
+<li><code>1/version_1/meta</code>无用（内容为<code>file:</code>）</li>
+</ul>
+<p>这部分目录与文件的管理，是通过<code>Bundle</code>、<code>Archive</code>接口完成的，<code>version_1</code>、<code>version_2</code>…<code>version_n</code>分别对应一个<code>BundleArchiveRevision</code>，它们统一由<code>BundleAchive</code>管理。<code>BundleArchive</code>由<code>BundleImpl</code>管理。图中有<code>demo1</code>、<code>demo2</code>，对应着就有2个<code>BundleImpl</code>。各个<code>Bundle</code>的启动，更新，卸载，由<code>Framework.java</code>管理。</p>
+<p>对应关系如下图所示：</p>
+<p><img src="/img/160118_dynamic_apk/ctrip_bundle.jpg" alt=""></p>
+<h2 id="热修复"><a href="#热修复" class="headerlink" title="热修复"></a>热修复</h2><p><code>DynamicAPK</code>中，仅仅提供了分包、资源加载的demo，未包含hotfix功能。虽然可以看到<code>HotPatchManager.java</code>，但并没有真正运行。这里我们自己来山寨一次hotfix的过程。</p>
+<p>首先了解一下apk安装以及运行时会操作的几个目录。下载好的<code>apk</code>在进行安装时，会对系统中以下几个目录进行操作</p>
+<ul>
+<li><code>/data/app</code>：apk安装时会被复制到该目录</li>
+<li><code>/data/dalvik-cache</code>：安装dex文件的真正位置，后续app启动均从此处进行load</li>
+<li><code>/data/data</code>：新建以<code>packageName</code>命名的文件夹，只有app自己能访问，用于管理数据</li>
+</ul>
+<p>在没有root过的设备上，应用程序有权限操作的目录仅仅是<code>/data/data/com.foo.foo</code>，想更改<code>/data/dalvik-cache</code>中的<code>dex</code>文件是不可能的。但是，结合上面完成的动态加载工作，我们就可以在运行时更新<code>demo1</code>、<code>demo2</code>的dex文件，从而达到热修复的目的。</p>
+<p>这里我们演示一个更换文案的demo，将<code>demo2</code>里面<code>textView</code>预设的文案由<code>This is sample  resource:</code>换成<code>下图来自于宿主资源</code>。首先需要把改好的项目进行编译，取出<code>bundle.dex</code>与<code>bundle.zip</code>（这两个文件的来源，前文已经提过）。然后把它们上传到<code>/data/data/com.ctrip.sample/files/storage/2/version_2</code>。上传完成后，下次启动就会加载我们修改后的dex文件，展示新的内容。</p>
+<p>这里直接用<strong>monitor</strong>来模拟hotfix文件下载过程。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MainActivity</span> <span class="keyword">extends</span> <span class="title">Activity</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onCreate</span><span class="params">(Bundle savedInstanceState)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>.onCreate(savedInstanceState);</span><br><span class="line">        setContentView(R.layout.demo2_activity_main);</span><br><span class="line">        TextView textView=(TextView)findViewById(R.id.demo2_textView3);</span><br><span class="line"><span class="comment">//       textView.setText(R.string.sample_text); // 宿主资源</span></span><br><span class="line">        textView.setText(<span class="string">"下图来自于宿主资源"</span>);</span><br><span class="line">        ImageView imageView=(ImageView)findViewById(R.id.demo2_imageView2);</span><br><span class="line">        imageView.setImageResource(R.drawable.sample); <span class="comment">// 宿主资源</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>hotfix之前</p>
+<p><img src="/img/160118_dynamic_apk/hotfix_before.png" alt=""></p>
+<p>hotfix之后</p>
+<p><img src="/img/160118_dynamic_apk/hotfix_after.png" alt=""></p>
+<hr>
+<h4 id="附一：更完整的编译流程图"><a href="#附一：更完整的编译流程图" class="headerlink" title="附一：更完整的编译流程图"></a>附一：更完整的编译流程图</h4><p><img src="/img/160118_dynamic_apk/android_build_process.png" alt=""></p>
+<hr>
+<h4 id="附二：推荐阅读"><a href="#附二：推荐阅读" class="headerlink" title="附二：推荐阅读"></a>附二：推荐阅读</h4><ul>
+<li><a href="http://segmentfault.com/a/1190000004086213" target="_blank" rel="external">Android动态加载技术 系列索引</a></li>
+</ul>
+<hr>
+<h3 id="Ending"><a href="#Ending" class="headerlink" title="===Ending==="></a><em>===Ending===</em></h3><hr>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://lilei.work/2016/01/18/携程动态加载实践DynamicAPK项目学习/" data-id="cipq6efu80020t7sui5q1nnt4" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/技术流/">技术流</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2016/01/28/Nova-Automation-Practice/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          nova自动化测试探索与实践
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2016/01/15/项目交接那点事儿/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">项目交接那点事儿</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+ <section id="comments">
+   <!-- 多说评论框 start -->
+   <div class="ds-thread" data-thread-key="post-携程动态加载实践DynamicAPK项目学习" data-title="携程动态加载实践DynamicAPK项目学习" data-url="http://lilei.work/2016/01/18/携程动态加载实践DynamicAPK项目学习/"></div>
+   <!-- 多说评论框 end -->
+   <!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+   <script type="text/javascript">
+   var duoshuoQuery = {short_name:'lileiwork'};
+     (function() {
+       var ds = document.createElement('script');
+       ds.type = 'text/javascript';ds.async = true;
+       ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+       ds.charset = 'UTF-8';
+       (document.getElementsByTagName('head')[0] 
+        || document.getElementsByTagName('body')[0]).appendChild(ds);
+     })();
+     </script>
+   <!-- 多说公共JS代码 end -->
+ </section>
+ </section>
+        
+          <aside id="sidebar">
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Android-Performance-Patterns/">Android Performance Patterns</a><span class="tag-list-count">20</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/大保健/">大保健</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/工作效率/">工作效率</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/技术流/">技术流</a><span class="tag-list-count">28</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/槑/">槑</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/自动化测试/">自动化测试</a><span class="tag-list-count">2</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">June 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">April 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">March 2016</a><span class="archive-list-count">11</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/02/">February 2016</a><span class="archive-list-count">15</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">January 2016</a><span class="archive-list-count">6</span></li></ul>
+    </div>
+  </div>
+
+  
+    <div class="widget-wrap">
+	<h3 class="widget-title">Links</h3>
+	<div class="widget">
+		<ul class="entry">
+		<li><a href="http://www.dcharm.com" title="dcharm">杂七杂八by王强 - 数据分析</a></li>
+		<li><a href="http://www.lightskystreet.com" title="lightSky">lightSky's Blog</a></li>
+		<li><a href="http://androooid.github.io/index.html" title="Android小伙伴的Gitbook">Android小伙伴的Gitbook</a></li>
+		</ul>
+	</div>
+</div>
+  
+    <div class="widget-wrap">
+	<h3 class="widget-title">Recent Comments</h3>
+	<div class="widget">
+		<ul class="ds-recent-comments" data-num-items="5" data-show-avatars="0" data-show-time="1" data-show-title="1" data-show-admin="1" data-excerpt-length="70"></ul>
+	</div>
+</div>
+
+<!--多说js加载开始，一个页面只需要加载一次 -->
+<script type="text/javascript">
+if(typeof duoshuoQuery === 'undefined') {
+	  var duoshuoQuery = {short_name:"lileiwork"};
+	  (function() {
+	    var ds = document.createElement('script');
+	    ds.type = 'text/javascript';ds.async = true;
+	    ds.src = 'http://static.duoshuo.com/embed.js';
+	    ds.charset = 'UTF-8';
+	    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(ds);
+	  })();
+  }
+</script>
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2016 Li Lei<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+  </div>
+</body>
+</html>
