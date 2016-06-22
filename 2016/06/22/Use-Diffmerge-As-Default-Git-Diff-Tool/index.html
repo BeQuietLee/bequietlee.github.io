@@ -3,17 +3,18 @@
 <head>
   <meta charset="utf-8">
   
-  <title>Tag: 自动化测试 | One Step, One Punch</title>
+  <title>Use-Diffmerge-As-Default-Git-Diff-Tool | One Step, One Punch</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description">
-<meta property="og:type" content="website">
-<meta property="og:title" content="One Step, One Punch">
-<meta property="og:url" content="http://lilei.work/tags/自动化测试/index.html">
+  <meta name="description" content="使用Diffmerge作为默认的git diff GUI工具">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Use-Diffmerge-As-Default-Git-Diff-Tool">
+<meta property="og:url" content="http://lilei.work/2016/06/22/Use-Diffmerge-As-Default-Git-Diff-Tool/index.html">
 <meta property="og:site_name" content="One Step, One Punch">
-<meta property="og:description">
+<meta property="og:description" content="使用Diffmerge作为默认的git diff GUI工具">
+<meta property="og:updated_time" content="2016-06-22T05:03:52.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="One Step, One Punch">
-<meta name="twitter:description">
+<meta name="twitter:title" content="Use-Diffmerge-As-Default-Git-Diff-Tool">
+<meta name="twitter:description" content="使用Diffmerge作为默认的git diff GUI工具">
   
     <link rel="alternative" href="/atom.xml" title="One Step, One Punch" type="application/atom+xml">
   
@@ -63,59 +64,81 @@
   </div>
 </header>
       <div class="outer">
-        <section id="main">
-  
-  
-    
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2016" class="archive-year">2016</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2016/03/24/Nova-Automation-Develop-Plan/" class="archive-article-date">
-  <time datetime="2016-03-24T09:27:17.000Z" itemprop="datePublished">Mar 24</time>
+        <section id="main"><article id="post-Use-Diffmerge-As-Default-Git-Diff-Tool" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/06/22/Use-Diffmerge-As-Default-Git-Diff-Tool/" class="article-date">
+  <time datetime="2016-06-22T04:58:54.000Z" itemprop="datePublished">2016-06-22</time>
 </a>
-      
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2016/03/24/Nova-Automation-Develop-Plan/">nova自动化测试后续内容安排</a>
+    <h1 class="article-title" itemprop="name">
+      Use-Diffmerge-As-Default-Git-Diff-Tool
     </h1>
   
 
-    </header>
-  </div>
-</article>
-  
+      </header>
     
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2016/01/28/Nova-Automation-Practice/" class="archive-article-date">
-  <time datetime="2016-01-28T03:27:49.000Z" itemprop="datePublished">Jan 28</time>
-</a>
+    <div class="article-entry" itemprop="articleBody">
       
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2016/01/28/Nova-Automation-Practice/">nova自动化测试探索与实践</a>
-    </h1>
-  
+        <blockquote>
+<p>使用Diffmerge作为默认的git diff GUI工具</p>
+</blockquote>
+<a id="more"></a>
+<h4 id="配置方法"><a href="#配置方法" class="headerlink" title="配置方法"></a>配置方法</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">$ git config --global merge.tool diffmerge</span><br><span class="line">$ git config --global mergetool.diffmerge.cmd <span class="string">"/Applications/DiffMerge.app/Contents/MacOS/diffmerge --merge --result=\$MERGED \$LOCAL \$BASE \$REMOTE"</span></span><br><span class="line">$ git config --global mergetool.keepBackup <span class="literal">false</span></span><br><span class="line"></span><br><span class="line">$ git config --global diff.tool diffmerge</span><br><span class="line">$ git config --global difftool.diffmerge.cmd <span class="string">"/Applications/DiffMerge.app/Contents/MacOS/diffmerge \$LOCAL \$REMOTE"</span></span><br></pre></td></tr></table></figure>
+<h4 id="使用方法"><a href="#使用方法" class="headerlink" title="使用方法"></a>使用方法</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git difftool</span><br></pre></td></tr></table></figure>
+<p>参考链接：<a href="http://coding4streetcred.com/blog/post/Configure-DiffMerge-for-Your-Git-DiffTool" target="_blank" rel="external">Configure DiffMerge for Your Git DiffTool</a></p>
 
-    </header>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://lilei.work/2016/06/22/Use-Diffmerge-As-Default-Git-Diff-Tool/" data-id="cipqez9950000agsuo4crm7os" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/技术流/">技术流</a></li></ul>
+
+    </footer>
   </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2016/06/22/Launch-Sublime-In-Terminal/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">macOS 通过终端启动 Sublime2</div>
+    </a>
+  
+</nav>
+
+  
 </article>
-  
-  
-    </div></section>
-  
-</section>
+
+
+ <section id="comments">
+   <!-- 多说评论框 start -->
+   <div class="ds-thread" data-thread-key="post-Use-Diffmerge-As-Default-Git-Diff-Tool" data-title="Use-Diffmerge-As-Default-Git-Diff-Tool" data-url="http://lilei.work/2016/06/22/Use-Diffmerge-As-Default-Git-Diff-Tool/"></div>
+   <!-- 多说评论框 end -->
+   <!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+   <script type="text/javascript">
+   var duoshuoQuery = {short_name:'lileiwork'};
+     (function() {
+       var ds = document.createElement('script');
+       ds.type = 'text/javascript';ds.async = true;
+       ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+       ds.charset = 'UTF-8';
+       (document.getElementsByTagName('head')[0] 
+        || document.getElementsByTagName('body')[0]).appendChild(ds);
+     })();
+     </script>
+   <!-- 多说公共JS代码 end -->
+ </section>
+ </section>
         
           <aside id="sidebar">
   
