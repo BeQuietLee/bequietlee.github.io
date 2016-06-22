@@ -11,7 +11,7 @@
 <meta property="og:url" content="http://lilei.work/2016/06/22/Use-Diffmerge-As-Default-Git-Diff-Tool/index.html">
 <meta property="og:site_name" content="One Step, One Punch">
 <meta property="og:description" content="使用DiffMerge作为默认的git diff GUI工具">
-<meta property="og:updated_time" content="2016-06-22T05:05:34.000Z">
+<meta property="og:updated_time" content="2016-06-22T05:29:49.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Use DiffMerge As Default Git Diff Tool">
 <meta name="twitter:description" content="使用DiffMerge作为默认的git diff GUI工具">
@@ -90,6 +90,7 @@
 <p>使用DiffMerge作为默认的git diff GUI工具</p>
 </blockquote>
 <a id="more"></a>
+<p>P4Merge: 界面美观，功能强大，安装包大（100M）<br>DiffMerge: 界面简单，功能一般，安装包小（10M）</p>
 <h4 id="配置方法"><a href="#配置方法" class="headerlink" title="配置方法"></a>配置方法</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">$ git config --global merge.tool diffmerge</span><br><span class="line">$ git config --global mergetool.diffmerge.cmd <span class="string">"/Applications/DiffMerge.app/Contents/MacOS/diffmerge --merge --result=\$MERGED \$LOCAL \$BASE \$REMOTE"</span></span><br><span class="line">$ git config --global mergetool.keepBackup <span class="literal">false</span></span><br><span class="line"></span><br><span class="line">$ git config --global diff.tool diffmerge</span><br><span class="line">$ git config --global difftool.diffmerge.cmd <span class="string">"/Applications/DiffMerge.app/Contents/MacOS/diffmerge \$LOCAL \$REMOTE"</span></span><br></pre></td></tr></table></figure>
 <h4 id="使用方法"><a href="#使用方法" class="headerlink" title="使用方法"></a>使用方法</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git difftool</span><br></pre></td></tr></table></figure>
 <p>参考链接：<a href="http://coding4streetcred.com/blog/post/Configure-DiffMerge-for-Your-Git-DiffTool" target="_blank" rel="external">Configure DiffMerge for Your Git DiffTool</a></p>
