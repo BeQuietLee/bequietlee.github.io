@@ -11,18 +11,18 @@
 <meta property="og:url" content="http://lilei.work/2016/03/07/Android-Performance-Patterns-s4ep1-Cachematters-for-networking/index.html">
 <meta property="og:site_name" content="One Step, One Punch">
 <meta property="og:description" content="You know what the fastest, most efficient piece of content for networking performance is? The one you never have to download.Video Link">
-<meta property="og:image" content="http://lilei.work/../img/160307_app_s4ep1/local_vs_network.png">
-<meta property="og:image" content="http://lilei.work/../img/160307_app_s4ep1/invalidation.png">
-<meta property="og:image" content="http://lilei.work/../img/160307_app_s4ep1/cache_control_header.png">
-<meta property="og:image" content="http://lilei.work/../img/160307_app_s4ep1/constraint.png">
-<meta property="og:image" content="http://lilei.work/../img/160307_app_s4ep1/different_cache_time.png">
-<meta property="og:image" content="http://lilei.work/../img/160307_app_s4ep1/network_traffic_tool.png">
-<meta property="og:image" content="http://lilei.work/../img/160307_app_s4ep1/aro_tool.png">
-<meta property="og:updated_time" content="2016-03-07T12:02:09.000Z">
+<meta property="og:image" content="http://lilei.work/img/160307_app_s4ep1/local_vs_network.png">
+<meta property="og:image" content="http://lilei.work/img/160307_app_s4ep1/invalidation.png">
+<meta property="og:image" content="http://lilei.work/img/160307_app_s4ep1/cache_control_header.png">
+<meta property="og:image" content="http://lilei.work/img/160307_app_s4ep1/constraint.png">
+<meta property="og:image" content="http://lilei.work/img/160307_app_s4ep1/different_cache_time.png">
+<meta property="og:image" content="http://lilei.work/img/160307_app_s4ep1/network_traffic_tool.png">
+<meta property="og:image" content="http://lilei.work/img/160307_app_s4ep1/aro_tool.png">
+<meta property="og:updated_time" content="2016-06-29T06:20:38.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Android Performance Patterns - s4ep1 Cachematters for networking">
 <meta name="twitter:description" content="You know what the fastest, most efficient piece of content for networking performance is? The one you never have to download.Video Link">
-<meta name="twitter:image" content="http://lilei.work/../img/160307_app_s4ep1/local_vs_network.png">
+<meta name="twitter:image" content="http://lilei.work/img/160307_app_s4ep1/local_vs_network.png">
   
     <link rel="alternative" href="/atom.xml" title="One Step, One Punch" type="application/atom+xml">
   
@@ -102,16 +102,16 @@
 
 <hr>
 <a id="more"></a>
-<h4 id="Reading-data-from-local-memory-v-s-Reading-data-from-network"><a href="#Reading-data-from-local-memory-v-s-Reading-data-from-network" class="headerlink" title="Reading data from local memory v.s. Reading data from network"></a>Reading data from local memory v.s. Reading data from network</h4><p><img src="../img/160307_app_s4ep1/local_vs_network.png" alt=""></p>
+<h4 id="Reading-data-from-local-memory-v-s-Reading-data-from-network"><a href="#Reading-data-from-local-memory-v-s-Reading-data-from-network" class="headerlink" title="Reading data from local memory v.s. Reading data from network"></a>Reading data from local memory v.s. Reading data from network</h4><p><img src="/img/160307_app_s4ep1/local_vs_network.png" alt=""></p>
 <p>访问本地数据的速度要远远快于访问网络数据（废话！）。接下来，文章中会介绍一些本地缓存的策略与实现。</p>
 <h4 id="Enable-Http-Caching"><a href="#Enable-Http-Caching" class="headerlink" title="Enable Http Caching"></a>Enable Http Caching</h4><p>默认情况下，Http Cache在Android系统中是关闭的，需要使用<a href="http://developer.android.com/reference/android/net/http/HttpResponseCache.html" target="_blank" rel="external">HttpResponseCache</a>手动开启，如下代码：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onCreate</span><span class="params">(Bundle savedInstanceState)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">try</span> &#123;</span><br><span class="line">		File httpCacheDir = <span class="keyword">new</span> File(context.getCacheDir(), <span class="string">"http"</span>);</span><br><span class="line">		<span class="keyword">long</span> httpCacheSize = <span class="number">10</span> * <span class="number">1024</span> * <span class="number">1024</span>; <span class="comment">// 10 MB</span></span><br><span class="line">		HttpResponseCache.install(httpCacheDir, httpCacheSize);</span><br><span class="line">	&#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">		Lot.i(TAG, <span class="string">"Http response cache installation failed"</span> + e);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onStop</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	HttpResponseCache cache = HttpResponseCache.installed();</span><br><span class="line">	<span class="keyword">if</span> (cache != <span class="keyword">null</span>) &#123;</span><br><span class="line">		cache.flush();</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>这样做会为所有的Http请求提供缓存，不仅是自己代码中发出的，也包括所依赖外部jar包发出的请求。</p>
 <hr>
 <h4 id="Invalidation"><a href="#Invalidation" class="headerlink" title="Invalidation"></a>Invalidation</h4><p>Cache有两种最基本的过期的策略：空间（Cache空间不足时触发）和时间（Cache超过过期时间后触发）。</p>
-<p><img src="../img/160307_app_s4ep1/invalidation.png" alt=""></p>
+<p><img src="/img/160307_app_s4ep1/invalidation.png" alt=""></p>
 <p>在 Http 1.x 的header中，用<code>Cache-Control</code>来标示缓存策略。</p>
-<p><img src="../img/160307_app_s4ep1/cache_control_header.png" alt=""></p>
+<p><img src="/img/160307_app_s4ep1/cache_control_header.png" alt=""></p>
 <hr>
 <h4 id="HttpResponseCache的限制"><a href="#HttpResponseCache的限制" class="headerlink" title="HttpResponseCache的限制"></a>HttpResponseCache的限制</h4><p>HttpResponseCache通过Server来控制所有Cache策略，这在大部分场景是没有问题的，毕竟Server知道它返回给Client的具体内容是什么（文字、图片、文件等等），然而，移动应用的特殊性使得它还需要更精细的控制。</p>
 <ul>
@@ -119,7 +119,7 @@
 <li>移动设备的存储空间有限以至于无法保存Cache数据</li>
 <li>网络环境高延迟</li>
 </ul>
-<p><img src="../img/160307_app_s4ep1/constraint.png" alt=""></p>
+<p><img src="/img/160307_app_s4ep1/constraint.png" alt=""></p>
 <p>因此，你需要自己定制一个Cache框架并引入Cache功能，这两件事不得不做：</p>
 <ol>
 <li>Write your own Disk Cache manager</li>
@@ -127,7 +127,7 @@
 </ol>
 <p>可以参照已有的<a href="https://developer.android.com/samples/DisplayingBitmaps/src/com.example.android.displayingbitmaps/util/DiskLruCache.html" target="_blank" rel="external">DiskLruCache</a></p>
 <p>不同数据的各自属性通常要求各异的Cache策略，比如，文字提示语的过期时间与头像的过期时间是不同的。</p>
-<p><img src="../img/160307_app_s4ep1/different_cache_time.png" alt=""></p>
+<p><img src="/img/160307_app_s4ep1/different_cache_time.png" alt=""></p>
 <hr>
 <h4 id="Codes-amp-Tools"><a href="#Codes-amp-Tools" class="headerlink" title="Codes &amp; Tools"></a>Codes &amp; Tools</h4><p>一些优秀的网络请求框架</p>
 <ul>
@@ -136,16 +136,16 @@
 <li>Picasso: <a href="http://square.github.io/picasso" target="_blank" rel="external">http://square.github.io/picasso</a></li>
 </ul>
 <p>AndroidStudio提供了查看网络数据流量的<a href="http://developer.android.com/tools/debugging/ddms.html#network" target="_blank" rel="external">Network Traffic Tool</a></p>
-<p><img src="../img/160307_app_s4ep1/network_traffic_tool.png" alt=""></p>
+<p><img src="/img/160307_app_s4ep1/network_traffic_tool.png" alt=""></p>
 <p>更专业的工具是AT&amp;T提供的<a href="https://developer.att.com/application-resource-optimizer" target="_blank" rel="external">ARO tool</a></p>
-<p><img src="../img/160307_app_s4ep1/aro_tool.png" alt=""></p>
+<p><img src="/img/160307_app_s4ep1/aro_tool.png" alt=""></p>
 <hr>
 <h3 id="Ending"><a href="#Ending" class="headerlink" title="===Ending==="></a><em>===Ending===</em></h3><hr>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://lilei.work/2016/03/07/Android-Performance-Patterns-s4ep1-Cachematters-for-networking/" data-id="ciq0cv8bs0000s3sufib73mtb" class="article-share-link">Share</a>
+      <a data-url="http://lilei.work/2016/03/07/Android-Performance-Patterns-s4ep1-Cachematters-for-networking/" data-id="ciq0hu5ck0000hdsuvac5jeyy" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Android-Performance-Patterns/">Android Performance Patterns</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/技术流/">技术流</a></li></ul>

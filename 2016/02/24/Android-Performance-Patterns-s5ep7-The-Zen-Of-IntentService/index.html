@@ -11,16 +11,16 @@
 <meta property="og:url" content="http://lilei.work/2016/02/24/Android-Performance-Patterns-s5ep7-The-Zen-Of-IntentService/index.html">
 <meta property="og:site_name" content="One Step, One Punch">
 <meta property="og:description" content="Season 5 ep 7，IntentService之禅。见山是山，见水是水；见山不是山，见水不是水；见山仍是山，见水仍是水。Video Link">
-<meta property="og:image" content="http://lilei.work/../img/160224_app_s5ep7/large_intent_work.png">
-<meta property="og:image" content="http://lilei.work/../img/160224_app_s5ep7/intent_service.png">
-<meta property="og:image" content="http://lilei.work/../img/160224_app_s5ep7/one_work_queue.png">
-<meta property="og:image" content="http://lilei.work/../img/160224_app_s5ep7/broadcast_receiver.png">
-<meta property="og:image" content="http://lilei.work/../img/160224_app_s5ep7/not_killed.png">
-<meta property="og:updated_time" content="2016-06-22T01:45:24.000Z">
+<meta property="og:image" content="http://lilei.work/img/160224_app_s5ep7/large_intent_work.png">
+<meta property="og:image" content="http://lilei.work/img/160224_app_s5ep7/intent_service.png">
+<meta property="og:image" content="http://lilei.work/img/160224_app_s5ep7/one_work_queue.png">
+<meta property="og:image" content="http://lilei.work/img/160224_app_s5ep7/broadcast_receiver.png">
+<meta property="og:image" content="http://lilei.work/img/160224_app_s5ep7/not_killed.png">
+<meta property="og:updated_time" content="2016-06-29T06:23:33.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Android Performance Patterns - s5ep7 The Zen Of IntentService">
 <meta name="twitter:description" content="Season 5 ep 7，IntentService之禅。见山是山，见水是水；见山不是山，见水不是水；见山仍是山，见水仍是水。Video Link">
-<meta name="twitter:image" content="http://lilei.work/../img/160224_app_s5ep7/large_intent_work.png">
+<meta name="twitter:image" content="http://lilei.work/img/160224_app_s5ep7/large_intent_work.png">
   
     <link rel="alternative" href="/atom.xml" title="One Step, One Punch" type="application/atom+xml">
   
@@ -100,7 +100,7 @@
 <hr>
 <a id="more"></a>
 <h4 id="Work-With-An-Intent"><a href="#Work-With-An-Intent" class="headerlink" title="Work With An Intent"></a>Work With An Intent</h4><p>在Android系统中我们经常会用Intent来传递消息，如果一个Intent需要花很长时间来处理，在上过了前面几节课之后，你一定已经掌握了如何应对这种task的办法——在新的<code>Worker Thread</code>中解决这个任务。</p>
-<p><img src="../img/160224_app_s5ep7/large_intent_work.png" alt=""></p>
+<p><img src="/img/160224_app_s5ep7/large_intent_work.png" alt=""></p>
 <p>基于Season 5前面几节所讲的知识，你可能会选用<strong>AsyncTask</strong>或者<strong>HandlerThread</strong>来完成这个工作，然而，这两个并非最好的选择，因为：</p>
 <ul>
 <li>AsyncTask通常处理UI交互方面的事情，当你的Activity正处于后台（没有任何UI元素在渲染中）时，AsyncTask并不能完成它的任务</li>
@@ -108,24 +108,24 @@
 </ul>
 <hr>
 <h4 id="IntentService"><a href="#IntentService" class="headerlink" title="IntentService"></a>IntentService</h4><p>这是就要隆重推出<a href="http://developer.android.com/reference/android/app/IntentService.html" target="_blank" rel="external"><strong>IntentService</strong></a>了。IntentService更像是Service与HandlerThread的合体（a hybrid between Service class and HandlerThread），它继承自Service，在运行时会创建HandlerThread，来处理接收到的Intent请求。</p>
-<p><img src="../img/160224_app_s5ep7/intent_service.png" alt=""></p>
+<p><img src="/img/160224_app_s5ep7/intent_service.png" alt=""></p>
 <p>因为IntentService本质上是一个Service，你可以通过它进行一些Service既有的功能，如使用alarm做定时／循环操作。</p>
 <hr>
 <h4 id="Be-Careful-With-IntentService"><a href="#Be-Careful-With-IntentService" class="headerlink" title="Be Careful With IntentService"></a>Be Careful With IntentService</h4><p>在享受IntentService所带来便利的时候，也有一些注意事项。</p>
 <p>首先，IntentService所有任务是在同一个队列中按顺序处理的，同AsyncTask一样，如果排在前面的一个任务极其耗时，会使得后面任务迟迟得不到执行，这是就要考虑HandlerThread等其他解决方案了。</p>
-<p><img src="../img/160224_app_s5ep7/one_work_queue.png" alt=""></p>
+<p><img src="/img/160224_app_s5ep7/one_work_queue.png" alt=""></p>
 <p>其次，IntentService使用类似Broadcast Receiver的机制将任务执行结果返回给Activity，这在运行结果的正确性上并没有任何问题。然而对于简单的结果返回操作，是不需要使用如此重量级的Broadcast Receiver来进行的。你可以改用<code>runOnUIThread</code>来降低资源消耗。</p>
-<p><img src="../img/160224_app_s5ep7/broadcast_receiver.png" alt=""></p>
+<p><img src="/img/160224_app_s5ep7/broadcast_receiver.png" alt=""></p>
 <hr>
 <h4 id="Other-Benifits-of-IntentService"><a href="#Other-Benifits-of-IntentService" class="headerlink" title="Other Benifits of IntentService"></a>Other Benifits of IntentService</h4><p>使用IntentService还有一个附加的好处——它会使你的app在被切换到后台时，不那么容易被杀死。（相比于那些在后台运行且没有Service的app而言）</p>
-<p><img src="../img/160224_app_s5ep7/not_killed.png" alt=""></p>
+<p><img src="/img/160224_app_s5ep7/not_killed.png" alt=""></p>
 <hr>
 <h3 id="Ending"><a href="#Ending" class="headerlink" title="===Ending==="></a><em>===Ending===</em></h3><hr>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://lilei.work/2016/02/24/Android-Performance-Patterns-s5ep7-The-Zen-Of-IntentService/" data-id="ciq0cv8d8000xs3sux4dwirex" class="article-share-link">Share</a>
+      <a data-url="http://lilei.work/2016/02/24/Android-Performance-Patterns-s5ep7-The-Zen-Of-IntentService/" data-id="ciq0hu5e20010hdsusryjfj52" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Android-Performance-Patterns/">Android Performance Patterns</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/技术流/">技术流</a></li></ul>

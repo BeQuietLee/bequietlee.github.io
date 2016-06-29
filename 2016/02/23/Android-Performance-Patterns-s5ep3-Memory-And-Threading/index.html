@@ -11,20 +11,20 @@
 <meta property="og:url" content="http://lilei.work/2016/02/23/Android-Performance-Patterns-s5ep3-Memory-And-Threading/index.html">
 <meta property="og:site_name" content="One Step, One Punch">
 <meta property="og:description" content="Season5 ep3 主要介绍了Android中使用多线程可能导致的风险——内存泄漏link">
-<meta property="og:image" content="http://lilei.work/../img/160223_app_s5ep3/memory_problem.png">
-<meta property="og:image" content="http://lilei.work/../img/160223_app_s5ep3/invalid_button.png">
-<meta property="og:image" content="http://lilei.work/../img/160223_app_s5ep3/removed_view.png">
-<meta property="og:image" content="http://lilei.work/../img/160223_app_s5ep3/activity_still_alive.png">
-<meta property="og:image" content="http://lilei.work/../img/160223_app_s5ep3/implicit_reference.png">
-<meta property="og:image" content="http://lilei.work/../img/160223_app_s5ep3/application_stop.png">
-<meta property="og:image" content="http://lilei.work/../img/160223_app_s5ep3/dont_hold_references.png">
-<meta property="og:image" content="http://lilei.work/../img/160223_app_s5ep3/work_thread_work.png">
-<meta property="og:image" content="http://lilei.work/../img/160223_app_s5ep3/tool.png">
-<meta property="og:updated_time" content="2016-03-01T02:02:23.000Z">
+<meta property="og:image" content="http://lilei.work/img/160223_app_s5ep3/memory_problem.png">
+<meta property="og:image" content="http://lilei.work/img/160223_app_s5ep3/invalid_button.png">
+<meta property="og:image" content="http://lilei.work/img/160223_app_s5ep3/removed_view.png">
+<meta property="og:image" content="http://lilei.work/img/160223_app_s5ep3/activity_still_alive.png">
+<meta property="og:image" content="http://lilei.work/img/160223_app_s5ep3/implicit_reference.png">
+<meta property="og:image" content="http://lilei.work/img/160223_app_s5ep3/application_stop.png">
+<meta property="og:image" content="http://lilei.work/img/160223_app_s5ep3/dont_hold_references.png">
+<meta property="og:image" content="http://lilei.work/img/160223_app_s5ep3/work_thread_work.png">
+<meta property="og:image" content="http://lilei.work/img/160223_app_s5ep3/tool.png">
+<meta property="og:updated_time" content="2016-06-29T06:23:05.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Android Performance Patterns - s5ep3 Memory & Threading">
 <meta name="twitter:description" content="Season5 ep3 主要介绍了Android中使用多线程可能导致的风险——内存泄漏link">
-<meta name="twitter:image" content="http://lilei.work/../img/160223_app_s5ep3/memory_problem.png">
+<meta name="twitter:image" content="http://lilei.work/img/160223_app_s5ep3/memory_problem.png">
   
     <link rel="alternative" href="/atom.xml" title="One Step, One Punch" type="application/atom+xml">
   
@@ -108,38 +108,38 @@
 <blockquote>
 <p>Memory contention problems with read-write access order, ABA problems, rips in the fabric of space-time…</p>
 </blockquote>
-<p><img src="../img/160223_app_s5ep3/memory_problem.png" alt=""></p>
+<p><img src="/img/160223_app_s5ep3/memory_problem.png" alt=""></p>
 <p>怎样解决上述问题呢？<strong>加锁</strong>是一个通用的方法——不过这一点要是扩展起来讲，可说来话长了。</p>
 <hr>
 <h4 id="Memory-Problems-in-Android"><a href="#Memory-Problems-in-Android" class="headerlink" title="Memory Problems in Android"></a>Memory Problems in Android</h4><p>记住一点：Android中的UI对象不！是！线！程！安！全！的！（not thread-safe）！所有UI对象的生命周期都在UI线程里进行，在其它线程中维护的UI对象引用，很可能正处于一个invalid的状态。</p>
-<p><img src="../img/160223_app_s5ep3/invalid_button.png" alt=""></p>
+<p><img src="/img/160223_app_s5ep3/invalid_button.png" alt=""></p>
 <p>譬如，在<code>Worker Thread</code>中持有一个View的引用，而这个引用实际上已经在<code>UI Thread</code>中结束了它的生命周期，从<code>view hierarchy</code>里面被移除掉了。然而，<code>Worker Thread</code>却傻傻地对此一无所知，接下来对这个View的一切操作都将是徒劳。</p>
-<p><img src="../img/160223_app_s5ep3/removed_view.png" alt=""></p>
+<p><img src="/img/160223_app_s5ep3/removed_view.png" alt=""></p>
 <hr>
 <h4 id="Don’t-Keep-Activity-References"><a href="#Don’t-Keep-Activity-References" class="headerlink" title="Don’t Keep Activity References"></a>Don’t Keep Activity References</h4><p><code>Worker Thread</code>中是不应该持有Activity引用的，这会导致Activity无法正常回收，进而产生内存泄漏。在Android中，当我们不可避免地用到多线程时，这个问题的风险被放大了。当在<code>Worker Thread</code>中持有Activity引用时，除非<code>Worker Thread</code>完成运算（通常这是一项非常耗时的操作），否则Activity的实例不会真正被释放。</p>
-<p><img src="../img/160223_app_s5ep3/activity_still_alive.png" alt=""></p>
+<p><img src="/img/160223_app_s5ep3/activity_still_alive.png" alt=""></p>
 <hr>
 <h4 id="Implicit-Reference-of-Activity"><a href="#Implicit-Reference-of-Activity" class="headerlink" title="Implicit Reference of Activity"></a>Implicit Reference of Activity</h4><p>除了上文提到的显式引用（explicit reference），还应该当心内部类导致的隐式引用（implicit reference）。Android为我们提供了解决方案——WeakReference &amp; static 关键字。</p>
-<p><img src="../img/160223_app_s5ep3/implicit_reference.png" alt=""></p>
+<p><img src="/img/160223_app_s5ep3/implicit_reference.png" alt=""></p>
 <p>上述场景是可能导致应用程序crash的一个原因——AsyncTask持有一个Activity的引用，而这个Activity实际上已经处于invalid状态时（例如，执行过onDestroy()），AsyncTask却对此一无所知，当AsyncTask执行完它所运行的任务，试图操作Activity的界面时，这个Activity实际上并不可用。这就导致了下面的糟糕场景——</p>
-<p><img src="../img/160223_app_s5ep3/application_stop.png" alt=""></p>
+<p><img src="/img/160223_app_s5ep3/application_stop.png" alt=""></p>
 <hr>
 <h4 id="Don’t-Hold-References"><a href="#Don’t-Hold-References" class="headerlink" title="Don’t Hold References"></a>Don’t Hold References</h4><p>不要试图在UI线程外保存任何UI元素的引用！！！</p>
-<p><img src="../img/160223_app_s5ep3/dont_hold_references.png" alt=""></p>
+<p><img src="/img/160223_app_s5ep3/dont_hold_references.png" alt=""></p>
 <hr>
 <h4 id="How-We-Do"><a href="#How-We-Do" class="headerlink" title="How We Do?"></a>How We Do?</h4><p>我们要遵守的唯一准则是：<strong>所有UI操作，都在UI线程里进行。</strong></p>
 <p><code>Worker Thread</code>可以通过callback、intent等任意进程间通信方法来告诉UI线程——我需要你帮我变更一下界面。</p>
-<p><img src="../img/160223_app_s5ep3/work_thread_work.png" alt=""></p>
+<p><img src="/img/160223_app_s5ep3/work_thread_work.png" alt=""></p>
 <hr>
 <h4 id="Tool-in-Android-Studio-2-0"><a href="#Tool-in-Android-Studio-2-0" class="headerlink" title="Tool in Android Studio 2.0"></a>Tool in Android Studio 2.0</h4><p>如果你想更深入地了解运行时Thread&amp;Memory的情况，请使用Android Studio 2.0中提供的有力工具。</p>
-<p><img src="../img/160223_app_s5ep3/tool.png" alt=""></p>
+<p><img src="/img/160223_app_s5ep3/tool.png" alt=""></p>
 <hr>
 <h3 id="Ending"><a href="#Ending" class="headerlink" title="===Ending==="></a><em>===Ending===</em></h3><hr>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://lilei.work/2016/02/23/Android-Performance-Patterns-s5ep3-Memory-And-Threading/" data-id="ciq0cv8cr000is3sunln5aflu" class="article-share-link">Share</a>
+      <a data-url="http://lilei.work/2016/02/23/Android-Performance-Patterns-s5ep3-Memory-And-Threading/" data-id="ciq0hu5dh000ihdsu9g5pbkht" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Android-Performance-Patterns/">Android Performance Patterns</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/技术流/">技术流</a></li></ul>

@@ -11,15 +11,15 @@
 <meta property="og:url" content="http://lilei.work/2016/03/20/Android-Performance-Patterns-s4ep6-Service-Performance-Patterns/index.html">
 <meta property="og:site_name" content="One Step, One Punch">
 <meta property="og:description" content="Services are an integral component of almost every android application. But the functionality they provide comes with a drain on battery and system resources. And if you’re not paying attention, serv">
-<meta property="og:image" content="http://lilei.work/../img/160320_app_s4ep6/cost.png">
-<meta property="og:image" content="http://lilei.work/../img/160320_app_s4ep6/started_services.png">
-<meta property="og:image" content="http://lilei.work/../img/160320_app_s4ep6/bound_services.png">
-<meta property="og:image" content="http://lilei.work/../img/160320_app_s4ep6/mixed_services.png">
-<meta property="og:updated_time" content="2016-03-20T11:45:06.000Z">
+<meta property="og:image" content="http://lilei.work/img/160320_app_s4ep6/cost.png">
+<meta property="og:image" content="http://lilei.work/img/160320_app_s4ep6/started_services.png">
+<meta property="og:image" content="http://lilei.work/img/160320_app_s4ep6/bound_services.png">
+<meta property="og:image" content="http://lilei.work/img/160320_app_s4ep6/mixed_services.png">
+<meta property="og:updated_time" content="2016-06-29T06:22:28.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Android Performance Patterns - s4ep6 Service Performance Patterns">
 <meta name="twitter:description" content="Services are an integral component of almost every android application. But the functionality they provide comes with a drain on battery and system resources. And if you’re not paying attention, serv">
-<meta name="twitter:image" content="http://lilei.work/../img/160320_app_s4ep6/cost.png">
+<meta name="twitter:image" content="http://lilei.work/img/160320_app_s4ep6/cost.png">
   
     <link rel="alternative" href="/atom.xml" title="One Step, One Punch" type="application/atom+xml">
   
@@ -99,7 +99,7 @@
 <hr>
 <a id="more"></a>
 <h4 id="On-System-Level-Services-Ain’t-Free"><a href="#On-System-Level-Services-Ain’t-Free" class="headerlink" title="On System Level, Services Ain’t Free"></a>On System Level, Services Ain’t Free</h4><p>创建、销毁 Service 需要时间与内存</p>
-<p><img src="../img/160320_app_s4ep6/cost.png" alt=""></p>
+<p><img src="/img/160320_app_s4ep6/cost.png" alt=""></p>
 <hr>
 <h4 id="Service-May-Cost-Frame-Lost"><a href="#Service-May-Cost-Frame-Lost" class="headerlink" title="Service May Cost Frame Lost"></a>Service May Cost Frame Lost</h4><ol>
 <li>作为 Local Service 启动，对应的 Service 运行在主进程的主线程上</li>
@@ -123,15 +123,15 @@
 <ul>
 <li>Started Services：在 Service 中调用<code>stopSelf()</code>，或者在外面调用<code>stopService()</code>来终止</li>
 </ul>
-<p><img src="../img/160320_app_s4ep6/started_services.png" alt=""></p>
+<p><img src="/img/160320_app_s4ep6/started_services.png" alt=""></p>
 <ul>
 <li>Bound Services：通过<code>unBindService()</code>来终止</li>
 </ul>
-<p><img src="../img/160320_app_s4ep6/bound_services.png" alt=""></p>
+<p><img src="/img/160320_app_s4ep6/bound_services.png" alt=""></p>
 <ul>
 <li>Mixed：如果是先通过<code>startService()</code>启动，再用<code>bindService()</code>绑定的 Service，那么在<code>unBind()</code>后，还要显示通过<code>stopService()</code>来终止</li>
 </ul>
-<p><img src="../img/160320_app_s4ep6/mixed_services.png" alt=""></p>
+<p><img src="/img/160320_app_s4ep6/mixed_services.png" alt=""></p>
 <hr>
 <h4 id="Tools"><a href="#Tools" class="headerlink" title="Tools"></a>Tools</h4><ul>
 <li>光头哥又在推销 <a href="http://developer.android.com/tools/help/systrace.html" target="_blank" rel="external">Systrace</a> 了</li>
@@ -142,7 +142,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://lilei.work/2016/03/20/Android-Performance-Patterns-s4ep6-Service-Performance-Patterns/" data-id="ciq0cv8c40003s3suvby66j7c" class="article-share-link">Share</a>
+      <a data-url="http://lilei.work/2016/03/20/Android-Performance-Patterns-s4ep6-Service-Performance-Patterns/" data-id="ciq0hu5d50008hdsuhdfqa02s" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Android-Performance-Patterns/">Android Performance Patterns</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/技术流/">技术流</a></li></ul>

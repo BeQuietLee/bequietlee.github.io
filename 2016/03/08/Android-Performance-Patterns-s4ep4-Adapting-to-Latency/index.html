@@ -11,16 +11,16 @@
 <meta property="og:url" content="http://lilei.work/2016/03/08/Android-Performance-Patterns-s4ep4-Adapting-to-Latency/index.html">
 <meta property="og:site_name" content="One Step, One Punch">
 <meta property="og:description" content="One of the most frequent performance problems your users will notice is how your app reacts when moving from a great network connection to a bad one. If things slow down, get sluggish, or start showi">
-<meta property="og:image" content="http://lilei.work/../img/160308_app_s4ep4/bottlenecks.png">
-<meta property="og:image" content="http://lilei.work/../img/160308_app_s4ep4/speed.png">
-<meta property="og:image" content="http://lilei.work/../img/160308_app_s4ep4/slow_server.png">
-<meta property="og:image" content="http://lilei.work/../img/160308_app_s4ep4/evaluate_average.png">
-<meta property="og:image" content="http://lilei.work/../img/160308_app_s4ep4/levels.png">
-<meta property="og:updated_time" content="2016-03-08T13:01:33.000Z">
+<meta property="og:image" content="http://lilei.work/img/160308_app_s4ep4/bottlenecks.png">
+<meta property="og:image" content="http://lilei.work/img/160308_app_s4ep4/speed.png">
+<meta property="og:image" content="http://lilei.work/img/160308_app_s4ep4/slow_server.png">
+<meta property="og:image" content="http://lilei.work/img/160308_app_s4ep4/evaluate_average.png">
+<meta property="og:image" content="http://lilei.work/img/160308_app_s4ep4/levels.png">
+<meta property="og:updated_time" content="2016-06-29T06:22:11.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Android Performance Patterns - s4ep4 Adapting to Latency">
 <meta name="twitter:description" content="One of the most frequent performance problems your users will notice is how your app reacts when moving from a great network connection to a bad one. If things slow down, get sluggish, or start showi">
-<meta name="twitter:image" content="http://lilei.work/../img/160308_app_s4ep4/bottlenecks.png">
+<meta name="twitter:image" content="http://lilei.work/img/160308_app_s4ep4/bottlenecks.png">
   
     <link rel="alternative" href="/atom.xml" title="One Step, One Punch" type="application/atom+xml">
   
@@ -100,7 +100,7 @@
 <hr>
 <a id="more"></a>
 <h4 id="Bottlenecks-Happen-Anywhere"><a href="#Bottlenecks-Happen-Anywhere" class="headerlink" title="Bottlenecks Happen Anywhere"></a>Bottlenecks Happen Anywhere</h4><p>在一次由app发起的网络请求过程中，会建立“手机－基站－负载均衡服务器－后端server”的一个往复链路，在这个链路的任何一个环节，都可能造成网络请求的延迟。</p>
-<p><img src="../img/160308_app_s4ep4/bottlenecks.png" alt=""></p>
+<p><img src="/img/160308_app_s4ep4/bottlenecks.png" alt=""></p>
 <hr>
 <h4 id="Adapting-To-Lagency"><a href="#Adapting-To-Lagency" class="headerlink" title="Adapting To Lagency"></a>Adapting To Lagency</h4><p>为了适应复杂多变的网络环境，必须做下面两件事：</p>
 <ol>
@@ -110,14 +110,14 @@
 <p>SDK中为我们提供了判断当前网络环境的Api</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);</span><br><span class="line">NetworkInfo activeNetwork = cm.getActiveNetworkInfo();</span><br><span class="line"><span class="keyword">if</span> (activeNetwork.getType() != ConnectivityManager.TYPE_WIFI) &#123;</span><br><span class="line">	String typeName = activeNetwork.getSubtypeName();</span><br><span class="line">	<span class="keyword">int</span> type = activeNetwork.getSubtype();</span><br><span class="line">	<span class="keyword">switch</span> (type) &#123;</span><br><span class="line">		<span class="comment">// do the cases</span></span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>不同网络环境的基本传输速度如下图所示：</p>
-<p><img src="../img/160308_app_s4ep4/speed.png" alt=""></p>
+<p><img src="/img/160308_app_s4ep4/speed.png" alt=""></p>
 <hr>
 <h4 id="Do-It-Yourself"><a href="#Do-It-Yourself" class="headerlink" title="Do It Yourself"></a>Do It Yourself</h4><p>然而，即使判断出当前处于诸如LTE的网络环境，依然不能完全保证较高的传输速度，比如，瓶颈可能发生在服务端。</p>
-<p><img src="../img/160308_app_s4ep4/slow_server.png" alt=""></p>
+<p><img src="/img/160308_app_s4ep4/slow_server.png" alt=""></p>
 <p>这时就需要主动去测算当前网络延迟了，多次测算后，求平均值。</p>
-<p><img src="../img/160308_app_s4ep4/evaluate_average.png" alt=""></p>
+<p><img src="/img/160308_app_s4ep4/evaluate_average.png" alt=""></p>
 <p>接着，你可以定义出三个网络状况区间，以60ms、220ms为界</p>
-<p><img src="../img/160308_app_s4ep4/levels.png" alt=""></p>
+<p><img src="/img/160308_app_s4ep4/levels.png" alt=""></p>
 <table>
 <thead>
 <tr>
@@ -152,7 +152,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://lilei.work/2016/03/08/Android-Performance-Patterns-s4ep4-Adapting-to-Latency/" data-id="ciq0cv8c50004s3su6yyj9rxc" class="article-share-link">Share</a>
+      <a data-url="http://lilei.work/2016/03/08/Android-Performance-Patterns-s4ep4-Adapting-to-Latency/" data-id="ciq0hu5cw0004hdsunv5go57j" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Android-Performance-Patterns/">Android Performance Patterns</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/技术流/">技术流</a></li></ul>

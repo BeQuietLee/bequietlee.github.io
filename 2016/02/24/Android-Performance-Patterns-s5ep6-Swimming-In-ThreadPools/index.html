@@ -11,16 +11,16 @@
 <meta property="og:url" content="http://lilei.work/2016/02/24/Android-Performance-Patterns-s5ep6-Swimming-In-ThreadPools/index.html">
 <meta property="og:site_name" content="One Step, One Punch">
 <meta property="og:description" content="Season 5 ep 6，关于线程池你应该知道的事Video Link">
-<meta property="og:image" content="http://lilei.work/../img/160224_app_s5ep6/parallel.png">
-<meta property="og:image" content="http://lilei.work/../img/160224_app_s5ep6/thread_pool_executor.png">
-<meta property="og:image" content="http://lilei.work/../img/160224_app_s5ep6/thread_is_evil.png">
-<meta property="og:image" content="http://lilei.work/../img/160224_app_s5ep6/64k.png">
-<meta property="og:image" content="http://lilei.work/../img/160224_app_s5ep6/renderscript.png">
-<meta property="og:updated_time" content="2016-02-24T12:59:36.000Z">
+<meta property="og:image" content="http://lilei.work/img/160224_app_s5ep6/parallel.png">
+<meta property="og:image" content="http://lilei.work/img/160224_app_s5ep6/thread_pool_executor.png">
+<meta property="og:image" content="http://lilei.work/img/160224_app_s5ep6/thread_is_evil.png">
+<meta property="og:image" content="http://lilei.work/img/160224_app_s5ep6/64k.png">
+<meta property="og:image" content="http://lilei.work/img/160224_app_s5ep6/renderscript.png">
+<meta property="og:updated_time" content="2016-06-29T06:23:26.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Android Performance Patterns - s5ep6 Swimming in ThreadPools">
 <meta name="twitter:description" content="Season 5 ep 6，关于线程池你应该知道的事Video Link">
-<meta name="twitter:image" content="http://lilei.work/../img/160224_app_s5ep6/parallel.png">
+<meta name="twitter:image" content="http://lilei.work/img/160224_app_s5ep6/parallel.png">
   
     <link rel="alternative" href="/atom.xml" title="One Step, One Punch" type="application/atom+xml">
   
@@ -107,24 +107,24 @@
 <p>然而，存在这样的情况：当某一系列的任务数量实在太多，已经超过了单个线程所能承受的极限。这时我们应当怎么做？如果工作线程有且只能由一个，就像诸葛丞相一样不得不亲力亲为，那可就GG了。不必担心，新时代的计算机科学已经让我们习得了秘-影分身之术。</p>
 <p>看一看下面这个场景，页面里需要展示40张图片，每张图片的解码消耗4ms时间，如果只有单一线程进行操作，总共需要用掉160ms。这显然是难以接受的。</p>
 <p>如果我们用10条线程并行计算，可以把时间压缩到16ms。</p>
-<p><img src="../img/160224_app_s5ep6/parallel.png" alt=""></p>
+<p><img src="/img/160224_app_s5ep6/parallel.png" alt=""></p>
 <hr>
 <h4 id="Thread-Pool-Executor"><a href="#Thread-Pool-Executor" class="headerlink" title="Thread Pool Executor"></a>Thread Pool Executor</h4><p>有了并发处理这一个思路，便可以借助于JAVA提供的强力工具<a href="https://docs.oracle.com/javase/7/docs/api/java/util/concurrent/ThreadPoolExecutor.html" target="_blank" rel="external"><strong>ThreadPoolExecutor</strong></a>来执行任务了。你只需要声明需要的线程数，并且把拆分好的Task传递给ThreadPoolExecutor，ThreadPoolExecutor自身会处理任务分配、线程调度、线程回收等操作。</p>
-<p><img src="../img/160224_app_s5ep6/thread_pool_executor.png" alt=""></p>
+<p><img src="/img/160224_app_s5ep6/thread_pool_executor.png" alt=""></p>
 <hr>
 <h4 id="The-More-The-Better"><a href="#The-More-The-Better" class="headerlink" title="The More, The Better?"></a>The More, The Better?</h4><blockquote>
 <p>Thread is evil</p>
 </blockquote>
 <p>并发的线程数并非越多越好，首先，一台主机能够开启的线程数是有上限的；其次，线程之间切换本身有代价（线程同步、锁与互斥、环境准备等等）；再次，跟CPU数有关，CPU越多，最大性能下可并发线程数越多。</p>
 <p>最佳线程数要在实践中通过压测等手段获知。通常我们开发中控制并行线程数=CPU数即可。</p>
-<p><img src="../img/160224_app_s5ep6/thread_is_evil.png" alt=""></p>
+<p><img src="/img/160224_app_s5ep6/thread_is_evil.png" alt=""></p>
 <p>每条线程至少占用<code>64k</code>的内存</p>
-<p><img src="../img/160224_app_s5ep6/64k.png" alt=""></p>
+<p><img src="/img/160224_app_s5ep6/64k.png" alt=""></p>
 <p><code>ThreadPoolExecutor</code>的构造过程中，允许我们控制初始线程数、最大线程数。需要注意的是，通过<code>Runtime.getRuntime().availableProcessors()</code>获取到的内核数也许会小于真实CPU数——出于节约电量等考虑，Android系统会让某些CPU在空闲时处于休眠状态，这些CPU不会被计数。</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">int</span> NUM_OF_CORES = Runtime.getRuntime().availableProcessors();</span><br><span class="line">mDecodeThreadPool = <span class="keyword">new</span> ThreadPoolExecutor(</span><br><span class="line">				NUM_OF_CORES &gt;&gt; <span class="number">1</span>, <span class="comment">// initial pool size</span></span><br><span class="line">				NUM_OF_CORES, <span class="comment">// max pool size</span></span><br><span class="line">				KEEP_ALIVE_TIME, <span class="comment">// keep alive time</span></span><br><span class="line">				KEEP_ALIVE_TIME_UNIT, <span class="comment">// keep alive units (seconds etc)</span></span><br><span class="line">				mDecodeTaskQueue);</span><br></pre></td></tr></table></figure>
 <hr>
 <h4 id="For-Power-Users-Like-U"><a href="#For-Power-Users-Like-U" class="headerlink" title="For Power Users Like U"></a>For Power Users Like U</h4><p><a href="http://developer.android.com/guide/topics/renderscript/compute.html" target="_blank" rel="external"><strong>RenderScript</strong></a>是专门用来进行大量并行计算的工具，当你有这方面的需求时，不妨尝试一下。</p>
-<p><img src="../img/160224_app_s5ep6/renderscript.png" alt=""></p>
+<p><img src="/img/160224_app_s5ep6/renderscript.png" alt=""></p>
 <hr>
 <h4 id="Use-Systrace-to-Analyze"><a href="#Use-Systrace-to-Analyze" class="headerlink" title="Use Systrace to Analyze"></a>Use Systrace to Analyze</h4><p>用以分析线程、内存的Systrace工具在前文已经介绍过，这里不再赘述。</p>
 <hr>
@@ -133,7 +133,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://lilei.work/2016/02/24/Android-Performance-Patterns-s5ep6-Swimming-In-ThreadPools/" data-id="ciq0cv8d2000ss3su4wgesx37" class="article-share-link">Share</a>
+      <a data-url="http://lilei.work/2016/02/24/Android-Performance-Patterns-s5ep6-Swimming-In-ThreadPools/" data-id="ciq0hu5dt000shdsul7se2alc" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Android-Performance-Patterns/">Android Performance Patterns</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/技术流/">技术流</a></li></ul>

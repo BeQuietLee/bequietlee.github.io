@@ -11,15 +11,15 @@
 <meta property="og:url" content="http://lilei.work/2016/02/25/Android-Performance-Patterns-s5ep8-Threading-And-Loaders/index.html">
 <meta property="og:site_name" content="One Step, One Punch">
 <meta property="og:description" content="Let’s say you’ve got some 20 bitmaps being decoded on a worker thread. Well, what happens if your activity is destroyed before that work completes?相比于本期的大叔，笔者更喜欢之前的光头哥Video Link">
-<meta property="og:image" content="http://lilei.work/../img/160225_app_s5ep8/activity_destroy.png">
-<meta property="og:image" content="http://lilei.work/../img/160225_app_s5ep8/use_activity_2.png">
-<meta property="og:image" content="http://lilei.work/../img/160225_app_s5ep8/cache_result.png">
-<meta property="og:image" content="http://lilei.work/../img/160225_app_s5ep8/report_stop.png">
-<meta property="og:updated_time" content="2016-02-26T01:15:47.000Z">
+<meta property="og:image" content="http://lilei.work/img/160225_app_s5ep8/activity_destroy.png">
+<meta property="og:image" content="http://lilei.work/img/160225_app_s5ep8/use_activity_2.png">
+<meta property="og:image" content="http://lilei.work/img/160225_app_s5ep8/cache_result.png">
+<meta property="og:image" content="http://lilei.work/img/160225_app_s5ep8/report_stop.png">
+<meta property="og:updated_time" content="2016-06-29T06:23:40.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Android Performance Patterns - s5ep8 Threading And Loaders">
 <meta name="twitter:description" content="Let’s say you’ve got some 20 bitmaps being decoded on a worker thread. Well, what happens if your activity is destroyed before that work completes?相比于本期的大叔，笔者更喜欢之前的光头哥Video Link">
-<meta name="twitter:image" content="http://lilei.work/../img/160225_app_s5ep8/activity_destroy.png">
+<meta name="twitter:image" content="http://lilei.work/img/160225_app_s5ep8/activity_destroy.png">
   
     <link rel="alternative" href="/atom.xml" title="One Step, One Punch" type="application/atom+xml">
   
@@ -103,15 +103,15 @@
 </blockquote>
 <p>我们知道，<code>Worker Thread</code>是在<code>UI Thread</code>之外用来处理耗时任务的线程，存在这样一种情况，当任务由<code>Worker Thread</code>执行完毕时，引发这项任务的Activity已经走完了<code>onDestroy</code>，这会产生什么样的后果呢？</p>
 <p>第一，Activity虽然结束了它的生命周期，可这个实例并没有从内存中释放——因为<code>Worker Thread</code>还拥有着Activity的reference，这会导致内存泄漏，如图1；第二，已经<code>onDestroy</code>过的Activity早已从屏幕上消失，无法响应任务执行后的返回，我们必须重新创建Activity2来处理任务返回后界面变化，如图2。</p>
-<p>图1<br><img src="../img/160225_app_s5ep8/activity_destroy.png" alt=""></p>
-<p>图2<br><img src="../img/160225_app_s5ep8/use_activity_2.png" alt=""></p>
+<p>图1<br><img src="/img/160225_app_s5ep8/activity_destroy.png" alt=""></p>
+<p>图2<br><img src="/img/160225_app_s5ep8/use_activity_2.png" alt=""></p>
 <hr>
 <h4 id="You-Should-Use-Loaders"><a href="#You-Should-Use-Loaders" class="headerlink" title="You Should Use Loaders"></a>You Should Use Loaders</h4><p>针对上面的场景，建议使用<code>Loader</code>。设计合理的Loader可以避免内存泄漏、正确处理UI事件、并且不需要重复执行。</p>
 <p><a href="http://developer.android.com/reference/android/content/AsyncTaskLoader.html?utm_campaign=app_series_asyncsamplecode_021816&amp;utm_source=gdev&amp;utm_medium=yt-annt" target="_blank" rel="external"><strong>LoaderManager</strong></a>是用来管理Loader的接口，借助前面链接中例子不难理解Loader运行的机制：获取LoaderManager实例－初始化Loader－实现LoaderCallbacks接口处理回调。</p>
 <p>LoaderManager可以缓存任务执行结果，这样当Activity销毁并重建时，就不需要重复执行前面已经执行过的任务了。</p>
-<p><img src="../img/160225_app_s5ep8/cache_result.png" alt=""></p>
+<p><img src="/img/160225_app_s5ep8/cache_result.png" alt=""></p>
 <p>如果一个Activity被终止后不会重建，我们就应该在LoaderManager的<code>onLoaderReset</code>中处理这种情形，释放引用。</p>
-<p><img src="../img/160225_app_s5ep8/report_stop.png" alt=""></p>
+<p><img src="/img/160225_app_s5ep8/report_stop.png" alt=""></p>
 <hr>
 <h4 id="The-Downside-of-Loaders"><a href="#The-Downside-of-Loaders" class="headerlink" title="The Downside of Loaders"></a>The Downside of Loaders</h4><p>集成较为复杂，代码量大。</p>
 <p>参考下面<a href="http://developer.android.com/reference/android/content/AsyncTaskLoader.html?utm_campaign=app_series_asyncsamplecode_021816&amp;utm_source=gdev&amp;utm_medium=yt-annt" target="_blank" rel="external">Reference</a>给出的例子，实现了Fragment的ListView从联系人ContentProvider中通过CursorLoader获取数据的过程。</p>
@@ -122,7 +122,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://lilei.work/2016/02/25/Android-Performance-Patterns-s5ep8-Threading-And-Loaders/" data-id="ciq0cv8db0010s3sux4oallod" class="article-share-link">Share</a>
+      <a data-url="http://lilei.work/2016/02/25/Android-Performance-Patterns-s5ep8-Threading-And-Loaders/" data-id="ciq0hu5dz000xhdsueb6c7j1s" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Android-Performance-Patterns/">Android Performance Patterns</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/技术流/">技术流</a></li></ul>

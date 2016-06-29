@@ -11,35 +11,35 @@
 <meta property="og:url" content="http://lilei.work/2016/02/17/ProGit读书笔记Chapter3/index.html">
 <meta property="og:site_name" content="One Step, One Punch">
 <meta property="og:description" content="Chapter 3. Git Branching本章讲解Git分支功能实现的基本原理、merge操作、rebase操作等等">
-<meta property="og:image" content="http://lilei.work/../img/160218_pro_git_c3/commit-and-tree.png">
-<meta property="og:image" content="http://lilei.work/../img/160218_pro_git_c3/two-branches.png">
-<meta property="og:image" content="http://lilei.work/../img/160218_pro_git_c3/head-to-master.png">
-<meta property="og:image" content="http://lilei.work/../img/160218_pro_git_c3/checkout-master.png">
-<meta property="og:image" content="http://lilei.work/../img/160218_pro_git_c3/basic-branching-4.png">
-<meta property="og:image" content="http://lilei.work/../img/160218_pro_git_c3/basic-branching-5.png">
-<meta property="og:image" content="http://lilei.work/../img/160218_pro_git_c3/basic-branching-6.png">
-<meta property="og:image" content="http://lilei.work/../img/160218_pro_git_c3/basic-merging-1.png">
-<meta property="og:image" content="http://lilei.work/../img/160218_pro_git_c3/basic-merging-2.png">
-<meta property="og:image" content="http://lilei.work/../img/160218_pro_git_c3/remote-branches-1.png">
-<meta property="og:image" content="http://lilei.work/../img/160218_pro_git_c3/remote-branches-2.png">
-<meta property="og:image" content="http://lilei.work/../img/160218_pro_git_c3/remote-branches-5.png">
-<meta property="og:image" content="http://lilei.work/../img/160218_pro_git_c3/basic-rebase-1.png">
-<meta property="og:image" content="http://lilei.work/../img/160218_pro_git_c3/basic-rebase-2.png">
-<meta property="og:image" content="http://lilei.work/../img/160218_pro_git_c3/basic-rebase-3.png">
-<meta property="og:image" content="http://lilei.work/../img/160218_pro_git_c3/basic-rebase-4.png">
-<meta property="og:image" content="http://lilei.work/../img/160218_pro_git_c3/interesting-rebase-1.png">
-<meta property="og:image" content="http://lilei.work/../img/160218_pro_git_c3/interesting-rebase-1.png">
-<meta property="og:image" content="http://lilei.work/../img/160218_pro_git_c3/interesting-rebase-5.png">
-<meta property="og:image" content="http://lilei.work/../img/160218_pro_git_c3/perils-of-rebasing-1.png">
-<meta property="og:image" content="http://lilei.work/../img/160218_pro_git_c3/perils-of-rebasing-2.png">
-<meta property="og:image" content="http://lilei.work/../img/160218_pro_git_c3/perils-of-rebasing-3.png">
-<meta property="og:image" content="http://lilei.work/../img/160218_pro_git_c3/perils-of-rebasing-4.png">
-<meta property="og:image" content="http://lilei.work/../img/160218_pro_git_c3/perils-of-rebasing-5.png">
-<meta property="og:updated_time" content="2016-02-24T14:04:23.000Z">
+<meta property="og:image" content="http://lilei.work/img/160218_pro_git_c3/commit-and-tree.png">
+<meta property="og:image" content="http://lilei.work/img/160218_pro_git_c3/two-branches.png">
+<meta property="og:image" content="http://lilei.work/img/160218_pro_git_c3/head-to-master.png">
+<meta property="og:image" content="http://lilei.work/img/160218_pro_git_c3/checkout-master.png">
+<meta property="og:image" content="http://lilei.work/img/160218_pro_git_c3/basic-branching-4.png">
+<meta property="og:image" content="http://lilei.work/img/160218_pro_git_c3/basic-branching-5.png">
+<meta property="og:image" content="http://lilei.work/img/160218_pro_git_c3/basic-branching-6.png">
+<meta property="og:image" content="http://lilei.work/img/160218_pro_git_c3/basic-merging-1.png">
+<meta property="og:image" content="http://lilei.work/img/160218_pro_git_c3/basic-merging-2.png">
+<meta property="og:image" content="http://lilei.work/img/160218_pro_git_c3/remote-branches-1.png">
+<meta property="og:image" content="http://lilei.work/img/160218_pro_git_c3/remote-branches-2.png">
+<meta property="og:image" content="http://lilei.work/img/160218_pro_git_c3/remote-branches-5.png">
+<meta property="og:image" content="http://lilei.work/img/160218_pro_git_c3/basic-rebase-1.png">
+<meta property="og:image" content="http://lilei.work/img/160218_pro_git_c3/basic-rebase-2.png">
+<meta property="og:image" content="http://lilei.work/img/160218_pro_git_c3/basic-rebase-3.png">
+<meta property="og:image" content="http://lilei.work/img/160218_pro_git_c3/basic-rebase-4.png">
+<meta property="og:image" content="http://lilei.work/img/160218_pro_git_c3/interesting-rebase-1.png">
+<meta property="og:image" content="http://lilei.work/img/160218_pro_git_c3/interesting-rebase-1.png">
+<meta property="og:image" content="http://lilei.work/img/160218_pro_git_c3/interesting-rebase-5.png">
+<meta property="og:image" content="http://lilei.work/img/160218_pro_git_c3/perils-of-rebasing-1.png">
+<meta property="og:image" content="http://lilei.work/img/160218_pro_git_c3/perils-of-rebasing-2.png">
+<meta property="og:image" content="http://lilei.work/img/160218_pro_git_c3/perils-of-rebasing-3.png">
+<meta property="og:image" content="http://lilei.work/img/160218_pro_git_c3/perils-of-rebasing-4.png">
+<meta property="og:image" content="http://lilei.work/img/160218_pro_git_c3/perils-of-rebasing-5.png">
+<meta property="og:updated_time" content="2016-06-29T06:26:23.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="ProGit读书笔记（Chapter3）">
 <meta name="twitter:description" content="Chapter 3. Git Branching本章讲解Git分支功能实现的基本原理、merge操作、rebase操作等等">
-<meta name="twitter:image" content="http://lilei.work/../img/160218_pro_git_c3/commit-and-tree.png">
+<meta name="twitter:image" content="http://lilei.work/img/160218_pro_git_c3/commit-and-tree.png">
   
     <link rel="alternative" href="/atom.xml" title="One Step, One Punch" type="application/atom+xml">
   
@@ -117,7 +117,7 @@
 <h4 id="基本思想：snapshot"><a href="#基本思想：snapshot" class="headerlink" title="基本思想：snapshot"></a>基本思想：snapshot</h4><p>首先要理解，不同于其它VCS，对于版本之间的提交，Git存储的不是diff，而是snapshot。对于下面这样一次commit，Git会生成5个文件</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ git add README test.rb LICENSE</span><br><span class="line">$ git commit -m <span class="string">'The initial commit of my project'</span></span><br></pre></td></tr></table></figure>
 <p>生成一个树状结构：<code>98ca9</code>记录了本次commit的信息（committer、date、message等），并有一个指针，指向tree，tree中包含本次commit中改动的全部文件snapshot</p>
-<p><img src="../img/160218_pro_git_c3/commit-and-tree.png" alt=""></p>
+<p><img src="/img/160218_pro_git_c3/commit-and-tree.png" alt=""></p>
 <blockquote>
 <p>A branch in Git is simply a lightweight movable pointer to one of these commits.</p>
 </blockquote>
@@ -125,30 +125,30 @@
 <h4 id="创建分支"><a href="#创建分支" class="headerlink" title="创建分支"></a>创建分支</h4><p>Git使用如下命令创建分支</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git branch testing</span><br></pre></td></tr></table></figure>
 <p>创建后的<code>testing</code>分支，跟<code>master</code>都指向同一个Snapshot</p>
-<p><img src="../img/160218_pro_git_c3/two-branches.png" alt=""></p>
+<p><img src="/img/160218_pro_git_c3/two-branches.png" alt=""></p>
 <p>那么Git如何知道当前你在编辑的是哪一个分支呢？用<code>HEAD</code>！例如，在上面的命令后，内部的分支是这样的</p>
-<p><img src="../img/160218_pro_git_c3/head-to-master.png" alt=""></p>
+<p><img src="/img/160218_pro_git_c3/head-to-master.png" alt=""></p>
 <p>可以在<code>git log</code>中使用<code>--decorate</code>参数来观察当前<code>HEAD</code>分支。（这里推荐一下zsh，自动标示当前<code>HEAD</code>，非常方便）</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ git <span class="built_in">log</span> --oneline --decorate</span><br><span class="line">f30ab (HEAD -&gt; master, testing) add feature <span class="comment">#32 - ability to add new formats to the central interface</span></span><br><span class="line">34ac2 Fixed bug <span class="comment">#1328 - stack overflow under certain conditions</span></span><br><span class="line">98ca9 The initial commit of my project</span><br></pre></td></tr></table></figure>
 <h4 id="切换分支"><a href="#切换分支" class="headerlink" title="切换分支"></a>切换分支</h4><p>使用<code>git checkout [branch_name]</code>来切换分支</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git checkout master</span><br></pre></td></tr></table></figure>
-<p><img src="../img/160218_pro_git_c3/checkout-master.png" alt=""></p>
+<p><img src="/img/160218_pro_git_c3/checkout-master.png" alt=""></p>
 <p>创建&amp;切换分支可以放在一个命令里完成：<code>git checkout -b [branch_name]</code>，作用是基于当前<code>HEAD</code>切出一个名为<code>branch_name</code>的新分支，并且将<code>HEAD</code>切换到该新分支上。</p>
 <h4 id="Basic-Branching-and-Merging"><a href="#Basic-Branching-and-Merging" class="headerlink" title="Basic Branching and Merging"></a>Basic Branching and Merging</h4><p>想象一个比较复杂的分支模型：当你开发某个功能时（iss53），突然线上基于master分支的代码爆出一个bug，此时必须要进行hotfix，并且在完成hotfix后，将hotfix的内容合并回master，最后再切换回iss53分之继续进行功能开发。</p>
-<p><img src="../img/160218_pro_git_c3/basic-branching-4.png" alt=""></p>
+<p><img src="/img/160218_pro_git_c3/basic-branching-4.png" alt=""></p>
 <p>怎样让master合并hotfix呢？切换回master分支，使用<code>git merge hotfix</code>来完成</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">$ git checkout master</span><br><span class="line">$ git merge hotfix</span><br><span class="line">Updating f42c576..3a0874c</span><br><span class="line">Fast-forward</span><br><span class="line"> index.html | 2 ++</span><br><span class="line"> 1 file changed, 2 insertions(+)</span><br></pre></td></tr></table></figure>
 <p>看到<code>Fast-forward</code>的提示没有？这是说，master的指针已经“向前移动到了hotfix指针所在位置”，如下图：</p>
-<p> <img src="../img/160218_pro_git_c3/basic-branching-5.png" alt=""></p>
+<p> <img src="/img/160218_pro_git_c3/basic-branching-5.png" alt=""></p>
 <p>这个时候hotfix已经完成了它的任务，继续留着它只会让我们的分支更加混乱。本着兔死狗烹鸟尽弓藏的原则，杯酒释兵权～最后切换回iss53分支继续coding</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">$ git branch <span class="_">-d</span> hotfix</span><br><span class="line">Deleted branch hotfix (3a0874c).</span><br><span class="line">$ git checkout iss53</span><br><span class="line">Switched to branch <span class="string">"iss53"</span></span><br><span class="line">$ vim index.html</span><br><span class="line">$ git commit <span class="_">-a</span> -m <span class="string">'finished the new footer [issue 53]'</span></span><br><span class="line">[iss53 ad82d7a] finished the new footer [issue 53]</span><br><span class="line">1 file changed, 1 insertion(+)</span><br></pre></td></tr></table></figure>
-<p><img src="../img/160218_pro_git_c3/basic-branching-6.png" alt=""></p>
+<p><img src="/img/160218_pro_git_c3/basic-branching-6.png" alt=""></p>
 <h4 id="Basic-Merging"><a href="#Basic-Merging" class="headerlink" title="Basic Merging"></a>Basic Merging</h4><p>现在我们完成了iss53的功能开发与测试，需要将代码合并回master，以备后续上线。当然，需要先切回master，然后使用<code>git merge</code>来合并<code>iss53</code>分支。</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">$ git checkout master</span><br><span class="line">Switched to branch <span class="string">'master'</span></span><br><span class="line">$ git merge iss53</span><br><span class="line">Merge made by the <span class="string">'recursive'</span> strategy.</span><br><span class="line">index.html |    1 +</span><br><span class="line">1 file changed, 1 insertion(+)</span><br></pre></td></tr></table></figure>
 <p>合并前</p>
-<p><img src="../img/160218_pro_git_c3/basic-merging-1.png" alt=""></p>
+<p><img src="/img/160218_pro_git_c3/basic-merging-1.png" alt=""></p>
 <p>合并后</p>
-<p><img src="../img/160218_pro_git_c3/basic-merging-2.png" alt=""></p>
+<p><img src="/img/160218_pro_git_c3/basic-merging-2.png" alt=""></p>
 <p>从图上可以看出来，Git基于master与iss53的提交历史，新创建了一个commit－C6，图中此处有误，最右边master指向的应该为C6。惯例，卸磨杀驴。</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$git</span> branch <span class="_">-d</span> iss53</span><br></pre></td></tr></table></figure>
 <h4 id="Basic-Merge-Conflicts"><a href="#Basic-Merge-Conflicts" class="headerlink" title="Basic Merge Conflicts"></a>Basic Merge Conflicts</h4><p>在并行开发的过程中，经常会遇到两个开发者同时修改了一个文件，在合并时发生冲突的场景，比如下面这样</p>
@@ -166,11 +166,11 @@
 <p>查看没有merge的分支，用<code>--no-merged</code>参数。对于这样的分支，当你试图使用<code>git branch -d</code>进行删除时，Git会给出提示，告诉你这样的操作不被允许。（你可以使用<code>git branch -D</code>来强制删除）</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ git branch --no-merged</span><br><span class="line">  testing</span><br><span class="line">$ git branch <span class="_">-d</span> testing</span><br><span class="line">error: The branch <span class="string">'testing'</span> is not fully merged.</span><br><span class="line">If you are sure you want to delete it, run <span class="string">'git branch -D testing'</span>.</span><br></pre></td></tr></table></figure>
 <h4 id="Remote-Branches"><a href="#Remote-Branches" class="headerlink" title="Remote Branches"></a>Remote Branches</h4><p>对于远端仓库的每一个分支，本地都有一个与其对应的分支，用<code>(remote)/(branch)</code>来表示，比如<code>origin/master</code>。通常我们看到remote的名字是origin，但这不是固定的，你可以用以下命令来更改这个名字<code>git clone -o booyah</code>，这样你创建的就是<code>booyah/master</code>。<br>最开始clone并checkout时，<code>origin/master</code>与<code>master</code>指向同一个snapshot</p>
-<p><img src="../img/160218_pro_git_c3/remote-branches-1.png" alt=""></p>
+<p><img src="/img/160218_pro_git_c3/remote-branches-1.png" alt=""></p>
 <p>只要不fetch，<code>origin/master</code>指向的位置就不会变更，<code>master</code>分支会随着commit一直向前。</p>
-<p><img src="../img/160218_pro_git_c3/remote-branches-2.png" alt=""></p>
+<p><img src="/img/160218_pro_git_c3/remote-branches-2.png" alt=""></p>
 <p>也可以把两个remote的历史都拉下来，酌情使用</p>
-<p><img src="../img/160218_pro_git_c3/remote-branches-5.png" alt=""></p>
+<p><img src="/img/160218_pro_git_c3/remote-branches-5.png" alt=""></p>
 <h4 id="Pushing"><a href="#Pushing" class="headerlink" title="Pushing"></a>Pushing</h4><p>使用<code>git push &lt;remote&gt; &lt;branch&gt;</code>来push到远端仓库。</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">$ git push origin serverfix</span><br><span class="line">Counting objects: 24, done.</span><br><span class="line">Delta compression using up to 8 threads.</span><br><span class="line">Compressing objects: 100% (15/15), done.</span><br><span class="line">Writing objects: 100% (24/24), 1.91 KiB | 0 bytes/s, done.</span><br><span class="line">Total 24 (delta 2), reused 0 (delta 0)</span><br><span class="line">To https://github.com/schacon/simplegit</span><br><span class="line"> * [new branch]      serverfix &gt; serverfix</span><br></pre></td></tr></table></figure>
 <p>这其实是一个缩写，背后完整的命令是<code>git push origin refs/heads/serverfix:refs/heads/serverfix</code>，直接引用原文</p>
@@ -198,19 +198,19 @@
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ git push origin :feature/8.0.0_bugfix_leili</span><br><span class="line">To git@code.dianpingoa.com:mobile/android-nova-booking.git</span><br><span class="line"> - [deleted]         feature/8.0.0_bugfix_leili</span><br></pre></td></tr></table></figure>
 <p>记住，所删除的“分支”本质上只是“指针”，所有的代码snapshot依旧保存在服务器上，可以随时check出来</p>
 <h4 id="Rebasing"><a href="#Rebasing" class="headerlink" title="Rebasing"></a>Rebasing</h4><p>接下来我们来学习与Merge分庭抗礼的另一个强有力的功能——Rebase。两者同是将不同分支上的提交合并到一起的功能，它们之间的区别是什么样的呢？容笔者细细道来。<br>首先来看一个熟悉的场景，有<code>master</code>和<code>experiment</code>两个分支，对merge而言，如果在<code>master</code>分支的基础上，对<code>experiment</code>进行merge，Git会创建一个新的commit（C5），包含了两个分支最近的共同祖先（C2）以来发生的所有变更（C4和C3），最后把<code>master</code>的指针指向C5</p>
-<p><img src="../img/160218_pro_git_c3/basic-rebase-1.png" alt=""><br><img src="../img/160218_pro_git_c3/basic-rebase-2.png" alt=""></p>
+<p><img src="/img/160218_pro_git_c3/basic-rebase-1.png" alt=""><br><img src="/img/160218_pro_git_c3/basic-rebase-2.png" alt=""></p>
 <p>而对于rebase，我们这么操作。注意<code>HEAD</code>指向的是<code>experiment</code>分支。</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ git checkout experiment</span><br><span class="line">$ git rebase master</span><br><span class="line">First, rewinding head to replay your work on top of it...</span><br><span class="line">Applying: added staged <span class="built_in">command</span></span><br></pre></td></tr></table></figure>
 <p>非常神奇地，C4这个commit消失了！！！，取而代之，Git在C3后面创建了C4’，同时将<code>experiment</code>的指针转移到了这里。整个提交历史变成了一根直线，清爽了许多。</p>
-<p><img src="../img/160218_pro_git_c3/basic-rebase-3.png" alt=""></p>
+<p><img src="/img/160218_pro_git_c3/basic-rebase-3.png" alt=""></p>
 <p>接下来，我们让<code>master</code>    move forward，以合并<code>experiment</code>带来的改动。</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ git checkout master</span><br><span class="line">$ git merge experiment</span><br></pre></td></tr></table></figure>
-<p><img src="../img/160218_pro_git_c3/basic-rebase-4.png" alt=""></p>
+<p><img src="/img/160218_pro_git_c3/basic-rebase-4.png" alt=""></p>
 <p>注意！虽然<code>merge</code>与<code>rebase</code>看起来都是把两个分支上的改动合并到一起，但一个是“同时合并A和B”，一个是“将A合并到B”，仔细体会其中的不同。</p>
 <blockquote>
 <p>Rebasing replays changes from one line of work onto another in the order they were introduced, whereas merging takes the endpoints and merges them together.</p>
 </blockquote>
-<h4 id="有趣的Rebasing"><a href="#有趣的Rebasing" class="headerlink" title="有趣的Rebasing"></a>有趣的Rebasing</h4><p><img src="../img/160218_pro_git_c3/interesting-rebase-1.png" alt=""></p>
+<h4 id="有趣的Rebasing"><a href="#有趣的Rebasing" class="headerlink" title="有趣的Rebasing"></a>有趣的Rebasing</h4><p><img src="/img/160218_pro_git_c3/interesting-rebase-1.png" alt=""></p>
 <p>想象上面一个场景，对于<code>master</code> <code>server</code> <code>client</code>三个分支，如果我想要将<code>client</code>上的改动提交到<code>master</code>（C8和C9），而暂时不想合并<code>server</code>上的代码，应该怎么做？</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ git checkout cient</span><br><span class="line">$ git rebase master</span><br></pre></td></tr></table></figure>
 <p>上述这样肯定不行，因为会把C3带过去。<br>针对这种场景，Git也为我们提供了这个功能</p>
@@ -220,26 +220,26 @@
 <p>This basically says, “Check out the client branch, figure out the patches from the common ancestor of the <code>client</code> and <code>server</code> branches, and then replay them onto <code>master</code>.” </p>
 </blockquote>
 <p>明白了吧！不过，虽然这看上去很神奇，笔者可不希望在实际的工作中碰到这种复杂的场景。<br>Rebase后的提交历史如图：</p>
-<p><img src="../img/160218_pro_git_c3/interesting-rebase-1.png" alt=""></p>
+<p><img src="/img/160218_pro_git_c3/interesting-rebase-1.png" alt=""></p>
 <p>接下来该怎么做，相信不用我说，你也知道了——把<code>master</code> fast forward过去～</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ git checkout master</span><br><span class="line">$ git merge client</span><br></pre></td></tr></table></figure>
 <p>当你完成了<code>server</code>分支的开发，狠狠地用rebase把它甩在<code>master</code>脸上吧，<code>git rebase [basebranch] [topicbranch]</code>——将<code>topicbranch上</code>的改动在<code>basebranch</code>上重放（checks out the topic branch (in this case, <code>server</code>) for you and replays it onto the base branch (<code>master</code>)）</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git rebase master server</span><br></pre></td></tr></table></figure>
 <p>删除无用分支后，最终得到一个无比清爽的提交记录</p>
-<p><img src="../img/160218_pro_git_c3/interesting-rebase-5.png" alt=""></p>
+<p><img src="/img/160218_pro_git_c3/interesting-rebase-5.png" alt=""></p>
 <h4 id="Rebase的风险"><a href="#Rebase的风险" class="headerlink" title="Rebase的风险"></a>Rebase的风险</h4><p>Rebase是一个无比强大的工具，借助它，我们可以将项目提交历史梳理成一条直线，然而，如果应用不当，它产生的麻烦要远远大于带来的好处。</p>
 <blockquote>
 <p><strong>Do not rebase commits that exist outside your repository.</strong></p>
 </blockquote>
 <p>简单的说，如果一个commit已经被公布给其他人使用，那就不要试图再rebase它。如果你遵守了这条准则，一切安好；可一旦你违反了他，你的同事将会恨你入骨……下面用几张图来说明这种深刻仇恨的来源</p>
 <p>首先是一个简单的分支模型，teamone和你正在合作中，显然你的工作效率更高些，已经提交了C2、C3两次</p>
-<p><img src="../img/160218_pro_git_c3/perils-of-rebasing-1.png" alt=""></p>
+<p><img src="/img/160218_pro_git_c3/perils-of-rebasing-1.png" alt=""></p>
 <p>远端仓库也有一些更新，而且他们用到了merge，真是厉害啊！你当然不甘示弱，立即把他们的提交merge了过来。</p>
-<p><img src="../img/160218_pro_git_c3/perils-of-rebasing-2.png" alt=""></p>
+<p><img src="/img/160218_pro_git_c3/perils-of-rebasing-2.png" alt=""></p>
 <p>这时，远端team发现merge不如rebase好用，他们使用非常邪恶的<code>git push --force</code>命令，覆盖掉了代码仓库中的历史，意图抹杀掉merge的出现。</p>
-<p><img src="../img/160218_pro_git_c3/perils-of-rebasing-3.png" alt=""></p>
+<p><img src="/img/160218_pro_git_c3/perils-of-rebasing-3.png" alt=""></p>
 <p>天真的你并没有发现他们的邪恶企图，当你fetch时候，发现远端仓库有了更新，你自然想再merge一把，以保持最新代码</p>
-<p><img src="../img/160218_pro_git_c3/perils-of-rebasing-4.png" alt=""></p>
+<p><img src="/img/160218_pro_git_c3/perils-of-rebasing-4.png" alt=""></p>
 <p>Boom！灾难发生了，由于C4和C4’实际上是一模一样的改动（实际上，如果你用<code>git log</code>来查看，你会发现这两个提交甚至有完全相同的author、date、message，当然他们的SHA1是不同的）。而且，就算你解决了冲突，把你的代码推送回远端时，邪恶的他们发现，原来让他们避之不及的C4和C6这两个提交——They are back！</p>
 <h4 id="Rebase-When-You-Rebase"><a href="#Rebase-When-You-Rebase" class="headerlink" title="Rebase When You Rebase"></a>Rebase When You Rebase</h4><p>一旦出现了上面的情况，不要慌，Git为我们提供了解决这种问题的途径，那就是——Rebase！这时你checkout到自己的<code>master</code>分支上，执行<code>git rebase teamone/master</code>，Git会为你做以下事情（实在是懒得翻译了）</p>
 <ul>
@@ -249,7 +249,7 @@
 <li>Apply those commits to the top of <code>teamone/master</code></li>
 </ul>
 <p>最后得到如图的提交历史。需要注意，只有当C4和C4’几乎完全一致时，Git才会采取以上策略。不然，即使如上操作，依然会产生冲突。</p>
-<p><img src="../img/160218_pro_git_c3/perils-of-rebasing-5.png" alt=""></p>
+<p><img src="/img/160218_pro_git_c3/perils-of-rebasing-5.png" alt=""></p>
 <h4 id="Rebase-vs-Merge"><a href="#Rebase-vs-Merge" class="headerlink" title="Rebase vs. Merge"></a>Rebase vs. Merge</h4><p>关于Rebase和Merge该用哪个的问题，要因地制宜——Rebase可以极大简化提交历史，但它会篡改提交记录，而Merge可以原汁原味地保存每个人的提交时间与内容。应当记住，不论使用哪一个，都要按照基本法。</p>
 <blockquote>
 <p>In general the way to get the best of both worlds is to rebase local changes you’ve made but haven’t shared yet before you push them in order to clean up your story, but never rebase anything you’ve pushed somewhere.</p>
@@ -260,7 +260,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://lilei.work/2016/02/17/ProGit读书笔记Chapter3/" data-id="ciq0cv8eg001us3supz7mnpbg" class="article-share-link">Share</a>
+      <a data-url="http://lilei.work/2016/02/17/ProGit读书笔记Chapter3/" data-id="ciq0hu5f5001whdsulz9d0jin" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/技术流/">技术流</a></li></ul>

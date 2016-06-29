@@ -11,16 +11,16 @@
 <meta property="og:url" content="http://lilei.work/2016/03/08/Android-Performance-Patterns-s4ep5-Minimizing-Asset-Payload/index.html">
 <meta property="og:site_name" content="One Step, One Punch">
 <meta property="og:description" content="No matter how aggressively you’ve optimized your networking code for performance, there’s still a huge problematic performance issue that you haven’t seen: Bloated asset files. If you’re not aggressi">
-<meta property="og:image" content="http://lilei.work/../img/160308_app_s4ep5/network_speed.png">
-<meta property="og:image" content="http://lilei.work/../img/160308_app_s4ep5/imagefiles.png">
-<meta property="og:image" content="http://lilei.work/../img/160308_app_s4ep5/control_quality.png">
-<meta property="og:image" content="http://lilei.work/../img/160308_app_s4ep5/judge_conditions.png">
-<meta property="og:image" content="http://lilei.work/../img/160308_app_s4ep5/http_stack.png">
-<meta property="og:updated_time" content="2016-04-01T01:53:06.000Z">
+<meta property="og:image" content="http://lilei.work/img/160308_app_s4ep5/network_speed.png">
+<meta property="og:image" content="http://lilei.work/img/160308_app_s4ep5/imagefiles.png">
+<meta property="og:image" content="http://lilei.work/img/160308_app_s4ep5/control_quality.png">
+<meta property="og:image" content="http://lilei.work/img/160308_app_s4ep5/judge_conditions.png">
+<meta property="og:image" content="http://lilei.work/img/160308_app_s4ep5/http_stack.png">
+<meta property="og:updated_time" content="2016-06-29T06:22:21.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Android Performance Patterns - s4ep5 Minimizing Asset Payload">
 <meta name="twitter:description" content="No matter how aggressively you’ve optimized your networking code for performance, there’s still a huge problematic performance issue that you haven’t seen: Bloated asset files. If you’re not aggressi">
-<meta name="twitter:image" content="http://lilei.work/../img/160308_app_s4ep5/network_speed.png">
+<meta name="twitter:image" content="http://lilei.work/img/160308_app_s4ep5/network_speed.png">
   
     <link rel="alternative" href="/atom.xml" title="One Step, One Punch" type="application/atom+xml">
   
@@ -99,7 +99,7 @@
 
 <hr>
 <a id="more"></a>
-<h4 id="Smaller-Is-Better"><a href="#Smaller-Is-Better" class="headerlink" title="Smaller Is Better"></a>Smaller Is Better</h4><p><img src="../img/160308_app_s4ep5/network_speed.png" alt=""></p>
+<h4 id="Smaller-Is-Better"><a href="#Smaller-Is-Better" class="headerlink" title="Smaller Is Better"></a>Smaller Is Better</h4><p><img src="/img/160308_app_s4ep5/network_speed.png" alt=""></p>
 <ol>
 <li>速度缓慢并不是所有用户都处于高速的4G／wifi环境下</li>
 <li>大数据量导致的大电量消耗</li>
@@ -107,12 +107,12 @@
 </ol>
 <p>引起数据流量过大的，主要有两个因素：图片、序列化数据。</p>
 <hr>
-<h4 id="Images"><a href="#Images" class="headerlink" title="Images"></a>Images</h4><p><img src="../img/160308_app_s4ep5/imagefiles.png" alt=""></p>
+<h4 id="Images"><a href="#Images" class="headerlink" title="Images"></a>Images</h4><p><img src="/img/160308_app_s4ep5/imagefiles.png" alt=""></p>
 <p>如果不需要图片透明度设定，那就尽量不要使用PNG格式的图片文件，这会产生难以置信的图片体积。</p>
 <p>JPG和WEBP是不错的选择，在使用这两种图片格式时，记住图片质量的极小降低，可以大大缩小图片体积。</p>
-<p><img src="../img/160308_app_s4ep5/control_quality.png" alt=""></p>
+<p><img src="/img/160308_app_s4ep5/control_quality.png" alt=""></p>
 <p>图片的分辨率并不是越大越好，根据具体的使用场景，返回不同像素的图片。如果只是需要缩略图，那就不要返回高清的无码大图。</p>
-<p><img src="../img/160308_app_s4ep5/judge_conditions.png" alt=""></p>
+<p><img src="/img/160308_app_s4ep5/judge_conditions.png" alt=""></p>
 <hr>
 <h4 id="Serialized-Data"><a href="#Serialized-Data" class="headerlink" title="Serialized Data"></a>Serialized Data</h4><p>JSON /dʒeɪ’sʌn/ 是一个<strong>horrible</strong>的数据格式！！！</p>
 <p>看看下面的代码，包含了大量的<strong>空格、引号、key值</strong>等冗余信息，这些字段存在的意义只是为了方便人工阅读，并非数据传输。</p>
@@ -124,14 +124,14 @@
 <li>FlatBuffers</li>
 </ul>
 <p>同样，在http压缩过程里，也有进一步优化的空间，参见<a href="https://www.youtube.com/watch?v=qBxeHkvJoOQ" target="_blank" rel="external">Smaller Serialized Data (Android Performance Patterns Season 4 ep15)</a></p>
-<p><img src="../img/160308_app_s4ep5/http_stack.png" alt=""></p>
+<p><img src="/img/160308_app_s4ep5/http_stack.png" alt=""></p>
 <hr>
 <h3 id="Ending"><a href="#Ending" class="headerlink" title="===Ending==="></a><em>===Ending===</em></h3><hr>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://lilei.work/2016/03/08/Android-Performance-Patterns-s4ep5-Minimizing-Asset-Payload/" data-id="ciq0cv8cb0007s3su49upjek5" class="article-share-link">Share</a>
+      <a data-url="http://lilei.work/2016/03/08/Android-Performance-Patterns-s4ep5-Minimizing-Asset-Payload/" data-id="ciq0hu5cz0006hdsun1af47ux" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Android-Performance-Patterns/">Android Performance Patterns</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/技术流/">技术流</a></li></ul>

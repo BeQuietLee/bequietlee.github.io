@@ -11,18 +11,18 @@
 <meta property="og:url" content="http://lilei.work/2016/02/23/Android-Performance-Patterns-s5ep1-Threading-Performance-101/index.html">
 <meta property="og:site_name" content="One Step, One Punch">
 <meta property="og:description" content="Season 5 ep 1 介绍了Android系统中线程与UI渲染一些最基础的知识。link">
-<meta property="og:image" content="http://lilei.work/../img/160223_app_s5ep1/main_thread_work.png">
-<meta property="og:image" content="http://lilei.work/../img/160223_app_s5ep1/input_event.png">
-<meta property="og:image" content="http://lilei.work/../img/160223_app_s5ep1/60_frames.png">
-<meta property="og:image" content="http://lilei.work/../img/160223_app_s5ep1/dropping_frame.png">
-<meta property="og:image" content="http://lilei.work/../img/160223_app_s5ep1/worker_thread.png">
-<meta property="og:image" content="http://lilei.work/../img/160223_app_s5ep1/sdk_tools.png">
-<meta property="og:image" content="http://lilei.work/../img/160223_app_s5ep1/inner_class.png">
-<meta property="og:updated_time" content="2016-02-24T14:00:09.000Z">
+<meta property="og:image" content="http://lilei.work/img/160223_app_s5ep1/main_thread_work.png">
+<meta property="og:image" content="http://lilei.work/img/160223_app_s5ep1/input_event.png">
+<meta property="og:image" content="http://lilei.work/img/160223_app_s5ep1/60_frames.png">
+<meta property="og:image" content="http://lilei.work/img/160223_app_s5ep1/dropping_frame.png">
+<meta property="og:image" content="http://lilei.work/img/160223_app_s5ep1/worker_thread.png">
+<meta property="og:image" content="http://lilei.work/img/160223_app_s5ep1/sdk_tools.png">
+<meta property="og:image" content="http://lilei.work/img/160223_app_s5ep1/inner_class.png">
+<meta property="og:updated_time" content="2016-06-29T06:22:52.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Android Performance Patterns - s5ep1 Threading Performance 101">
 <meta name="twitter:description" content="Season 5 ep 1 介绍了Android系统中线程与UI渲染一些最基础的知识。link">
-<meta name="twitter:image" content="http://lilei.work/../img/160223_app_s5ep1/main_thread_work.png">
+<meta name="twitter:image" content="http://lilei.work/img/160223_app_s5ep1/main_thread_work.png">
   
     <link rel="alternative" href="/atom.xml" title="One Step, One Punch" type="application/atom+xml">
   
@@ -102,23 +102,23 @@
 <hr>
 <a id="more"></a>
 <h4 id="Main-Thread"><a href="#Main-Thread" class="headerlink" title="Main Thread"></a>Main Thread</h4><p>主线程是Android中最重要的线程，承担了响应系统时间、处理输入、绘制UI等重要任务。</p>
-<p><img src="../img/160223_app_s5ep1/main_thread_work.png" alt=""></p>
+<p><img src="/img/160223_app_s5ep1/main_thread_work.png" alt=""></p>
 <hr>
 <h4 id="UI-drawing-and-frame-dropping"><a href="#UI-drawing-and-frame-dropping" class="headerlink" title="UI drawing and frame dropping"></a>UI drawing and frame dropping</h4><p>出于简化的考虑，android系统将大部分任务都放在了主线程中进行。然而其中一个任务是与其它有所不同的 —— UI 渲染。因为UI渲染一旦出现卡顿，用户会立刻感知到ANR，极不友好。下面我们模拟一个输入并处理的过程，看一下冗长的操作是如何阻塞UI绘制的。</p>
 <p>My Awesome Code!!!</p>
-<p><img src="../img/160223_app_s5ep1/input_event.png" alt=""></p>
+<p><img src="/img/160223_app_s5ep1/input_event.png" alt=""></p>
 <p>人眼能感知的流畅UI界面必须保持在60fps，意味着每16ms就要有一次绘制完成。</p>
-<p><img src="../img/160223_app_s5ep1/60_frames.png" alt=""></p>
+<p><img src="/img/160223_app_s5ep1/60_frames.png" alt=""></p>
 <p>一旦主线程被某个操作阻塞超过了16ms，势必会丢掉（至少）一次绘制，这就是 dropping frame。</p>
-<p><img src="../img/160223_app_s5ep1/dropping_frame.png" alt=""></p>
+<p><img src="/img/160223_app_s5ep1/dropping_frame.png" alt=""></p>
 <hr>
 <h4 id="Solve-frame-dropping"><a href="#Solve-frame-dropping" class="headerlink" title="Solve frame dropping"></a>Solve frame dropping</h4><p>解决上述问题的思路很简单：既然主线程必须保证流畅运行，那我们就在自己的<code>worker thread</code>里处理这些恼人的<code>Lame Work</code>（瘸腿工作）好了。</p>
-<p><img src="../img/160223_app_s5ep1/worker_thread.png" alt=""></p>
+<p><img src="/img/160223_app_s5ep1/worker_thread.png" alt=""></p>
 <p>我们可以直接使用以下几种由系统提供的解决方案，注意它们不同的应用场景。</p>
-<p><img src="../img/160223_app_s5ep1/sdk_tools.png" alt=""></p>
+<p><img src="/img/160223_app_s5ep1/sdk_tools.png" alt=""></p>
 <hr>
 <h4 id="Be-Careful"><a href="#Be-Careful" class="headerlink" title="Be Careful!"></a>Be Careful!</h4><p>当你决定使用内部类来完成上述操作时，一定要注意这可能引起内存泄漏！因为非静态内部类实例会保存外部类的引用，而在移动系统这种内存有限的设备上，内存泄漏是非常可怕的。</p>
-<p><img src="../img/160223_app_s5ep1/inner_class.png" alt=""></p>
+<p><img src="/img/160223_app_s5ep1/inner_class.png" alt=""></p>
 <p>一个解决方案是用静态内部类替代，并且内部以WeakReference保存Activity的引用。</p>
 <hr>
 <h3 id="Ending"><a href="#Ending" class="headerlink" title="===Ending==="></a><em>===Ending===</em></h3><hr>
@@ -126,7 +126,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://lilei.work/2016/02/23/Android-Performance-Patterns-s5ep1-Threading-Performance-101/" data-id="ciq0cv8cl000bs3su49w3y8yz" class="article-share-link">Share</a>
+      <a data-url="http://lilei.work/2016/02/23/Android-Performance-Patterns-s5ep1-Threading-Performance-101/" data-id="ciq0hu5db000bhdsutf7zt9hs" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Android-Performance-Patterns/">Android Performance Patterns</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/技术流/">技术流</a></li></ul>

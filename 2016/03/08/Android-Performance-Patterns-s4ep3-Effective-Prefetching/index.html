@@ -11,14 +11,14 @@
 <meta property="og:url" content="http://lilei.work/2016/03/08/Android-Performance-Patterns-s4ep3-Effective-Prefetching/index.html">
 <meta property="og:site_name" content="One Step, One Punch">
 <meta property="og:description" content="If you’re looking for the optimal way to batch requests to reduce overall network traffic, then prefetching is for you.Video Link">
-<meta property="og:image" content="http://lilei.work/../img/160308_app_s4ep3/prefetching.png">
-<meta property="og:image" content="http://lilei.work/../img/160308_app_s4ep3/little_or_much.png">
-<meta property="og:image" content="http://lilei.work/../img/160308_app_s4ep3/put_them_all.png">
-<meta property="og:updated_time" content="2016-03-08T13:02:12.000Z">
+<meta property="og:image" content="http://lilei.work/img/160308_app_s4ep3/prefetching.png">
+<meta property="og:image" content="http://lilei.work/img/160308_app_s4ep3/little_or_much.png">
+<meta property="og:image" content="http://lilei.work/img/160308_app_s4ep3/put_them_all.png">
+<meta property="og:updated_time" content="2016-06-29T06:21:54.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Android Performance Patterns - s4ep3 Effective Prefetching">
 <meta name="twitter:description" content="If you’re looking for the optimal way to batch requests to reduce overall network traffic, then prefetching is for you.Video Link">
-<meta name="twitter:image" content="http://lilei.work/../img/160308_app_s4ep3/prefetching.png">
+<meta name="twitter:image" content="http://lilei.work/img/160308_app_s4ep3/prefetching.png">
   
     <link rel="alternative" href="/atom.xml" title="One Step, One Punch" type="application/atom+xml">
   
@@ -99,9 +99,9 @@
 <a id="more"></a>
 <h4 id="Why-Prefetching"><a href="#Why-Prefetching" class="headerlink" title="Why Prefetching?"></a>Why Prefetching?</h4><p>很多场景下，app发出的网络请求是连续的，譬如，一个正在下拉中的每一项都包含一张缩略图的列表。</p>
 <p>如果可以预见的话，将未来即将发生的网络请求合并到一起进行发送，比起单独来发送各自请求，一方面减少了网络请求对于资源的消耗（如：节约电量与带宽），另一方面也使得app界面运行更加流畅。</p>
-<p><img src="../img/160308_app_s4ep3/prefetching.png" alt=""></p>
+<p><img src="/img/160308_app_s4ep3/prefetching.png" alt=""></p>
 <p>但是，如何确定预加载的度，是一个值得思考的问题。加载的太少了，起不到期望的效果；加载太多了，反而拖慢app。</p>
-<p><img src="../img/160308_app_s4ep3/little_or_much.png" alt=""></p>
+<p><img src="/img/160308_app_s4ep3/little_or_much.png" alt=""></p>
 <hr>
 <h4 id="How-much-do-we-prefetch"><a href="#How-much-do-we-prefetch" class="headerlink" title="How much do we prefetch?"></a>How much do we prefetch?</h4><p>有2个可以参考的指标</p>
 <ol>
@@ -115,7 +115,7 @@
 </ul>
 <p>一个很好的衡量用户网络环境的方法是，计算某一个特定大小文件的传输时间。</p>
 <p>在一个网络连接的窗口期，可以把之前hold住的网络请求，连同后面即将加载的网络请求一同打包发送。</p>
-<p><img src="../img/160308_app_s4ep3/put_them_all.png" alt=""></p>
+<p><img src="/img/160308_app_s4ep3/put_them_all.png" alt=""></p>
 <p><a href="https://developers.google.com/android/reference/com/google/android/gms/gcm/GcmNetworkManager" target="_blank" rel="external">GcmNetworkManager</a>为你提供了强力的工具用以完成上面的需求。</p>
 <hr>
 <h3 id="Ending"><a href="#Ending" class="headerlink" title="===Ending==="></a><em>===Ending===</em></h3><hr>
@@ -124,7 +124,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://lilei.work/2016/03/08/Android-Performance-Patterns-s4ep3-Effective-Prefetching/" data-id="ciq0cv8c80006s3su1zhghwcq" class="article-share-link">Share</a>
+      <a data-url="http://lilei.work/2016/03/08/Android-Performance-Patterns-s4ep3-Effective-Prefetching/" data-id="ciq0hu5cp0001hdsu7nz4e3nb" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Android-Performance-Patterns/">Android Performance Patterns</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/技术流/">技术流</a></li></ul>

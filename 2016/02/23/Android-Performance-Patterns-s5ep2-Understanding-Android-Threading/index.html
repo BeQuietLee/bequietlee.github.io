@@ -11,25 +11,25 @@
 <meta property="og:url" content="http://lilei.work/2016/02/23/Android-Performance-Patterns-s5ep2-Understanding-Android-Threading/index.html">
 <meta property="og:site_name" content="One Step, One Punch">
 <meta property="og:description" content="ep2讲解了将Thread原型扩展为HandlerThread的原理与实践。link">
-<meta property="og:image" content="http://lilei.work/../img/160223_app_s5ep2/uncle.png">
-<meta property="og:image" content="http://lilei.work/../img/160223_app_s5ep2/thread_basic_work.png">
-<meta property="og:image" content="http://lilei.work/../img/160223_app_s5ep2/do_work.png">
-<meta property="og:image" content="http://lilei.work/../img/160223_app_s5ep2/work_queue.png">
-<meta property="og:image" content="http://lilei.work/../img/160223_app_s5ep2/other_thread_produces_work.png">
-<meta property="og:image" content="http://lilei.work/../img/160223_app_s5ep2/looper.png">
-<meta property="og:image" content="http://lilei.work/../img/160223_app_s5ep2/handler.png">
-<meta property="og:image" content="http://lilei.work/../img/160223_app_s5ep2/unit_of_work.png">
-<meta property="og:image" content="http://lilei.work/../img/160223_app_s5ep2/handler_thread.png">
-<meta property="og:image" content="http://lilei.work/../img/160223_app_s5ep2/main_thread.png">
-<meta property="og:image" content="http://lilei.work/../img/160223_app_s5ep2/main_thread_does.png">
-<meta property="og:image" content="http://lilei.work/../img/160223_app_s5ep2/main_thread_does_all.png">
-<meta property="og:image" content="http://lilei.work/../img/160223_app_s5ep2/sdk_tools.png">
-<meta property="og:image" content="http://lilei.work/../img/160223_app_s5ep2/systrace.png">
-<meta property="og:updated_time" content="2016-02-24T14:00:37.000Z">
+<meta property="og:image" content="http://lilei.work/img/160223_app_s5ep2/uncle.png">
+<meta property="og:image" content="http://lilei.work/img/160223_app_s5ep2/thread_basic_work.png">
+<meta property="og:image" content="http://lilei.work/img/160223_app_s5ep2/do_work.png">
+<meta property="og:image" content="http://lilei.work/img/160223_app_s5ep2/work_queue.png">
+<meta property="og:image" content="http://lilei.work/img/160223_app_s5ep2/other_thread_produces_work.png">
+<meta property="og:image" content="http://lilei.work/img/160223_app_s5ep2/looper.png">
+<meta property="og:image" content="http://lilei.work/img/160223_app_s5ep2/handler.png">
+<meta property="og:image" content="http://lilei.work/img/160223_app_s5ep2/unit_of_work.png">
+<meta property="og:image" content="http://lilei.work/img/160223_app_s5ep2/handler_thread.png">
+<meta property="og:image" content="http://lilei.work/img/160223_app_s5ep2/main_thread.png">
+<meta property="og:image" content="http://lilei.work/img/160223_app_s5ep2/main_thread_does.png">
+<meta property="og:image" content="http://lilei.work/img/160223_app_s5ep2/main_thread_does_all.png">
+<meta property="og:image" content="http://lilei.work/img/160223_app_s5ep2/sdk_tools.png">
+<meta property="og:image" content="http://lilei.work/img/160223_app_s5ep2/systrace.png">
+<meta property="og:updated_time" content="2016-06-29T06:22:58.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Android Performance Patterns - s5ep2 Understanding Android Threading">
 <meta name="twitter:description" content="ep2讲解了将Thread原型扩展为HandlerThread的原理与实践。link">
-<meta name="twitter:image" content="http://lilei.work/../img/160223_app_s5ep2/uncle.png">
+<meta name="twitter:image" content="http://lilei.work/img/160223_app_s5ep2/uncle.png">
   
     <link rel="alternative" href="/atom.xml" title="One Step, One Punch" type="application/atom+xml">
   
@@ -108,40 +108,40 @@
 
 <hr>
 <a id="more"></a>
-<h4 id="大叔的帽衫造型很有范儿啊！！！"><a href="#大叔的帽衫造型很有范儿啊！！！" class="headerlink" title="大叔的帽衫造型很有范儿啊！！！"></a>大叔的帽衫造型很有范儿啊！！！</h4><p><img src="../img/160223_app_s5ep2/uncle.png" alt=""></p>
+<h4 id="大叔的帽衫造型很有范儿啊！！！"><a href="#大叔的帽衫造型很有范儿啊！！！" class="headerlink" title="大叔的帽衫造型很有范儿啊！！！"></a>大叔的帽衫造型很有范儿啊！！！</h4><p><img src="/img/160223_app_s5ep2/uncle.png" alt=""></p>
 <hr>
 <h4 id="Build-Worker-Thread"><a href="#Build-Worker-Thread" class="headerlink" title="Build Worker Thread"></a>Build Worker Thread</h4><p>一个Thread，从本质上讲，就是完成了一个“接受任务－执行任务－完成任务”的过程</p>
-<p><img src="../img/160223_app_s5ep2/thread_basic_work.png" alt=""></p>
+<p><img src="/img/160223_app_s5ep2/thread_basic_work.png" alt=""></p>
 <p>如果我们希望这个Thread可以在它的生命周期内多做一些事，是的，尽可能压榨这个Thread，毕竟我们在前面要创建它，在后面要摧毁它，在这中间要让它物尽其用。</p>
 <p>Do Work … Do Work … Do Work …</p>
-<p><img src="../img/160223_app_s5ep2/do_work.png" alt=""></p>
+<p><img src="/img/160223_app_s5ep2/do_work.png" alt=""></p>
 <p>现在这个Thread已经被成功洗脑，进入了无限Do Work的循环中，就像一头拉磨的毛驴，是时候向磨盘里加上一些谷子了。我们将待处理的工作称为Task，这些Task被组织在一个叫做WorkQueue的队列中。</p>
-<p><img src="../img/160223_app_s5ep2/work_queue.png" alt=""></p>
+<p><img src="/img/160223_app_s5ep2/work_queue.png" alt=""></p>
 <p>加谷子的工作，交由另一个Thread进行——把专业的事情交给专业的角色去做。</p>
-<p><img src="../img/160223_app_s5ep2/other_thread_produces_work.png" alt=""></p>
+<p><img src="/img/160223_app_s5ep2/other_thread_produces_work.png" alt=""></p>
 <hr>
 <h4 id="Android-Implementations"><a href="#Android-Implementations" class="headerlink" title="Android Implementations"></a>Android Implementations</h4><p>了解过上面的基本原理，我们看看Android中是如何实现这一机制的。</p>
 <p>首先是<code>Looper</code>，也就是上文中的<code>Worker Thread</code>，干活儿的线程。</p>
 <p>然后是<code>MessageQueue</code>，<code>Looper</code>在运行的过程中，会不断从<code>MessageQueue</code>里拉取任务执行。</p>
-<p><img src="../img/160223_app_s5ep2/looper.png" alt=""></p>
+<p><img src="/img/160223_app_s5ep2/looper.png" alt=""></p>
 <p><code>Handler</code>被用来向工作队列中添加任务</p>
-<p><img src="../img/160223_app_s5ep2/handler.png" alt=""></p>
+<p><img src="/img/160223_app_s5ep2/handler.png" alt=""></p>
 <p>每一个被添加的单元任务（<code>Unit of Work</code>），可以是Intent/runnable/message</p>
-<p><img src="../img/160223_app_s5ep2/unit_of_work.png" alt=""></p>
+<p><img src="/img/160223_app_s5ep2/unit_of_work.png" alt=""></p>
 <p>这样一整套系统，就构成了Android中很重要的Handler机制。注意到，在<code>Handler</code>之外还有一个<code>Handler Thread</code>，它用来处理Task执行结果。</p>
-<p><img src="../img/160223_app_s5ep2/handler_thread.png" alt=""></p>
+<p><img src="/img/160223_app_s5ep2/handler_thread.png" alt=""></p>
 <hr>
 <h4 id="When-An-App-Starts"><a href="#When-An-App-Starts" class="headerlink" title="When An App Starts"></a>When An App Starts</h4><p>当我们的App启动时，系统为它分配了一个单独的进程，并且启动了<code>MainThread</code>，<code>MainThread</code>本质上是一个<code>HandlerThread</code>，它有且只有一个<code>MainLooper</code>。</p>
-<p><img src="../img/160223_app_s5ep2/main_thread.png" alt=""></p>
+<p><img src="/img/160223_app_s5ep2/main_thread.png" alt=""></p>
 <p><code>MainThread</code>也是<code>UI Thread</code>，在它运行过程中几乎会处理一切操作（在ep1中已经提到过）</p>
 <ul>
 <li>系统消息（翻转手机，界面重新绘制）</li>
 <li>用户输入（下滑列表）</li>
 <li>其它应用传过来的信息</li>
 </ul>
-<p><img src="../img/160223_app_s5ep2/main_thread_does.png" alt=""></p>
+<p><img src="/img/160223_app_s5ep2/main_thread_does.png" alt=""></p>
 <p>要知道，<code>MainThread</code>一个很重要的任务是负责UI绘制，如果交给MainThread太多的任务，会影响每16ms一次的UI渲染，造成ANR。</p>
-<p><img src="../img/160223_app_s5ep2/main_thread_does_all.png" alt=""></p>
+<p><img src="/img/160223_app_s5ep2/main_thread_does_all.png" alt=""></p>
 <hr>
 <h4 id="Choose-Your-Tool-–-No-Silver-Bullet"><a href="#Choose-Your-Tool-–-No-Silver-Bullet" class="headerlink" title="Choose Your Tool – No Silver Bullet"></a>Choose Your Tool – No Silver Bullet</h4><ul>
 <li>AsyncTask：将任务切换到UI线程／非UI线程</li>
@@ -149,17 +149,17 @@
 <li>ThreadPool：执行更细化的单元任务</li>
 <li>IntentService：用以执行后台任务，或将Intent任务从UI线程中提取出来执行</li>
 </ul>
-<p><img src="../img/160223_app_s5ep2/sdk_tools.png" alt=""></p>
+<p><img src="/img/160223_app_s5ep2/sdk_tools.png" alt=""></p>
 <hr>
 <h4 id="Systrace"><a href="#Systrace" class="headerlink" title="Systrace"></a>Systrace</h4><p><a href="http://developer.android.com/tools/debugging/systrace.html" target="_blank" rel="external">Systrace</a> 是SDK提供、用于查看CPU操作耗时的工具，当你在测试应用时发现了丢帧现象，需要深究原因的时候，可以通过Systrace获得一些有用的信息。</p>
-<p><img src="../img/160223_app_s5ep2/systrace.png" alt=""></p>
+<p><img src="/img/160223_app_s5ep2/systrace.png" alt=""></p>
 <hr>
 <h3 id="Ending"><a href="#Ending" class="headerlink" title="===Ending==="></a><em>===Ending===</em></h3><hr>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://lilei.work/2016/02/23/Android-Performance-Patterns-s5ep2-Understanding-Android-Threading/" data-id="ciq0cv8cu000ls3sui70fi24l" class="article-share-link">Share</a>
+      <a data-url="http://lilei.work/2016/02/23/Android-Performance-Patterns-s5ep2-Understanding-Android-Threading/" data-id="ciq0hu5dl000lhdsudnpkp612" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Android-Performance-Patterns/">Android Performance Patterns</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/技术流/">技术流</a></li></ul>

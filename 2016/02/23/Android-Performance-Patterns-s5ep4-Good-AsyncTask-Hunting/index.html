@@ -11,16 +11,16 @@
 <meta property="og:url" content="http://lilei.work/2016/02/23/Android-Performance-Patterns-s5ep4-Good-AsyncTask-Hunting/index.html">
 <meta property="og:site_name" content="One Step, One Punch">
 <meta property="og:description" content="本节介绍AsyncTask的使用方法与风险link">
-<meta property="og:image" content="http://lilei.work/../img/160223_app_s5ep4/worker_thread.png">
-<meta property="og:image" content="http://lilei.work/../img/160223_app_s5ep4/async_task_func.png">
-<meta property="og:image" content="http://lilei.work/../img/160223_app_s5ep4/serial.png">
-<meta property="og:image" content="http://lilei.work/../img/160223_app_s5ep4/execute_on_executor.png">
-<meta property="og:image" content="http://lilei.work/../img/160223_app_s5ep4/on_cancel.png">
-<meta property="og:updated_time" content="2016-03-01T03:38:42.000Z">
+<meta property="og:image" content="http://lilei.work/img/160223_app_s5ep4/worker_thread.png">
+<meta property="og:image" content="http://lilei.work/img/160223_app_s5ep4/async_task_func.png">
+<meta property="og:image" content="http://lilei.work/img/160223_app_s5ep4/serial.png">
+<meta property="og:image" content="http://lilei.work/img/160223_app_s5ep4/execute_on_executor.png">
+<meta property="og:image" content="http://lilei.work/img/160223_app_s5ep4/on_cancel.png">
+<meta property="og:updated_time" content="2016-06-29T06:23:12.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Android Performance Patterns - s5ep4 Good AsyncTask Hunting">
 <meta name="twitter:description" content="本节介绍AsyncTask的使用方法与风险link">
-<meta name="twitter:image" content="http://lilei.work/../img/160223_app_s5ep4/worker_thread.png">
+<meta name="twitter:image" content="http://lilei.work/img/160223_app_s5ep4/worker_thread.png">
   
     <link rel="alternative" href="/atom.xml" title="One Step, One Punch" type="application/atom+xml">
   
@@ -101,14 +101,14 @@
 <a id="more"></a>
 <h4 id="AsyncTask-Basics"><a href="#AsyncTask-Basics" class="headerlink" title="AsyncTask Basics"></a>AsyncTask Basics</h4><p><a href="http://developer.android.com/reference/android/os/AsyncTask.html" target="_blank" rel="external">AsyncTask</a>是一把双刃剑，用的好了无往不利，用得不好则伤人伤己。</p>
 <p>考虑下面这种场景，有一个非常耗时的操作需要进行，我们在<code>UI Thread</code>之外启动了一个<code>Worker Thread</code>，当<code>Worker Thread</code>完成它的工作时，会把计算结果返回给<code>UI Thread</code>。</p>
-<p><img src="../img/160223_app_s5ep4/worker_thread.png" alt=""></p>
+<p><img src="/img/160223_app_s5ep4/worker_thread.png" alt=""></p>
 <p>由于这种应用场景太常见了，Android为我们提供了<code>AsyncTask</code>这一机制。<code>AsyncTask</code>有三个重要的函数。</p>
 <ul>
 <li>onPreExecute()，在<code>UI Thread</code>中执行，准备Task</li>
 <li>doInBackground()，在<code>Worker Thread</code>中执行复杂的任务</li>
 <li>onPostExecute()，在<code>UI Thread</code>中执行，处理任务执行结果</li>
 </ul>
-<p><img src="../img/160223_app_s5ep4/async_task_func.png" alt=""></p>
+<p><img src="/img/160223_app_s5ep4/async_task_func.png" alt=""></p>
 <hr>
 <h4 id="特别说明！onPreExecute并不保证在UI线程中执行！"><a href="#特别说明！onPreExecute并不保证在UI线程中执行！" class="headerlink" title="特别说明！onPreExecute并不保证在UI线程中执行！"></a>特别说明！<code>onPreExecute</code>并不保证在UI线程中执行！</h4><p>虽然<a href="http://developer.android.com/reference/android/os/AsyncTask.html" target="_blank" rel="external">官方API文档</a>中的说明写到<code>AsyncTask</code>“必须在UI线程中执行”，但Framework底层实现中并没有保证这一机制</p>
 <blockquote>
@@ -126,9 +126,9 @@
 <hr>
 <h4 id="AsyncTask-May-Get-You-Into-A-Trouble"><a href="#AsyncTask-May-Get-You-Into-A-Trouble" class="headerlink" title="AsyncTask May Get You Into A Trouble"></a>AsyncTask May Get You Into A Trouble</h4><p>有了上面三个函数，似乎AsyncTask用起来并没有什么困难。然而，如果使用不当，AsyncTask会产生很多匪夷所思的问题。</p>
 <p>首先，AsyncTask处理的所有Task，都是放在同一个队列中依次进行的。这意味着，如果前面的Task相当耗时，会使得它后面的Task在很久之后才得以执行。在你处理long running task时应给予高度关注。</p>
-<p><img src="../img/160223_app_s5ep4/serial.png" alt=""></p>
+<p><img src="/img/160223_app_s5ep4/serial.png" alt=""></p>
 <p>实际上，AsyncTask提供了一个用来并行执行Task的方法<code>executeOnExecutor</code>，然而光头哥建议，当你足够理解这个方法时，你就会觉得还是不用为好。</p>
-<p><img src="../img/160223_app_s5ep4/execute_on_executor.png" alt=""></p>
+<p><img src="/img/160223_app_s5ep4/execute_on_executor.png" alt=""></p>
 <hr>
 <h4 id="AsyncTask-Canceling"><a href="#AsyncTask-Canceling" class="headerlink" title="AsyncTask Canceling"></a>AsyncTask Canceling</h4><p>AsyncTask在执行之前／执行过程中，是可以被Cancel掉的。参数<code>mayInterruptIfRunning</code>决定了是否允许在执行过程中被中断。如果一项任务执行了<code>cacel</code>方法，那么在<code>doInBackground</code>后被调起的将不再是<code>onPostExecute</code>，而是<code>onCancel</code>，同样是在<code>UI Thread</code>中进行。</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span><br><span class="line"> * Attempts to cancel execution of this task. This attempt will fail if the task has already completed, already been cancelled, or could not be cancelled for some other reason. If successful, and this task has not started when cancel is called, this task should never run. If the task has already started, then the mayInterruptIfRunning parameter determines whether the thread executing this task should be interrupted in an attempt to stop the task.</span><br><span class="line"> * Calling this method will result in onCancelled(Object) being invoked on the UI thread after doInBackground(Object[]) returns. Calling this method guarantees that onPostExecute(Object) is never invoked. After invoking this method, you should check the value returned by isCancelled() periodically from doInBackground(Object[]) to finish the task as early as possible.</span><br><span class="line"> */</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">final</span> <span class="keyword">boolean</span> <span class="title">cancel</span> <span class="params">(<span class="keyword">boolean</span> mayInterruptIfRunning)</span></span>;</span><br></pre></td></tr></table></figure>
@@ -140,14 +140,14 @@
 <p>对于<code>1</code>，如下</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">doInBackground(..) &#123;</span><br><span class="line">	<span class="comment">// Doing some stuff</span></span><br><span class="line">	<span class="keyword">if</span> (isCanceled()) &#123;..&#125; <span class="comment">// Oh noez, we done, clean up</span></span><br><span class="line">	<span class="keyword">for</span> (i &lt; obj.length)</span><br><span class="line">		<span class="keyword">if</span> (isCanceled()) &#123;..&#125; <span class="comment">// Oh noez, we done, clean up</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>对于<code>2</code>，当我们知道被cancel的task会调用<code>onCancel</code>方法时，可以在<code>onCancel</code>中做一些诸如更新UI、清理内存的事情。</p>
-<p><img src="../img/160223_app_s5ep4/on_cancel.png" alt=""></p>
+<p><img src="/img/160223_app_s5ep4/on_cancel.png" alt=""></p>
 <hr>
 <h3 id="Ending"><a href="#Ending" class="headerlink" title="===Ending==="></a><em>===Ending===</em></h3><hr>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://lilei.work/2016/02/23/Android-Performance-Patterns-s5ep4-Good-AsyncTask-Hunting/" data-id="ciq0cv8cz000qs3suxwicn3n3" class="article-share-link">Share</a>
+      <a data-url="http://lilei.work/2016/02/23/Android-Performance-Patterns-s5ep4-Good-AsyncTask-Hunting/" data-id="ciq0hu5dn000nhdsuufxnvfu4" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Android-Performance-Patterns/">Android Performance Patterns</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/技术流/">技术流</a></li></ul>

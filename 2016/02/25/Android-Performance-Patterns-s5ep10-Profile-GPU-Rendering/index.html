@@ -11,21 +11,21 @@
 <meta property="og:url" content="http://lilei.work/2016/02/25/Android-Performance-Patterns-s5ep10-Profile-GPU-Rendering/index.html">
 <meta property="og:site_name" content="One Step, One Punch">
 <meta property="og:description" content="Season 5 的最后一期，Android M 中新增了GPU渲染分析工具光头哥，我们下一季再见！PS. 光头哥的大名是 Colt McAnlisVideo Link">
-<meta property="og:image" content="http://lilei.work/../img/160225_app_s5ep10/click_link.jpg">
-<meta property="og:image" content="http://lilei.work/../img/160225_app_s5ep10/gpu_profiling.png">
-<meta property="og:image" content="http://lilei.work/../img/160225_app_s5ep10/eight_phases.png">
-<meta property="og:image" content="http://lilei.work/../img/160225_app_s5ep10/sync_and_upload.png">
-<meta property="og:image" content="http://lilei.work/../img/160225_app_s5ep10/measure_layout.png">
-<meta property="og:image" content="http://lilei.work/../img/160225_app_s5ep10/animation.png">
-<meta property="og:image" content="http://lilei.work/../img/160225_app_s5ep10/input_handling.png">
-<meta property="og:image" content="http://lilei.work/../img/160225_app_s5ep10/misc_vsync_delay.png">
-<meta property="og:image" content="http://lilei.work/../img/160225_app_s5ep10/bigger_bar.png">
-<meta property="og:image" content="http://lilei.work/../img/160225_app_s5ep10/thank_you.png">
-<meta property="og:updated_time" content="2016-02-26T03:16:13.000Z">
+<meta property="og:image" content="http://lilei.work/img/160225_app_s5ep10/click_link.jpg">
+<meta property="og:image" content="http://lilei.work/img/160225_app_s5ep10/gpu_profiling.png">
+<meta property="og:image" content="http://lilei.work/img/160225_app_s5ep10/eight_phases.png">
+<meta property="og:image" content="http://lilei.work/img/160225_app_s5ep10/sync_and_upload.png">
+<meta property="og:image" content="http://lilei.work/img/160225_app_s5ep10/measure_layout.png">
+<meta property="og:image" content="http://lilei.work/img/160225_app_s5ep10/animation.png">
+<meta property="og:image" content="http://lilei.work/img/160225_app_s5ep10/input_handling.png">
+<meta property="og:image" content="http://lilei.work/img/160225_app_s5ep10/misc_vsync_delay.png">
+<meta property="og:image" content="http://lilei.work/img/160225_app_s5ep10/bigger_bar.png">
+<meta property="og:image" content="http://lilei.work/img/160225_app_s5ep10/thank_you.png">
+<meta property="og:updated_time" content="2016-06-29T06:23:58.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Android Performance Patterns - s5ep10 Profile GPU Rendering, M Update">
 <meta name="twitter:description" content="Season 5 的最后一期，Android M 中新增了GPU渲染分析工具光头哥，我们下一季再见！PS. 光头哥的大名是 Colt McAnlisVideo Link">
-<meta name="twitter:image" content="http://lilei.work/../img/160225_app_s5ep10/click_link.jpg">
+<meta name="twitter:image" content="http://lilei.work/img/160225_app_s5ep10/click_link.jpg">
   
     <link rel="alternative" href="/atom.xml" title="One Step, One Punch" type="application/atom+xml">
   
@@ -107,41 +107,41 @@
 <h4 id="Why-GPU-Profile-Tool"><a href="#Why-GPU-Profile-Tool" class="headerlink" title="Why GPU Profile Tool"></a>Why GPU Profile Tool</h4><p>用户在使用app时，并不关心你的代码内部使用了多么NB的算法、多么碉堡的框架，用户最直观的体验是——你的app有没有卡顿、会不会丢帧。同网站一样，app加载的时间越长，用户流失也就越严重。因此，找到画面卡顿的原因便格外重要。</p>
 <hr>
 <h4 id="GPU-Profiling-Tool-Before-M"><a href="#GPU-Profiling-Tool-Before-M" class="headerlink" title="GPU Profiling Tool Before M"></a>GPU Profiling Tool Before M</h4><p>在笔者的Meizu手机上（Android 5.0），可以在开发者选项中开启“GPU呈现模式分析”来查看CPU绘制情况。现在笔者打开微信朋友圈的一个链接（html5页面）</p>
-<p><img src="../img/160225_app_s5ep10/click_link.jpg" alt=""></p>
+<p><img src="/img/160225_app_s5ep10/click_link.jpg" alt=""></p>
 <p>结合说明，可以初步判断那一条暴增的曲线是由于Process过程所致。</p>
-<p><img src="../img/160225_app_s5ep10/gpu_profiling.png" alt=""></p>
+<p><img src="/img/160225_app_s5ep10/gpu_profiling.png" alt=""></p>
 <hr>
 <h4 id="Strongerrrrrrr"><a href="#Strongerrrrrrr" class="headerlink" title="Strongerrrrrrr!"></a>Strongerrrrrrr!</h4><p>Android M 为我们提供了更为强大的GPU渲染分析工具，可以细化到以下8个维度，注意到1、2、4也就是上一节图中的三个维度（Process、Execute、Update），它们保持了与历史相同的颜色！</p>
-<p><img src="../img/160225_app_s5ep10/eight_phases.png" alt=""></p>
+<p><img src="/img/160225_app_s5ep10/eight_phases.png" alt=""></p>
 <p>下面我们着重分析一下另外的五项指标。</p>
 <hr>
-<h4 id="Sync-amp-Upload"><a href="#Sync-amp-Upload" class="headerlink" title="Sync &amp; Upload"></a>Sync &amp; Upload</h4><p><img src="../img/160225_app_s5ep10/sync_and_upload.png" alt=""></p>
+<h4 id="Sync-amp-Upload"><a href="#Sync-amp-Upload" class="headerlink" title="Sync &amp; Upload"></a>Sync &amp; Upload</h4><p><img src="/img/160225_app_s5ep10/sync_and_upload.png" alt=""></p>
 <ul>
 <li>这项指数衡量了bitmap被同步到GPU的耗时，越大的图像，数值越高，通常处理高像素的图片时会导致飙升。</li>
 <li>减少同时展示的图片数量，或者对图片进行预处理，降低图片尺寸可以有效降低数值。</li>
 </ul>
 <hr>
-<h4 id="Measure-Layout"><a href="#Measure-Layout" class="headerlink" title="Measure / Layout"></a>Measure / Layout</h4><p><img src="../img/160225_app_s5ep10/measure_layout.png" alt=""></p>
+<h4 id="Measure-Layout"><a href="#Measure-Layout" class="headerlink" title="Measure / Layout"></a>Measure / Layout</h4><p><img src="/img/160225_app_s5ep10/measure_layout.png" alt=""></p>
 <ul>
 <li>过高的指数，表明页面布局过于复杂（super complex view hierarchy）</li>
 <li>也可能是由于double taxation所致（关于double layout taxation请参阅<a href="https://www.youtube.com/watch?v=dB3_vgS-Uqo" target="_blank" rel="external">Season 3 ep 8</a>）</li>
 <li>试着简化布局</li>
 </ul>
 <hr>
-<h4 id="Animation"><a href="#Animation" class="headerlink" title="Animation"></a>Animation</h4><p><img src="../img/160225_app_s5ep10/animation.png" alt=""></p>
+<h4 id="Animation"><a href="#Animation" class="headerlink" title="Animation"></a>Animation</h4><p><img src="/img/160225_app_s5ep10/animation.png" alt=""></p>
 <ul>
 <li>若GPU在动画上的负载过高，去检查你所使用到的自定义动画</li>
 <li>谨慎使用 <a href="http://developer.android.com/guide/topics/graphics/prop-animation.html" target="_blank" rel="external"><strong>PropertyAnimation</strong></a></li>
 </ul>
 <hr>
-<h4 id="Input-Handling"><a href="#Input-Handling" class="headerlink" title="Input Handling"></a>Input Handling</h4><p><img src="../img/160225_app_s5ep10/input_handling.png" alt=""></p>
+<h4 id="Input-Handling"><a href="#Input-Handling" class="headerlink" title="Input Handling"></a>Input Handling</h4><p><img src="/img/160225_app_s5ep10/input_handling.png" alt=""></p>
 <ul>
 <li>GPU消耗了多少时间用于处理用户输入</li>
 <li>或者说，在相应用户输入的callback中，GPU的消耗</li>
 <li>如果处理输入的逻辑过于复杂，使用<code>Worker Thread</code></li>
 </ul>
 <hr>
-<h4 id="Misc-Vsync-Delay"><a href="#Misc-Vsync-Delay" class="headerlink" title="Misc / Vsync Delay"></a>Misc / Vsync Delay</h4><p><img src="../img/160225_app_s5ep10/misc_vsync_delay.png" alt=""></p>
+<h4 id="Misc-Vsync-Delay"><a href="#Misc-Vsync-Delay" class="headerlink" title="Misc / Vsync Delay"></a>Misc / Vsync Delay</h4><p><img src="/img/160225_app_s5ep10/misc_vsync_delay.png" alt=""></p>
 <ul>
 <li>如果你从日志中看到诸如“misc vsync … skipping … frames”的信息，That’s this thing!</li>
 <li>发生在相邻两帧之间的事情，都可以归类于此</li>
@@ -150,17 +150,17 @@
 <hr>
 <h4 id="A-Bigger-Bar"><a href="#A-Bigger-Bar" class="headerlink" title="A Bigger Bar"></a>A Bigger Bar</h4><p>上面提到了5个维度，加上之前的3个，一共是8个维度。要把这8个维度同时用柱状图展示出来可不是件容易的事，这对你的视力有着相当的要求。</p>
 <p>方便的是，GPU工具里贴心地适当扩宽加重了那些可能有问题的标示，你会看到一个更醒目的柱状图展示。</p>
-<p><img src="../img/160225_app_s5ep10/bigger_bar.png" alt=""></p>
+<p><img src="/img/160225_app_s5ep10/bigger_bar.png" alt=""></p>
 <hr>
 <h4 id="Bye-Bye-Colt-McAlnis"><a href="#Bye-Bye-Colt-McAlnis" class="headerlink" title="Bye Bye! Colt McAlnis"></a>Bye Bye! Colt McAlnis</h4><p>See you in Season 6!</p>
-<p><img src="../img/160225_app_s5ep10/thank_you.png" alt=""></p>
+<p><img src="/img/160225_app_s5ep10/thank_you.png" alt=""></p>
 <hr>
 <h3 id="Ending"><a href="#Ending" class="headerlink" title="===Ending==="></a><em>===Ending===</em></h3><hr>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://lilei.work/2016/02/25/Android-Performance-Patterns-s5ep10-Profile-GPU-Rendering/" data-id="ciq0cv8cp000gs3suwmgfwvbu" class="article-share-link">Share</a>
+      <a data-url="http://lilei.work/2016/02/25/Android-Performance-Patterns-s5ep10-Profile-GPU-Rendering/" data-id="ciq0hu5dd000dhdsupvj3gzr0" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Android-Performance-Patterns/">Android Performance Patterns</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/技术流/">技术流</a></li></ul>

@@ -11,17 +11,17 @@
 <meta property="og:url" content="http://lilei.work/2016/02/24/Android-Performance-Patterns-s5ep5-Getting-A-HandlerThread/index.html">
 <meta property="og:site_name" content="One Step, One Punch">
 <meta property="og:description" content="Season5 ep5的主题是HandlerThreadlink">
-<meta property="og:image" content="http://lilei.work/../img/160224_app_s5ep5/camera_preview.png">
-<meta property="og:image" content="http://lilei.work/../img/160224_app_s5ep5/no_in_main_thread.png">
-<meta property="og:image" content="http://lilei.work/../img/160224_app_s5ep5/no_in_asynctask.png">
-<meta property="og:image" content="http://lilei.work/../img/160224_app_s5ep5/handler_thread.png">
-<meta property="og:image" content="http://lilei.work/../img/160224_app_s5ep5/run_on_ui_thread.png">
-<meta property="og:image" content="http://lilei.work/../img/160224_app_s5ep5/priority.png">
-<meta property="og:updated_time" content="2016-02-24T14:01:13.000Z">
+<meta property="og:image" content="http://lilei.work/img/160224_app_s5ep5/camera_preview.png">
+<meta property="og:image" content="http://lilei.work/img/160224_app_s5ep5/no_in_main_thread.png">
+<meta property="og:image" content="http://lilei.work/img/160224_app_s5ep5/no_in_asynctask.png">
+<meta property="og:image" content="http://lilei.work/img/160224_app_s5ep5/handler_thread.png">
+<meta property="og:image" content="http://lilei.work/img/160224_app_s5ep5/run_on_ui_thread.png">
+<meta property="og:image" content="http://lilei.work/img/160224_app_s5ep5/priority.png">
+<meta property="og:updated_time" content="2016-06-29T06:23:20.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Android Performance Patterns - s5ep5 Getting A HandlerThread">
 <meta name="twitter:description" content="Season5 ep5的主题是HandlerThreadlink">
-<meta name="twitter:image" content="http://lilei.work/../img/160224_app_s5ep5/camera_preview.png">
+<meta name="twitter:image" content="http://lilei.work/img/160224_app_s5ep5/camera_preview.png">
   
     <link rel="alternative" href="/atom.xml" title="One Step, One Punch" type="application/atom+xml">
   
@@ -102,29 +102,29 @@
 <a id="more"></a>
 <h4 id="A-Case-–-Camera-Preview"><a href="#A-Case-–-Camera-Preview" class="headerlink" title="A Case – Camera Preview"></a>A Case – Camera Preview</h4><p>在大部分场景下，AsyncTask已经可以满足我们的功能需求。不过，AsyncTask并不是对于各种场景全都适用的。对于特别耗时的操作，如照相机的预览图绘制。</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">void</span> <span class="title">onPreviewFrame</span> <span class="params">(<span class="keyword">byte</span>[] data, Camera camera)</span></span>;</span><br></pre></td></tr></table></figure>
-<p><img src="../img/160224_app_s5ep5/camera_preview.png" alt=""></p>
+<p><img src="/img/160224_app_s5ep5/camera_preview.png" alt=""></p>
 <p><code>onPreviewFrame</code>放在主线程中执行的话，会因为大量时间用于计算而产生丢帧，方案一pass！</p>
-<p><img src="../img/160224_app_s5ep5/no_in_main_thread.png" alt=""></p>
+<p><img src="/img/160224_app_s5ep5/no_in_main_thread.png" alt=""></p>
 <p>放在AsyncTask中执行的话，因为自身的耗时特别长，导致后续任务始终得不到执行，方案二pass！</p>
-<p><img src="../img/160224_app_s5ep5/no_in_asynctask.png" alt=""></p>
+<p><img src="/img/160224_app_s5ep5/no_in_asynctask.png" alt=""></p>
 <hr>
 <h4 id="How"><a href="#How" class="headerlink" title="How?"></a>How?</h4><p>基于上面的考虑，我们需要有这样一个独立于主线程、可以执行冗长任务的机制，来完成照相机预览图的获取。</p>
 <p>让我们来认识一下<a href="http://developer.android.com/reference/android/os/HandlerThread.html" target="_blank" rel="external"><strong>HandlerThread</strong></a>。<code>HandlerThread</code>继承自<code>java.lang.Thread</code>，可以通过<code>getLooper()</code>的方法来获取某个<code>HandlerThread</code>的Looper，拿到Looper之后，就可以通过它创建一个Handler，进而用这个Handler处理预览图绘制这样的工作了。</p>
-<p><img src="../img/160224_app_s5ep5/handler_thread.png" alt=""></p>
+<p><img src="/img/160224_app_s5ep5/handler_thread.png" alt=""></p>
 <p>demo见下面的代码片段</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">HandlerThread handlerThread = <span class="keyword">new</span> HandlerThread(<span class="string">"photo preview"</span>);</span><br><span class="line">handlerThread.start();</span><br><span class="line">Handler handler = <span class="keyword">new</span> Handler(handlerThread.getLooper());</span><br><span class="line">handler.sendMessage(Handler.obtainMessage(<span class="number">0</span>)); <span class="comment">// 在handleMessage方法中绘制预览图</span></span><br></pre></td></tr></table></figure>
 <p>当计算完成后，就可以通过<code>Activity.runOnUIThread(Runnable r)</code>来更新预览图了。</p>
-<p><img src="../img/160224_app_s5ep5/run_on_ui_thread.png" alt=""></p>
+<p><img src="/img/160224_app_s5ep5/run_on_ui_thread.png" alt=""></p>
 <p><code>HandlerThread</code>不仅可以处理冗长的触发UI事件，也可以用它来做UI无关的事情。</p>
 <h4 id="Priority"><a href="#Priority" class="headerlink" title="Priority"></a>Priority</h4><p>创建<code>HandlerThread</code>时，记得根据实际需求赋予它适当的优先级，这会使cpu为它分配合适的执行顺序。</p>
-<p><img src="../img/160224_app_s5ep5/priority.png" alt=""></p>
+<p><img src="/img/160224_app_s5ep5/priority.png" alt=""></p>
 <hr>
 <h3 id="Ending"><a href="#Ending" class="headerlink" title="===Ending==="></a><em>===Ending===</em></h3><hr>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://lilei.work/2016/02/24/Android-Performance-Patterns-s5ep5-Getting-A-HandlerThread/" data-id="ciq0cv8cw000ns3su4fceqkxn" class="article-share-link">Share</a>
+      <a data-url="http://lilei.work/2016/02/24/Android-Performance-Patterns-s5ep5-Getting-A-HandlerThread/" data-id="ciq0hu5dq000qhdsutf70jp12" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Android-Performance-Patterns/">Android Performance Patterns</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/技术流/">技术流</a></li></ul>

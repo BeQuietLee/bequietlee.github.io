@@ -11,13 +11,13 @@
 <meta property="og:url" content="http://lilei.work/2016/02/25/Android-Performance-Patterns-s5ep9-The-Importance-Of-Thread-Priority/index.html">
 <meta property="og:site_name" content="One Step, One Punch">
 <meta property="og:description" content="CPU同一时间只能处理有限数目的线程，赋予线程怎样的优先级，将决定其最终在CPU上得以执行的顺序光头哥回归啦！读信的样子简直不要太萌！Video Link">
-<meta property="og:image" content="http://lilei.work/../img/160225_app_s5ep9/foreground_vs_background.png">
-<meta property="og:image" content="http://lilei.work/../img/160225_app_s5ep9/same_priority.png">
-<meta property="og:updated_time" content="2016-02-26T02:38:46.000Z">
+<meta property="og:image" content="http://lilei.work/img/160225_app_s5ep9/foreground_vs_background.png">
+<meta property="og:image" content="http://lilei.work/img/160225_app_s5ep9/same_priority.png">
+<meta property="og:updated_time" content="2016-06-29T06:23:50.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Android Performance Patterns - s5ep9 The Importance Of Thread Priority">
 <meta name="twitter:description" content="CPU同一时间只能处理有限数目的线程，赋予线程怎样的优先级，将决定其最终在CPU上得以执行的顺序光头哥回归啦！读信的样子简直不要太萌！Video Link">
-<meta name="twitter:image" content="http://lilei.work/../img/160225_app_s5ep9/foreground_vs_background.png">
+<meta name="twitter:image" content="http://lilei.work/img/160225_app_s5ep9/foreground_vs_background.png">
   
     <link rel="alternative" href="/atom.xml" title="One Step, One Punch" type="application/atom+xml">
   
@@ -105,11 +105,11 @@
 </ul>
 <hr>
 <h4 id="Visible-vs-Invisible"><a href="#Visible-vs-Invisible" class="headerlink" title="Visible vs Invisible"></a>Visible vs Invisible</h4><p>CPU时间的90%左右，都是用以处理界面展示中的线程，只有约10%留给了后台线程</p>
-<p><img src="../img/160225_app_s5ep9/foreground_vs_background.png" alt=""></p>
+<p><img src="/img/160225_app_s5ep9/foreground_vs_background.png" alt=""></p>
 <hr>
 <h4 id="拼爹的线程"><a href="#拼爹的线程" class="headerlink" title="拼爹的线程"></a>拼爹的线程</h4><p>在线程的世界里，一样要拼爹——新创建的线程，其优先级与创建它的线程相同。</p>
 <p>也就是说，如果<code>UI Thread</code>创建了20个<code>Worker Thread</code>，那么这20个<code>Worker Thread</code>都具有相同的优先级，它们会平等竞争CPU时间。</p>
-<p><img src="../img/160225_app_s5ep9/same_priority.png" alt=""></p>
+<p><img src="/img/160225_app_s5ep9/same_priority.png" alt=""></p>
 <p>这其实是很不好的，我们知道哪些工作更重要，哪些工作相比于其它不那么重要，所以我们要主动设置线程优先级，让那些具有更高优先级的线程优先得到执行。</p>
 <hr>
 <h4 id="Priority"><a href="#Priority" class="headerlink" title="Priority"></a>Priority</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">android.os.Process.setThreadPriority(<span class="keyword">int</span>);</span><br></pre></td></tr></table></figure>
@@ -127,7 +127,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://lilei.work/2016/02/25/Android-Performance-Patterns-s5ep9-The-Importance-Of-Thread-Priority/" data-id="ciq0cv8d6000vs3suz7auleao" class="article-share-link">Share</a>
+      <a data-url="http://lilei.work/2016/02/25/Android-Performance-Patterns-s5ep9-The-Importance-Of-Thread-Priority/" data-id="ciq0hu5dx000vhdsua53855ry" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Android-Performance-Patterns/">Android Performance Patterns</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/技术流/">技术流</a></li></ul>

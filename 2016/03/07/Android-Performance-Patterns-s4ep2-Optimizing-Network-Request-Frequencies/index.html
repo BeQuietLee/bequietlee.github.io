@@ -11,17 +11,17 @@
 <meta property="og:url" content="http://lilei.work/2016/03/07/Android-Performance-Patterns-s4ep2-Optimizing-Network-Request-Frequencies/index.html">
 <meta property="og:site_name" content="One Step, One Punch">
 <meta property="og:description" content="Syncing too often, can be the worst idea for the performance of your application.Video Link">
-<meta property="og:image" content="http://lilei.work/../img/160307_app_s4ep2/now_or_later.png">
-<meta property="og:image" content="http://lilei.work/../img/160307_app_s4ep2/do_not_poll.png">
-<meta property="og:image" content="http://lilei.work/../img/160307_app_s4ep2/listen.png">
-<meta property="og:image" content="http://lilei.work/../img/160307_app_s4ep2/binary.png">
-<meta property="og:image" content="http://lilei.work/../img/160307_app_s4ep2/scenery.png">
-<meta property="og:image" content="http://lilei.work/../img/160307_app_s4ep2/situations.png">
-<meta property="og:updated_time" content="2016-03-08T01:38:57.000Z">
+<meta property="og:image" content="http://lilei.work/img/160307_app_s4ep2/now_or_later.png">
+<meta property="og:image" content="http://lilei.work/img/160307_app_s4ep2/do_not_poll.png">
+<meta property="og:image" content="http://lilei.work/img/160307_app_s4ep2/listen.png">
+<meta property="og:image" content="http://lilei.work/img/160307_app_s4ep2/binary.png">
+<meta property="og:image" content="http://lilei.work/img/160307_app_s4ep2/scenery.png">
+<meta property="og:image" content="http://lilei.work/img/160307_app_s4ep2/situations.png">
+<meta property="og:updated_time" content="2016-06-29T06:21:43.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Android Performance Patterns - s4ep2 Optimizing Network Request Frequencies">
 <meta name="twitter:description" content="Syncing too often, can be the worst idea for the performance of your application.Video Link">
-<meta name="twitter:image" content="http://lilei.work/../img/160307_app_s4ep2/now_or_later.png">
+<meta name="twitter:image" content="http://lilei.work/img/160307_app_s4ep2/now_or_later.png">
   
     <link rel="alternative" href="/atom.xml" title="One Step, One Punch" type="application/atom+xml">
   
@@ -107,21 +107,21 @@
 </ol>
 <hr>
 <h4 id="Sync-Less-Win-More"><a href="#Sync-Less-Win-More" class="headerlink" title="Sync Less, Win More"></a>Sync Less, Win More</h4><p>优化缓存的关键在于区分数据是当下立即需要的还是稍后请求也无伤大雅的，比如，用户进行下拉刷新，显然需要马上向服务器请求数据。而后台进行的数据下载与上传，相比之下就不那么重要。</p>
-<p><img src="../img/160307_app_s4ep2/now_or_later.png" alt=""></p>
+<p><img src="/img/160307_app_s4ep2/now_or_later.png" alt=""></p>
 <hr>
 <h4 id="Don’t-Always-Poll-Just-Listen"><a href="#Don’t-Always-Poll-Just-Listen" class="headerlink" title="Don’t Always Poll, Just Listen"></a>Don’t Always Poll, Just Listen</h4><p>不要试图经常轮询Server请求新数据，这并没有什么卵用，要知道很多情况下数据在服务端根本就没有更新。</p>
-<p><img src="../img/160307_app_s4ep2/do_not_poll.png" alt=""></p>
+<p><img src="/img/160307_app_s4ep2/do_not_poll.png" alt=""></p>
 <p>使用诸如<a href="https://developers.google.com/cloud-messaging/" target="_blank" rel="external">Google Cloud Messaging</a>的服务进行从Server发起的push —— What the hell is this?</p>
 <p>由于天朝的特殊性，GCM无法使用，因此诞生了诸如极光推送等一系列替代品，一些有能力的大厂干脆自己实现消息推送系统，可以参考微信这篇文章：<a href="http://mp.weixin.qq.com/s?__biz=MzAwNDY1ODY2OQ==&amp;mid=207243549&amp;idx=1&amp;sn=4ebe4beb8123f1b5ab58810ac8bc5994&amp;scene=0#rd" target="_blank" rel="external">Android微信智能心跳方案</a></p>
-<p><img src="../img/160307_app_s4ep2/listen.png" alt=""></p>
+<p><img src="/img/160307_app_s4ep2/listen.png" alt=""></p>
 <p>如果不得不采用客户端轮询来做，考虑二进制退让算法</p>
-<p><img src="../img/160307_app_s4ep2/binary.png" alt=""></p>
+<p><img src="/img/160307_app_s4ep2/binary.png" alt=""></p>
 <hr>
 <h4 id="因地制宜"><a href="#因地制宜" class="headerlink" title="因地制宜"></a>因地制宜</h4><p>下面这个听起来就有一些炫酷了：根据用户当前不同的行为模式采取不同的同步策略，比如用户在驾驶时、跑步时、睡觉时……</p>
-<p><img src="../img/160307_app_s4ep2/scenery.png" alt=""></p>
+<p><img src="/img/160307_app_s4ep2/scenery.png" alt=""></p>
 <p>比如，当你监测到用户刚刚从8小时的睡眠中醒来并开启手机时，不妨马上进行一次同步。</p>
 <p>根据是否正在充电、是否连接wifi等配置信息，调节同步时间：</p>
-<p><img src="../img/160307_app_s4ep2/situations.png" alt=""></p>
+<p><img src="/img/160307_app_s4ep2/situations.png" alt=""></p>
 <p>然而，场景那么多，你要怎么办呢？</p>
 <p>幸运的是，你并不需要为此实现太多复杂的逻辑，参考<a href="https://developers.google.com/android/reference/com/google/android/gms/gcm/GcmNetworkManager" target="_blank" rel="external">GCM Network Manager</a></p>
 <hr>
@@ -130,7 +130,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://lilei.work/2016/03/07/Android-Performance-Patterns-s4ep2-Optimizing-Network-Request-Frequencies/" data-id="ciq0cv8by0001s3suqh91fxr6" class="article-share-link">Share</a>
+      <a data-url="http://lilei.work/2016/03/07/Android-Performance-Patterns-s4ep2-Optimizing-Network-Request-Frequencies/" data-id="ciq0hu5cu0003hdsutc29xp3h" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Android-Performance-Patterns/">Android Performance Patterns</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/技术流/">技术流</a></li></ul>
