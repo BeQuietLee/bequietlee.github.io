@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Android 中 View Visibility 的坑 | One Step, One Punch</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="前几天爆出来一个线上bug：处于“已售完”状态的菜品，依然可以点击加菜。好在提交订单时有校验，对于这种订单会直接打回。究其原因，是加减控件中的代码出了问题">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android 中 View Visibility 的坑">
+<meta property="og:url" content="http://lilei.work/2016/06/29/Android-View-Visibility/index.html">
+<meta property="og:site_name" content="One Step, One Punch">
+<meta property="og:description" content="前几天爆出来一个线上bug：处于“已售完”状态的菜品，依然可以点击加菜。好在提交订单时有校验，对于这种订单会直接打回。究其原因，是加减控件中的代码出了问题">
+<meta property="og:image" content="http://lilei.work/img/160629_visibility/capture.png">
+<meta property="og:updated_time" content="2016-06-29T05:21:55.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Android 中 View Visibility 的坑">
+<meta name="twitter:description" content="前几天爆出来一个线上bug：处于“已售完”状态的菜品，依然可以点击加菜。好在提交订单时有校验，对于这种订单会直接打回。究其原因，是加减控件中的代码出了问题">
+<meta name="twitter:image" content="http://lilei.work/img/160629_visibility/capture.png">
+  
+    <link rel="alternative" href="/atom.xml" title="One Step, One Punch" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="/css/style.css">
+  
+
+</head>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">One Step, One Punch</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">bequietlee#gmail.com</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://lilei.work"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-Android-View-Visibility" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/06/29/Android-View-Visibility/" class="article-date">
+  <time datetime="2016-06-29T03:37:37.000Z" itemprop="datePublished">2016-06-29</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Android 中 View Visibility 的坑
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <blockquote>
+<p>前几天爆出来一个线上bug：处于“已售完”状态的菜品，依然可以点击加菜。好在提交订单时有校验，对于这种订单会直接打回。<br>究其原因，是加减控件中的代码出了问题</p>
+</blockquote>
+<a id="more"></a>
+<h3 id="问题回顾"><a href="#问题回顾" class="headerlink" title="问题回顾"></a>问题回顾</h3><p>在加减控件中，提供了<code>enlargeEmptyAddBtnClickArea</code>方法，用来扩大第一次加菜按钮的点击区域（PM提出的渣渣，更渣渣的是UX居然通过了这个需求）。</p>
+<p><strong>Talk is cheap, read the code.</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span><br><span class="line">    * 将初始加菜按钮点击矩形区域向外扩大</span><br><span class="line">    * <span class="doctag">@param</span> parentView 包含更大点击区域的父View</span><br><span class="line">    * <span class="doctag">@param</span> unit 扩大的dp值</span><br><span class="line">    */</span></span><br><span class="line">   <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">enlargeEmptyAddBtnClickArea</span><span class="params">(<span class="keyword">final</span> View parentView, <span class="keyword">final</span> <span class="keyword">int</span> unit)</span> </span>&#123;</span><br><span class="line">       parentView.post(<span class="keyword">new</span> Runnable() &#123;</span><br><span class="line">           <span class="meta">@Override</span></span><br><span class="line">           <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">               <span class="keyword">if</span> (emptyAddBtn.getVisibility() != VISIBLE) &#123;</span><br><span class="line">                   <span class="keyword">return</span>;</span><br><span class="line">               &#125;</span><br><span class="line">               checkContext();</span><br><span class="line">               Context context = getContext();</span><br><span class="line">               <span class="keyword">int</span>[] emptyAddBtnCoord = <span class="keyword">new</span> <span class="keyword">int</span>[<span class="number">2</span>];</span><br><span class="line">               emptyAddBtn.getLocationOnScreen(emptyAddBtnCoord);</span><br><span class="line">               <span class="keyword">int</span>[] parentViewCoord = <span class="keyword">new</span> <span class="keyword">int</span>[<span class="number">2</span>];</span><br><span class="line">               parentView.getLocationOnScreen(parentViewCoord);</span><br><span class="line">               <span class="keyword">int</span>[] relativeCoord = &#123;emptyAddBtnCoord[<span class="number">0</span>] - parentViewCoord[<span class="number">0</span>], emptyAddBtnCoord[<span class="number">1</span>] - parentViewCoord[<span class="number">1</span>]&#125;;</span><br><span class="line">               Rect delegateArea = <span class="keyword">new</span> Rect(relativeCoord[<span class="number">0</span>], relativeCoord[<span class="number">1</span>], relativeCoord[<span class="number">0</span>] + emptyAddBtn.getMeasuredWidth(), relativeCoord[<span class="number">1</span>] + emptyAddBtn.getMeasuredHeight());</span><br><span class="line">               <span class="keyword">int</span> enlargeUnit = ViewUtils.dip2px(context, unit);</span><br><span class="line">               delegateArea.left -= enlargeUnit;</span><br><span class="line">               delegateArea.top -= enlargeUnit;</span><br><span class="line">               delegateArea.right += enlargeUnit;</span><br><span class="line">               delegateArea.bottom += enlargeUnit;</span><br><span class="line">               CustomTouchDelegate touchDelegate = <span class="keyword">new</span> CustomTouchDelegate(delegateArea, emptyAddBtn);</span><br><span class="line">               parentView.setTouchDelegate(touchDelegate);</span><br><span class="line">           &#125;</span><br><span class="line">       &#125;);</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<p>这样通过直接<code>operateBtn.enlargeEmptyAddBtnClickArea</code>就可以扩大点击区域。</p>
+<p>乍看起来没什么问题对吧？代码中同样考虑到了如果<code>加菜按钮</code>当前不可见，就不会主动扩大其区域。</p>
+<p>但是为什么，还会出现文章开头提到的“已售完的菜品仍然可以添加至购物车”问题！！！</p>
+<hr>
+<h3 id="原因分析"><a href="#原因分析" class="headerlink" title="原因分析"></a>原因分析</h3><p>在debug后，发现问题出在这段代码中的判断</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (emptyAddBtn.getVisibility() != VISIBLE) &#123;</span><br><span class="line">	<span class="keyword">return</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>当整个加减控件（OperateButton）的Visibility == INVISIBLE or GONE时，其内部<code>emptyAddBtn</code>的Visibility<strong>居！然！还！是！Visible！</strong></p>
+<p>写个Demo验证一下</p>
+<hr>
+<h3 id="Talk-is-cheap-just-code"><a href="#Talk-is-cheap-just-code" class="headerlink" title="Talk is cheap, just code"></a>Talk is cheap, just code</h3><p>demo功能很简单，外层的ViewGroup &amp; 内层的View，当outer置为不可见（INVISIBLE or GONE）时，输出inner的Visibility。界面如下：</p>
+<p><img src="/img/160629_visibility/capture.png" alt=""></p>
+<p>验证后发现一个惊人的事实，Outer的Visibility不会影响Inner的Visibility！也就是说，不论Outer设置为Gone还是Invisible，只要Inner之前是Visible，那么调用<code>inner.getVisibility()</code>后，都会返回Visible！</p>
+<hr>
+<h3 id="正确的判断方法"><a href="#正确的判断方法" class="headerlink" title="正确的判断方法"></a>正确的判断方法</h3><p>View.java中为我们提供了<code>isShown()</code>方法，从注释中即可看出它会将外层ViewGroup可见性计算进去</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span><br><span class="line"> * Returns the visibility of this view and all of its ancestors</span><br><span class="line"> *</span><br><span class="line"> * <span class="doctag">@return</span> True if this view and all of its ancestors are &#123;<span class="doctag">@link</span> #VISIBLE&#125;</span><br><span class="line"> */</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">isShown</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    View current = <span class="keyword">this</span>;</span><br><span class="line">    <span class="comment">//noinspection ConstantConditions</span></span><br><span class="line">    do &#123;</span><br><span class="line">        <span class="keyword">if</span> ((current.mViewFlags &amp; VISIBILITY_MASK) != VISIBLE) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        ViewParent parent = current.mParent;</span><br><span class="line">        <span class="keyword">if</span> (parent == <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">false</span>; <span class="comment">// We are not attached to the view root</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (!(parent <span class="keyword">instanceof</span> View)) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        current = (View) parent;</span><br><span class="line">    &#125; <span class="keyword">while</span> (current != <span class="keyword">null</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<hr>
+<h3 id="反思"><a href="#反思" class="headerlink" title="反思"></a>反思</h3><p>起初编码的时候，谁能想到，外层设置Invisibile后，内层View居然还是Visible的状态呢？</p>
+<p>出现这个问题的根本原因在于自己对View的机制研究不够深入，引以为戒。</p>
+<p>更应该注意到View本身提供了isShown()方法来判断可见性，根本不需要使用Visibility来重复造轮子，更何况还是错误的轮子。</p>
+<hr>
+<h3 id="END"><a href="#END" class="headerlink" title="=========END========="></a><em>=========END=========</em></h3><hr>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://lilei.work/2016/06/29/Android-View-Visibility/" data-id="ciq0cv8de0012s3su55m6928w" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/技术流/">技术流</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2016/06/22/Use-Diffmerge-As-Default-Git-Diff-Tool/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Use DiffMerge As Default Git Diff Tool</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+ <section id="comments">
+   <!-- 多说评论框 start -->
+   <div class="ds-thread" data-thread-key="post-Android-View-Visibility" data-title="Android 中 View Visibility 的坑" data-url="http://lilei.work/2016/06/29/Android-View-Visibility/"></div>
+   <!-- 多说评论框 end -->
+   <!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+   <script type="text/javascript">
+   var duoshuoQuery = {short_name:'lileiwork'};
+     (function() {
+       var ds = document.createElement('script');
+       ds.type = 'text/javascript';ds.async = true;
+       ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+       ds.charset = 'UTF-8';
+       (document.getElementsByTagName('head')[0] 
+        || document.getElementsByTagName('body')[0]).appendChild(ds);
+     })();
+     </script>
+   <!-- 多说公共JS代码 end -->
+ </section>
+ </section>
+        
+          <aside id="sidebar">
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Android-Performance-Patterns/">Android Performance Patterns</a><span class="tag-list-count">20</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/大保健/">大保健</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/工作效率/">工作效率</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/技术流/">技术流</a><span class="tag-list-count">32</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/槑/">槑</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/自动化测试/">自动化测试</a><span class="tag-list-count">2</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">June 2016</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">April 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">March 2016</a><span class="archive-list-count">11</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/02/">February 2016</a><span class="archive-list-count">15</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">January 2016</a><span class="archive-list-count">6</span></li></ul>
+    </div>
+  </div>
+
+  
+    <div class="widget-wrap">
+	<h3 class="widget-title">Links</h3>
+	<div class="widget">
+		<ul class="entry">
+		<li><a href="http://www.dcharm.com" title="dcharm">杂七杂八by王强 - 数据分析</a></li>
+		<li><a href="http://www.lightskystreet.com" title="lightSky">lightSky's Blog</a></li>
+		<li><a href="http://androooid.github.io/index.html" title="Android小伙伴的Gitbook">Android小伙伴的Gitbook</a></li>
+		</ul>
+	</div>
+</div>
+  
+    <div class="widget-wrap">
+	<h3 class="widget-title">Recent Comments</h3>
+	<div class="widget">
+		<ul class="ds-recent-comments" data-num-items="5" data-show-avatars="0" data-show-time="1" data-show-title="1" data-show-admin="1" data-excerpt-length="70"></ul>
+	</div>
+</div>
+
+<!--多说js加载开始，一个页面只需要加载一次 -->
+<script type="text/javascript">
+if(typeof duoshuoQuery === 'undefined') {
+	  var duoshuoQuery = {short_name:"lileiwork"};
+	  (function() {
+	    var ds = document.createElement('script');
+	    ds.type = 'text/javascript';ds.async = true;
+	    ds.src = 'http://static.duoshuo.com/embed.js';
+	    ds.charset = 'UTF-8';
+	    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(ds);
+	  })();
+  }
+</script>
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2016 Li Lei<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+  </div>
+</body>
+</html>
