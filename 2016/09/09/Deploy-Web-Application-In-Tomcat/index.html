@@ -3,22 +3,27 @@
 <head>
   <meta charset="utf-8">
   
-  <title>Android Performance Patterns - s4ep7 Removing Unused Code | One Step, One Punch</title>
+  <title>Deploy Web Application In Tomcat | One Step, One Punch</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="Third party libraries can be some serious time savers for Android development. They allow us to do awesome things in our app without having to write any of the functionality ourselves. That’s a prett">
+  <meta name="description" content="在开发CrashReporter项目时遇到的一些坑
+
+
+####">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Android Performance Patterns - s4ep7 Removing Unused Code">
-<meta property="og:url" content="http://lilei.work/2016/03/31/Android-Performance-Patterns-s4ep7-Removing-Unused-Code/index.html">
+<meta property="og:title" content="Deploy Web Application In Tomcat">
+<meta property="og:url" content="http://lilei.work/2016/09/09/Deploy-Web-Application-In-Tomcat/index.html">
 <meta property="og:site_name" content="One Step, One Punch">
-<meta property="og:description" content="Third party libraries can be some serious time savers for Android development. They allow us to do awesome things in our app without having to write any of the functionality ourselves. That’s a prett">
-<meta property="og:image" content="http://lilei.work/img/160331_app_s4ep7/advantage.png">
-<meta property="og:image" content="http://lilei.work/img/160331_app_s4ep7/code_bloat.png">
-<meta property="og:image" content="http://lilei.work/img/160331_app_s4ep7/proguard.png">
-<meta property="og:updated_time" content="2016-06-29T06:22:36.000Z">
+<meta property="og:description" content="在开发CrashReporter项目时遇到的一些坑
+
+
+####">
+<meta property="og:updated_time" content="2016-09-09T09:22:48.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Android Performance Patterns - s4ep7 Removing Unused Code">
-<meta name="twitter:description" content="Third party libraries can be some serious time savers for Android development. They allow us to do awesome things in our app without having to write any of the functionality ourselves. That’s a prett">
-<meta name="twitter:image" content="http://lilei.work/img/160331_app_s4ep7/advantage.png">
+<meta name="twitter:title" content="Deploy Web Application In Tomcat">
+<meta name="twitter:description" content="在开发CrashReporter项目时遇到的一些坑
+
+
+####">
   
     <link rel="alternative" href="/atom.xml" title="One Step, One Punch" type="application/atom+xml">
   
@@ -68,10 +73,10 @@
   </div>
 </header>
       <div class="outer">
-        <section id="main"><article id="post-Android-Performance-Patterns-s4ep7-Removing-Unused-Code" class="article article-type-post" itemscope itemprop="blogPost">
+        <section id="main"><article id="post-Deploy-Web-Application-In-Tomcat" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2016/03/31/Android-Performance-Patterns-s4ep7-Removing-Unused-Code/" class="article-date">
-  <time datetime="2016-03-31T01:41:01.000Z" itemprop="datePublished">2016-03-31</time>
+    <a href="/2016/09/09/Deploy-Web-Application-In-Tomcat/" class="article-date">
+  <time datetime="2016-09-09T09:17:03.000Z" itemprop="datePublished">2016-09-09</time>
 </a>
     
   </div>
@@ -82,7 +87,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      Android Performance Patterns - s4ep7 Removing Unused Code
+      Deploy Web Application In Tomcat
     </h1>
   
 
@@ -91,53 +96,18 @@
     <div class="article-entry" itemprop="articleBody">
       
         <blockquote>
-<p>Third party libraries can be some serious time savers for Android development. They allow us to do awesome things in our app without having to write any of the functionality ourselves. That’s a pretty big convenience. What’s not convenient though is the code-bloat they can often come with.</p>
-<p><a href="https://www.youtube.com/watch?v=5frxLkO4oTM&amp;list=PLWz5rJ2EKKc9CBxr3BVjPTPoDPLdPIFCE&amp;index=17" target="_blank" rel="external">Video Link</a></p>
-</blockquote>
-<iframe width="560" height="315" src="https://www.youtube.com/embed/5frxLkO4oTM?list=PLWz5rJ2EKKc9CBxr3BVjPTPoDPLdPIFCE" frameborder="0" allowfullscreen></iframe>
-
-<hr>
-<a id="more"></a>
-<h4 id="Third-Party-Library"><a href="#Third-Party-Library" class="headerlink" title="Third Party Library"></a>Third Party Library</h4><p>在自己的app中使用第三方库有哪些优点呢？</p>
-<ul>
-<li>第三方库可以为我们提供便捷的功能</li>
-<li>它们都经过了良好全面的测试，并且在生产环境中得到验证</li>
-</ul>
-<p><img src="/img/160331_app_s4ep7/advantage.png" alt=""></p>
-<p>而缺点可能就不那么明显</p>
-<ul>
-<li>你必须引用整个第三方库，即使用到的只是其中一个简单的类——这被叫做<code>code bloat</code>（代码膨胀）</li>
-<li>这会使你的apk体积增大</li>
-<li>甚至可能触及65k的方法数天花板（关于65k，请查阅这一篇<a href="https://developer.android.com/tools/building/multidex.html" target="_blank" rel="external">Building Apps with Over 65K Methods</a>）</li>
-</ul>
-<p><img src="/img/160331_app_s4ep7/code_bloat.png" alt=""></p>
-<p>对于<code>MultiDex</code>，小哥给出了非常幽默的描述</p>
-<blockquote>
-<p>It’s pretty much as much fun going to the dentist…</p>
+<p>在开发CrashReporter项目时遇到的一些坑</p>
 </blockquote>
 <hr>
-<h4 id="Proguard"><a href="#Proguard" class="headerlink" title="Proguard"></a>Proguard</h4><p>作用</p>
-<ul>
-<li>Shrink：精简代码，去除无用的类</li>
-<li>Optimize：优化逻辑</li>
-<li>Obfuscate：混淆，增加逆向工程的难度</li>
-</ul>
-<p>一个例子是，使用Proguard后，原本8.4mb的Google IO app被缩减到了4.1mb</p>
-<p><img src="/img/160331_app_s4ep7/proguard.png" alt=""></p>
-<p>开启 proguard 也十分简单，只要在 gradle 文件中将 <code>minifyEnabled</code> 属性声明为 <code>true</code>，并写明 <code>proguardFiles</code> 路径</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">android &#123;</span><br><span class="line">	...</span><br><span class="line">	buildTypes &#123;</span><br><span class="line">		release &#123;</span><br><span class="line">			minifyEnabled <span class="literal">true</span></span><br><span class="line">			proguardFiles getDefaultProguardFile(<span class="string">'proguard-android.txt'</span>)</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>需要注意的是，proguard会导致应用到“反射”的代码无法正常工作，因为它会改变方法名&amp;类名，需要用 <code>keep</code> 在相关代码上关闭proguard</p>
-<p><a href="http://developer.android.com/tools/help/proguard.html" target="_blank" rel="external">ProGuard 官方文档</a></p>
-<hr>
-<h3 id="Ending"><a href="#Ending" class="headerlink" title="===Ending==="></a><em>===Ending===</em></h3><hr>
+<p>#### </p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://lilei.work/2016/03/31/Android-Performance-Patterns-s4ep7-Removing-Unused-Code/" data-id="cisvk1mkg00061zsuzzgwuarb" class="article-share-link">Share</a>
+      <a data-url="http://lilei.work/2016/09/09/Deploy-Web-Application-In-Tomcat/" data-id="cisvk1mlz00141zsu2gzcz7vp" class="article-share-link">Share</a>
       
       
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Android-Performance-Patterns/">Android Performance Patterns</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/技术流/">技术流</a></li></ul>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Backend/">Backend</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/技术流/">技术流</a></li></ul>
 
     </footer>
   </div>
@@ -145,19 +115,10 @@
     
 <nav id="article-nav">
   
-    <a href="/2016/03/31/Git-Squash-Commits/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Newer</strong>
-      <div class="article-nav-title">
-        
-          使用Git对最近n个commit进行合并
-        
-      </div>
-    </a>
   
-  
-    <a href="/2016/03/24/Fixing-Anterior-Pelvic-Tilt/" id="article-nav-older" class="article-nav-link-wrap">
+    <a href="/2016/06/29/Android-View-Visibility/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">骨盆前倾101</div>
+      <div class="article-nav-title">Android 中 View Visibility 的坑</div>
     </a>
   
 </nav>
@@ -168,7 +129,7 @@
 
  <section id="comments">
    <!-- 多说评论框 start -->
-   <div class="ds-thread" data-thread-key="post-Android-Performance-Patterns-s4ep7-Removing-Unused-Code" data-title="Android Performance Patterns - s4ep7 Removing Unused Code" data-url="http://lilei.work/2016/03/31/Android-Performance-Patterns-s4ep7-Removing-Unused-Code/"></div>
+   <div class="ds-thread" data-thread-key="post-Deploy-Web-Application-In-Tomcat" data-title="Deploy Web Application In Tomcat" data-url="http://lilei.work/2016/09/09/Deploy-Web-Application-In-Tomcat/"></div>
    <!-- 多说评论框 end -->
    <!-- 多说公共JS代码 start (一个网页只需插入一次) -->
    <script type="text/javascript">
