@@ -3,17 +3,33 @@
 <head>
   <meta charset="utf-8">
   
-  <title>One Step, One Punch</title>
+  <title>Android WebView 从0到1（一） | One Step, One Punch</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description">
-<meta property="og:type" content="website">
-<meta property="og:title" content="One Step, One Punch">
-<meta property="og:url" content="http://lilei.work/index.html">
+  <meta name="description" content="这一系列将从源码角度，分析WebView加载页面的全过程。在摸透缓存机制的基础上，实现自己的WebView缓存控制项目Vindow。从0到1很难，但是克服了之后，从1到100就容易了许多。
+
+
+WebView.java这里采用android-23的源码示例。
+WebView的类说明注释非常长，建议耐心地读完每一行，随后，你就会对WebView的主要功能有一个轮廓上的认识。
+1234567/**">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android WebView 从0到1（一）">
+<meta property="og:url" content="http://lilei.work/2016/11/09/Android-WebView-0-to-1/index.html">
 <meta property="og:site_name" content="One Step, One Punch">
-<meta property="og:description">
+<meta property="og:description" content="这一系列将从源码角度，分析WebView加载页面的全过程。在摸透缓存机制的基础上，实现自己的WebView缓存控制项目Vindow。从0到1很难，但是克服了之后，从1到100就容易了许多。
+
+
+WebView.java这里采用android-23的源码示例。
+WebView的类说明注释非常长，建议耐心地读完每一行，随后，你就会对WebView的主要功能有一个轮廓上的认识。
+1234567/**">
+<meta property="og:updated_time" content="2016-11-09T11:43:37.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="One Step, One Punch">
-<meta name="twitter:description">
+<meta name="twitter:title" content="Android WebView 从0到1（一）">
+<meta name="twitter:description" content="这一系列将从源码角度，分析WebView加载页面的全过程。在摸透缓存机制的基础上，实现自己的WebView缓存控制项目Vindow。从0到1很难，但是克服了之后，从1到100就容易了许多。
+
+
+WebView.java这里采用android-23的源码示例。
+WebView的类说明注释非常长，建议耐心地读完每一行，随后，你就会对WebView的主要功能有一个轮廓上的认识。
+1234567/**">
   
     <link rel="alternative" href="/atom.xml" title="One Step, One Punch" type="application/atom+xml">
   
@@ -63,9 +79,7 @@
   </div>
 </header>
       <div class="outer">
-        <section id="main">
-  
-    <article id="post-Android-WebView-0-to-1" class="article article-type-post" itemscope itemprop="blogPost">
+        <section id="main"><article id="post-Android-WebView-0-to-1" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2016/11/09/Android-WebView-0-to-1/" class="article-date">
   <time datetime="2016-11-09T00:22:59.000Z" itemprop="datePublished">2016-11-09</time>
@@ -78,8 +92,8 @@
       <header class="article-header">
         
   
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/11/09/Android-WebView-0-to-1/">Android WebView 从0到1（一）</a>
+    <h1 class="article-title" itemprop="name">
+      Android WebView 从0到1（一）
     </h1>
   
 
@@ -294,422 +308,40 @@
     </footer>
   </div>
   
-</article>
-
-
+    
+<nav id="article-nav">
   
-    <article id="post-Deploy-Web-Application-In-Tomcat" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2016/09/09/Deploy-Web-Application-In-Tomcat/" class="article-date">
-  <time datetime="2016-09-09T09:17:03.000Z" itemprop="datePublished">2016-09-09</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
   
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/09/09/Deploy-Web-Application-In-Tomcat/">Deploy Web Application In Tomcat</a>
-    </h1>
+    <a href="/2016/09/09/Deploy-Web-Application-In-Tomcat/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Deploy Web Application In Tomcat</div>
+    </a>
   
+</nav>
 
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <blockquote>
-<p>在开发CrashReporter项目时遇到的一些坑</p>
-</blockquote>
-        
-          <p class="article-more-link">
-            <a href="/2016/09/09/Deploy-Web-Application-In-Tomcat/#more">Read More</a>
-          </p>
-        
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://lilei.work/2016/09/09/Deploy-Web-Application-In-Tomcat/" data-id="civa70ct4001an9suj6o4ietd" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Backend/">Backend</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/技术流/">技术流</a></li></ul>
-
-    </footer>
-  </div>
   
 </article>
 
 
-  
-    <article id="post-Android-View-Visibility" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2016/06/29/Android-View-Visibility/" class="article-date">
-  <time datetime="2016-06-29T03:37:37.000Z" itemprop="datePublished">2016-06-29</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/06/29/Android-View-Visibility/">Android 中 View Visibility 的坑</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <blockquote>
-<p>前几天爆出来一个线上bug：处于“已售完”状态的菜品，依然可以点击加菜。好在提交订单时有校验，对于这种订单会直接打回。<br>究其原因，是加减控件中的代码出了问题</p>
-</blockquote>
-        
-          <p class="article-more-link">
-            <a href="/2016/06/29/Android-View-Visibility/#more">Read More</a>
-          </p>
-        
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://lilei.work/2016/06/29/Android-View-Visibility/" data-id="civa70ct00014n9suc3dcv6qv" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/技术流/">技术流</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-Use-Diffmerge-As-Default-Git-Diff-Tool" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2016/06/22/Use-Diffmerge-As-Default-Git-Diff-Tool/" class="article-date">
-  <time datetime="2016-06-22T04:58:54.000Z" itemprop="datePublished">2016-06-22</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/06/22/Use-Diffmerge-As-Default-Git-Diff-Tool/">Use DiffMerge As Default Git Diff Tool</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <blockquote>
-<p>使用DiffMerge作为默认的git diff GUI工具</p>
-</blockquote>
-        
-          <p class="article-more-link">
-            <a href="/2016/06/22/Use-Diffmerge-As-Default-Git-Diff-Tool/#more">Read More</a>
-          </p>
-        
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://lilei.work/2016/06/22/Use-Diffmerge-As-Default-Git-Diff-Tool/" data-id="civa70ctm0020n9sudb3lhv45" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/技术流/">技术流</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-Launch-Sublime-In-Terminal" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2016/06/22/Launch-Sublime-In-Terminal/" class="article-date">
-  <time datetime="2016-06-22T01:15:10.000Z" itemprop="datePublished">2016-06-22</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/06/22/Launch-Sublime-In-Terminal/">macOS 通过终端启动 Sublime2</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <blockquote>
-<p>同样适用于 <code>*nix</code> 系统下通过控制台启动任何指令</p>
-</blockquote>
-        
-          <p class="article-more-link">
-            <a href="/2016/06/22/Launch-Sublime-In-Terminal/#more">Read More</a>
-          </p>
-        
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://lilei.work/2016/06/22/Launch-Sublime-In-Terminal/" data-id="civa70cte001on9su4pmesjfc" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/技术流/">技术流</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-Android-Studio-gitignore" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2016/06/22/Android-Studio-gitignore/" class="article-date">
-  <time datetime="2016-06-22T01:09:14.000Z" itemprop="datePublished">2016-06-22</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/06/22/Android-Studio-gitignore/">Android Studio .gitignore 文件范本</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <blockquote>
-<p>一份标准的 Android Studio 工程 <code>.gitignore</code> 文件</p>
-</blockquote>
-        
-          <p class="article-more-link">
-            <a href="/2016/06/22/Android-Studio-gitignore/#more">Read More</a>
-          </p>
-        
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://lilei.work/2016/06/22/Android-Studio-gitignore/" data-id="civa70ct10016n9suuz8lb9o9" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/技术流/">技术流</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-Dynamic-Loading-JNI-Not-Work" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2016/06/17/Dynamic-Loading-JNI-Not-Work/" class="article-date">
-  <time datetime="2016-06-17T02:33:02.000Z" itemprop="datePublished">2016-06-17</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/06/17/Dynamic-Loading-JNI-Not-Work/">Android中动态加载JNI失效问题探究(未完待续)</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <blockquote>
-<p>在做so动态加载时遇到了后加载的JNI方法失效的问题</p>
-</blockquote>
-<hr>
-        
-          <p class="article-more-link">
-            <a href="/2016/06/17/Dynamic-Loading-JNI-Not-Work/#more">Read More</a>
-          </p>
-        
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://lilei.work/2016/06/17/Dynamic-Loading-JNI-Not-Work/" data-id="civa70ct6001dn9sucepdgb2j" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Android-Performance-Patterns/">Android Performance Patterns</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/技术流/">技术流</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-Hackathon-1-0" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2016/05/27/Hackathon-1-0/" class="article-date">
-  <time datetime="2016-05-27T11:38:15.000Z" itemprop="datePublished">2016-05-27</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/05/27/Hackathon-1-0/">MT&amp;DP Hackathon 小结</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <blockquote>
-<p>16年5月27日～28日，北京美团总部举办Hackathon，项目小结<br>不论比赛排名如何、能否拿到奖品，学到知识才是自己硬实力的提升</p>
-</blockquote>
-<p><img src="/img/160527_hackathon/hackathon_logo.png" alt=""></p>
-<hr>
-        
-          <p class="article-more-link">
-            <a href="/2016/05/27/Hackathon-1-0/#more">Read More</a>
-          </p>
-        
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://lilei.work/2016/05/27/Hackathon-1-0/" data-id="civa70ctb001kn9su6a09147v" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/技术流/">技术流</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-Android-Performance-Patterns-s4ep8-Removing-Unused-Resources" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2016/04/01/Android-Performance-Patterns-s4ep8-Removing-Unused-Resources/" class="article-date">
-  <time datetime="2016-04-01T01:40:48.000Z" itemprop="datePublished">2016-04-01</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/04/01/Android-Performance-Patterns-s4ep8-Removing-Unused-Resources/">Android Performance Patterns - s4ep8 Removing Unused Resources</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <blockquote>
-<p>Although YOU may be diligent in removing resources your app won’t use, it’s not safe to assume that the LIBRARIES you’re including will do the same.</p>
-</blockquote>
-<iframe width="560" height="315" src="https://www.youtube.com/embed/HxeW6DHEDQU?list=PLWz5rJ2EKKc9CBxr3BVjPTPoDPLdPIFCE" frameborder="0" allowfullscreen></iframe>
-
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://lilei.work/2016/04/01/Android-Performance-Patterns-s4ep8-Removing-Unused-Resources/" data-id="civa70csb000bn9su3h833ixr" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Android-Performance-Patterns/">Android Performance Patterns</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/技术流/">技术流</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-Git-Squash-Commits" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2016/03/31/Git-Squash-Commits/" class="article-date">
-  <time datetime="2016-03-31T13:22:41.000Z" itemprop="datePublished">2016-03-31</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/03/31/Git-Squash-Commits/">使用Git对最近n个commit进行合并</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <blockquote>
-<p>如何在Git中合并多次commit呢？</p>
-</blockquote>
-        
-          <p class="article-more-link">
-            <a href="/2016/03/31/Git-Squash-Commits/#more">Read More</a>
-          </p>
-        
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://lilei.work/2016/03/31/Git-Squash-Commits/" data-id="civa70ct9001in9sur4kl4rut" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/技术流/">技术流</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-  
-    <nav id="page-nav">
-      <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" href="/page/2/">Next &raquo;</a>
-    </nav>
-  
-</section>
+ <section id="comments">
+   <!-- 多说评论框 start -->
+   <div class="ds-thread" data-thread-key="post-Android-WebView-0-to-1" data-title="Android WebView 从0到1（一）" data-url="http://lilei.work/2016/11/09/Android-WebView-0-to-1/"></div>
+   <!-- 多说评论框 end -->
+   <!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+   <script type="text/javascript">
+   var duoshuoQuery = {short_name:'lileiwork'};
+     (function() {
+       var ds = document.createElement('script');
+       ds.type = 'text/javascript';ds.async = true;
+       ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+       ds.charset = 'UTF-8';
+       (document.getElementsByTagName('head')[0] 
+        || document.getElementsByTagName('body')[0]).appendChild(ds);
+     })();
+     </script>
+   <!-- 多说公共JS代码 end -->
+ </section>
+ </section>
         
           <aside id="sidebar">
   
