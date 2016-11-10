@@ -5,31 +5,16 @@
   
   <title>Android WebView 从0到1（一） | One Step, One Punch</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="这一系列将从源码角度，分析WebView加载页面的全过程。在摸透缓存机制的基础上，实现自己的WebView缓存控制项目Vindow。从0到1很难，但是克服了之后，从1到100就容易了许多。
-
-
-WebView.java这里采用android-23的源码示例。
-WebView的类说明注释非常长，建议耐心地读完每一行，随后，你就会对WebView的主要功能有一个轮廓上的认识。
-1234567/**">
+  <meta name="description" content="这一系列将从源码角度，分析WebView加载页面的全过程。在摸透缓存机制的基础上，实现自己的WebView缓存控制项目Vindow。从0到1很难，但是克服了之后，从1到100就容易了许多。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Android WebView 从0到1（一）">
 <meta property="og:url" content="http://lilei.work/2016/11/09/Android-WebView-0-to-1/index.html">
 <meta property="og:site_name" content="One Step, One Punch">
-<meta property="og:description" content="这一系列将从源码角度，分析WebView加载页面的全过程。在摸透缓存机制的基础上，实现自己的WebView缓存控制项目Vindow。从0到1很难，但是克服了之后，从1到100就容易了许多。
-
-
-WebView.java这里采用android-23的源码示例。
-WebView的类说明注释非常长，建议耐心地读完每一行，随后，你就会对WebView的主要功能有一个轮廓上的认识。
-1234567/**">
-<meta property="og:updated_time" content="2016-11-09T11:43:37.000Z">
+<meta property="og:description" content="这一系列将从源码角度，分析WebView加载页面的全过程。在摸透缓存机制的基础上，实现自己的WebView缓存控制项目Vindow。从0到1很难，但是克服了之后，从1到100就容易了许多。">
+<meta property="og:updated_time" content="2016-11-10T01:41:39.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Android WebView 从0到1（一）">
-<meta name="twitter:description" content="这一系列将从源码角度，分析WebView加载页面的全过程。在摸透缓存机制的基础上，实现自己的WebView缓存控制项目Vindow。从0到1很难，但是克服了之后，从1到100就容易了许多。
-
-
-WebView.java这里采用android-23的源码示例。
-WebView的类说明注释非常长，建议耐心地读完每一行，随后，你就会对WebView的主要功能有一个轮廓上的认识。
-1234567/**">
+<meta name="twitter:description" content="这一系列将从源码角度，分析WebView加载页面的全过程。在摸透缓存机制的基础上，实现自己的WebView缓存控制项目Vindow。从0到1很难，但是克服了之后，从1到100就容易了许多。">
   
     <link rel="alternative" href="/atom.xml" title="One Step, One Punch" type="application/atom+xml">
   
@@ -104,6 +89,7 @@ WebView的类说明注释非常长，建议耐心地读完每一行，随后，�
         <blockquote>
 <p>这一系列将从源码角度，分析WebView加载页面的全过程。在摸透缓存机制的基础上，实现自己的WebView缓存控制项目Vindow。<br>从0到1很难，但是克服了之后，从1到100就容易了许多。</p>
 </blockquote>
+<a id="more"></a>
 <hr>
 <h2 id="WebView-java"><a href="#WebView-java" class="headerlink" title="WebView.java"></a>WebView.java</h2><p>这里采用<code>android-23</code>的源码示例。</p>
 <p>WebView的类说明注释非常长，建议耐心地读完每一行，随后，你就会对WebView的主要功能有一个轮廓上的认识。</p>
@@ -256,7 +242,7 @@ WebView的类说明注释非常长，建议耐心地读完每一行，随后，�
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (mNativeAwContents != <span class="number">0</span>) &#123;</span><br><span class="line">    nativeSetExtraHeadersForUrl(</span><br><span class="line">            mNativeAwContents, params.getUrl(), params.getExtraHttpRequestHeadersString());</span><br><span class="line">&#125;</span><br><span class="line">params.setExtraHeaders(<span class="keyword">new</span> HashMap&lt;String, String&gt;());</span><br></pre></td></tr></table></figure>
 <p>对params进行过上述二次加工后，调用mContentViewCore的loadUrl方法</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mContentViewCore.loadUrl(params);</span><br></pre></td></tr></table></figure>
-<p>继续追溯至<a href="https://chromium.googlesource.com/chromium/src/+/4907c84d52411cdc8dd78b613eeeb5bbad5ad0ab/content/public/android/java/src/org/chromium/content/browser/ContentViewCore.java#643" target="_blank" rel="external">ContentViewCore.java</a>，位于<code>org.chromium.content.browser</code>包中。</p>
+<p>继续追溯至<a href="https://chromium.googlesource.com/chromium/src/+/4907c84d52411cdc8dd78b613eeeb5bbad5ad0ab/content/public/android/java/src/org/chromium/content/browser/ContentViewCore.java" target="_blank" rel="external">ContentViewCore.java</a>，位于<code>org.chromium.content.browser</code>包中。</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span><br><span class="line"> * Load url without fixing up the url string. Consumers of ContentView are responsible for</span><br><span class="line"> * ensuring the URL passed in is properly formatted (i.e. the scheme has been added if left</span><br><span class="line"> * off during user input).</span><br><span class="line"> *</span><br><span class="line"> * <span class="doctag">@param</span> pararms Parameters for this load.</span><br><span class="line"> */</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">loadUrl</span><span class="params">(LoadUrlParams params)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (mNativeContentViewCore == <span class="number">0</span>) <span class="keyword">return</span>;</span><br><span class="line">    <span class="keyword">if</span> (isPersonalityView()) &#123;</span><br><span class="line">        <span class="comment">// For WebView, always use the user agent override, which is set</span></span><br><span class="line">        <span class="comment">// every time the user agent in ContentSettings is modified.</span></span><br><span class="line">        params.setOverrideUserAgent(LoadUrlParams.UA_OVERRIDE_TRUE);</span><br><span class="line">    &#125;</span><br><span class="line">    nativeLoadUrl(mNativeContentViewCore,</span><br><span class="line">            params.mUrl,</span><br><span class="line">            params.mLoadUrlType,</span><br><span class="line">            params.mTransitionType,</span><br><span class="line">            params.mUaOverrideOption,</span><br><span class="line">            params.getExtraHeadersString(),</span><br><span class="line">            params.mPostData,</span><br><span class="line">            params.mBaseUrlForDataUrl,</span><br><span class="line">            params.mVirtualUrlForDataUrl,</span><br><span class="line">            params.mCanLoadLocalResources);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>这里调用了nativeLoadUrl方法，传入的参数我们之前都已经分析过其含义，除了第一个参数<code>mNativeContentViewCore</code>，它是一个指向<code>ContentViewCoreImpl</code>的指针地址。</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Native pointer to C++ ContentViewCoreImpl object which will be set by nativeInit().</span></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">int</span> mNativeContentViewCore = <span class="number">0</span>;</span><br></pre></td></tr></table></figure>
@@ -300,7 +286,7 @@ WebView的类说明注释非常长，建议耐心地读完每一行，随后，�
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://lilei.work/2016/11/09/Android-WebView-0-to-1/" data-id="civa71sh40000o3su1ptt4uk6" class="article-share-link">Share</a>
+      <a data-url="http://lilei.work/2016/11/09/Android-WebView-0-to-1/" data-id="civbn3zem0019nbsueiki1br8" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Android/">Android</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/源码分析/">源码分析</a></li></ul>
@@ -310,6 +296,15 @@ WebView的类说明注释非常长，建议耐心地读完每一行，随后，�
   
     
 <nav id="article-nav">
+  
+    <a href="/2016/11/10/Android-WebView-0-to-1-part-2/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Android WebView 从0到1（二）
+        
+      </div>
+    </a>
   
   
     <a href="/2016/09/09/Deploy-Web-Application-In-Tomcat/" id="article-nav-older" class="article-nav-link-wrap">
@@ -351,7 +346,7 @@ WebView的类说明注释非常长，建议耐心地读完每一行，随后，�
   <div class="widget-wrap">
     <h3 class="widget-title">Tags</h3>
     <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Android/">Android</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Android-Performance-Patterns/">Android Performance Patterns</a><span class="tag-list-count">20</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Backend/">Backend</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/大保健/">大保健</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/工作效率/">工作效率</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/技术流/">技术流</a><span class="tag-list-count">33</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/槑/">槑</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/源码分析/">源码分析</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/自动化测试/">自动化测试</a><span class="tag-list-count">2</span></li></ul>
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Android/">Android</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Android-Performance-Patterns/">Android Performance Patterns</a><span class="tag-list-count">20</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Backend/">Backend</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/大保健/">大保健</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/工作效率/">工作效率</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/技术流/">技术流</a><span class="tag-list-count">33</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/槑/">槑</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/源码分析/">源码分析</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/自动化测试/">自动化测试</a><span class="tag-list-count">2</span></li></ul>
     </div>
   </div>
 
@@ -360,7 +355,7 @@ WebView的类说明注释非常长，建议耐心地读完每一行，随后，�
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">November 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">September 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">June 2016</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">April 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">March 2016</a><span class="archive-list-count">11</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/02/">February 2016</a><span class="archive-list-count">15</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">January 2016</a><span class="archive-list-count">6</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">November 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">September 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">June 2016</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">April 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">March 2016</a><span class="archive-list-count">11</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/02/">February 2016</a><span class="archive-list-count">15</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">January 2016</a><span class="archive-list-count">6</span></li></ul>
     </div>
   </div>
 

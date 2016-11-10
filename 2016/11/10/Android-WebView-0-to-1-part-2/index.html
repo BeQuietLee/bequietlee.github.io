@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Android WebView 从0到1（二） | One Step, One Punch</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="WebView中clearCache的执行过程源码分析。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android WebView 从0到1（二）">
+<meta property="og:url" content="http://lilei.work/2016/11/10/Android-WebView-0-to-1-part-2/index.html">
+<meta property="og:site_name" content="One Step, One Punch">
+<meta property="og:description" content="WebView中clearCache的执行过程源码分析。">
+<meta property="og:updated_time" content="2016-11-10T02:35:58.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Android WebView 从0到1（二）">
+<meta name="twitter:description" content="WebView中clearCache的执行过程源码分析。">
+  
+    <link rel="alternative" href="/atom.xml" title="One Step, One Punch" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="/css/style.css">
+  
+
+</head>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">One Step, One Punch</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">bequietlee#gmail.com</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://lilei.work"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-Android-WebView-0-to-1-part-2" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/11/10/Android-WebView-0-to-1-part-2/" class="article-date">
+  <time datetime="2016-11-10T00:31:11.000Z" itemprop="datePublished">2016-11-10</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Android WebView 从0到1（二）
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <blockquote>
+<p>WebView中clearCache的执行过程源码分析。</p>
+</blockquote>
+<a id="more"></a>
+<hr>
+<h2 id="前情提要"><a href="#前情提要" class="headerlink" title="前情提要"></a>前情提要</h2><p>上一篇文章中我们对Android WebView的loadUrl方法进行了分析，这次我们来看看clearCache究竟做了什么事，进而搞清楚WebView中的缓存机制。</p>
+<h2 id="WebView-clearCache"><a href="#WebView-clearCache" class="headerlink" title="WebView.clearCache"></a>WebView.clearCache</h2><p>clearCache的源码很简单，唯一的参数<code>includeDiskFiles</code>也很容易理解。如前篇所述，WebView的大部分操作，都是代理给<code>WebViewProvider</code>来进行，clearCache也不例外。不过可以发现，这里有个<code>checkThread()</code>的操作，这是来进行什么的呢？让我们在源码中一探究竟。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span><br><span class="line"> * Clears the resource cache. Note that the cache is per-application, so</span><br><span class="line"> * this will clear the cache for all WebViews used.</span><br><span class="line"> *</span><br><span class="line"> * <span class="doctag">@param</span> includeDiskFiles if false, only the RAM cache is cleared</span><br><span class="line"> */</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">clearCache</span><span class="params">(<span class="keyword">boolean</span> includeDiskFiles)</span> </span>&#123;</span><br><span class="line">    checkThread();</span><br><span class="line">    mProvider.clearCache(includeDiskFiles);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">checkThread</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="comment">// Ignore mWebViewThread == null because this can be called during in the super class</span></span><br><span class="line">    <span class="comment">// constructor, before this class's own constructor has even started.</span></span><br><span class="line">    <span class="keyword">if</span> (mWebViewThread != <span class="keyword">null</span> &amp;&amp; Looper.myLooper() != mWebViewThread) &#123;</span><br><span class="line">        Throwable throwable = <span class="keyword">new</span> Throwable(</span><br><span class="line">                <span class="string">"A WebView method was called on thread '"</span> +</span><br><span class="line">                Thread.currentThread().getName() + <span class="string">"'. "</span> +</span><br><span class="line">                <span class="string">"All WebView methods must be called on the same thread. "</span> +</span><br><span class="line">                <span class="string">"(Expected Looper "</span> + mWebViewThread + <span class="string">" called on "</span> + Looper.myLooper() +</span><br><span class="line">                <span class="string">", FYI main Looper is "</span> + Looper.getMainLooper() + <span class="string">")"</span>);</span><br><span class="line">        Log.w(LOGTAG, Log.getStackTraceString(throwable));</span><br><span class="line">        StrictMode.onWebViewMethodCalledOnWrongThread(throwable);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (sEnforceThreadChecking) &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(throwable);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>开头注释里就已经说明，忽略<code>mWebViewThread</code>为null的情况，因为可能会在超类的构造器里调用这个方法，此时WebView这个类的对象还没有构建出来，意味着<code>mWebViewThread</code>为null。<code>if</code>条件中的<code>Looper.myLooper() != mWebViewThread</code>这条判断，对Android系统有过一定了解的人的人，应该会对<code>Looper.myLooper()</code>这种写法非常熟悉，这是获取当前线程的典型手段。如果当前线程不是WebView线程的话，就要做好抛出异常的准备。为什么要做这种判断呢？我分析了10分钟，得出结论是：因为WebView中很多操作，都需要运用线程内部资源，如果在外部线程中调用，很容易出现并发问题，如果要避免，就只有增加同步的成本，所以索性只限制在线程内了。有一点值得注意的是，因为WebView是一个UI组件，大部分时间里都在主线程中初始化，因此，这里判断的就是当前线程是否为UI线程。</p>
+<p>接下来我们看一下<code>WebViewProvider</code>中的<code>clearCache</code>方法，依旧是<a href="https://android.googlesource.com/platform/frameworks/webview/+/4dcabae/chromium/java/com/android/webview/chromium/WebViewChromium.java" target="_blank" rel="external">WebViewChromium.java</a>。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">clearCache</span><span class="params">(<span class="keyword">boolean</span> includeDiskFiles)</span> </span>&#123;</span><br><span class="line">    mAwContents.clearCache(includeDiskFiles);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>同样，这个操作被代理给了<code>AwContents</code>，源码见<a href="https://android.googlesource.com/platform/external/chromium_org/+/c5c1b6121eac447fb8d8691bd637e2b6b188fd75/android_webview/java/src/org/chromium/android_webview/AwContents.java" target="_blank" rel="external">AwContents.java</a>。需要注意，由于app内所有的WebView缓存都是保存在一个地方，这个方法会清空app全部WebView的缓存，参数<code>includeDiskFiles</code>控制清空硬盘上的缓存文件。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span><br><span class="line"> * Clears the resource cache. Note that the cache is per-application, so this will clear the</span><br><span class="line"> * cache for all WebViews used.</span><br><span class="line"> *</span><br><span class="line"> * <span class="doctag">@param</span> includeDiskFiles if false, only the RAM cache is cleared</span><br><span class="line"> */</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">clearCache</span><span class="params">(<span class="keyword">boolean</span> includeDiskFiles)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (mNativeAwContents == <span class="number">0</span>) <span class="keyword">return</span>;</span><br><span class="line">    nativeClearCache(mNativeAwContents, includeDiskFiles);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>对应的实现位于<a href="https://chromium.googlesource.com/experimental/chromium/src/+/master/android_webview/native/aw_contents.cc" target="_blank" rel="external">aw_contents.cc</a>代码。先检测当前线程为UI线程，然后调用<code>render_view_host_ext_</code>的ClearCache方法，如果需要清空硬盘上的缓存的话，调用<code>RemoveHttpDiskCache(web_contents_-&gt;GetRenderProcessHost())</code>。逐个来分析。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> AwContents::ClearCache(JNIEnv* env,</span><br><span class="line">                            <span class="keyword">const</span> JavaParamRef&lt;jobject&gt;&amp; obj,</span><br><span class="line">                            jboolean include_disk_files) &#123;</span><br><span class="line">  DCHECK_CURRENTLY_ON(BrowserThread::UI);</span><br><span class="line">  render_view_host_ext_-&gt;ClearCache();</span><br><span class="line">  <span class="keyword">if</span> (include_disk_files)</span><br><span class="line">    RemoveHttpDiskCache(web_contents_-&gt;GetRenderProcessHost());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>首先看<code>render_view_host_ext_-&gt;ClearCache()</code>，代码在<a href="https://chromium.googlesource.com/chromium/src/+/master/android_webview/browser/renderer_host/aw_render_view_host_ext.cc" target="_blank" rel="external">aw_render_view_host_ext.cc</a>。这里发出了一个信息，<code>AwViewMsg_ClearCache</code>，看出来了，是广播模式。那么消息监听者在哪儿呢？</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> AwRenderViewHostExt::ClearCache() &#123;</span><br><span class="line">  DCHECK(CalledOnValidThread());</span><br><span class="line">  Send(<span class="keyword">new</span> AwViewMsg_ClearCache);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>监听者位于<a href="https://chromium.googlesource.com/chromium/src/+/refs/heads/master/android_webview/renderer/aw_render_thread_observer.cc" target="_blank" rel="external">aw_render_thread_observer.cc</a>。通过<code>blink::WebCache::clear()</code>调用clear方法。<code>blink</code>究竟是个啥？I don’t know. 借助Google的力量，找到了<code>WebCache::clear()</code>的实现。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">bool</span> AwRenderThreadObserver::OnControlMessageReceived(</span><br><span class="line">    <span class="keyword">const</span> IPC::Message&amp; message) &#123;</span><br><span class="line">  <span class="keyword">bool</span> handled = <span class="literal">true</span>;</span><br><span class="line">  IPC_BEGIN_MESSAGE_MAP(AwRenderThreadObserver, message)</span><br><span class="line">    IPC_MESSAGE_HANDLER(AwViewMsg_ClearCache, OnClearCache)</span><br><span class="line">    IPC_MESSAGE_HANDLER(AwViewMsg_SetJsOnlineProperty, OnSetJsOnlineProperty)</span><br><span class="line">    IPC_MESSAGE_UNHANDLED(handled = <span class="literal">false</span>)</span><br><span class="line">  IPC_END_MESSAGE_MAP()</span><br><span class="line">  <span class="keyword">return</span> handled;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">void</span> AwRenderThreadObserver::OnClearCache() &#123;</span><br><span class="line">  blink::WebCache::clear();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><a href="https://chromium.googlesource.com/chromium/blink/+/master/Source/web/WebCache.cpp" target="_blank" rel="external">WebCache.cpp</a></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> WebCache::clear()</span><br><span class="line">&#123;</span><br><span class="line">    MemoryCache* cache = memoryCache();</span><br><span class="line">    <span class="keyword">if</span> (cache)</span><br><span class="line">        cache-&gt;evictResources();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>获取<code>memoryCache()</code>的方法位于<a href="https://chromium.googlesource.com/chromium/blink/+/master/Source/web/WebCache.cpp" target="_blank" rel="external">WebCache.cpp</a>，可以看出该cache是线程相关的，而且从命名上就可以看出，这是<code>MemoryCache</code>，位于RAM中。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">MemoryCache* <span class="title">memoryCache</span><span class="params">()</span></span><br><span class="line"></span>&#123;</span><br><span class="line">    ASSERT(WTF::isMainThread());</span><br><span class="line">    <span class="keyword">if</span> (!gMemoryCache)</span><br><span class="line">        gMemoryCache = <span class="keyword">new</span> Persistent&lt;MemoryCache&gt;(MemoryCache::create());</span><br><span class="line">    <span class="keyword">return</span> gMemoryCache-&gt;get();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>分析完清理内存缓存的路径，我们接下来看如何清理磁盘缓存。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (include_disk_files)</span><br><span class="line">    RemoveHttpDiskCache(web_contents_-&gt;GetRenderProcessHost());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><code>RemoveHttpDiskCache</code>位于<a href="https://chromium.googlesource.com/chromium/src.git/+/master/android_webview/browser/net_disk_cache_remover.cc" target="_blank" rel="external">net_disk_cache_remover.cc</a>。所做的事情是，在<code>BrowserThread</code>中发布一个Task，清理<code>Render</code>进程拥有的磁盘空间。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">RemoveHttpDiskCache</span><span class="params">(content::RenderProcessHost* render_process_host)</span> </span>&#123;</span><br><span class="line">  BrowserThread::PostTask(</span><br><span class="line">      BrowserThread::IO, FROM_HERE,</span><br><span class="line">      base::Bind(&amp;ClearHttpDiskCacheOnIoThread,</span><br><span class="line">                 base::Unretained(render_process_host-&gt;GetStoragePartition()-&gt;</span><br><span class="line">                     GetURLRequestContext()),</span><br><span class="line">                 base::Unretained(render_process_host-&gt;GetStoragePartition()-&gt;</span><br><span class="line">                     GetMediaURLRequestContext())));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>到这里，似乎告一段落了。</p>
+<hr>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://lilei.work/2016/11/10/Android-WebView-0-to-1-part-2/" data-id="civbn3zeg0012nbsuqlq24gjc" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Android/">Android</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/源码分析/">源码分析</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2016/11/09/Android-WebView-0-to-1/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Android WebView 从0到1（一）</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+ <section id="comments">
+   <!-- 多说评论框 start -->
+   <div class="ds-thread" data-thread-key="post-Android-WebView-0-to-1-part-2" data-title="Android WebView 从0到1（二）" data-url="http://lilei.work/2016/11/10/Android-WebView-0-to-1-part-2/"></div>
+   <!-- 多说评论框 end -->
+   <!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+   <script type="text/javascript">
+   var duoshuoQuery = {short_name:'lileiwork'};
+     (function() {
+       var ds = document.createElement('script');
+       ds.type = 'text/javascript';ds.async = true;
+       ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+       ds.charset = 'UTF-8';
+       (document.getElementsByTagName('head')[0] 
+        || document.getElementsByTagName('body')[0]).appendChild(ds);
+     })();
+     </script>
+   <!-- 多说公共JS代码 end -->
+ </section>
+ </section>
+        
+          <aside id="sidebar">
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Android/">Android</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Android-Performance-Patterns/">Android Performance Patterns</a><span class="tag-list-count">20</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Backend/">Backend</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/大保健/">大保健</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/工作效率/">工作效率</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/技术流/">技术流</a><span class="tag-list-count">33</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/槑/">槑</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/源码分析/">源码分析</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/自动化测试/">自动化测试</a><span class="tag-list-count">2</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">November 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">September 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">June 2016</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">April 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">March 2016</a><span class="archive-list-count">11</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/02/">February 2016</a><span class="archive-list-count">15</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">January 2016</a><span class="archive-list-count">6</span></li></ul>
+    </div>
+  </div>
+
+  
+    <div class="widget-wrap">
+	<h3 class="widget-title">Links</h3>
+	<div class="widget">
+		<ul class="entry">
+		<li><a href="http://www.dcharm.com" title="dcharm">杂七杂八by王强 - 数据分析</a></li>
+		<li><a href="http://www.lightskystreet.com" title="lightSky">lightSky's Blog</a></li>
+		<li><a href="http://androooid.github.io/index.html" title="Android小伙伴的Gitbook">Android小伙伴的Gitbook</a></li>
+		</ul>
+	</div>
+</div>
+  
+    <div class="widget-wrap">
+	<h3 class="widget-title">Recent Comments</h3>
+	<div class="widget">
+		<ul class="ds-recent-comments" data-num-items="5" data-show-avatars="0" data-show-time="1" data-show-title="1" data-show-admin="1" data-excerpt-length="70"></ul>
+	</div>
+</div>
+
+<!--多说js加载开始，一个页面只需要加载一次 -->
+<script type="text/javascript">
+if(typeof duoshuoQuery === 'undefined') {
+	  var duoshuoQuery = {short_name:"lileiwork"};
+	  (function() {
+	    var ds = document.createElement('script');
+	    ds.type = 'text/javascript';ds.async = true;
+	    ds.src = 'http://static.duoshuo.com/embed.js';
+	    ds.charset = 'UTF-8';
+	    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(ds);
+	  })();
+  }
+</script>
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2016 Li Lei<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+  </div>
+</body>
+</html>
