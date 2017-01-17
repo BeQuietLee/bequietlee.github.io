@@ -3,21 +3,24 @@
 <head>
   <meta charset="utf-8">
   
-  <title>Android应用签名实践 | One Step, One Punch</title>
+  <title>Android Performance Patterns s5ep3 App Launch time &amp; Activity creation | One Step, One Punch</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="参考资料
-Android给apk签名那点事">
+  <meta name="description" content="ep1介绍了Application启动过慢的原因，本节分析Activity启动过慢的原因，启动速度标准以及工具。link">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Android应用签名实践">
-<meta property="og:url" content="http://lilei.work/2017/01/16/Android-Sign/index.html">
+<meta property="og:title" content="Android Performance Patterns s5ep3 App Launch time & Activity creation">
+<meta property="og:url" content="http://lilei.work/2017/01/17/Android-Performance-Patterns-s6ep2-App-Launch-Time-And-Activity-Creation/index.html">
 <meta property="og:site_name" content="One Step, One Punch">
-<meta property="og:description" content="参考资料
-Android给apk签名那点事">
-<meta property="og:updated_time" content="2017-01-16T06:21:28.000Z">
+<meta property="og:description" content="ep1介绍了Application启动过慢的原因，本节分析Activity启动过慢的原因，启动速度标准以及工具。link">
+<meta property="og:image" content="http://lilei.work/img/170117_app_s6ep2/title.png">
+<meta property="og:image" content="http://lilei.work/img/170117_app_s6ep2/slow_main_activity.png">
+<meta property="og:image" content="http://lilei.work/img/170117_app_s6ep2/complex_layout.png">
+<meta property="og:image" content="http://lilei.work/img/170117_app_s6ep2/slow_sync.png">
+<meta property="og:image" content="http://lilei.work/img/170117_app_s6ep2/async.png">
+<meta property="og:updated_time" content="2017-01-17T02:11:34.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Android应用签名实践">
-<meta name="twitter:description" content="参考资料
-Android给apk签名那点事">
+<meta name="twitter:title" content="Android Performance Patterns s5ep3 App Launch time & Activity creation">
+<meta name="twitter:description" content="ep1介绍了Application启动过慢的原因，本节分析Activity启动过慢的原因，启动速度标准以及工具。link">
+<meta name="twitter:image" content="http://lilei.work/img/170117_app_s6ep2/title.png">
   
     <link rel="alternative" href="/atom.xml" title="One Step, One Punch" type="application/atom+xml">
   
@@ -67,10 +70,10 @@ Android给apk签名那点事">
   </div>
 </header>
       <div class="outer">
-        <section id="main"><article id="post-Android-Sign" class="article article-type-post" itemscope itemprop="blogPost">
+        <section id="main"><article id="post-Android-Performance-Patterns-s6ep2-App-Launch-Time-And-Activity-Creation" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2017/01/16/Android-Sign/" class="article-date">
-  <time datetime="2017-01-16T06:15:48.000Z" itemprop="datePublished">2017-01-16</time>
+    <a href="/2017/01/17/Android-Performance-Patterns-s6ep2-App-Launch-Time-And-Activity-Creation/" class="article-date">
+  <time datetime="2017-01-17T01:45:40.000Z" itemprop="datePublished">2017-01-17</time>
 </a>
     
   </div>
@@ -81,7 +84,7 @@ Android给apk签名那点事">
         
   
     <h1 class="article-title" itemprop="name">
-      Android应用签名实践
+      Android Performance Patterns s5ep3 App Launch time &amp; Activity creation
     </h1>
   
 
@@ -89,17 +92,46 @@ Android给apk签名那点事">
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><ul>
-<li><a href="http://www.jianshu.com/p/e9a685c88258" target="_blank" rel="external">Android给apk签名那点事</a></li>
+        <blockquote>
+<p>ep1介绍了Application启动过慢的原因，本节分析Activity启动过慢的原因，启动速度标准以及工具。<br><a href="https://www.youtube.com/watch?v=AkafJ6NdrhY&amp;list=PLWz5rJ2EKKc9CBxr3BVjPTPoDPLdPIFCE&amp;index=75" target="_blank" rel="external">link</a></p>
+</blockquote>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/AkafJ6NdrhY" frameborder="0" allowfullscreen></iframe>
+
+<hr>
+<a id="more"></a>
+<p><img src="/img/170117_app_s6ep2/title.png" alt=""></p>
+<hr>
+<h1 id="启动MainActivity过慢"><a href="#启动MainActivity过慢" class="headerlink" title="启动MainActivity过慢"></a>启动MainActivity过慢</h1><p>原因可能有多个，如下图。</p>
+<p><img src="/img/170117_app_s6ep2/slow_main_activity.png" alt=""></p>
+<ul>
+<li>加载布局</li>
+<li>加载 Bitmap（引起GC）</li>
+<li>网络请求</li>
+<li>读写 User Preference</li>
 </ul>
+<hr>
+<h1 id="分析问题"><a href="#分析问题" class="headerlink" title="分析问题"></a>分析问题</h1><h2 id="Method-tracing-tool"><a href="#Method-tracing-tool" class="headerlink" title="Method tracing tool"></a>Method tracing tool</h2><p><a href="https://developer.android.com/studio/profile/am-methodtrace.html" target="_blank" rel="external">Method Tracer</a> 工具被用来查看每个方法的执行时间。</p>
+<p>如果<code>onCreate</code>的执行超过了<strong>16ms～30ms</strong>，那么它很可能是有问题的。</p>
+<h2 id="Inserting-Trace-Commands"><a href="#Inserting-Trace-Commands" class="headerlink" title="Inserting Trace Commands"></a>Inserting Trace Commands</h2><p>使用<code>trace</code>来记录开始／截止时间，所记录的时间会显示在<a href="https://developer.android.com/studio/profile/systrace-commandline.html" target="_blank" rel="external">Systrace</a>中。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">trace.beginSection();</span><br><span class="line"></span><br><span class="line"><span class="comment">// code to be valued</span></span><br><span class="line"></span><br><span class="line">trace.endSection();</span><br></pre></td></tr></table></figure>
+<hr>
+<h1 id="造成Activity启动过慢的原因"><a href="#造成Activity启动过慢的原因" class="headerlink" title="造成Activity启动过慢的原因"></a>造成Activity启动过慢的原因</h1><h2 id="Complex-Layouts"><a href="#Complex-Layouts" class="headerlink" title="Complex Layouts"></a>Complex Layouts</h2><p>首当其冲的是复杂布局导致加载过慢，布局越复杂，越多的资源文件（图片、主题）需要加载。</p>
+<p><img src="/img/170117_app_s6ep2/complex_layout.png" alt=""></p>
+<p>解决方法有降低复杂度、使结构扁平化、对于不可见的元素暂时不加载。</p>
+<h2 id="懒加载-amp-异步处理"><a href="#懒加载-amp-异步处理" class="headerlink" title="懒加载&amp;异步处理"></a>懒加载&amp;异步处理</h2><p><img src="/img/170117_app_s6ep2/slow_sync.png" alt=""></p>
+<p>当初始化过程中涉及多个耗时操作，最糟糕的情况是把它们串行起来进行，这会导致每一项操作的延迟被叠加起来，让用户抓狂。</p>
+<p>这时应当判断哪些操作是一定要串行进行，哪些是可以异步加载的，从而进行优化。</p>
+<p><img src="/img/170117_app_s6ep2/async.png" alt=""></p>
+<hr>
+<h4 id="End"><a href="#End" class="headerlink" title="====End===="></a><em>====End====</em></h4><hr>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://lilei.work/2017/01/16/Android-Sign/" data-id="ciy0vszjy0012rzsuo8dtm4g8" class="article-share-link">Share</a>
+      <a data-url="http://lilei.work/2017/01/17/Android-Performance-Patterns-s6ep2-App-Launch-Time-And-Activity-Creation/" data-id="ciy0vszjs000xrzsum9464hnx" class="article-share-link">Share</a>
       
       
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Android/">Android</a></li></ul>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Android-Performance-Patterns/">Android Performance Patterns</a></li></ul>
 
     </footer>
   </div>
@@ -107,19 +139,10 @@ Android给apk签名那点事">
     
 <nav id="article-nav">
   
-    <a href="/2017/01/16/Using-Charles-Proxy-with-Genymotion/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Newer</strong>
-      <div class="article-nav-title">
-        
-          使用Charles监控Genymotion模拟器发送的请求
-        
-      </div>
-    </a>
   
-  
-    <a href="/2017/01/16/Android-Performance-Patterns-s6ep1-Launch-Time-Performance/" id="article-nav-older" class="article-nav-link-wrap">
+    <a href="/2017/01/16/Using-Charles-Proxy-with-Genymotion/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">Android-Performance-Patterns-s6ep1-Launch-Time-Performance</div>
+      <div class="article-nav-title">使用Charles监控Genymotion模拟器发送的请求</div>
     </a>
   
 </nav>
@@ -130,7 +153,7 @@ Android给apk签名那点事">
 
  <section id="comments">
    <!-- 多说评论框 start -->
-   <div class="ds-thread" data-thread-key="post-Android-Sign" data-title="Android应用签名实践" data-url="http://lilei.work/2017/01/16/Android-Sign/"></div>
+   <div class="ds-thread" data-thread-key="post-Android-Performance-Patterns-s6ep2-App-Launch-Time-And-Activity-Creation" data-title="Android Performance Patterns s5ep3 App Launch time &amp; Activity creation" data-url="http://lilei.work/2017/01/17/Android-Performance-Patterns-s6ep2-App-Launch-Time-And-Activity-Creation/"></div>
    <!-- 多说评论框 end -->
    <!-- 多说公共JS代码 start (一个网页只需插入一次) -->
    <script type="text/javascript">
