@@ -3,18 +3,21 @@
 <head>
   <meta charset="utf-8">
   
-  <title>使用Charles监控Genymotion模拟器发送的请求 | One Step, One Punch</title>
+  <title>Android Performance Patterns s6ep3 App Launch time &amp; Bloated Application objects | One Step, One Punch</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="Charles在模拟器中的配置，与在真机上的配置有所不同。">
+  <meta name="description" content="This videos are really interesting but it seems to me that the last 3 episodes have been basically the same.﻿ ————摘自youtube评论link">
 <meta property="og:type" content="article">
-<meta property="og:title" content="使用Charles监控Genymotion模拟器发送的请求">
-<meta property="og:url" content="http://lilei.work/2017/01/16/Using-Charles-Proxy-with-Genymotion/index.html">
+<meta property="og:title" content="Android Performance Patterns s6ep3 App Launch time & Bloated Application objects">
+<meta property="og:url" content="http://lilei.work/2017/01/22/Android-Performance-Patterns-s6ep3-App-Launch-Time/index.html">
 <meta property="og:site_name" content="One Step, One Punch">
-<meta property="og:description" content="Charles在模拟器中的配置，与在真机上的配置有所不同。">
-<meta property="og:updated_time" content="2017-01-16T09:38:05.000Z">
+<meta property="og:description" content="This videos are really interesting but it seems to me that the last 3 episodes have been basically the same.﻿ ————摘自youtube评论link">
+<meta property="og:image" content="http://lilei.work/img/170117_app_s6ep3/wasted_work.png">
+<meta property="og:image" content="http://lilei.work/img/170117_app_s6ep3/lazy_loading.png">
+<meta property="og:updated_time" content="2017-01-22T01:46:46.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="使用Charles监控Genymotion模拟器发送的请求">
-<meta name="twitter:description" content="Charles在模拟器中的配置，与在真机上的配置有所不同。">
+<meta name="twitter:title" content="Android Performance Patterns s6ep3 App Launch time & Bloated Application objects">
+<meta name="twitter:description" content="This videos are really interesting but it seems to me that the last 3 episodes have been basically the same.﻿ ————摘自youtube评论link">
+<meta name="twitter:image" content="http://lilei.work/img/170117_app_s6ep3/wasted_work.png">
   
     <link rel="alternative" href="/atom.xml" title="One Step, One Punch" type="application/atom+xml">
   
@@ -64,10 +67,10 @@
   </div>
 </header>
       <div class="outer">
-        <section id="main"><article id="post-Using-Charles-Proxy-with-Genymotion" class="article article-type-post" itemscope itemprop="blogPost">
+        <section id="main"><article id="post-Android-Performance-Patterns-s6ep3-App-Launch-Time" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2017/01/16/Using-Charles-Proxy-with-Genymotion/" class="article-date">
-  <time datetime="2017-01-16T09:25:07.000Z" itemprop="datePublished">2017-01-16</time>
+    <a href="/2017/01/22/Android-Performance-Patterns-s6ep3-App-Launch-Time/" class="article-date">
+  <time datetime="2017-01-22T01:28:39.000Z" itemprop="datePublished">2017-01-22</time>
 </a>
     
   </div>
@@ -78,7 +81,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      使用Charles监控Genymotion模拟器发送的请求
+      Android Performance Patterns s6ep3 App Launch time &amp; Bloated Application objects
     </h1>
   
 
@@ -87,25 +90,30 @@
     <div class="article-entry" itemprop="articleBody">
       
         <blockquote>
-<p>Charles在模拟器中的配置，与在真机上的配置有所不同。</p>
+<p>This videos are really interesting but it seems to me that the last 3 episodes have been basically the same.﻿ ————摘自youtube评论<br><a href="https://www.youtube.com/watch?v=Y-u511RsC3o&amp;list=PLWz5rJ2EKKc9CBxr3BVjPTPoDPLdPIFCE&amp;index=76" target="_blank" rel="external">link</a></p>
 </blockquote>
 <hr>
 <a id="more"></a>
-<h1 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h1><p>Charles是很好用的代理工具，可以用来查看网络请求的Request和Response，Genymotion则号称速度最快的Android模拟器。然而，在把这两者结合使用时，会发现并没有用真机做代理那么方便。原因在于模拟器所接入的网络是<strong>VirtualBox</strong>所建立的模拟网络，跟笔记本电脑所看到的局域网IP不在同一个网络环境。</p>
-<h1 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h1><p>在模拟器的WLAN配置中，将代理host改为<code>10.0.3.2</code>，端口改为Charles配置的端口（默认的是<code>8888</code>，我使用的是<code>8642</code>）。</p>
-<p>Done！</p>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/Y-u511RsC3o" frameborder="0" allowfullscreen></iframe>
+
 <hr>
-<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><p><a href="http://rexstjohn.com/using-genymotion-charles-proxy/" target="_blank" rel="external">Using Genymotion With Charles Proxy</a></p>
+<h1 id="Slow-start-up-apps-cause-unhappy-users"><a href="#Slow-start-up-apps-cause-unhappy-users" class="headerlink" title="Slow start-up apps cause unhappy users."></a>Slow start-up apps cause unhappy users.</h1><p>是的，我同意！</p>
+<p>但是你能不能多讲一些干货？</p>
+<p><img src="/img/170117_app_s6ep3/wasted_work.png" alt=""></p>
 <hr>
-<h4 id="End"><a href="#End" class="headerlink" title="====End===="></a><em>====End====</em></h4><hr>
+<h1 id="Android-has-tools-to-help"><a href="#Android-has-tools-to-help" class="headerlink" title="Android has tools to help."></a>Android has tools to help.</h1><h2 id="Method-Trace"><a href="#Method-Trace" class="headerlink" title="Method Trace"></a>Method Trace</h2><p>前面两节已经讲过这个，图片我就不贴了。</p>
+<hr>
+<h1 id="Solution-lazy-loading"><a href="#Solution-lazy-loading" class="headerlink" title="Solution: lazy loading"></a>Solution: lazy loading</h1><p><img src="/img/170117_app_s6ep3/lazy_loading.png" alt=""></p>
+<hr>
+<h4 id="Ending"><a href="#Ending" class="headerlink" title="====Ending===="></a><em>====Ending====</em></h4><hr>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://lilei.work/2017/01/16/Using-Charles-Proxy-with-Genymotion/" data-id="ciy8066wn002stfsu62udl0pl" class="article-share-link">Share</a>
+      <a data-url="http://lilei.work/2017/01/22/Android-Performance-Patterns-s6ep3-App-Launch-Time/" data-id="ciy8066vf0010tfsuotv5him5" class="article-share-link">Share</a>
       
       
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/工具/">工具</a></li></ul>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Android-Performance-Patterns/">Android Performance Patterns</a></li></ul>
 
     </footer>
   </div>
@@ -113,19 +121,10 @@
     
 <nav id="article-nav">
   
-    <a href="/2017/01/17/Android-Performance-Patterns-s6ep2-App-Launch-Time-And-Activity-Creation/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Newer</strong>
-      <div class="article-nav-title">
-        
-          Android Performance Patterns s5ep3 App Launch time &amp; Activity creation
-        
-      </div>
-    </a>
   
-  
-    <a href="/2017/01/16/Android-Sign/" id="article-nav-older" class="article-nav-link-wrap">
+    <a href="/2017/01/17/Android-Performance-Patterns-s6ep2-App-Launch-Time-And-Activity-Creation/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">Android应用签名实践</div>
+      <div class="article-nav-title">Android Performance Patterns s5ep3 App Launch time &amp; Activity creation</div>
     </a>
   
 </nav>
@@ -136,7 +135,7 @@
 
  <section id="comments">
    <!-- 多说评论框 start -->
-   <div class="ds-thread" data-thread-key="post-Using-Charles-Proxy-with-Genymotion" data-title="使用Charles监控Genymotion模拟器发送的请求" data-url="http://lilei.work/2017/01/16/Using-Charles-Proxy-with-Genymotion/"></div>
+   <div class="ds-thread" data-thread-key="post-Android-Performance-Patterns-s6ep3-App-Launch-Time" data-title="Android Performance Patterns s6ep3 App Launch time &amp; Bloated Application objects" data-url="http://lilei.work/2017/01/22/Android-Performance-Patterns-s6ep3-App-Launch-Time/"></div>
    <!-- 多说评论框 end -->
    <!-- 多说公共JS代码 start (一个网页只需插入一次) -->
    <script type="text/javascript">
