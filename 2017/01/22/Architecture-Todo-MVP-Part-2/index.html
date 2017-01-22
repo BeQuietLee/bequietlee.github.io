@@ -3,18 +3,32 @@
 <head>
   <meta charset="utf-8">
   
-  <title>macOS 通过终端启动 Sublime2 | One Step, One Punch</title>
+  <title>Google官方Android MVP Demo学习与分析（Part II） | One Step, One Punch</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="同样适用于 *nix 系统下通过控制台启动任何指令">
+  <meta name="description" content="项目组织结构，Tasks页面源码解析。
+
+
+项目结构项目package的组织结构，如下所示：每一个页面对应一个package，package下按照MVP模式分为Activity、Conract、Fragment、Presenter。
+12345678910111213141516171819202122232425262728293031323334353637383940main/java/c">
 <meta property="og:type" content="article">
-<meta property="og:title" content="macOS 通过终端启动 Sublime2">
-<meta property="og:url" content="http://lilei.work/2016/06/22/Launch-Sublime-In-Terminal/index.html">
+<meta property="og:title" content="Google官方Android MVP Demo学习与分析（Part II）">
+<meta property="og:url" content="http://lilei.work/2017/01/22/Architecture-Todo-MVP-Part-2/index.html">
 <meta property="og:site_name" content="One Step, One Punch">
-<meta property="og:description" content="同样适用于 *nix 系统下通过控制台启动任何指令">
-<meta property="og:updated_time" content="2016-06-22T02:09:37.000Z">
+<meta property="og:description" content="项目组织结构，Tasks页面源码解析。
+
+
+项目结构项目package的组织结构，如下所示：每一个页面对应一个package，package下按照MVP模式分为Activity、Conract、Fragment、Presenter。
+12345678910111213141516171819202122232425262728293031323334353637383940main/java/c">
+<meta property="og:image" content="http://lilei.work/img/170122_todo_mvp/mvp.png">
+<meta property="og:updated_time" content="2017-01-22T12:43:59.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="macOS 通过终端启动 Sublime2">
-<meta name="twitter:description" content="同样适用于 *nix 系统下通过控制台启动任何指令">
+<meta name="twitter:title" content="Google官方Android MVP Demo学习与分析（Part II）">
+<meta name="twitter:description" content="项目组织结构，Tasks页面源码解析。
+
+
+项目结构项目package的组织结构，如下所示：每一个页面对应一个package，package下按照MVP模式分为Activity、Conract、Fragment、Presenter。
+12345678910111213141516171819202122232425262728293031323334353637383940main/java/c">
+<meta name="twitter:image" content="http://lilei.work/img/170122_todo_mvp/mvp.png">
   
     <link rel="alternative" href="/atom.xml" title="One Step, One Punch" type="application/atom+xml">
   
@@ -64,10 +78,10 @@
   </div>
 </header>
       <div class="outer">
-        <section id="main"><article id="post-Launch-Sublime-In-Terminal" class="article article-type-post" itemscope itemprop="blogPost">
+        <section id="main"><article id="post-Architecture-Todo-MVP-Part-2" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2016/06/22/Launch-Sublime-In-Terminal/" class="article-date">
-  <time datetime="2016-06-22T01:15:10.000Z" itemprop="datePublished">2016-06-22</time>
+    <a href="/2017/01/22/Architecture-Todo-MVP-Part-2/" class="article-date">
+  <time datetime="2017-01-22T07:10:12.000Z" itemprop="datePublished">2017-01-22</time>
 </a>
     
   </div>
@@ -78,7 +92,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      macOS 通过终端启动 Sublime2
+      Google官方Android MVP Demo学习与分析（Part II）
     </h1>
   
 
@@ -87,42 +101,31 @@
     <div class="article-entry" itemprop="articleBody">
       
         <blockquote>
-<p>同样适用于 <code>*nix</code> 系统下通过控制台启动任何指令</p>
+<p>项目组织结构，Tasks页面源码解析。</p>
 </blockquote>
-<a id="more"></a>
-<h3 id="将Sublime的启动命令加入到环境变量中"><a href="#将Sublime的启动命令加入到环境变量中" class="headerlink" title="将Sublime的启动命令加入到环境变量中"></a>将Sublime的启动命令加入到环境变量中</h3><p>macOS中，<strong>Sublime Text 2</strong> 的启动命令位于<code>/Applications/Sublime Text 2.app/Contents/SharedSupport/bin</code>中，该目录下仅有一个命令，就是<code>subl</code>。如果我们需要在终端中启动Sublime对文件<code>foo.txt</code>进行编辑，需要执行的指令是</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ subl foo.txt</span><br></pre></td></tr></table></figure>
-<p>前提是，环境变量中包含了<code>subl</code>这个指令。在macOS中，有两种途径可以达成这个效果。</p>
-<ol>
-<li><p>在<code>~/.zshrc</code>（我使用的是zsh）中添加<code>$SUBLIME_HOME</code>，并将<code>$SUBLIME_HOME/bin</code>添加至<code>$PATH</code></p>
-</li>
-<li><p>在<code>/usr/local/bin</code>中创建指向<code>subl</code>的符号链接</p>
-</li>
-</ol>
-<p>两种方法具体实现分别如下所示：</p>
-<p>.zshrc，注意空格前需要用<code>\</code>转义</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">export</span> SUBLIME_HOME=/Applications/Sublime\ Text\ 2.app</span><br><span class="line"><span class="built_in">export</span> PATH=<span class="variable">$PATH</span>:<span class="variable">$&#123;SUBLIME_HOME&#125;</span>/Contents/SharedSupport/bin</span><br></pre></td></tr></table></figure>
-<p>创建符号链接</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ ln <span class="_">-s</span> <span class="string">"/Applications/Sublime Text 2.app/Contents/SharedSupport/bin/subl"</span> /usr/<span class="built_in">local</span>/bin/subl</span><br></pre></td></tr></table></figure>
-<p>方法1适用于一个文件夹下多个命令的启动（比如Android SDK），方法2适用于单个指令的启动（比如Sublime）。</p>
 <hr>
-<h3 id="在Windows中我们怎么做"><a href="#在Windows中我们怎么做" class="headerlink" title="在Windows中我们怎么做"></a>在Windows中我们怎么做</h3><p>在Windows中，我们可以通过类似方法2的途径，来快速启动某个应用，步骤如下：</p>
+<h1 id="项目结构"><a href="#项目结构" class="headerlink" title="项目结构"></a>项目结构</h1><p>项目package的组织结构，如下所示：每一个页面对应一个<code>package</code>，package下按照MVP模式分为<code>Activity</code>、<code>Conract</code>、<code>Fragment</code>、<code>Presenter</code>。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line">main/java/com/example/android/architecture/blueprints/todoapp</span><br><span class="line">├── BasePresenter.java</span><br><span class="line">├── BaseView.java</span><br><span class="line">├── addedittask</span><br><span class="line">│   ├── AddEditTaskActivity.java</span><br><span class="line">│   ├── AddEditTaskContract.java</span><br><span class="line">│   ├── AddEditTaskFragment.java</span><br><span class="line">│   └── AddEditTaskPresenter.java</span><br><span class="line">├── data</span><br><span class="line">│   ├── Task.java</span><br><span class="line">│   └── source</span><br><span class="line">│       ├── TasksDataSource.java</span><br><span class="line">│       ├── TasksRepository.java</span><br><span class="line">│       ├── local</span><br><span class="line">│       │   ├── TasksDbHelper.java</span><br><span class="line">│       │   ├── TasksLocalDataSource.java</span><br><span class="line">│       │   └── TasksPersistenceContract.java</span><br><span class="line">│       └── remote</span><br><span class="line">│           └── TasksRemoteDataSource.java</span><br><span class="line">├── statistics</span><br><span class="line">│   ├── StatisticsActivity.java</span><br><span class="line">│   ├── StatisticsContract.java</span><br><span class="line">│   ├── StatisticsFragment.java</span><br><span class="line">│   └── StatisticsPresenter.java</span><br><span class="line">├── taskdetail</span><br><span class="line">│   ├── TaskDetailActivity.java</span><br><span class="line">│   ├── TaskDetailContract.java</span><br><span class="line">│   ├── TaskDetailFragment.java</span><br><span class="line">│   └── TaskDetailPresenter.java</span><br><span class="line">├── tasks</span><br><span class="line">│   ├── ScrollChildSwipeRefreshLayout.java</span><br><span class="line">│   ├── TasksActivity.java</span><br><span class="line">│   ├── TasksContract.java</span><br><span class="line">│   ├── TasksFilterType.java</span><br><span class="line">│   ├── TasksFragment.java</span><br><span class="line">│   └── TasksPresenter.java</span><br><span class="line">└── util</span><br><span class="line">    ├── ActivityUtils.java</span><br><span class="line">    ├── EspressoIdlingResource.java</span><br><span class="line">    └── SimpleCountingIdlingResource.java</span><br></pre></td></tr></table></figure>
+<h3 id="MVP"><a href="#MVP" class="headerlink" title="MVP"></a>MVP</h3><p>这部分摘自<a href="http://www.ruanyifeng.com/blog/2015/02/mvcmvp_mvvm.html" target="_blank" rel="external">阮一峰的博客</a></p>
+<p>MVP 模式将 Controller 改名为 Presenter，同时改变了通信方向。</p>
+<p><img src="/img/170122_todo_mvp/mvp.png" alt="MVP"></p>
 <ol>
-<li>任意位置创建一个文件夹<code>A</code></li>
-<li>将文件夹<code>A</code>加入到环境变量中</li>
-<li>对于要快速启动的App，对其创建快捷方式后，把快捷方式重命名（比如<code>lol</code>），然后将快捷方式丢入<code>A</code>文件夹</li>
-<li>以后可以通过<code>cmd+R</code>打开运行窗口后，直接输入<code>lol</code>来启动对应App</li>
+<li>各部分之间的通信，都是双向的。</li>
+<li>View 与 Model 不发生联系，都通过 Presenter 传递。</li>
+<li>View 非常薄，不部署任何业务逻辑，称为”被动视图”（Passive View），即没有任何主动性，而 Presenter非常厚，所有逻辑都部署在那里。</li>
 </ol>
 <hr>
-<h3 id="Ending"><a href="#Ending" class="headerlink" title="===Ending==="></a><em>===Ending===</em></h3><hr>
+<h1 id="Tasks页面"><a href="#Tasks页面" class="headerlink" title="Tasks页面"></a>Tasks页面</h1><p>Tasks是App启动的首个页面——任务列表页，页面展示所有待完成的任务，</p>
+<hr>
+<h4 id="End"><a href="#End" class="headerlink" title="===End==="></a><em>===End===</em></h4><hr>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://lilei.work/2016/06/22/Launch-Sublime-In-Terminal/" data-id="ciy8o231q002ddpsuiluv0gqt" class="article-share-link">Share</a>
+      <a data-url="http://lilei.work/2017/01/22/Architecture-Todo-MVP-Part-2/" data-id="ciy8o2315001hdpsurmscfy0n" class="article-share-link">Share</a>
       
       
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/技术流/">技术流</a></li></ul>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Android/">Android</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/架构/">架构</a></li></ul>
 
     </footer>
   </div>
@@ -130,19 +133,19 @@
     
 <nav id="article-nav">
   
-    <a href="/2016/06/22/Use-Diffmerge-As-Default-Git-Diff-Tool/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2017/01/22/Print-File-System-Tree-In-Terminal/" id="article-nav-newer" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Newer</strong>
       <div class="article-nav-title">
         
-          Use DiffMerge As Default Git Diff Tool
+          如何在控制台输出文件系统结构
         
       </div>
     </a>
   
   
-    <a href="/2016/06/22/Android-Studio-gitignore/" id="article-nav-older" class="article-nav-link-wrap">
+    <a href="/2017/01/22/Android-Performance-Patterns-s6ep3-App-Launch-Time/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">Android Studio .gitignore 文件范本</div>
+      <div class="article-nav-title">Android Performance Patterns s6ep3 App Launch time &amp; Bloated Application objects</div>
     </a>
   
 </nav>
@@ -153,7 +156,7 @@
 
  <section id="comments">
    <!-- 多说评论框 start -->
-   <div class="ds-thread" data-thread-key="post-Launch-Sublime-In-Terminal" data-title="macOS 通过终端启动 Sublime2" data-url="http://lilei.work/2016/06/22/Launch-Sublime-In-Terminal/"></div>
+   <div class="ds-thread" data-thread-key="post-Architecture-Todo-MVP-Part-2" data-title="Google官方Android MVP Demo学习与分析（Part II）" data-url="http://lilei.work/2017/01/22/Architecture-Todo-MVP-Part-2/"></div>
    <!-- 多说评论框 end -->
    <!-- 多说公共JS代码 start (一个网页只需插入一次) -->
    <script type="text/javascript">

@@ -65,6 +65,108 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-Print-File-System-Tree-In-Terminal" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/01/22/Print-File-System-Tree-In-Terminal/" class="article-date">
+  <time datetime="2017-01-22T12:47:29.000Z" itemprop="datePublished">2017-01-22</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/01/22/Print-File-System-Tree-In-Terminal/">如何在控制台输出文件系统结构</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <blockquote>
+<p>安装并使用tree工具</p>
+</blockquote>
+<hr>
+        
+          <p class="article-more-link">
+            <a href="/2017/01/22/Print-File-System-Tree-In-Terminal/#more">Read More</a>
+          </p>
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://lilei.work/2017/01/22/Print-File-System-Tree-In-Terminal/" data-id="ciy8o231s002gdpsunnsq570h" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/工具/">工具</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-Architecture-Todo-MVP-Part-2" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/01/22/Architecture-Todo-MVP-Part-2/" class="article-date">
+  <time datetime="2017-01-22T07:10:12.000Z" itemprop="datePublished">2017-01-22</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/01/22/Architecture-Todo-MVP-Part-2/">Google官方Android MVP Demo学习与分析（Part II）</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <blockquote>
+<p>项目组织结构，Tasks页面源码解析。</p>
+</blockquote>
+<hr>
+<h1 id="项目结构"><a href="#项目结构" class="headerlink" title="项目结构"></a>项目结构</h1><p>项目package的组织结构，如下所示：每一个页面对应一个<code>package</code>，package下按照MVP模式分为<code>Activity</code>、<code>Conract</code>、<code>Fragment</code>、<code>Presenter</code>。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line">main/java/com/example/android/architecture/blueprints/todoapp</span><br><span class="line">├── BasePresenter.java</span><br><span class="line">├── BaseView.java</span><br><span class="line">├── addedittask</span><br><span class="line">│   ├── AddEditTaskActivity.java</span><br><span class="line">│   ├── AddEditTaskContract.java</span><br><span class="line">│   ├── AddEditTaskFragment.java</span><br><span class="line">│   └── AddEditTaskPresenter.java</span><br><span class="line">├── data</span><br><span class="line">│   ├── Task.java</span><br><span class="line">│   └── source</span><br><span class="line">│       ├── TasksDataSource.java</span><br><span class="line">│       ├── TasksRepository.java</span><br><span class="line">│       ├── local</span><br><span class="line">│       │   ├── TasksDbHelper.java</span><br><span class="line">│       │   ├── TasksLocalDataSource.java</span><br><span class="line">│       │   └── TasksPersistenceContract.java</span><br><span class="line">│       └── remote</span><br><span class="line">│           └── TasksRemoteDataSource.java</span><br><span class="line">├── statistics</span><br><span class="line">│   ├── StatisticsActivity.java</span><br><span class="line">│   ├── StatisticsContract.java</span><br><span class="line">│   ├── StatisticsFragment.java</span><br><span class="line">│   └── StatisticsPresenter.java</span><br><span class="line">├── taskdetail</span><br><span class="line">│   ├── TaskDetailActivity.java</span><br><span class="line">│   ├── TaskDetailContract.java</span><br><span class="line">│   ├── TaskDetailFragment.java</span><br><span class="line">│   └── TaskDetailPresenter.java</span><br><span class="line">├── tasks</span><br><span class="line">│   ├── ScrollChildSwipeRefreshLayout.java</span><br><span class="line">│   ├── TasksActivity.java</span><br><span class="line">│   ├── TasksContract.java</span><br><span class="line">│   ├── TasksFilterType.java</span><br><span class="line">│   ├── TasksFragment.java</span><br><span class="line">│   └── TasksPresenter.java</span><br><span class="line">└── util</span><br><span class="line">    ├── ActivityUtils.java</span><br><span class="line">    ├── EspressoIdlingResource.java</span><br><span class="line">    └── SimpleCountingIdlingResource.java</span><br></pre></td></tr></table></figure>
+<h3 id="MVP"><a href="#MVP" class="headerlink" title="MVP"></a>MVP</h3><p>这部分摘自<a href="http://www.ruanyifeng.com/blog/2015/02/mvcmvp_mvvm.html" target="_blank" rel="external">阮一峰的博客</a></p>
+<p>MVP 模式将 Controller 改名为 Presenter，同时改变了通信方向。</p>
+<p><img src="/img/170122_todo_mvp/mvp.png" alt="MVP"></p>
+<ol>
+<li>各部分之间的通信，都是双向的。</li>
+<li>View 与 Model 不发生联系，都通过 Presenter 传递。</li>
+<li>View 非常薄，不部署任何业务逻辑，称为”被动视图”（Passive View），即没有任何主动性，而 Presenter非常厚，所有逻辑都部署在那里。</li>
+</ol>
+<hr>
+<h1 id="Tasks页面"><a href="#Tasks页面" class="headerlink" title="Tasks页面"></a>Tasks页面</h1><p>Tasks是App启动的首个页面——任务列表页，页面展示所有待完成的任务，</p>
+<hr>
+<h4 id="End"><a href="#End" class="headerlink" title="===End==="></a><em>===End===</em></h4><hr>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://lilei.work/2017/01/22/Architecture-Todo-MVP-Part-2/" data-id="ciy8o2315001hdpsurmscfy0n" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Android/">Android</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/架构/">架构</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-Android-Performance-Patterns-s6ep3-App-Launch-Time" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2017/01/22/Android-Performance-Patterns-s6ep3-App-Launch-Time/" class="article-date">
@@ -99,7 +201,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://lilei.work/2017/01/22/Android-Performance-Patterns-s6ep3-App-Launch-Time/" data-id="ciy8066vf0010tfsuotv5him5" class="article-share-link">Share</a>
+      <a data-url="http://lilei.work/2017/01/22/Android-Performance-Patterns-s6ep3-App-Launch-Time/" data-id="ciy8o230y0018dpsuquo3fcxo" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Android-Performance-Patterns/">Android Performance Patterns</a></li></ul>
@@ -147,7 +249,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://lilei.work/2017/01/17/Android-Performance-Patterns-s6ep2-App-Launch-Time-And-Activity-Creation/" data-id="ciy8066vl0016tfsukjkfvxjq" class="article-share-link">Share</a>
+      <a data-url="http://lilei.work/2017/01/17/Android-Performance-Patterns-s6ep2-App-Launch-Time-And-Activity-Creation/" data-id="ciy8o230v0014dpsuatgmak8e" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Android-Performance-Patterns/">Android Performance Patterns</a></li></ul>
@@ -193,7 +295,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://lilei.work/2017/01/16/Using-Charles-Proxy-with-Genymotion/" data-id="ciy8066wn002stfsu62udl0pl" class="article-share-link">Share</a>
+      <a data-url="http://lilei.work/2017/01/16/Using-Charles-Proxy-with-Genymotion/" data-id="ciy8o2324002zdpsu36px5v9t" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/工具/">工具</a></li></ul>
@@ -234,7 +336,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://lilei.work/2017/01/16/Android-Sign/" data-id="ciy8066vq001ctfsuypjyu0zv" class="article-share-link">Share</a>
+      <a data-url="http://lilei.work/2017/01/16/Android-Sign/" data-id="ciy8o2311001cdpsu5ckkw8ie" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Android/">Android</a></li></ul>
@@ -283,7 +385,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://lilei.work/2017/01/16/Android-Performance-Patterns-s6ep1-Launch-Time-Performance/" data-id="ciy8066vi0012tfsuntgatchf" class="article-share-link">Share</a>
+      <a data-url="http://lilei.work/2017/01/16/Android-Performance-Patterns-s6ep1-Launch-Time-Performance/" data-id="ciy8o230n000vdpsuyd6est4e" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Android-Performance-Patterns/">Android Performance Patterns</a></li></ul>
@@ -329,7 +431,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://lilei.work/2017/01/13/Linux-Shell-Usage/" data-id="ciy8066wa0028tfsumgllcetd" class="article-share-link">Share</a>
+      <a data-url="http://lilei.work/2017/01/13/Linux-Shell-Usage/" data-id="ciy8o231p002bdpsusdu7yppx" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Linux/">Linux</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Shell/">Shell</a></li></ul>
@@ -375,7 +477,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://lilei.work/2017/01/11/Those-Questions/" data-id="ciy8066wm002ptfsu8cpff22f" class="article-share-link">Share</a>
+      <a data-url="http://lilei.work/2017/01/11/Those-Questions/" data-id="ciy8o231x002ndpsur4ccu4g1" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Android/">Android</a></li></ul>
@@ -401,7 +503,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2017/01/11/Architecture-Todo-MVP/">Google官方Android MVP Demo学习与分析</a>
+      <a class="article-title" href="/2017/01/11/Architecture-Todo-MVP/">Google官方Android MVP Demo学习与分析(Part I)</a>
     </h1>
   
 
@@ -421,102 +523,10 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://lilei.work/2017/01/11/Architecture-Todo-MVP/" data-id="ciy8066vu001ktfsug5i7wyid" class="article-share-link">Share</a>
+      <a data-url="http://lilei.work/2017/01/11/Architecture-Todo-MVP/" data-id="ciy8o231b001rdpsuz7g5vsbg" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Android/">Android</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/架构/">架构</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-WeChat-App-Dev" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2017/01/09/WeChat-App-Dev/" class="article-date">
-  <time datetime="2017-01-09T10:22:24.000Z" itemprop="datePublished">2017-01-09</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/01/09/WeChat-App-Dev/">尝鲜开发微信小程序有感</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <blockquote>
-<p>首次开发小程序，完成了一个简单的功能（半成品），有所思，有所感</p>
-</blockquote>
-<hr>
-        
-          <p class="article-more-link">
-            <a href="/2017/01/09/WeChat-App-Dev/#more">Read More</a>
-          </p>
-        
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://lilei.work/2017/01/09/WeChat-App-Dev/" data-id="ciy8066wp002utfsugefq9ael" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/微信小程序/">微信小程序</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-Android-SDK-Manager-Proxy-Server" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2017/01/09/Android-SDK-Manager-Proxy-Server/" class="article-date">
-  <time datetime="2017-01-09T00:55:17.000Z" itemprop="datePublished">2017-01-09</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/01/09/Android-SDK-Manager-Proxy-Server/">Android SDK下载极速代理地址</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <blockquote>
-<p>HTTP Proxy Server: android-mirror.bugly.qq.com<br>HTTP Proxy Port: 8080</p>
-</blockquote>
-<hr>
-        
-          <p class="article-more-link">
-            <a href="/2017/01/09/Android-SDK-Manager-Proxy-Server/#more">Read More</a>
-          </p>
-        
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://lilei.work/2017/01/09/Android-SDK-Manager-Proxy-Server/" data-id="ciy8066vn001atfsujwg9bet9" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Android/">Android</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Android-Studio/">Android Studio</a></li></ul>
 
     </footer>
   </div>
@@ -540,7 +550,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tags</h3>
     <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Android/">Android</a><span class="tag-list-count">6</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Android-Performance-Patterns/">Android Performance Patterns</a><span class="tag-list-count">23</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Android-Studio/">Android Studio</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Backend/">Backend</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/">Linux</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Shell/">Shell</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/大保健/">大保健</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/工作效率/">工作效率</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/工具/">工具</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/微信小程序/">微信小程序</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/技术流/">技术流</a><span class="tag-list-count">32</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/架构/">架构</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/槑/">槑</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/源码分析/">源码分析</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/自动化测试/">自动化测试</a><span class="tag-list-count">2</span></li></ul>
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Android/">Android</a><span class="tag-list-count">7</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Android-Performance-Patterns/">Android Performance Patterns</a><span class="tag-list-count">23</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Android-Studio/">Android Studio</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Backend/">Backend</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/">Linux</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Shell/">Shell</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/大保健/">大保健</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/工作效率/">工作效率</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/工具/">工具</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/微信小程序/">微信小程序</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/技术流/">技术流</a><span class="tag-list-count">32</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/架构/">架构</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/槑/">槑</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/源码分析/">源码分析</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/自动化测试/">自动化测试</a><span class="tag-list-count">2</span></li></ul>
     </div>
   </div>
 
@@ -549,7 +559,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">January 2017</a><span class="archive-list-count">10</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">November 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">September 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">June 2016</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">April 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">March 2016</a><span class="archive-list-count">11</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/02/">February 2016</a><span class="archive-list-count">15</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">January 2016</a><span class="archive-list-count">6</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">January 2017</a><span class="archive-list-count">12</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">November 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">September 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">June 2016</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">April 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">March 2016</a><span class="archive-list-count">11</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/02/">February 2016</a><span class="archive-list-count">15</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">January 2016</a><span class="archive-list-count">6</span></li></ul>
     </div>
   </div>
 
@@ -559,7 +569,7 @@
 	<div class="widget">
 		<ul class="entry">
 		<li><a href="http://www.dcharm.com" title="dcharm">DCharm.com</a></li>
-		<li><a href="http://www.lightskystreet.com" title="lightSky">lightSky's Blog</a></li>
+		<li><a href="http://www.lightskystreet.com" title="lightSky">lightSky</a></li>
 		</ul>
 	</div>
 </div>
