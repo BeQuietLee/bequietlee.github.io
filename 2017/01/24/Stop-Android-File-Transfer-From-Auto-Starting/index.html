@@ -3,17 +3,18 @@
 <head>
   <meta charset="utf-8">
   
-  <title>Tag: Linux | One Step, One Punch</title>
+  <title>禁止Android File Transfer自启动 | One Step, One Punch</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description">
-<meta property="og:type" content="website">
-<meta property="og:title" content="One Step, One Punch">
-<meta property="og:url" content="http://lilei.work/tags/Linux/index.html">
+  <meta name="description" content="Android File Transfer是macOS系统下用于在手机-电脑间传输文件的工具，然而，这个工具默认是每一次将手机连接至电脑，都会自动启动，非常恼人。本文介绍了如何将自启动关闭的方法。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="禁止Android File Transfer自启动">
+<meta property="og:url" content="http://lilei.work/2017/01/24/Stop-Android-File-Transfer-From-Auto-Starting/index.html">
 <meta property="og:site_name" content="One Step, One Punch">
-<meta property="og:description">
+<meta property="og:description" content="Android File Transfer是macOS系统下用于在手机-电脑间传输文件的工具，然而，这个工具默认是每一次将手机连接至电脑，都会自动启动，非常恼人。本文介绍了如何将自启动关闭的方法。">
+<meta property="og:updated_time" content="2017-01-24T12:28:10.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="One Step, One Punch">
-<meta name="twitter:description">
+<meta name="twitter:title" content="禁止Android File Transfer自启动">
+<meta name="twitter:description" content="Android File Transfer是macOS系统下用于在手机-电脑间传输文件的工具，然而，这个工具默认是每一次将手机连接至电脑，都会自动启动，非常恼人。本文介绍了如何将自启动关闭的方法。">
   
     <link rel="alternative" href="/atom.xml" title="One Step, One Punch" type="application/atom+xml">
   
@@ -63,40 +64,92 @@
   </div>
 </header>
       <div class="outer">
-        <section id="main">
-  
-  
-    
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2017" class="archive-year">2017</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2017/01/13/Linux-Shell-Usage/" class="archive-article-date">
-  <time datetime="2017-01-13T02:02:04.000Z" itemprop="datePublished">Jan 13</time>
+        <section id="main"><article id="post-Stop-Android-File-Transfer-From-Auto-Starting" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/01/24/Stop-Android-File-Transfer-From-Auto-Starting/" class="article-date">
+  <time datetime="2017-01-24T12:07:55.000Z" itemprop="datePublished">2017-01-24</time>
 </a>
-      
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2017/01/13/Linux-Shell-Usage/">Linux Shell ${} 用法</a>
+    <h1 class="article-title" itemprop="name">
+      禁止Android File Transfer自启动
     </h1>
   
 
-    </header>
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <blockquote>
+<p><a href="https://www.android.com/filetransfer/" target="_blank" rel="external">Android File Transfer</a>是macOS系统下用于在手机-电脑间传输文件的工具，然而，这个工具默认是每一次将手机连接至电脑，都会自动启动，非常恼人。本文介绍了如何将自启动关闭的方法。</p>
+</blockquote>
+<hr>
+<a id="more"></a>
+<h1 id="Problem"><a href="#Problem" class="headerlink" title="Problem"></a>Problem</h1><p>Android File Transfer Auto Launches</p>
+<h1 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h1><ol>
+<li>Close Android File Transfer</li>
+<li>Open Activity Monitor and kill “Android File Transfer Agent”</li>
+<li>Go to where you installed “Android File Transfer.app” (I have it under /Applications)</li>
+<li>Right click and –&gt; “Show package contents”</li>
+<li>Go to Contents/Resources</li>
+<li>Rename “Android File Transfer Agent” to e.g. “Android File Transfer Agent_DISABLED”</li>
+<li>Then go to “/Users/username/Library/Application Support/Google/Android File Transfer” and again rename the Agent app.. “Android File Transfer Agent_DISABLED”.</li>
+</ol>
+<h1 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h1><p><a href="https://mtmurdockblog.com/2012/12/17/disable-auto-start-for-android-file-transfer-on-osx/" target="_blank" rel="external">https://mtmurdockblog.com/2012/12/17/disable-auto-start-for-android-file-transfer-on-osx/</a></p>
+<hr>
+<h3 id="End"><a href="#End" class="headerlink" title="====End===="></a><em>====End====</em></h3><hr>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://lilei.work/2017/01/24/Stop-Android-File-Transfer-From-Auto-Starting/" data-id="ciybhyal3002n8osuqdk08tko" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/工具/">工具</a></li></ul>
+
+    </footer>
   </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2017/01/23/Android-Performance-Patterns-s6ep4-Themed-launch-screens/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Android Performance Patterns s6ep4 Themed launch screens</div>
+    </a>
+  
+</nav>
+
+  
 </article>
-  
-  
-    </div></section>
-  
-</section>
+
+
+ <section id="comments">
+   <!-- 多说评论框 start -->
+   <div class="ds-thread" data-thread-key="post-Stop-Android-File-Transfer-From-Auto-Starting" data-title="禁止Android File Transfer自启动" data-url="http://lilei.work/2017/01/24/Stop-Android-File-Transfer-From-Auto-Starting/"></div>
+   <!-- 多说评论框 end -->
+   <!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+   <script type="text/javascript">
+   var duoshuoQuery = {short_name:'lileiwork'};
+     (function() {
+       var ds = document.createElement('script');
+       ds.type = 'text/javascript';ds.async = true;
+       ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+       ds.charset = 'UTF-8';
+       (document.getElementsByTagName('head')[0] 
+        || document.getElementsByTagName('body')[0]).appendChild(ds);
+     })();
+     </script>
+   <!-- 多说公共JS代码 end -->
+ </section>
+ </section>
         
           <aside id="sidebar">
   
