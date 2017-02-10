@@ -5,16 +5,16 @@
   
   <title>Android Performance Patterns s6ep4 Themed launch screens | One Step, One Punch</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="&amp;gt;">
+  <meta name="description" content="This video identifies some pitfalls with bad ways to implement launch screens, and provides a solution that everyone can use.link">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Android Performance Patterns s6ep4 Themed launch screens">
 <meta property="og:url" content="http://lilei.work/2017/01/23/Android-Performance-Patterns-s6ep4-Themed-launch-screens/index.html">
 <meta property="og:site_name" content="One Step, One Punch">
-<meta property="og:description" content="&amp;gt;">
-<meta property="og:updated_time" content="2017-01-23T01:56:41.000Z">
+<meta property="og:description" content="This video identifies some pitfalls with bad ways to implement launch screens, and provides a solution that everyone can use.link">
+<meta property="og:updated_time" content="2017-02-10T03:37:29.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Android Performance Patterns s6ep4 Themed launch screens">
-<meta name="twitter:description" content="&amp;gt;">
+<meta name="twitter:description" content="This video identifies some pitfalls with bad ways to implement launch screens, and provides a solution that everyone can use.link">
   
     <link rel="alternative" href="/atom.xml" title="One Step, One Punch" type="application/atom+xml">
   
@@ -86,10 +86,32 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>&gt;</p>
+        <blockquote>
+<p>This video identifies some pitfalls with bad ways to implement launch screens, and provides a solution that everyone can use.<br><a href="https://www.youtube.com/watch?v=E5Xu2iNHRkk&amp;feature=youtu.be" target="_blank" rel="external">link</a></p>
+</blockquote>
+<hr>
 <a id="more"></a>
 <iframe width="560" height="315" src="https://www.youtube.com/embed/E5Xu2iNHRkk" frameborder="0" allowfullscreen></iframe>
 
+<hr>
+<h1 id="Bad-Ways"><a href="#Bad-Ways" class="headerlink" title="Bad Ways"></a>Bad Ways</h1><h2 id="Theme-the-launch-screen"><a href="#Theme-the-launch-screen" class="headerlink" title="Theme the launch screen"></a>Theme the launch screen</h2><p>声明首页的Theme与App其它页面的Theme相同，视频作者对于这部分内容讲述不清，目前存疑。</p>
+<h2 id="Turn-off-the-official-startup-window"><a href="#Turn-off-the-official-startup-window" class="headerlink" title="Turn off the official startup window"></a>Turn off the official startup window</h2><p>使用Window Disable Preview来禁止显示Preview界面，这会导致启动App后依然停留在桌面，在此过程中无法响应用户操作。方法如下：</p>
+<p>在<code>styles.xml</code>中声明Theme</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">style</span> <span class="attr">name</span>=<span class="string">"Theme.NoPreviewWindow"</span> <span class="attr">parent</span>=<span class="string">"Theme.AppCompat.NoActionBar"</span>&gt;</span><span class="xml"></span><br><span class="line">    <span class="tag">&lt;<span class="name">item</span> <span class="attr">name</span>=<span class="string">"android:windowIsTranslucent"</span>&gt;</span>true<span class="tag">&lt;/<span class="name">item</span>&gt;</span></span><br><span class="line"></span><span class="tag">&lt;/<span class="name">style</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>或者</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">style</span> <span class="attr">name</span>=<span class="string">"Theme.NoPreviewWindow"</span> <span class="attr">parent</span>=<span class="string">"Theme.AppCompat.NoActionBar"</span>&gt;</span><span class="xml"></span><br><span class="line">    <span class="tag">&lt;<span class="name">item</span> <span class="attr">name</span>=<span class="string">"android:windowDisablePreview"</span>&gt;</span>true<span class="tag">&lt;/<span class="name">item</span>&gt;</span></span><br><span class="line"></span><span class="tag">&lt;/<span class="name">style</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>然后在<code>AndroidManifest.xml</code>中使用已经定义的Theme</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">activity</span></span><br><span class="line">    <span class="attr">android:name</span>=<span class="string">".activities.SplashActivity"</span></span><br><span class="line">    <span class="attr">android:label</span>=<span class="string">"@string/app_name"</span></span><br><span class="line">    <span class="attr">android:theme</span>=<span class="string">"@style/Theme.NoPreviewWindow"</span></span><br><span class="line">    <span class="attr">android:screenOrientation</span>=<span class="string">"portrait"</span></span><br><span class="line">    &gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">intent-filter</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">action</span> <span class="attr">android:name</span>=<span class="string">"android.intent.action.MAIN"</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">category</span> <span class="attr">android:name</span>=<span class="string">"android.intent.category.LAUNCHER"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">intent-filter</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">activity</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<hr>
+<h1 id="The-better-way"><a href="#The-better-way" class="headerlink" title="The better way"></a>The better way</h1><h2 id="通过切换Theme的手段来完成"><a href="#通过切换Theme的手段来完成" class="headerlink" title="通过切换Theme的手段来完成"></a>通过切换Theme的手段来完成</h2><p>首先声明一个以图片为背景的Theme，并且在首页Activity中应用</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">layer-list</span> <span class="attr">xmlns:android</span>=<span class="string">"http://schemas.android.com/apk/res/android"</span> <span class="attr">android:opacity</span>=<span class="string">"opaque"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">item</span> <span class="attr">android:drawable</span>=<span class="string">"@android:color/white"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">item</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">bitmap</span></span><br><span class="line">            <span class="attr">android:src</span>=<span class="string">"@drawable/product_log_144dp"</span></span><br><span class="line">            <span class="attr">android:gravity</span>=<span class="string">"center"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">item</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">layer-list</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">activity</span> <span class="attr">...android:theme</span>=<span class="string">"@style/AppTheme.Launcher"</span>/&gt;</span></span><br></pre></td></tr></table></figure>
+<p>当首页Activity正式启动时，切换到正式的theme</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onCreate</span><span class="params">(Bundel savedInstanceState)</span> </span>&#123;</span><br><span class="line">	setTheme(R.style.Theme_MyApp);</span><br><span class="line">	<span class="keyword">super</span>.onCreate(savedInstanceState);</span><br><span class="line">	<span class="comment">// ...</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<hr>
+<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><ul>
+<li><a href="http://www.tothenew.com/blog/disabling-the-preview-or-start-window-in-android" target="_blank" rel="external">Disabling the Preview(Start) Window in Android</a></li>
+<li><a href="https://www.bignerdranch.com/blog/splash-screens-the-right-way/" target="_blank" rel="external">Splash Screens the Right Way</a><h4 id="Ending"><a href="#Ending" class="headerlink" title="====Ending===="></a><em>====Ending====</em></h4></li>
+</ul>
 <hr>
 
       
