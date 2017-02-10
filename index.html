@@ -273,22 +273,11 @@
         <blockquote>
 <p>项目组织结构，Tasks页面源码解析。</p>
 </blockquote>
-<hr>
-<h1 id="项目结构"><a href="#项目结构" class="headerlink" title="项目结构"></a>项目结构</h1><p>项目package的组织结构，如下所示：每一个页面对应一个<code>package</code>，package下按照MVP模式分为<code>Activity</code>、<code>Conract</code>、<code>Fragment</code>、<code>Presenter</code>。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line">main/java/com/example/android/architecture/blueprints/todoapp</span><br><span class="line">├── BasePresenter.java</span><br><span class="line">├── BaseView.java</span><br><span class="line">├── addedittask</span><br><span class="line">│   ├── AddEditTaskActivity.java</span><br><span class="line">│   ├── AddEditTaskContract.java</span><br><span class="line">│   ├── AddEditTaskFragment.java</span><br><span class="line">│   └── AddEditTaskPresenter.java</span><br><span class="line">├── data</span><br><span class="line">│   ├── Task.java</span><br><span class="line">│   └── source</span><br><span class="line">│       ├── TasksDataSource.java</span><br><span class="line">│       ├── TasksRepository.java</span><br><span class="line">│       ├── local</span><br><span class="line">│       │   ├── TasksDbHelper.java</span><br><span class="line">│       │   ├── TasksLocalDataSource.java</span><br><span class="line">│       │   └── TasksPersistenceContract.java</span><br><span class="line">│       └── remote</span><br><span class="line">│           └── TasksRemoteDataSource.java</span><br><span class="line">├── statistics</span><br><span class="line">│   ├── StatisticsActivity.java</span><br><span class="line">│   ├── StatisticsContract.java</span><br><span class="line">│   ├── StatisticsFragment.java</span><br><span class="line">│   └── StatisticsPresenter.java</span><br><span class="line">├── taskdetail</span><br><span class="line">│   ├── TaskDetailActivity.java</span><br><span class="line">│   ├── TaskDetailContract.java</span><br><span class="line">│   ├── TaskDetailFragment.java</span><br><span class="line">│   └── TaskDetailPresenter.java</span><br><span class="line">├── tasks</span><br><span class="line">│   ├── ScrollChildSwipeRefreshLayout.java</span><br><span class="line">│   ├── TasksActivity.java</span><br><span class="line">│   ├── TasksContract.java</span><br><span class="line">│   ├── TasksFilterType.java</span><br><span class="line">│   ├── TasksFragment.java</span><br><span class="line">│   └── TasksPresenter.java</span><br><span class="line">└── util</span><br><span class="line">    ├── ActivityUtils.java</span><br><span class="line">    ├── EspressoIdlingResource.java</span><br><span class="line">    └── SimpleCountingIdlingResource.java</span><br></pre></td></tr></table></figure>
-<h3 id="MVP"><a href="#MVP" class="headerlink" title="MVP"></a>MVP</h3><p>这部分摘自<a href="http://www.ruanyifeng.com/blog/2015/02/mvcmvp_mvvm.html" target="_blank" rel="external">阮一峰的博客</a></p>
-<p>MVP 模式将 Controller 改名为 Presenter，同时改变了通信方向。</p>
-<p><img src="/img/170122_todo_mvp/mvp.png" alt="MVP"></p>
-<ol>
-<li>各部分之间的通信，都是双向的。</li>
-<li>View 与 Model 不发生联系，都通过 Presenter 传递。</li>
-<li>View 非常薄，不部署任何业务逻辑，称为”被动视图”（Passive View），即没有任何主动性，而 Presenter非常厚，所有逻辑都部署在那里。</li>
-</ol>
-<hr>
-<h1 id="Tasks页面"><a href="#Tasks页面" class="headerlink" title="Tasks页面"></a>Tasks页面</h1><p>Tasks是App启动的首个页面——任务列表页，页面展示所有待完成的任务，</p>
-<hr>
-<h4 id="End"><a href="#End" class="headerlink" title="===End==="></a><em>===End===</em></h4><hr>
-
+        
+          <p class="article-more-link">
+            <a href="/2017/01/22/Architecture-Todo-MVP-Part-2/#more">Read More</a>
+          </p>
+        
       
     </div>
     <footer class="article-footer">
