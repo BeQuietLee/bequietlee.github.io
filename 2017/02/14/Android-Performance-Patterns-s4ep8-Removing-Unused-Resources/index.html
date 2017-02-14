@@ -3,24 +3,21 @@
 <head>
   <meta charset="utf-8">
   
-  <title>Android Performance Patterns s5ep3 App Launch time &amp; Activity creation | One Step, One Punch</title>
+  <title>Android Performance Patterns - s4ep8 Removing Unused Resources | One Step, One Punch</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="ep1介绍了Application启动过慢的原因，本节分析Activity启动过慢的原因，启动速度标准以及工具。link">
+  <meta name="description" content="Although YOU may be diligent in removing resources your app won’t use, it’s not safe to assume that the LIBRARIES you’re including will do the same.Thankfully some helpful Gradle tools can put your A">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Android Performance Patterns s5ep3 App Launch time & Activity creation">
-<meta property="og:url" content="http://lilei.work/2017/01/17/Android-Performance-Patterns-s6ep2-App-Launch-Time-And-Activity-Creation/index.html">
+<meta property="og:title" content="Android Performance Patterns - s4ep8 Removing Unused Resources">
+<meta property="og:url" content="http://lilei.work/2017/02/14/Android-Performance-Patterns-s4ep8-Removing-Unused-Resources/index.html">
 <meta property="og:site_name" content="One Step, One Punch">
-<meta property="og:description" content="ep1介绍了Application启动过慢的原因，本节分析Activity启动过慢的原因，启动速度标准以及工具。link">
-<meta property="og:image" content="http://lilei.work/img/170117_app_s6ep2/title.png">
-<meta property="og:image" content="http://lilei.work/img/170117_app_s6ep2/slow_main_activity.png">
-<meta property="og:image" content="http://lilei.work/img/170117_app_s6ep2/complex_layout.png">
-<meta property="og:image" content="http://lilei.work/img/170117_app_s6ep2/slow_sync.png">
-<meta property="og:image" content="http://lilei.work/img/170117_app_s6ep2/async.png">
-<meta property="og:updated_time" content="2017-01-17T02:11:34.000Z">
+<meta property="og:description" content="Although YOU may be diligent in removing resources your app won’t use, it’s not safe to assume that the LIBRARIES you’re including will do the same.Thankfully some helpful Gradle tools can put your A">
+<meta property="og:image" content="http://lilei.work/img/170214_app_s4ep8/gradle.png">
+<meta property="og:image" content="http://lilei.work/img/170214_app_s4ep8/limitations.png">
+<meta property="og:updated_time" content="2017-02-14T01:49:57.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Android Performance Patterns s5ep3 App Launch time & Activity creation">
-<meta name="twitter:description" content="ep1介绍了Application启动过慢的原因，本节分析Activity启动过慢的原因，启动速度标准以及工具。link">
-<meta name="twitter:image" content="http://lilei.work/img/170117_app_s6ep2/title.png">
+<meta name="twitter:title" content="Android Performance Patterns - s4ep8 Removing Unused Resources">
+<meta name="twitter:description" content="Although YOU may be diligent in removing resources your app won’t use, it’s not safe to assume that the LIBRARIES you’re including will do the same.Thankfully some helpful Gradle tools can put your A">
+<meta name="twitter:image" content="http://lilei.work/img/170214_app_s4ep8/gradle.png">
   
     <link rel="alternative" href="/atom.xml" title="One Step, One Punch" type="application/atom+xml">
   
@@ -70,10 +67,10 @@
   </div>
 </header>
       <div class="outer">
-        <section id="main"><article id="post-Android-Performance-Patterns-s6ep2-App-Launch-Time-And-Activity-Creation" class="article article-type-post" itemscope itemprop="blogPost">
+        <section id="main"><article id="post-Android-Performance-Patterns-s4ep8-Removing-Unused-Resources" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2017/01/17/Android-Performance-Patterns-s6ep2-App-Launch-Time-And-Activity-Creation/" class="article-date">
-  <time datetime="2017-01-17T01:45:40.000Z" itemprop="datePublished">2017-01-17</time>
+    <a href="/2017/02/14/Android-Performance-Patterns-s4ep8-Removing-Unused-Resources/" class="article-date">
+  <time datetime="2017-02-14T01:40:48.000Z" itemprop="datePublished">2017-02-14</time>
 </a>
     
   </div>
@@ -84,7 +81,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      Android Performance Patterns s5ep3 App Launch time &amp; Activity creation
+      Android Performance Patterns - s4ep8 Removing Unused Resources
     </h1>
   
 
@@ -93,42 +90,27 @@
     <div class="article-entry" itemprop="articleBody">
       
         <blockquote>
-<p>ep1介绍了Application启动过慢的原因，本节分析Activity启动过慢的原因，启动速度标准以及工具。<br><a href="https://www.youtube.com/watch?v=AkafJ6NdrhY&amp;list=PLWz5rJ2EKKc9CBxr3BVjPTPoDPLdPIFCE&amp;index=75" target="_blank" rel="external">link</a></p>
+<p>Although YOU may be diligent in removing resources your app won’t use, it’s not safe to assume that the LIBRARIES you’re including will do the same.<br>Thankfully some helpful Gradle tools can put your APK on a diet.<br><a href="https://www.youtube.com/watch?v=HxeW6DHEDQU&amp;index=18&amp;list=PLWz5rJ2EKKc9CBxr3BVjPTPoDPLdPIFCE" target="_blank" rel="external">link</a></p>
 </blockquote>
-<iframe width="560" height="315" src="https://www.youtube.com/embed/AkafJ6NdrhY" frameborder="0" allowfullscreen></iframe>
-
-<hr>
 <a id="more"></a>
-<p><img src="/img/170117_app_s6ep2/title.png" alt=""></p>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/HxeW6DHEDQU?list=PLWz5rJ2EKKc9CBxr3BVjPTPoDPLdPIFCE" frameborder="0" allowfullscreen></iframe>
+
+<h1 id="问题起因"><a href="#问题起因" class="headerlink" title="问题起因"></a>问题起因</h1><p>无用的<code>Resources</code>存在于两部分，第一部分是项目文件中，开发者可以检查并直接移除这些文件；第二部分存在于依赖的<code>library</code>中。在一些情况下，我们只需要使用库里面的某一些功能，而并非全部功能。如果不加以特殊处理，其它未经使用资源文件也会被打入最终的APK中。</p>
+<h1 id="Gradle"><a href="#Gradle" class="headerlink" title="Gradle"></a>Gradle</h1><p><code>Gradle</code>可以分析资源文件的使用情况，从而删除那些不需引入的资源文件。</p>
+<p><img src="/img/170214_app_s4ep8/gradle.png" alt=""></p>
+<p>如果要开启这项功能，需要在<code>gradle</code>配置文件中将<code>minifyEnabled</code>和<code>shrinkResources</code>声明为<code>true</code>。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">android &#123;</span><br><span class="line">	buildTypes &#123;</span><br><span class="line">		release &#123;</span><br><span class="line">			minifyEnabled trure</span><br><span class="line">			shrinkResources true</span><br><span class="line">			proguardFiles getDefaultProguardFile(&apos;proguard-android.txt&apos;), &apos;proguard-rules.pro&apos;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>我们也可以强制保留／删除某些文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;resources xmlns:tools:=&quot;http://schemas.android.com/tools&quot;</span><br><span class="line">	tools:keep=&quot;@layout/l_used*_c, @layout/l_used_b*&quot;</span><br><span class="line">	tools:discard=&quot;@layout/unused2&quot;</span><br><span class="line">	/&gt;</span><br></pre></td></tr></table></figure>
+<p>Gradle并非是万能的，它不会处理多分辨率／多语言下的资源文件（笔者对这部分存疑，这些资源文件原本就不需要精简，除非APP指定了仅供某些特定用户人群使用）</p>
+<p><img src="/img/170214_app_s4ep8/limitations.png" alt=""></p>
 <hr>
-<h1 id="启动MainActivity过慢"><a href="#启动MainActivity过慢" class="headerlink" title="启动MainActivity过慢"></a>启动MainActivity过慢</h1><p>原因可能有多个，如下图。</p>
-<p><img src="/img/170117_app_s6ep2/slow_main_activity.png" alt=""></p>
-<ul>
-<li>加载布局</li>
-<li>加载 Bitmap（引起GC）</li>
-<li>网络请求</li>
-<li>读写 User Preference</li>
-</ul>
-<hr>
-<h1 id="分析问题"><a href="#分析问题" class="headerlink" title="分析问题"></a>分析问题</h1><h2 id="Method-tracing-tool"><a href="#Method-tracing-tool" class="headerlink" title="Method tracing tool"></a>Method tracing tool</h2><p><a href="https://developer.android.com/studio/profile/am-methodtrace.html" target="_blank" rel="external">Method Tracer</a> 工具被用来查看每个方法的执行时间。</p>
-<p>如果<code>onCreate</code>的执行超过了<strong>16ms～30ms</strong>，那么它很可能是有问题的。</p>
-<h2 id="Inserting-Trace-Commands"><a href="#Inserting-Trace-Commands" class="headerlink" title="Inserting Trace Commands"></a>Inserting Trace Commands</h2><p>使用<code>trace</code>来记录开始／截止时间，所记录的时间会显示在<a href="https://developer.android.com/studio/profile/systrace-commandline.html" target="_blank" rel="external">Systrace</a>中。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">trace.beginSection();</span><br><span class="line"></span><br><span class="line"><span class="comment">// code to be valued</span></span><br><span class="line"></span><br><span class="line">trace.endSection();</span><br></pre></td></tr></table></figure>
-<hr>
-<h1 id="造成Activity启动过慢的原因"><a href="#造成Activity启动过慢的原因" class="headerlink" title="造成Activity启动过慢的原因"></a>造成Activity启动过慢的原因</h1><h2 id="Complex-Layouts"><a href="#Complex-Layouts" class="headerlink" title="Complex Layouts"></a>Complex Layouts</h2><p>首当其冲的是复杂布局导致加载过慢，布局越复杂，越多的资源文件（图片、主题）需要加载。</p>
-<p><img src="/img/170117_app_s6ep2/complex_layout.png" alt=""></p>
-<p>解决方法有降低复杂度、使结构扁平化、对于不可见的元素暂时不加载。</p>
-<h2 id="懒加载-amp-异步处理"><a href="#懒加载-amp-异步处理" class="headerlink" title="懒加载&amp;异步处理"></a>懒加载&amp;异步处理</h2><p><img src="/img/170117_app_s6ep2/slow_sync.png" alt=""></p>
-<p>当初始化过程中涉及多个耗时操作，最糟糕的情况是把它们串行起来进行，这会导致每一项操作的延迟被叠加起来，让用户抓狂。</p>
-<p>这时应当判断哪些操作是一定要串行进行，哪些是可以异步加载的，从而进行优化。</p>
-<p><img src="/img/170117_app_s6ep2/async.png" alt=""></p>
-<hr>
-<h4 id="End"><a href="#End" class="headerlink" title="====End===="></a><em>====End====</em></h4><hr>
+<h4 id="Ending"><a href="#Ending" class="headerlink" title="====Ending===="></a><em>====Ending====</em></h4><hr>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://lilei.work/2017/01/17/Android-Performance-Patterns-s6ep2-App-Launch-Time-And-Activity-Creation/" data-id="ciz3hdscr0014x4sujr5xudc2" class="article-share-link">Share</a>
+      <a data-url="http://lilei.work/2017/02/14/Android-Performance-Patterns-s4ep8-Removing-Unused-Resources/" data-id="ciz3hdsbw000bx4suji4bz9jv" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Android-Performance-Patterns/">Android Performance Patterns</a></li></ul>
@@ -139,19 +121,10 @@
     
 <nav id="article-nav">
   
-    <a href="/2017/01/22/Android-Performance-Patterns-s6ep3-App-Launch-Time/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Newer</strong>
-      <div class="article-nav-title">
-        
-          Android Performance Patterns s6ep3 App Launch time &amp; Bloated Application objects
-        
-      </div>
-    </a>
   
-  
-    <a href="/2017/01/16/Using-Charles-Proxy-with-Genymotion/" id="article-nav-older" class="article-nav-link-wrap">
+    <a href="/2017/02/13/Android-Performance-Patterns-s6ep6-VectorDrawable/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">使用Charles监控Genymotion模拟器发送的请求</div>
+      <div class="article-nav-title">Android Performance Patterns s6ep6 - VectorDrawable For Smaller APKs</div>
     </a>
   
 </nav>
@@ -162,7 +135,7 @@
 
  <section id="comments">
    <!-- 多说评论框 start -->
-   <div class="ds-thread" data-thread-key="post-Android-Performance-Patterns-s6ep2-App-Launch-Time-And-Activity-Creation" data-title="Android Performance Patterns s5ep3 App Launch time &amp; Activity creation" data-url="http://lilei.work/2017/01/17/Android-Performance-Patterns-s6ep2-App-Launch-Time-And-Activity-Creation/"></div>
+   <div class="ds-thread" data-thread-key="post-Android-Performance-Patterns-s4ep8-Removing-Unused-Resources" data-title="Android Performance Patterns - s4ep8 Removing Unused Resources" data-url="http://lilei.work/2017/02/14/Android-Performance-Patterns-s4ep8-Removing-Unused-Resources/"></div>
    <!-- 多说评论框 end -->
    <!-- 多说公共JS代码 start (一个网页只需插入一次) -->
    <script type="text/javascript">
