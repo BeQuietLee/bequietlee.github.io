@@ -3,21 +3,21 @@
 <head>
   <meta charset="utf-8">
   
-  <title>Android基础知识之点击事件传递 | One Step, One Punch</title>
+  <title>Android基础知识之事件传递 | One Step, One Punch</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="在Android系统中，点击事件的传递和处理是让人很容易困惑的一个知识点，在处理复杂界面的点击事件时，如果对这方面掌握不扎实，会遇到很多千奇百怪的问题。
+  <meta name="description" content="在Android系统中，事件的传递和处理是让人很容易困惑的一个知识点，在处理复杂界面事件时，如果对这方面掌握不扎实，会遇到很多千奇百怪的问题。
 本文可能是你读过的对事件传递系统最简单易懂的解读。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Android基础知识之点击事件传递">
+<meta property="og:title" content="Android基础知识之事件传递">
 <meta property="og:url" content="http://lilei.work/2017/02/15/Android-Touch-Event-Delivery/index.html">
 <meta property="og:site_name" content="One Step, One Punch">
-<meta property="og:description" content="在Android系统中，点击事件的传递和处理是让人很容易困惑的一个知识点，在处理复杂界面的点击事件时，如果对这方面掌握不扎实，会遇到很多千奇百怪的问题。
+<meta property="og:description" content="在Android系统中，事件的传递和处理是让人很容易困惑的一个知识点，在处理复杂界面事件时，如果对这方面掌握不扎实，会遇到很多千奇百怪的问题。
 本文可能是你读过的对事件传递系统最简单易懂的解读。">
 <meta property="og:image" content="http://lilei.work/img/170215_event_handling/outer_inner.png">
-<meta property="og:updated_time" content="2017-02-15T11:15:36.000Z">
+<meta property="og:updated_time" content="2017-02-15T11:18:33.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Android基础知识之点击事件传递">
-<meta name="twitter:description" content="在Android系统中，点击事件的传递和处理是让人很容易困惑的一个知识点，在处理复杂界面的点击事件时，如果对这方面掌握不扎实，会遇到很多千奇百怪的问题。
+<meta name="twitter:title" content="Android基础知识之事件传递">
+<meta name="twitter:description" content="在Android系统中，事件的传递和处理是让人很容易困惑的一个知识点，在处理复杂界面事件时，如果对这方面掌握不扎实，会遇到很多千奇百怪的问题。
 本文可能是你读过的对事件传递系统最简单易懂的解读。">
 <meta name="twitter:image" content="http://lilei.work/img/170215_event_handling/outer_inner.png">
   
@@ -83,7 +83,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      Android基础知识之点击事件传递
+      Android基础知识之事件传递
     </h1>
   
 
@@ -92,7 +92,7 @@
     <div class="article-entry" itemprop="articleBody">
       
         <blockquote>
-<p>在Android系统中，点击事件的传递和处理是让人很容易困惑的一个知识点，在处理复杂界面的点击事件时，如果对这方面掌握不扎实，会遇到很多千奇百怪的问题。</p>
+<p>在Android系统中，事件的传递和处理是让人很容易困惑的一个知识点，在处理复杂界面事件时，如果对这方面掌握不扎实，会遇到很多千奇百怪的问题。</p>
 <p>本文可能是你读过的对事件传递系统最简单易懂的解读。</p>
 </blockquote>
 <a id="more"></a>
@@ -110,7 +110,7 @@
 <h2 id="上例的补充说明"><a href="#上例的补充说明" class="headerlink" title="上例的补充说明"></a>上例的补充说明</h2><p>上例的<code>case B</code>，还有一种写法，是外层ViewGroup不对事件进行拦截，而是在内层View的<code>onTouchEvent</code>中返回<code>false</code>，这样事件依旧会交由外层ViewGroup的<code>onTouchEvent</code>进行消费。</p>
 <p>同理，<code>case D</code>也有另外的写法，聪明的读者，你一定已经猜出来了。</p>
 <hr>
-<h1 id="几个关键方法"><a href="#几个关键方法" class="headerlink" title="几个关键方法"></a>几个关键方法</h1><p>上文中已经看出，Android系统中对点击事件进行处理，主要是<code>dispatchTouchEvent</code>、<code>onInterceptTouchEvent</code>、<code>onTouchEvent</code>这三个方法，下面逐一进行分析。</p>
+<h1 id="几个关键方法"><a href="#几个关键方法" class="headerlink" title="几个关键方法"></a>几个关键方法</h1><p>上文中已经看出，Android系统中对事件进行处理，主要是<code>dispatchTouchEvent</code>、<code>onInterceptTouchEvent</code>、<code>onTouchEvent</code>这三个方法，下面逐一进行分析。</p>
 <h2 id="dispatchTouchEvent"><a href="#dispatchTouchEvent" class="headerlink" title="dispatchTouchEvent"></a><a href="https://developer.android.com/reference/android/view/ViewGroup.html#dispatchTouchEvent(android.view.MotionEvent)" target="_blank" rel="external">dispatchTouchEvent</a></h2><p>View处理事件时，最先进入的方法，直到事件处理完成后，才会返回<code>true</code>（在当前View或者内部View进行了消费）或者<code>false</code>（未进行消费）。</p>
 <p>对于View，这个方法的返回值与<code>onTouchEvent</code>返回值相同。</p>
 <p>对于ViewGroup，只要内部有任意一个View消费了事件，在ViewGroup的这个方法就会返回<code>true</code>。</p>
@@ -181,7 +181,7 @@
 
  <section id="comments">
    <!-- 多说评论框 start -->
-   <div class="ds-thread" data-thread-key="post-Android-Touch-Event-Delivery" data-title="Android基础知识之点击事件传递" data-url="http://lilei.work/2017/02/15/Android-Touch-Event-Delivery/"></div>
+   <div class="ds-thread" data-thread-key="post-Android-Touch-Event-Delivery" data-title="Android基础知识之事件传递" data-url="http://lilei.work/2017/02/15/Android-Touch-Event-Delivery/"></div>
    <!-- 多说评论框 end -->
    <!-- 多说公共JS代码 start (一个网页只需插入一次) -->
    <script type="text/javascript">
