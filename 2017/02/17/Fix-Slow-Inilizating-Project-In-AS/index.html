@@ -3,41 +3,20 @@
 <head>
   <meta charset="utf-8">
   
-  <title>长宁国际体操中心游泳馆开放时间 | One Step, One Punch</title>
+  <title>解决Android Studio导入项目时速度过慢的问题 | One Step, One Punch</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="🏊🏊🏊🏊🏊🏊🏊🏊🏊🏊🏊🏊🏊🏊🏊
-
-
-性价比最高时段依旧为工作日6:30~8:30，水质好，人少，价格低游泳馆网址：link
-
-
-
-===Ending===">
+  <meta name="description" content="当我们通过Android Studio导入新项目时，往往需要同步下载新项目所需的gradle版本，这是导致加载过慢的原因。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="长宁国际体操中心游泳馆开放时间">
-<meta property="og:url" content="http://lilei.work/2016/03/04/Changning-Swimming-Pool-Opening-Hours/index.html">
+<meta property="og:title" content="解决Android Studio导入项目时速度过慢的问题">
+<meta property="og:url" content="http://lilei.work/2017/02/17/Fix-Slow-Inilizating-Project-In-AS/index.html">
 <meta property="og:site_name" content="One Step, One Punch">
-<meta property="og:description" content="🏊🏊🏊🏊🏊🏊🏊🏊🏊🏊🏊🏊🏊🏊🏊
-
-
-性价比最高时段依旧为工作日6:30~8:30，水质好，人少，价格低游泳馆网址：link
-
-
-
-===Ending===">
-<meta property="og:image" content="http://lilei.work/img/160304_changning_swimming_pool/photo.png">
-<meta property="og:updated_time" content="2016-06-29T06:24:38.000Z">
+<meta property="og:description" content="当我们通过Android Studio导入新项目时，往往需要同步下载新项目所需的gradle版本，这是导致加载过慢的原因。">
+<meta property="og:image" content="http://lilei.work/img/170217_slowing_initializing_project_in_as/building.png">
+<meta property="og:updated_time" content="2017-02-17T07:00:09.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="长宁国际体操中心游泳馆开放时间">
-<meta name="twitter:description" content="🏊🏊🏊🏊🏊🏊🏊🏊🏊🏊🏊🏊🏊🏊🏊
-
-
-性价比最高时段依旧为工作日6:30~8:30，水质好，人少，价格低游泳馆网址：link
-
-
-
-===Ending===">
-<meta name="twitter:image" content="http://lilei.work/img/160304_changning_swimming_pool/photo.png">
+<meta name="twitter:title" content="解决Android Studio导入项目时速度过慢的问题">
+<meta name="twitter:description" content="当我们通过Android Studio导入新项目时，往往需要同步下载新项目所需的gradle版本，这是导致加载过慢的原因。">
+<meta name="twitter:image" content="http://lilei.work/img/170217_slowing_initializing_project_in_as/building.png">
   
     <link rel="alternative" href="/atom.xml" title="One Step, One Punch" type="application/atom+xml">
   
@@ -87,10 +66,10 @@
   </div>
 </header>
       <div class="outer">
-        <section id="main"><article id="post-Changning-Swimming-Pool-Opening-Hours" class="article article-type-post" itemscope itemprop="blogPost">
+        <section id="main"><article id="post-Fix-Slow-Inilizating-Project-In-AS" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2016/03/04/Changning-Swimming-Pool-Opening-Hours/" class="article-date">
-  <time datetime="2016-03-04T01:45:22.000Z" itemprop="datePublished">2016-03-04</time>
+    <a href="/2017/02/17/Fix-Slow-Inilizating-Project-In-AS/" class="article-date">
+  <time datetime="2017-02-17T02:41:49.000Z" itemprop="datePublished">2017-02-17</time>
 </a>
     
   </div>
@@ -101,7 +80,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      长宁国际体操中心游泳馆开放时间
+      解决Android Studio导入项目时速度过慢的问题
     </h1>
   
 
@@ -109,22 +88,31 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>🏊🏊🏊🏊🏊🏊🏊🏊🏊🏊🏊🏊🏊🏊🏊</p>
-<hr>
-<blockquote>
-<p>性价比最高时段依旧为工作日6:30~8:30，水质好，人少，价格低<br>游泳馆网址：<a href="http://www.swim.sh.cn" target="_blank" rel="external">link</a></p>
+        <blockquote>
+<p>当我们通过Android Studio导入新项目时，往往需要同步下载新项目所需的gradle版本，这是导致加载过慢的原因。</p>
 </blockquote>
-<p><img src="/img/160304_changning_swimming_pool/photo.png" alt=""></p>
+<a id="more"></a>
+<h1 id="卡住的原因"><a href="#卡住的原因" class="headerlink" title="卡住的原因"></a>卡住的原因</h1><p>项目需要特定版本的gradle进行构建，而本地没有对应版本的gradle，需要从网络下载（ <a href="http://services.gradle.org/distributions" target="_blank" rel="external">http://services.gradle.org/distributions</a> ），由于大家心知肚明的原因，下载速度非常慢；而且，配置的shadowsocks对此似乎不起作用。这就导致了导入项目时一直停留在“Building gradle project info”。</p>
+<p><img src="/img/170217_slowing_initializing_project_in_as/building.png" alt=""></p>
 <hr>
-<h3 id="Ending"><a href="#Ending" class="headerlink" title="===Ending==="></a><em>===Ending===</em></h3><hr>
+<h1 id="解决办法"><a href="#解决办法" class="headerlink" title="解决办法"></a>解决办法</h1><p>本以为国内有对应的镜像站点，可以配置，但却没有找到。这里先通过浏览器下载下来gradle-xx.zip，然后替换本地文件来进行。</p>
+<h3 id="第一步：在-http-services-gradle-org-distributions-下载需要的版本"><a href="#第一步：在-http-services-gradle-org-distributions-下载需要的版本" class="headerlink" title="第一步：在 http://services.gradle.org/distributions 下载需要的版本"></a>第一步：在 <a href="http://services.gradle.org/distributions" target="_blank" rel="external">http://services.gradle.org/distributions</a> 下载需要的版本</h3><p>通过已配置代理的浏览器下载，或者迅雷（要避免再次上演XcodeGhost事件）。下载完成后把zip包丢进本地gradle仓库里。以<code>gradle-2.14.1-all</code>为例，在我的电脑上路径是<code>~/.gradle/wrapper/dists/gradle-2.14.1-all/8bnwg5hd3w55iofp58khbp6yv/</code>。</p>
+<h3 id="第二步（可选）：修改项目gradle版本"><a href="#第二步（可选）：修改项目gradle版本" class="headerlink" title="第二步（可选）：修改项目gradle版本"></a>第二步（可选）：修改项目gradle版本</h3><p>如果下载的gradle版本和项目文件里声明的版本不同，需要修改项目里依赖的gradle版本。有两个文件需要修改，分别是<code>gradle/wrapper/gradle-wrapper.properties</code>和<code>build.gradle</code></p>
+<h4 id="gradle-wrapper-gradle-wrapper-properties"><a href="#gradle-wrapper-gradle-wrapper-properties" class="headerlink" title="gradle/wrapper/gradle-wrapper.properties"></a>gradle/wrapper/gradle-wrapper.properties</h4><p>修改<code>distributionUrl</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">distributionBase=GRADLE_USER_HOME</span><br><span class="line">distributionPath=wrapper/dists</span><br><span class="line">zipStoreBase=GRADLE_USER_HOME</span><br><span class="line">zipStorePath=wrapper/dists</span><br><span class="line">distributionUrl=https\://services.gradle.org/distributions/gradle-2.14.1-all.zip</span><br></pre></td></tr></table></figure>
+<h4 id="build-gradle"><a href="#build-gradle" class="headerlink" title="build.gradle"></a>build.gradle</h4><p>修改<code>classpath</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">buildscript &#123;</span><br><span class="line">    repositories &#123;</span><br><span class="line">        maven &#123;</span><br><span class="line">            url &quot;http://depot.sankuai.com/nexus/content/groups/public/&quot;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    dependencies &#123;</span><br><span class="line">        classpath &apos;com.android.tools.build:gradle:2.2.0&apos;</span><br><span class="line"></span><br><span class="line">        // NOTE: Do not place your application dependencies here; they belong</span><br><span class="line">        // in the individual module build.gradle files</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>完成以上步骤后重启AS，就可以顺利地打开项目了。</p>
+<hr>
+<h4 id="Ending"><a href="#Ending" class="headerlink" title="===Ending==="></a><em>===Ending===</em></h4><hr>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://lilei.work/2016/03/04/Changning-Swimming-Pool-Opening-Hours/" data-id="ciz9gsykj0024b0sut5i5wh7c" class="article-share-link">Share</a>
+      <a data-url="http://lilei.work/2017/02/17/Fix-Slow-Inilizating-Project-In-AS/" data-id="ciz9gsyki0022b0sun4e6e1am" class="article-share-link">Share</a>
       
       
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/大保健/">大保健</a></li></ul>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Android-Studio/">Android Studio</a></li></ul>
 
     </footer>
   </div>
@@ -132,19 +120,10 @@
     
 <nav id="article-nav">
   
-    <a href="/2016/03/07/Android-Performance-Patterns-s4ep1-Cachematters-for-networking/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Newer</strong>
-      <div class="article-nav-title">
-        
-          Android Performance Patterns - s4ep1 Cachematters for networking
-        
-      </div>
-    </a>
   
-  
-    <a href="/2016/02/25/Android-Performance-Patterns-s5ep10-Profile-GPU-Rendering/" id="article-nav-older" class="article-nav-link-wrap">
+    <a href="/2017/02/15/View-Drawing-In-Android/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">Android Performance Patterns - s5ep10 Profile GPU Rendering, M Update</div>
+      <div class="article-nav-title">Android基础知识之View绘制再思考</div>
     </a>
   
 </nav>
@@ -155,7 +134,7 @@
 
  <section id="comments">
    <!-- 多说评论框 start -->
-   <div class="ds-thread" data-thread-key="post-Changning-Swimming-Pool-Opening-Hours" data-title="长宁国际体操中心游泳馆开放时间" data-url="http://lilei.work/2016/03/04/Changning-Swimming-Pool-Opening-Hours/"></div>
+   <div class="ds-thread" data-thread-key="post-Fix-Slow-Inilizating-Project-In-AS" data-title="解决Android Studio导入项目时速度过慢的问题" data-url="http://lilei.work/2017/02/17/Fix-Slow-Inilizating-Project-In-AS/"></div>
    <!-- 多说评论框 end -->
    <!-- 多说公共JS代码 start (一个网页只需插入一次) -->
    <script type="text/javascript">
