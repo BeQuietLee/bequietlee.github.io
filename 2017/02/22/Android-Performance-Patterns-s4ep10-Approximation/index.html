@@ -3,18 +3,21 @@
 <head>
   <meta charset="utf-8">
   
-  <title>Android Studio .gitignore 文件范本 | One Step, One Punch</title>
+  <title>Android Performance Patterns - s4ep10 Approximation | One Step, One Punch</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="一份标准的 Android Studio 工程 .gitignore 文件">
+  <meta name="description" content="在用户无感知的情况下，合理地进行近似计算，以加快响应，增强性能。link">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Android Studio .gitignore 文件范本">
-<meta property="og:url" content="http://lilei.work/2016/06/22/Android-Studio-gitignore/index.html">
+<meta property="og:title" content="Android Performance Patterns - s4ep10 Approximation">
+<meta property="og:url" content="http://lilei.work/2017/02/22/Android-Performance-Patterns-s4ep10-Approximation/index.html">
 <meta property="og:site_name" content="One Step, One Punch">
-<meta property="og:description" content="一份标准的 Android Studio 工程 .gitignore 文件">
-<meta property="og:updated_time" content="2016-06-22T01:45:25.000Z">
+<meta property="og:description" content="在用户无感知的情况下，合理地进行近似计算，以加快响应，增强性能。link">
+<meta property="og:image" content="http://lilei.work/img/170222_app_s4ep10/good_enough.png">
+<meta property="og:image" content="http://lilei.work/img/170222_app_s4ep10/route_planning.png">
+<meta property="og:updated_time" content="2017-02-22T01:59:08.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Android Studio .gitignore 文件范本">
-<meta name="twitter:description" content="一份标准的 Android Studio 工程 .gitignore 文件">
+<meta name="twitter:title" content="Android Performance Patterns - s4ep10 Approximation">
+<meta name="twitter:description" content="在用户无感知的情况下，合理地进行近似计算，以加快响应，增强性能。link">
+<meta name="twitter:image" content="http://lilei.work/img/170222_app_s4ep10/good_enough.png">
   
     <link rel="alternative" href="/atom.xml" title="One Step, One Punch" type="application/atom+xml">
   
@@ -64,10 +67,10 @@
   </div>
 </header>
       <div class="outer">
-        <section id="main"><article id="post-Android-Studio-gitignore" class="article article-type-post" itemscope itemprop="blogPost">
+        <section id="main"><article id="post-Android-Performance-Patterns-s4ep10-Approximation" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2016/06/22/Android-Studio-gitignore/" class="article-date">
-  <time datetime="2016-06-22T01:09:14.000Z" itemprop="datePublished">2016-06-22</time>
+    <a href="/2017/02/22/Android-Performance-Patterns-s4ep10-Approximation/" class="article-date">
+  <time datetime="2017-02-22T01:27:48.000Z" itemprop="datePublished">2017-02-22</time>
 </a>
     
   </div>
@@ -78,7 +81,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      Android Studio .gitignore 文件范本
+      Android Performance Patterns - s4ep10 Approximation
     </h1>
   
 
@@ -87,20 +90,29 @@
     <div class="article-entry" itemprop="articleBody">
       
         <blockquote>
-<p>一份标准的 Android Studio 工程 <code>.gitignore</code> 文件</p>
+<p>在用户无感知的情况下，合理地进行近似计算，以加快响应，增强性能。<br><a href="https://www.youtube.com/watch?v=aVwwwK3YIaM&amp;index=20&amp;list=PLWz5rJ2EKKc9CBxr3BVjPTPoDPLdPIFCE" target="_blank" rel="external">link</a></p>
 </blockquote>
 <a id="more"></a>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Built application files</span></span><br><span class="line">*.apk</span><br><span class="line">*.ap_</span><br><span class="line"></span><br><span class="line"><span class="comment"># Files for the ART/Dalvik VM</span></span><br><span class="line">*.dex</span><br><span class="line"></span><br><span class="line"><span class="comment"># Java class files</span></span><br><span class="line">*.class</span><br><span class="line"></span><br><span class="line"><span class="comment"># Generated files</span></span><br><span class="line">bin/</span><br><span class="line">gen/</span><br><span class="line">out/</span><br><span class="line"></span><br><span class="line"><span class="comment"># Gradle files</span></span><br><span class="line">.gradle</span><br><span class="line">build/</span><br><span class="line"></span><br><span class="line"><span class="comment"># Local configuration file (sdk path, etc)</span></span><br><span class="line">local.properties</span><br><span class="line"></span><br><span class="line"><span class="comment"># Proguard folder generated by Eclipse</span></span><br><span class="line">proguard/</span><br><span class="line"></span><br><span class="line"><span class="comment"># Log files</span></span><br><span class="line">*.log</span><br><span class="line"></span><br><span class="line"><span class="comment"># Android Studio Navigation editor temp files</span></span><br><span class="line">.navigation/</span><br><span class="line"></span><br><span class="line"><span class="comment"># Android Studio captures folder</span></span><br><span class="line">captures/</span><br><span class="line"></span><br><span class="line"><span class="comment"># Intellij</span></span><br><span class="line">*.iml</span><br><span class="line">.idea/</span><br><span class="line"></span><br><span class="line"><span class="comment"># Keystore files</span></span><br><span class="line">*.jks</span><br><span class="line"></span><br><span class="line"><span class="comment"># Windows thumbnail db</span></span><br><span class="line">Thumbs.db</span><br><span class="line"></span><br><span class="line"><span class="comment"># OSX files</span></span><br><span class="line">.DS_Store</span><br><span class="line"></span><br><span class="line"><span class="comment"># Eclipse project files</span></span><br><span class="line">.classpath</span><br><span class="line">.project</span><br><span class="line"></span><br><span class="line"><span class="comment"># NDK</span></span><br><span class="line">obj/</span><br></pre></td></tr></table></figure>
+<h1 id="Good-enough-Let’s-ship-it"><a href="#Good-enough-Let’s-ship-it" class="headerlink" title="Good enough. Let’s ship it."></a>Good enough. Let’s ship it.</h1><p>在一些情况下，用户只需要70%的精确程度，这时在程序里提供100%的精确程度是不合适的，这会额外增加30%的成本。</p>
+<p><img src="/img/170222_app_s4ep10/good_enough.png" alt="Good enough"></p>
 <hr>
-<h3 id="Ending"><a href="#Ending" class="headerlink" title="===Ending==="></a><em>===Ending===</em></h3><hr>
+<h1 id="Position-is-not-always-helpful"><a href="#Position-is-not-always-helpful" class="headerlink" title="Position is not always helpful"></a>Position is not always helpful</h1><p>以一个路线规划App为例，如果缩放级别仅仅到省，那么对用户定位的标示只需要精确到城市即可，完全不必精确到街道门牌号，因为就算通过GPS精确到了街道门牌号，在省级视图上观察，也并不会有任何区别。只有当用户放大地图到街道程度时，才需要更精确的定位。</p>
+<p><img src="/img/170222_app_s4ep10/route_planning.png" alt="route planning"></p>
+<hr>
+<h1 id="Do-less-when-you-can"><a href="#Do-less-when-you-can" class="headerlink" title="Do less, when you can."></a>Do less, when you can.</h1><p>Use less time, to calculate a less precision result, that still meets the user’s current need.</p>
+<p>同样以上方的路线规划App为例，当用户以固定速度在高速巡航时，可以基于用户车速计算，得到用户在公路上的大概位置，也无需时时通过GPS定位。当用户接近POI（Point of Interest）时，才唤起GPS。</p>
+<hr>
+<h1 id="图像上的近似计算"><a href="#图像上的近似计算" class="headerlink" title="图像上的近似计算"></a>图像上的近似计算</h1><p>在需要展示图片的场景，如果无需展示大图，则只加载低分辨率下的图片，这样可以节约内存并且加快加载速度。一个例子就是微信里面察看对话以及朋友圈的图片。</p>
+<hr>
+<h4 id="Ending"><a href="#Ending" class="headerlink" title="====Ending===="></a><em>====Ending====</em></h4><hr>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://lilei.work/2016/06/22/Android-Studio-gitignore/" data-id="cizgbafc1001p0esuhkxfb9qy" class="article-share-link">Share</a>
+      <a data-url="http://lilei.work/2017/02/22/Android-Performance-Patterns-s4ep10-Approximation/" data-id="cizgbaf9n00000esuk4jhreup" class="article-share-link">Share</a>
       
       
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/技术流/">技术流</a></li></ul>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Android-Performance-Patterns/">Android Performance Patterns</a></li></ul>
 
     </footer>
   </div>
@@ -108,19 +120,10 @@
     
 <nav id="article-nav">
   
-    <a href="/2016/06/22/Launch-Sublime-In-Terminal/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Newer</strong>
-      <div class="article-nav-title">
-        
-          macOS 通过终端启动 Sublime2
-        
-      </div>
-    </a>
   
-  
-    <a href="/2016/06/17/Dynamic-Loading-JNI-Not-Work/" id="article-nav-older" class="article-nav-link-wrap">
+    <a href="/2017/02/20/Android-Performance-Patterns-s4ep9-Caching/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">Android中动态加载JNI失效问题探究(未完待续)</div>
+      <div class="article-nav-title">Android-Performance-Patterns-s4ep9-Caching</div>
     </a>
   
 </nav>
@@ -131,7 +134,7 @@
 
  <section id="comments">
    <!-- 多说评论框 start -->
-   <div class="ds-thread" data-thread-key="post-Android-Studio-gitignore" data-title="Android Studio .gitignore 文件范本" data-url="http://lilei.work/2016/06/22/Android-Studio-gitignore/"></div>
+   <div class="ds-thread" data-thread-key="post-Android-Performance-Patterns-s4ep10-Approximation" data-title="Android Performance Patterns - s4ep10 Approximation" data-url="http://lilei.work/2017/02/22/Android-Performance-Patterns-s4ep10-Approximation/"></div>
    <!-- 多说评论框 end -->
    <!-- 多说公共JS代码 start (一个网页只需插入一次) -->
    <script type="text/javascript">
