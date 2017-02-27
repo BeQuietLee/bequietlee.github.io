@@ -11,12 +11,12 @@
 <meta property="og:url" content="http://lilei.work/2017/02/27/Android-Performance-Patterns-s4ep11-Culling/index.html">
 <meta property="og:site_name" content="One Step, One Punch">
 <meta property="og:description" content="去芜存菁，avoid donig unnecessary work.link">
-<meta property="og:image" content="http://lilei.work/img/170227_app_s4ep11/cliprect.png">
-<meta property="og:updated_time" content="2017-02-27T04:01:55.000Z">
+<meta property="og:image" content="http://lilei.work/img/170227_app_s4ep11/overdraw.png">
+<meta property="og:updated_time" content="2017-02-27T04:03:53.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Android-Performance-Patterns-s4ep11-Culling">
 <meta name="twitter:description" content="去芜存菁，avoid donig unnecessary work.link">
-<meta name="twitter:image" content="http://lilei.work/img/170227_app_s4ep11/cliprect.png">
+<meta name="twitter:image" content="http://lilei.work/img/170227_app_s4ep11/overdraw.png">
   
     <link rel="alternative" href="/atom.xml" title="One Step, One Punch" type="application/atom+xml">
   
@@ -94,11 +94,11 @@
 <a id="more"></a>
 <iframe width="560" height="315" src="https://www.youtube.com/embed/KFklLqiEG6w" frameborder="0" allowfullscreen></iframe>
 
-<h1 id="过度绘制"><a href="#过度绘制" class="headerlink" title="过度绘制"></a>过度绘制</h1><p><a href="/img/170227_app_s4ep11/overdraw.png">过度绘制（Overdraw）</a>是指对不可见的部分也进行绘制的情况，如下图左侧，在开发者设置里可以打开查看开关。一般解决过度绘制的方法是减少布局深度，去除无用背景。</p>
-<p>连接：<a href="https://www.youtube.com/watch?annotation_id=annotation_104709861&amp;feature=iv&amp;index=38&amp;list=PLWz5rJ2EKKc9CBxr3BVjPTPoDPLdPIFCE&amp;src_vid=KFklLqiEG6w&amp;v=vkTn3Ule4Ps" target="_blank" rel="external">https://www.youtube.com/watch?annotation_id=annotation_104709861&amp;feature=iv&amp;index=38&amp;list=PLWz5rJ2EKKc9CBxr3BVjPTPoDPLdPIFCE&amp;src_vid=KFklLqiEG6w&amp;v=vkTn3Ule4Ps</a></p>
+<h1 id="过度绘制"><a href="#过度绘制" class="headerlink" title="过度绘制"></a>过度绘制</h1><p><a href="https://developer.android.com/studio/profile/dev-options-overdraw.html?utm_campaign=android_series_perf_theory:_culling_&amp;utm_source=anddev&amp;utm_medium=yt-annt" target="_blank" rel="external">过度绘制（Overdraw）</a>是指对不可见的部分也进行绘制的情况，如下图左侧，在开发者设置里可以打开查看开关。一般解决过度绘制的方法是减少布局深度，去除无用背景。</p>
+<p><img src="/img/170227_app_s4ep11/overdraw.png" alt="Overdraw"></p>
 <hr>
-<h1 id="Draw-with-care"><a href="#Draw-with-care" class="headerlink" title="Draw with care"></a>Draw with care</h1><p>自定义控件，可以使用<code>canvas.cliprect(..)</code>方法来使不显示的View不进行绘制。</p>
-<p><img src="/img/170227_app_s4ep11/cliprect.png" alt="Cliprect"></p>
+<h1 id="Draw-with-care"><a href="#Draw-with-care" class="headerlink" title="Draw with care"></a>Draw with care</h1><p>在编写自定义控件时，可以使用<code>canvas.cliprect(..)</code>方法来使不显示的View不进行绘制。</p>
+<p>链接：<a href="https://www.youtube.com/watch?annotation_id=annotation_104709861&amp;feature=iv&amp;index=38&amp;list=PLWz5rJ2EKKc9CBxr3BVjPTPoDPLdPIFCE&amp;src_vid=KFklLqiEG6w&amp;v=vkTn3Ule4Ps" target="_blank" rel="external">https://www.youtube.com/watch?annotation_id=annotation_104709861&amp;feature=iv&amp;index=38&amp;list=PLWz5rJ2EKKc9CBxr3BVjPTPoDPLdPIFCE&amp;src_vid=KFklLqiEG6w&amp;v=vkTn3Ule4Ps</a></p>
 <hr>
 <h1 id="多重条件搜索"><a href="#多重条件搜索" class="headerlink" title="多重条件搜索"></a>多重条件搜索</h1><p>比如要搜索同时满足 A &amp; B &amp; C 三个条件下的结果，有两种方法</p>
 <ol>
