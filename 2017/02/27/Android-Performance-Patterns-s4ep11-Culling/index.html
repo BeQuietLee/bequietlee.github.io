@@ -3,23 +3,20 @@
 <head>
   <meta charset="utf-8">
   
-  <title>Android Performance Patterns - s4ep6 Service Performance Patterns | One Step, One Punch</title>
+  <title>Android-Performance-Patterns-s4ep11-Culling | One Step, One Punch</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="Services are an integral component of almost every android application. But the functionality they provide comes with a drain on battery and system resources. And if you’re not paying attention, serv">
+  <meta name="description" content="去芜存菁，avoid donig unnecessary work.link">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Android Performance Patterns - s4ep6 Service Performance Patterns">
-<meta property="og:url" content="http://lilei.work/2016/03/20/Android-Performance-Patterns-s4ep6-Service-Performance-Patterns/index.html">
+<meta property="og:title" content="Android-Performance-Patterns-s4ep11-Culling">
+<meta property="og:url" content="http://lilei.work/2017/02/27/Android-Performance-Patterns-s4ep11-Culling/index.html">
 <meta property="og:site_name" content="One Step, One Punch">
-<meta property="og:description" content="Services are an integral component of almost every android application. But the functionality they provide comes with a drain on battery and system resources. And if you’re not paying attention, serv">
-<meta property="og:image" content="http://lilei.work/img/160320_app_s4ep6/cost.png">
-<meta property="og:image" content="http://lilei.work/img/160320_app_s4ep6/started_services.png">
-<meta property="og:image" content="http://lilei.work/img/160320_app_s4ep6/bound_services.png">
-<meta property="og:image" content="http://lilei.work/img/160320_app_s4ep6/mixed_services.png">
-<meta property="og:updated_time" content="2016-06-29T06:22:28.000Z">
+<meta property="og:description" content="去芜存菁，avoid donig unnecessary work.link">
+<meta property="og:image" content="http://lilei.work/img/170227_app_s4ep11/cliprect.png">
+<meta property="og:updated_time" content="2017-02-27T04:01:55.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Android Performance Patterns - s4ep6 Service Performance Patterns">
-<meta name="twitter:description" content="Services are an integral component of almost every android application. But the functionality they provide comes with a drain on battery and system resources. And if you’re not paying attention, serv">
-<meta name="twitter:image" content="http://lilei.work/img/160320_app_s4ep6/cost.png">
+<meta name="twitter:title" content="Android-Performance-Patterns-s4ep11-Culling">
+<meta name="twitter:description" content="去芜存菁，avoid donig unnecessary work.link">
+<meta name="twitter:image" content="http://lilei.work/img/170227_app_s4ep11/cliprect.png">
   
     <link rel="alternative" href="/atom.xml" title="One Step, One Punch" type="application/atom+xml">
   
@@ -69,10 +66,10 @@
   </div>
 </header>
       <div class="outer">
-        <section id="main"><article id="post-Android-Performance-Patterns-s4ep6-Service-Performance-Patterns" class="article article-type-post" itemscope itemprop="blogPost">
+        <section id="main"><article id="post-Android-Performance-Patterns-s4ep11-Culling" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2016/03/20/Android-Performance-Patterns-s4ep6-Service-Performance-Patterns/" class="article-date">
-  <time datetime="2016-03-20T11:03:45.000Z" itemprop="datePublished">2016-03-20</time>
+    <a href="/2017/02/27/Android-Performance-Patterns-s4ep11-Culling/" class="article-date">
+  <time datetime="2017-02-27T02:59:09.000Z" itemprop="datePublished">2017-02-27</time>
 </a>
     
   </div>
@@ -83,7 +80,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      Android Performance Patterns - s4ep6 Service Performance Patterns
+      Android-Performance-Patterns-s4ep11-Culling
     </h1>
   
 
@@ -92,60 +89,36 @@
     <div class="article-entry" itemprop="articleBody">
       
         <blockquote>
-<p>Services are an integral component of almost every android application. But the functionality they provide comes with a drain on battery and system resources. And if you’re not paying attention, services can easily stick around longer than they should which wastes system resources, and can often cause performance problems for your rendering thread. But Colt McAnlis has the answer : using services in the most efficient way possible means killing them off the right way, and sometimes, not even using them.<br><a href="https://www.youtube.com/watch?v=NJsq0TU0qeg&amp;index=16&amp;list=PLWz5rJ2EKKc9CBxr3BVjPTPoDPLdPIFCE" target="_blank" rel="external">Video Link</a></p>
+<p>去芜存菁，avoid donig unnecessary work.<br><a href="https://www.youtube.com/watch?v=KFklLqiEG6w&amp;list=PLWz5rJ2EKKc9CBxr3BVjPTPoDPLdPIFCE&amp;index=21" target="_blank" rel="external">link</a></p>
 </blockquote>
-<iframe width="560" height="315" src="https://www.youtube.com/embed/NJsq0TU0qeg?list=PLWz5rJ2EKKc9CBxr3BVjPTPoDPLdPIFCE" frameborder="0" allowfullscreen></iframe>
-
-<hr>
 <a id="more"></a>
-<h4 id="On-System-Level-Services-Ain’t-Free"><a href="#On-System-Level-Services-Ain’t-Free" class="headerlink" title="On System Level, Services Ain’t Free"></a>On System Level, Services Ain’t Free</h4><p>创建、销毁 Service 需要时间与内存</p>
-<p><img src="/img/160320_app_s4ep6/cost.png" alt=""></p>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/KFklLqiEG6w" frameborder="0" allowfullscreen></iframe>
+
+<h1 id="过度绘制"><a href="#过度绘制" class="headerlink" title="过度绘制"></a>过度绘制</h1><p><a href="/img/170227_app_s4ep11/overdraw.png">过度绘制（Overdraw）</a>是指对不可见的部分也进行绘制的情况，如下图左侧，在开发者设置里可以打开查看开关。一般解决过度绘制的方法是减少布局深度，去除无用背景。</p>
+<p>连接：<a href="https://www.youtube.com/watch?annotation_id=annotation_104709861&amp;feature=iv&amp;index=38&amp;list=PLWz5rJ2EKKc9CBxr3BVjPTPoDPLdPIFCE&amp;src_vid=KFklLqiEG6w&amp;v=vkTn3Ule4Ps" target="_blank" rel="external">https://www.youtube.com/watch?annotation_id=annotation_104709861&amp;feature=iv&amp;index=38&amp;list=PLWz5rJ2EKKc9CBxr3BVjPTPoDPLdPIFCE&amp;src_vid=KFklLqiEG6w&amp;v=vkTn3Ule4Ps</a></p>
 <hr>
-<h4 id="Service-May-Cost-Frame-Lost"><a href="#Service-May-Cost-Frame-Lost" class="headerlink" title="Service May Cost Frame Lost"></a>Service May Cost Frame Lost</h4><ol>
-<li>作为 Local Service 启动，对应的 Service 运行在主进程的主线程上</li>
-<li>作为 Remote Service 启动，对应的 Service 则是运行在独立进程的主线程上</li>
+<h1 id="Draw-with-care"><a href="#Draw-with-care" class="headerlink" title="Draw with care"></a>Draw with care</h1><p>自定义控件，可以使用<code>canvas.cliprect(..)</code>方法来使不显示的View不进行绘制。</p>
+<p><img src="/img/170227_app_s4ep11/cliprect.png" alt="Cliprect"></p>
+<hr>
+<h1 id="多重条件搜索"><a href="#多重条件搜索" class="headerlink" title="多重条件搜索"></a>多重条件搜索</h1><p>比如要搜索同时满足 A &amp; B &amp; C 三个条件下的结果，有两种方法</p>
+<ol>
+<li>把ABC三个条件同时传入，一步搜索出结果</li>
+<li>先搜A，得到结果集后，在结果集中搜索B，最后在B的结果集中搜索C</li>
 </ol>
-<p>对于<code>1</code>中的情况，如果 Service 中进行了耗时操作（超过了16ms），则在屏幕绘制时可能引起丢帧。</p>
+<p>不要想当然地以为一定是1更高效，实际操作时要根据搜索服务的特征来选择两者中的一种进行。2也是一种<code>Culling</code>的思想，逐层深入，抽丝剥茧。</p>
+<p>（视频里是用的Mc Collins大叔的照片来举例的，很搞笑）</p>
 <hr>
-<h4 id="Don’t-Use-Services"><a href="#Don’t-Use-Services" class="headerlink" title="Don’t Use Services"></a>Don’t Use Services</h4><p>if you don’t have to…</p>
-<p>参见下一节罗列的 Solutions</p>
+<h1 id="提升用户体验"><a href="#提升用户体验" class="headerlink" title="提升用户体验"></a>提升用户体验</h1><p>在使用地理定位等实时服务时，消减那些用户不需关心的信息，比如用户居住在A地，那就无需把B地的实时状况推送给用户，使用地图软件中的实时路况查看就是这样，只需要请求并展示当前屏幕范围内的区域路况，而不是全市乃至全省、全国。</p>
 <hr>
-<h4 id="Async-Event-Functions"><a href="#Async-Event-Functions" class="headerlink" title="Async Event Functions"></a>Async Event Functions</h4><ul>
-<li>GCM</li>
-<li>BroadcastReceiver</li>
-<li>LocalBroadcastReceiver</li>
-<li>HandlerThreads</li>
-<li>AsyncTaskLoaders</li>
-<li>IntentService</li>
-</ul>
-<hr>
-<h4 id="Do-not-Let-Services-Live-Longer-Than-They-Needed"><a href="#Do-not-Let-Services-Live-Longer-Than-They-Needed" class="headerlink" title="Do not Let Services Live Longer Than They Needed"></a>Do not Let Services Live Longer Than They Needed</h4><p>Service 有两种不同的启动方法，对应的种植方法也为两种</p>
-<ul>
-<li>Started Services：在 Service 中调用<code>stopSelf()</code>，或者在外面调用<code>stopService()</code>来终止</li>
-</ul>
-<p><img src="/img/160320_app_s4ep6/started_services.png" alt=""></p>
-<ul>
-<li>Bound Services：通过<code>unBindService()</code>来终止</li>
-</ul>
-<p><img src="/img/160320_app_s4ep6/bound_services.png" alt=""></p>
-<ul>
-<li>Mixed：如果是先通过<code>startService()</code>启动，再用<code>bindService()</code>绑定的 Service，那么在<code>unBind()</code>后，还要显示通过<code>stopService()</code>来终止</li>
-</ul>
-<p><img src="/img/160320_app_s4ep6/mixed_services.png" alt=""></p>
-<hr>
-<h4 id="Tools"><a href="#Tools" class="headerlink" title="Tools"></a>Tools</h4><ul>
-<li>光头哥又在推销 <a href="http://developer.android.com/tools/help/systrace.html" target="_blank" rel="external">Systrace</a> 了</li>
-</ul>
-<hr>
-<h4 id="Ending"><a href="#Ending" class="headerlink" title="===Ending==="></a><em>===Ending===</em></h4><hr>
+<h4 id="Ending"><a href="#Ending" class="headerlink" title="====Ending===="></a><em>====Ending====</em></h4><hr>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://lilei.work/2016/03/20/Android-Performance-Patterns-s4ep6-Service-Performance-Patterns/" data-id="ciznkvjn6000cyusui0w152sh" class="article-share-link">Share</a>
+      <a data-url="http://lilei.work/2017/02/27/Android-Performance-Patterns-s4ep11-Culling/" data-id="ciznkvjmr0001yusuffirdqsg" class="article-share-link">Share</a>
       
       
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Android-Performance-Patterns/">Android Performance Patterns</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/技术流/">技术流</a></li></ul>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Android-Performance-Patterns/">Android Performance Patterns</a></li></ul>
 
     </footer>
   </div>
@@ -153,19 +126,10 @@
     
 <nav id="article-nav">
   
-    <a href="/2016/03/24/Nova-Automation-Develop-Plan/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Newer</strong>
-      <div class="article-nav-title">
-        
-          nova自动化测试后续内容安排
-        
-      </div>
-    </a>
   
-  
-    <a href="/2016/03/08/Android-Performance-Patterns-s4ep5-Minimizing-Asset-Payload/" id="article-nav-older" class="article-nav-link-wrap">
+    <a href="/2017/02/22/Android-Performance-Patterns-s4ep10-Approximation/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">Android Performance Patterns - s4ep5 Minimizing Asset Payload</div>
+      <div class="article-nav-title">Android Performance Patterns - s4ep10 Approximation</div>
     </a>
   
 </nav>
@@ -176,7 +140,7 @@
 
  <section id="comments">
    <!-- 多说评论框 start -->
-   <div class="ds-thread" data-thread-key="post-Android-Performance-Patterns-s4ep6-Service-Performance-Patterns" data-title="Android Performance Patterns - s4ep6 Service Performance Patterns" data-url="http://lilei.work/2016/03/20/Android-Performance-Patterns-s4ep6-Service-Performance-Patterns/"></div>
+   <div class="ds-thread" data-thread-key="post-Android-Performance-Patterns-s4ep11-Culling" data-title="Android-Performance-Patterns-s4ep11-Culling" data-url="http://lilei.work/2017/02/27/Android-Performance-Patterns-s4ep11-Culling/"></div>
    <!-- 多说评论框 end -->
    <!-- 多说公共JS代码 start (一个网页只需插入一次) -->
    <script type="text/javascript">
