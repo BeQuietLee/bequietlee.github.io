@@ -1,614 +1,215 @@
 <!DOCTYPE html>
-<html>
+
+
+  <html class="light page-home">
+
+
 <head>
   <meta charset="utf-8">
   
   <title>One Step, One Punch</title>
+
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description">
-<meta property="og:type" content="website">
+
+  
+    <meta name="keywords" content="李磊,lilei,Android,Java,iOS,Hexo" />
+  
+
+  <meta property="og:type" content="website">
 <meta property="og:title" content="One Step, One Punch">
 <meta property="og:url" content="http://lilei.work/index.html">
 <meta property="og:site_name" content="One Step, One Punch">
-<meta property="og:description">
+<meta property="og:locale" content="default">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="One Step, One Punch">
-<meta name="twitter:description">
-  
-    <link rel="alternative" href="/atom.xml" title="One Step, One Punch" type="application/atom+xml">
-  
-  
-    <link rel="icon" href="/favicon.png">
-  
-  <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
-  <link rel="stylesheet" href="/css/style.css">
+
   
 
+  
+    <link rel="icon" href="/favicon.ico">
+  
+
+  <link href="/css/styles.css?v=c114cbe6" rel="stylesheet">
+
+
+  
+    <link rel="stylesheet" href="/css/personal-style.css">
+  
+
+  
+
+  
+
+  
+
+
+  
+    <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+  
+
+  
+    <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.3.0/css/font-awesome.min.css">
+  
 </head>
+
 <body>
-  <div id="container">
-    <div id="wrap">
-      <header id="header">
-  <div id="banner"></div>
-  <div id="header-outer" class="outer">
-    <div id="header-title" class="inner">
-      <h1 id="logo-wrap">
-        <a href="/" id="logo">One Step, One Punch</a>
-      </h1>
-      
-        <h2 id="subtitle-wrap">
-          <a href="/" id="subtitle">bequietlee#gmail.com</a>
-        </h2>
-      
-    </div>
-    <div id="header-inner" class="inner">
-      <nav id="main-nav">
-        <a id="main-nav-toggle" class="nav-icon"></a>
-        
-          <a class="main-nav-link" href="/">Home</a>
-        
-          <a class="main-nav-link" href="/archives">Archives</a>
-        
-      </nav>
-      <nav id="sub-nav">
-        
-          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
-        
-        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
-      </nav>
-      <div id="search-form-wrap">
-        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://lilei.work"></form>
-      </div>
-    </div>
-  </div>
-</header>
-      <div class="outer">
-        <section id="main">
-  
-    <article id="post-Android-Performance-Patterns-s4ep11-Culling" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2017/02/27/Android-Performance-Patterns-s4ep11-Culling/" class="article-date">
-  <time datetime="2017-02-27T02:59:09.000Z" itemprop="datePublished">2017-02-27</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/02/27/Android-Performance-Patterns-s4ep11-Culling/">Android-Performance-Patterns-s4ep11-Culling</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <blockquote>
-<p>去芜存菁，avoid donig unnecessary work.<br><a href="https://www.youtube.com/watch?v=KFklLqiEG6w&amp;list=PLWz5rJ2EKKc9CBxr3BVjPTPoDPLdPIFCE&amp;index=21">link</a></p>
-</blockquote>
-        
-          <p class="article-more-link">
-            <a href="/2017/02/27/Android-Performance-Patterns-s4ep11-Culling/#more">Read More</a>
-          </p>
-        
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://lilei.work/2017/02/27/Android-Performance-Patterns-s4ep11-Culling/" data-id="ciznkvjmr0001yusuffirdqsg" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Android-Performance-Patterns/">Android Performance Patterns</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
 
 
   
-    <article id="post-Android-Performance-Patterns-s4ep10-Approximation" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2017/02/22/Android-Performance-Patterns-s4ep10-Approximation/" class="article-date">
-  <time datetime="2017-02-22T01:27:48.000Z" itemprop="datePublished">2017-02-22</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/02/22/Android-Performance-Patterns-s4ep10-Approximation/">Android Performance Patterns - s4ep10 Approximation</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <blockquote>
-<p>在用户无感知的情况下，合理地进行近似计算，以加快响应，增强性能。<br><a href="https://www.youtube.com/watch?v=aVwwwK3YIaM&amp;index=20&amp;list=PLWz5rJ2EKKc9CBxr3BVjPTPoDPLdPIFCE">link</a></p>
-</blockquote>
-        
-          <p class="article-more-link">
-            <a href="/2017/02/22/Android-Performance-Patterns-s4ep10-Approximation/#more">Read More</a>
-          </p>
-        
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://lilei.work/2017/02/22/Android-Performance-Patterns-s4ep10-Approximation/" data-id="ciznkvjmm0000yusuospdcz3k" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Android-Performance-Patterns/">Android Performance Patterns</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
 
   
-    <article id="post-Android-Performance-Patterns-s4ep9-Caching" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2017/02/20/Android-Performance-Patterns-s4ep9-Caching/" class="article-date">
-  <time datetime="2017-02-20T02:11:07.000Z" itemprop="datePublished">2017-02-20</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/02/20/Android-Performance-Patterns-s4ep9-Caching/">Android Performance Patterns - s4ep9 Caching</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <blockquote>
-<p>本节内容纯理论，概括成一句话：Cache很重要！<br><a href="https://www.youtube.com/watch?v=JkwrNmCwFfA&amp;list=PLWz5rJ2EKKc9CBxr3BVjPTPoDPLdPIFCE&amp;index=19">link</a></p>
-</blockquote>
-        
-          <p class="article-more-link">
-            <a href="/2017/02/20/Android-Performance-Patterns-s4ep9-Caching/#more">Read More</a>
-          </p>
-        
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://lilei.work/2017/02/20/Android-Performance-Patterns-s4ep9-Caching/" data-id="ciznkvjn8000dyusu18vy9ywq" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Android-Performance-Patterns/">Android Performance Patterns</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-Lu-App-Not-Work-On-Mi-Devices" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2017/02/17/Lu-App-Not-Work-On-Mi-Devices/" class="article-date">
-  <time datetime="2017-02-17T10:12:21.000Z" itemprop="datePublished">2017-02-17</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/02/17/Lu-App-Not-Work-On-Mi-Devices/">关于陆金所App在小米手机上无法展示项目详情页的问题原因与解决办法</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <blockquote>
-<p>在使用陆金所Android版本的App时，进入任何理财产品详情页，都显示为空白，无法进行查阅与购买。</p>
-</blockquote>
-        
-          <p class="article-more-link">
-            <a href="/2017/02/17/Lu-App-Not-Work-On-Mi-Devices/#more">Read More</a>
-          </p>
-        
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://lilei.work/2017/02/17/Lu-App-Not-Work-On-Mi-Devices/" data-id="ciznkvjp3002wyusuw6t6gnmm" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Android/">Android</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-Fix-Slow-Inilizating-Project-In-AS" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2017/02/17/Fix-Slow-Inilizating-Project-In-AS/" class="article-date">
-  <time datetime="2017-02-17T02:41:49.000Z" itemprop="datePublished">2017-02-17</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/02/17/Fix-Slow-Inilizating-Project-In-AS/">解决Android Studio导入项目时速度过慢的问题</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <blockquote>
-<p>当我们通过Android Studio导入新项目时，往往需要同步下载新项目所需的gradle版本，这是导致加载过慢的原因。</p>
-</blockquote>
-        
-          <p class="article-more-link">
-            <a href="/2017/02/17/Fix-Slow-Inilizating-Project-In-AS/#more">Read More</a>
-          </p>
-        
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://lilei.work/2017/02/17/Fix-Slow-Inilizating-Project-In-AS/" data-id="ciznkvjor002cyusu5uby51il" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Android-Studio/">Android Studio</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-View-Drawing-In-Android" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2017/02/15/View-Drawing-In-Android/" class="article-date">
-  <time datetime="2017-02-15T07:09:22.000Z" itemprop="datePublished">2017-02-15</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/02/15/View-Drawing-In-Android/">Android基础知识之View绘制再思考</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <blockquote>
-<p>近日自己在写一个结合了下拉刷新&amp;ViewPager功能于一体的自定义控件，顺便重温了View绘制的流程。</p>
-<p>本文【待完成】可能是你所看过最简单易懂的View绘制流程解读。</p>
-</blockquote>
-        
-          <p class="article-more-link">
-            <a href="/2017/02/15/View-Drawing-In-Android/#more">Read More</a>
-          </p>
-        
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://lilei.work/2017/02/15/View-Drawing-In-Android/" data-id="ciznkvjpe003kyusu5vm5uhza" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Android/">Android</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-Android-Touch-Event-Delivery" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2017/02/15/Android-Touch-Event-Delivery/" class="article-date">
-  <time datetime="2017-02-15T07:03:55.000Z" itemprop="datePublished">2017-02-15</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/02/15/Android-Touch-Event-Delivery/">Android基础知识之事件传递</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <blockquote>
-<p>在Android系统中，事件的传递和处理是让人很容易困惑的一个知识点，在处理复杂界面事件时，如果对这方面掌握不扎实，会遇到很多千奇百怪的问题。</p>
-<p>本文可能是你读过的对事件传递系统最简单易懂的解读。</p>
-</blockquote>
-        
-          <p class="article-more-link">
-            <a href="/2017/02/15/Android-Touch-Event-Delivery/#more">Read More</a>
-          </p>
-        
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://lilei.work/2017/02/15/Android-Touch-Event-Delivery/" data-id="ciznkvjoj001yyusuyw63oqa6" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Android/">Android</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-Android-Performance-Patterns-s4ep8-Removing-Unused-Resources" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2017/02/14/Android-Performance-Patterns-s4ep8-Removing-Unused-Resources/" class="article-date">
-  <time datetime="2017-02-14T01:40:48.000Z" itemprop="datePublished">2017-02-14</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/02/14/Android-Performance-Patterns-s4ep8-Removing-Unused-Resources/">Android Performance Patterns - s4ep8 Removing Unused Resources</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <blockquote>
-<p>Although YOU may be diligent in removing resources your app won’t use, it’s not safe to assume that the LIBRARIES you’re including will do the same.<br>Thankfully some helpful Gradle tools can put your APK on a diet.<br><a href="https://www.youtube.com/watch?v=HxeW6DHEDQU&amp;index=18&amp;list=PLWz5rJ2EKKc9CBxr3BVjPTPoDPLdPIFCE">link</a></p>
-</blockquote>
-        
-          <p class="article-more-link">
-            <a href="/2017/02/14/Android-Performance-Patterns-s4ep8-Removing-Unused-Resources/#more">Read More</a>
-          </p>
-        
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://lilei.work/2017/02/14/Android-Performance-Patterns-s4ep8-Removing-Unused-Resources/" data-id="ciznkvjna000iyusu5j76apxl" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Android-Performance-Patterns/">Android Performance Patterns</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-Android-Performance-Patterns-s6ep6-VectorDrawable" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2017/02/13/Android-Performance-Patterns-s6ep6-VectorDrawable/" class="article-date">
-  <time datetime="2017-02-13T01:13:49.000Z" itemprop="datePublished">2017-02-13</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/02/13/Android-Performance-Patterns-s6ep6-VectorDrawable/">Android Performance Patterns s6ep6 - VectorDrawable For Smaller APKs</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <blockquote>
-<p>由于Android系统存在多种分辨率，我们在使用图片时，往往需要准备ldpi、mdpi、hdpi、xhdpi等多种分辨率的图片，占用大量APK体积。<br>针对这种情况，本文介绍了如何VectorDrawable技术的优点，以及使用场景。<br><a href="https://www.youtube.com/watch?v=Ls3KzLRmrXg">link</a></p>
-</blockquote>
-<hr>
-        
-          <p class="article-more-link">
-            <a href="/2017/02/13/Android-Performance-Patterns-s6ep6-VectorDrawable/#more">Read More</a>
-          </p>
-        
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://lilei.work/2017/02/13/Android-Performance-Patterns-s6ep6-VectorDrawable/" data-id="ciznkvjo0001cyusu72exl6mx" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Android-Performance-Patterns/">Android Performance Patterns</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-Android-Performance-Patterns-s6ep5-Smaller-APKs" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2017/02/10/Android-Performance-Patterns-s6ep5-Smaller-APKs/" class="article-date">
-  <time datetime="2017-02-10T03:49:46.000Z" itemprop="datePublished">2017-02-10</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/02/10/Android-Performance-Patterns-s6ep5-Smaller-APKs/">Android Performance Patterns s6ep5 Smaller APKs A checklist</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <blockquote>
-<p>如何减少APK体积<br><a href="https://www.youtube.com/watch?v=u5xP4tFQlkA&amp;index=78&amp;list=PLWz5rJ2EKKc9CBxr3BVjPTPoDPLdPIFCE">link</a></p>
-</blockquote>
-        
-          <p class="article-more-link">
-            <a href="/2017/02/10/Android-Performance-Patterns-s6ep5-Smaller-APKs/#more">Read More</a>
-          </p>
-        
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://lilei.work/2017/02/10/Android-Performance-Patterns-s6ep5-Smaller-APKs/" data-id="ciznkvjo2001eyusuxyzc5aal" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Android-Performance-Patterns/">Android Performance Patterns</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-  
-    <nav id="page-nav">
-      <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/7/">7</a><a class="extend next" rel="next" href="/page/2/">Next &raquo;</a>
-    </nav>
-  
-</section>
-        
-          <aside id="sidebar">
-  
-    
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Tags</h3>
-    <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Android/">Android</a><span class="tag-list-count">10</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Android-Performance-Patterns/">Android Performance Patterns</a><span class="tag-list-count">29</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Android-Studio/">Android Studio</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Backend/">Backend</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/">Linux</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Shell/">Shell</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/大保健/">大保健</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/工作效率/">工作效率</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/工具/">工具</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/微信小程序/">微信小程序</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/技术流/">技术流</a><span class="tag-list-count">31</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/架构/">架构</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/槑/">槑</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/源码分析/">源码分析</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/自动化测试/">自动化测试</a><span class="tag-list-count">2</span></li></ul>
-    </div>
+  <div class="content-home text-center">
+  <a class="avatar" href="/">
+    <img src="/images/avatar.jpeg" alt="" />
+  </a>
+  <h1 class="name" style="font-family: calligraffittiregular">
+    李磊&#39;s blog
+  </h1>
+  <div class="slogan">
+    One Step, One Punch
   </div>
 
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Archives</h3>
-    <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">February 2017</a><span class="archive-list-count">10</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">January 2017</a><span class="archive-list-count">14</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">November 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">September 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">June 2016</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">March 2016</a><span class="archive-list-count">11</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/02/">February 2016</a><span class="archive-list-count">15</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">January 2016</a><span class="archive-list-count">6</span></li></ul>
-    </div>
-  </div>
+  <hr>
 
-  
-    <div class="widget-wrap">
-	<h3 class="widget-title">Links</h3>
-	<div class="widget">
-		<ul class="entry">
-		<li><a href="http://www.dcharm.com" title="dcharm">DCharm.com</a></li>
-		<li><a href="http://www.lightskystreet.com" title="lightSky">lightSky</a></li>
-		</ul>
-	</div>
-</div>
-  
-    <div class="widget-wrap">
-	<h3 class="widget-title">Recent Comments</h3>
-	<div class="widget">
-		<ul class="ds-recent-comments" data-num-items="5" data-show-avatars="0" data-show-time="1" data-show-title="1" data-show-admin="1" data-excerpt-length="70"></ul>
-	</div>
+  <ul class="text-center nav">
+    
+      <li class="item">
+        
+          <a href="/archives">Blog</a>
+        
+        <span>|</span>
+      </li>
+    
+      <li class="item">
+        
+          <a href="https://github.com/BeQuietLee" rel="noopener noreferrer" target="_blank">Github</a>
+        
+        <span>|</span>
+      </li>
+    
+  </ul>
+
 </div>
 
-<!--多说js加载开始，一个页面只需要加载一次 -->
-<script type="text/javascript">
-if(typeof duoshuoQuery === 'undefined') {
-	  var duoshuoQuery = {short_name:"lileiwork"};
-	  (function() {
-	    var ds = document.createElement('script');
-	    ds.type = 'text/javascript';ds.async = true;
-	    ds.src = 'http://static.duoshuo.com/embed.js';
-	    ds.charset = 'UTF-8';
-	    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(ds);
-	  })();
+
+
+
+
+  <div class="modal" id="modal">
+  <span id="cover" class="cover hide"></span>
+  <div id="modal-dialog" class="modal-dialog hide-dialog">
+    <div class="modal-header">
+      <span id="close" class="btn-close">关闭</span>
+    </div>
+    <hr>
+    <div class="modal-body">
+      <ul class="list-toolbox">
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/archives/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              博客
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/category/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              分类
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/tag/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              标签
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/link/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              友链
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/about/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              关于
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/search/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              搜索
+            </a>
+          </li>
+        
+      </ul>
+
+    </div>
+  </div>
+</div>
+
+
+
+  
+
+  <script type="text/javascript">
+  function loadScript(url, callback) {
+    var script = document.createElement('script')
+    script.type = 'text/javascript';
+
+    if (script.readyState) { //IE
+      script.onreadystatechange = function() {
+        if (script.readyState == 'loaded' ||
+          script.readyState == 'complete') {
+          script.onreadystatechange = null;
+          callback();
+        }
+      };
+    } else { //Others
+      script.onload = function() {
+        callback();
+      };
+    }
+
+    script.src = url;
+    document.getElementsByTagName('head')[0].appendChild(script);
+  }
+
+  window.onload = function() {
+    loadScript('/js/bundle.js?235683', function() {
+      // load success
+    });
   }
 </script>
-  
-</aside>
-        
-      </div>
-      <footer id="footer">
-  
-  <div class="outer">
-    <div id="footer-info" class="inner">
-      &copy; 2017 Li Lei<br>
-      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
-    </div>
-  </div>
-</footer>
-    </div>
-    <nav id="mobile-nav">
-  
-    <a href="/" class="mobile-nav-link">Home</a>
-  
-    <a href="/archives" class="mobile-nav-link">Archives</a>
-  
-</nav>
-    
 
-<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
-
-
-  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
-  <script src="/fancybox/jquery.fancybox.pack.js"></script>
-
-
-<script src="/js/script.js"></script>
-
-  </div>
 </body>
 </html>

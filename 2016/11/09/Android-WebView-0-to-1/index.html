@@ -1,107 +1,216 @@
 <!DOCTYPE html>
-<html>
+
+
+  <html class="light page-post">
+
+
 <head>
   <meta charset="utf-8">
   
   <title>Android WebView 从0到1（一） | One Step, One Punch</title>
+
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+    <meta name="keywords" content="Android,源码分析," />
+  
+
   <meta name="description" content="这一系列将从源码角度，分析WebView加载页面的全过程。在摸透缓存机制的基础上，实现自己的WebView缓存控制项目Vindow。从0到1很难，但是克服了之后，从1到100就容易了许多。">
+<meta name="keywords" content="Android,源码分析">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Android WebView 从0到1（一）">
 <meta property="og:url" content="http://lilei.work/2016/11/09/Android-WebView-0-to-1/index.html">
 <meta property="og:site_name" content="One Step, One Punch">
 <meta property="og:description" content="这一系列将从源码角度，分析WebView加载页面的全过程。在摸透缓存机制的基础上，实现自己的WebView缓存控制项目Vindow。从0到1很难，但是克服了之后，从1到100就容易了许多。">
-<meta property="og:updated_time" content="2016-11-10T01:41:39.000Z">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2016-11-10T01:41:38.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Android WebView 从0到1（一）">
 <meta name="twitter:description" content="这一系列将从源码角度，分析WebView加载页面的全过程。在摸透缓存机制的基础上，实现自己的WebView缓存控制项目Vindow。从0到1很难，但是克服了之后，从1到100就容易了许多。">
-  
-    <link rel="alternative" href="/atom.xml" title="One Step, One Punch" type="application/atom+xml">
-  
-  
-    <link rel="icon" href="/favicon.png">
-  
-  <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
-  <link rel="stylesheet" href="/css/style.css">
+
   
 
+  
+    <link rel="icon" href="/favicon.ico">
+  
+
+  <link href="/css/styles.css?v=c114cbe6" rel="stylesheet">
+
+
+  
+    <link rel="stylesheet" href="/css/personal-style.css">
+  
+
+  
+
+  
+
+  
+
+
+  
+    <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+  
+
+  
+    <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.3.0/css/font-awesome.min.css">
+  
 </head>
+
 <body>
-  <div id="container">
-    <div id="wrap">
-      <header id="header">
-  <div id="banner"></div>
-  <div id="header-outer" class="outer">
-    <div id="header-title" class="inner">
-      <h1 id="logo-wrap">
-        <a href="/" id="logo">One Step, One Punch</a>
-      </h1>
-      
-        <h2 id="subtitle-wrap">
-          <a href="/" id="subtitle">bequietlee#gmail.com</a>
-        </h2>
-      
-    </div>
-    <div id="header-inner" class="inner">
-      <nav id="main-nav">
-        <a id="main-nav-toggle" class="nav-icon"></a>
-        
-          <a class="main-nav-link" href="/">Home</a>
-        
-          <a class="main-nav-link" href="/archives">Archives</a>
-        
-      </nav>
-      <nav id="sub-nav">
-        
-          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
-        
-        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
-      </nav>
-      <div id="search-form-wrap">
-        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://lilei.work"></form>
-      </div>
-    </div>
-  </div>
-</header>
-      <div class="outer">
-        <section id="main"><article id="post-Android-WebView-0-to-1" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2016/11/09/Android-WebView-0-to-1/" class="article-date">
-  <time datetime="2016-11-09T00:22:59.000Z" itemprop="datePublished">2016-11-09</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
+
+
   
-    <h1 class="article-title" itemprop="name">
-      Android WebView 从0到1（一）
-    </h1>
+    <span id="toolbox-mobile" class="toolbox-mobile">导航</span>
   
 
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
+  <div class="post-header CENTER">
+   
+  <div class="toolbox">
+    <a class="toolbox-entry" href="/">
+      <span class="toolbox-entry-text">导航</span>
+      <i class="icon-angle-down"></i>
+      <i class="icon-home"></i>
+    </a>
+    <ul class="list-toolbox">
       
-        <blockquote>
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/archives/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            博客
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/category/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            分类
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/tag/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            标签
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/link/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            友链
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/about/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            关于
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/search/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+
+
+</div>
+
+
+  <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#WebView-java"><span class="toc-text">WebView.java</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#WebView-API"><span class="toc-text">WebView API</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#WebViewProvider"><span class="toc-text">WebViewProvider</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#loadUrl"><span class="toc-text">loadUrl</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Navigating-from-the-URL-bar"><span class="toc-text">Navigating from the URL bar</span></a></li></ol></li></ol>
+  </div>
+
+
+
+<div class="content content-post CENTER">
+   <article id="post-Android-WebView-0-to-1" class="article article-type-post" itemprop="blogPost">
+  <header class="article-header">
+    <h1 class="post-title">Android WebView 从0到1（一）</h1>
+
+    <div class="article-meta">
+      <span>
+        <i class="icon-calendar"></i>
+        <span>2016.11.09</span>
+      </span>
+
+      
+        <span class="article-author">
+          <i class="icon-user"></i>
+          <span>Li Lei</span>
+        </span>
+      
+
+      
+
+
+      
+        <span>
+          <i class="icon-comment"></i>
+          <a href="http://lilei.workj/2016/11/09/Android-WebView-0-to-1/#disqus_thread"></a>
+        </span>
+      
+
+      
+      <i class="fa fa-eye"></i> 
+        <span id="busuanzi_container_page_pv">
+           &nbsp热度 <span id="busuanzi_value_page_pv">
+           <i class="fa fa-spinner fa-spin"></i></span>℃
+        </span>
+      
+      
+    </div>
+  </header>
+
+  <div class="article-content">
+    
+      <blockquote>
 <p>这一系列将从源码角度，分析WebView加载页面的全过程。在摸透缓存机制的基础上，实现自己的WebView缓存控制项目Vindow。<br>从0到1很难，但是克服了之后，从1到100就容易了许多。</p>
 </blockquote>
 <a id="more"></a>
 <hr>
 <h2 id="WebView-java"><a href="#WebView-java" class="headerlink" title="WebView.java"></a>WebView.java</h2><p>这里采用<code>android-23</code>的源码示例。</p>
 <p>WebView的类说明注释非常长，建议耐心地读完每一行，随后，你就会对WebView的主要功能有一个轮廓上的认识。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span><br><span class="line"> * A View that displays web pages. This class is the basis upon which you</span><br><span class="line"> * can roll your own web browser or simply display some online content within your Activity.</span><br><span class="line"> * It uses the WebKit rendering engine to display</span><br><span class="line"> * web pages and includes methods to navigate forward and backward</span><br><span class="line"> * through a history, zoom in and out, perform text searches and more.</span><br><span class="line"> * /</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * A View that displays web pages. This class is the basis upon which you</span></span><br><span class="line"><span class="comment"> * can roll your own web browser or simply display some online content within your Activity.</span></span><br><span class="line"><span class="comment"> * It uses the WebKit rendering engine to display</span></span><br><span class="line"><span class="comment"> * web pages and includes methods to navigate forward and backward</span></span><br><span class="line"><span class="comment"> * through a history, zoom in and out, perform text searches and more.</span></span><br><span class="line"><span class="comment"> * /</span></span><br></pre></td></tr></table></figure>
 <p>这段是说，WebView主要用来展示网页信息，它使用WebKit内核（这里很重要，后续分析大部分源码都是来自WebKit的），包含了控制网页前进后退的导航功能、缩放功能、文本搜索功能以及其他。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span><br><span class="line"> * By default, a WebView provides no browser-like widgets, does not</span><br><span class="line"> * enable JavaScript and web page errors are ignored. If your goal is only</span><br><span class="line"> * to display some HTML as a part of your UI, this is probably fine;</span><br><span class="line"> * the user won't need to interact with the web page beyond reading</span><br><span class="line"> * it, and the web page won't need to interact with the user. If you</span><br><span class="line"> * actually want a full-blown web browser, then you probably want to</span><br><span class="line"> * invoke the Browser application with a URL Intent rather than show it</span><br><span class="line"> * with a WebView.</span><br><span class="line"> * Uri uri = Uri.parse("http://www.example.com");</span><br><span class="line"> * Intent intent = new Intent(Intent.ACTION_VIEW, uri);</span><br><span class="line"> * startActivity(intent);</span><br><span class="line"> * /</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * By default, a WebView provides no browser-like widgets, does not</span></span><br><span class="line"><span class="comment"> * enable JavaScript and web page errors are ignored. If your goal is only</span></span><br><span class="line"><span class="comment"> * to display some HTML as a part of your UI, this is probably fine;</span></span><br><span class="line"><span class="comment"> * the user won't need to interact with the web page beyond reading</span></span><br><span class="line"><span class="comment"> * it, and the web page won't need to interact with the user. If you</span></span><br><span class="line"><span class="comment"> * actually want a full-blown web browser, then you probably want to</span></span><br><span class="line"><span class="comment"> * invoke the Browser application with a URL Intent rather than show it</span></span><br><span class="line"><span class="comment"> * with a WebView.</span></span><br><span class="line"><span class="comment"> * Uri uri = Uri.parse("http://www.example.com");</span></span><br><span class="line"><span class="comment"> * Intent intent = new Intent(Intent.ACTION_VIEW, uri);</span></span><br><span class="line"><span class="comment"> * startActivity(intent);</span></span><br><span class="line"><span class="comment"> * /</span></span><br></pre></td></tr></table></figure>
 <p>这里强调了，WebView应当仅仅提供展示，默认情况下是禁用JavaScript，并且隐藏网页错误信息的。换句话说，Google本意是不提倡在WebView中引导用户进行过多的操作，如果有这种需求，就通过intent打开浏览器页面进行操作。然而当下这条规则在很多应用场景下是被无视的，想想微信在H5页面里，可以做多少事。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span><br><span class="line"> * &lt;p&gt;A WebView has several customization points where you can add your</span><br><span class="line"> * own behavior. These are:&lt;/p&gt;</span><br><span class="line"> *</span><br><span class="line"> * &lt;ul&gt;</span><br><span class="line"> *   &lt;li&gt;Creating and setting a &#123;<span class="doctag">@link</span> android.webkit.WebChromeClient&#125; subclass.</span><br><span class="line"> *       This class is called when something that might impact a</span><br><span class="line"> *       browser UI happens, for instance, progress updates and</span><br><span class="line"> *       JavaScript alerts are sent here (see &lt;a</span><br><span class="line"> * href="&#123;<span class="doctag">@docRoot</span>&#125;guide/developing/debug-tasks.html#DebuggingWebPages"&gt;Debugging Tasks&lt;/a&gt;).</span><br><span class="line"> *   &lt;/li&gt;</span><br><span class="line"> *   &lt;li&gt;Creating and setting a &#123;<span class="doctag">@link</span> android.webkit.WebViewClient&#125; subclass.</span><br><span class="line"> *       It will be called when things happen that impact the</span><br><span class="line"> *       rendering of the content, eg, errors or form submissions. You</span><br><span class="line"> *       can also intercept URL loading here (via &#123;<span class="doctag">@link</span></span><br><span class="line"> * android.webkit.WebViewClient#shouldOverrideUrlLoading(WebView,String)</span><br><span class="line"> * shouldOverrideUrlLoading()&#125;).&lt;/li&gt;</span><br><span class="line"> *   &lt;li&gt;Modifying the &#123;<span class="doctag">@link</span> android.webkit.WebSettings&#125;, such as</span><br><span class="line"> * enabling JavaScript with &#123;<span class="doctag">@link</span> android.webkit.WebSettings#setJavaScriptEnabled(boolean)</span><br><span class="line"> * setJavaScriptEnabled()&#125;. &lt;/li&gt;</span><br><span class="line"> *   &lt;li&gt;Injecting Java objects into the WebView using the</span><br><span class="line"> *       &#123;<span class="doctag">@link</span> android.webkit.WebView#addJavascriptInterface&#125; method. This</span><br><span class="line"> *       method allows you to inject Java objects into a page's JavaScript</span><br><span class="line"> *       context, so that they can be accessed by JavaScript in the page.&lt;/li&gt;</span><br><span class="line"> * &lt;/ul&gt;</span><br><span class="line"> * /</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * &lt;p&gt;A WebView has several customization points where you can add your</span></span><br><span class="line"><span class="comment"> * own behavior. These are:&lt;/p&gt;</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * &lt;ul&gt;</span></span><br><span class="line"><span class="comment"> *   &lt;li&gt;Creating and setting a &#123;<span class="doctag">@link</span> android.webkit.WebChromeClient&#125; subclass.</span></span><br><span class="line"><span class="comment"> *       This class is called when something that might impact a</span></span><br><span class="line"><span class="comment"> *       browser UI happens, for instance, progress updates and</span></span><br><span class="line"><span class="comment"> *       JavaScript alerts are sent here (see &lt;a</span></span><br><span class="line"><span class="comment"> * href="&#123;<span class="doctag">@docRoot</span>&#125;guide/developing/debug-tasks.html#DebuggingWebPages"&gt;Debugging Tasks&lt;/a&gt;).</span></span><br><span class="line"><span class="comment"> *   &lt;/li&gt;</span></span><br><span class="line"><span class="comment"> *   &lt;li&gt;Creating and setting a &#123;<span class="doctag">@link</span> android.webkit.WebViewClient&#125; subclass.</span></span><br><span class="line"><span class="comment"> *       It will be called when things happen that impact the</span></span><br><span class="line"><span class="comment"> *       rendering of the content, eg, errors or form submissions. You</span></span><br><span class="line"><span class="comment"> *       can also intercept URL loading here (via &#123;<span class="doctag">@link</span></span></span><br><span class="line"><span class="comment"> * android.webkit.WebViewClient#shouldOverrideUrlLoading(WebView,String)</span></span><br><span class="line"><span class="comment"> * shouldOverrideUrlLoading()&#125;).&lt;/li&gt;</span></span><br><span class="line"><span class="comment"> *   &lt;li&gt;Modifying the &#123;<span class="doctag">@link</span> android.webkit.WebSettings&#125;, such as</span></span><br><span class="line"><span class="comment"> * enabling JavaScript with &#123;<span class="doctag">@link</span> android.webkit.WebSettings#setJavaScriptEnabled(boolean)</span></span><br><span class="line"><span class="comment"> * setJavaScriptEnabled()&#125;. &lt;/li&gt;</span></span><br><span class="line"><span class="comment"> *   &lt;li&gt;Injecting Java objects into the WebView using the</span></span><br><span class="line"><span class="comment"> *       &#123;<span class="doctag">@link</span> android.webkit.WebView#addJavascriptInterface&#125; method. This</span></span><br><span class="line"><span class="comment"> *       method allows you to inject Java objects into a page's JavaScript</span></span><br><span class="line"><span class="comment"> *       context, so that they can be accessed by JavaScript in the page.&lt;/li&gt;</span></span><br><span class="line"><span class="comment"> * &lt;/ul&gt;</span></span><br><span class="line"><span class="comment"> * /</span></span><br></pre></td></tr></table></figure>
 <p>默认WebView的很多功能是关闭的，需要我们手动打开。这里列出了如何处理JS Alert与错误、如何开启JS、如何使native代码与页面JS进行交互。</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Implementation notes.</span></span><br><span class="line"><span class="comment">// The WebView is a thin API class that delegates its public API to a backend WebViewProvider</span></span><br><span class="line"><span class="comment">// class instance. WebView extends &#123;@link AbsoluteLayout&#125; for backward compatibility reasons.</span></span><br><span class="line"><span class="comment">// Methods are delegated to the provider implementation: all public API methods introduced in this</span></span><br><span class="line"><span class="comment">// file are fully delegated, whereas public and protected methods from the View base classes are</span></span><br><span class="line"><span class="comment">// only delegated where a specific need exists for them to do so.</span></span><br></pre></td></tr></table></figure>
 <p>上面这段说明了WebView主要的实现机理————WebView本身只是一个代理（delegate），提供了公共的API供客户端调用，而这些API的实现，都是代理到了一个叫WebViewProvider的对象上面。既然这样，我们就大致浏览下WebView有哪些公有API，把更多的精力保留下来，集中分析WebViewProvider的实现。</p>
-<h2 id="WebView-API"><a href="#WebView-API" class="headerlink" title="WebView API"></a>WebView API</h2><p>这部分不罗列了，只做一个简单的归类，API文档见 <a href="https://developer.android.com/reference/android/webkit/WebView.html" target="_blank" rel="external">https://developer.android.com/reference/android/webkit/WebView.html</a></p>
+<h2 id="WebView-API"><a href="#WebView-API" class="headerlink" title="WebView API"></a>WebView API</h2><p>这部分不罗列了，只做一个简单的归类，API文档见 <a href="https://developer.android.com/reference/android/webkit/WebView.html" target="_blank" rel="noopener">https://developer.android.com/reference/android/webkit/WebView.html</a></p>
 <p><strong>加载页面</strong><br>这是最主要的功能，全部由代理Provider完成</p>
 <ul>
 <li>loadUrl</li>
@@ -191,21 +300,21 @@
 <li>Android4.4之前的版本，由WebViewClassic实现。</li>
 <li>Android4.4以及之后的版本，由WebViewChromium实现。</li>
 </ul>
-<p>随SDK下载的源码里不包含这部分代码，在这个页面查看：<a href="https://android.googlesource.com/platform/frameworks/webview/+/4dcabae/chromium/java/com/android/webview/chromium/WebViewChromium.java" target="_blank" rel="external">WebViewChromium.java</a></p>
+<p>随SDK下载的源码里不包含这部分代码，在这个页面查看：<a href="https://android.googlesource.com/platform/frameworks/webview/+/4dcabae/chromium/java/com/android/webview/chromium/WebViewChromium.java" target="_blank" rel="noopener">WebViewChromium.java</a></p>
 <p>WebViewChromium类实现了WebView中被代理的全部方法，篇幅所限，我们不逐一进行分析，只追踪我们关注的加载页面／cache相关，也就是<code>loadUrl</code>和<code>clearCache</code>两个方法。</p>
 <h3 id="loadUrl"><a href="#loadUrl" class="headerlink" title="loadUrl"></a>loadUrl</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">loadUrl</span><span class="params">(String url)</span> </span>&#123;</span><br><span class="line">    loadUrl(url, <span class="keyword">null</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">loadUrl</span><span class="params">(String url, Map&lt;String, String&gt; additionalHttpHeaders)</span> </span>&#123;</span><br><span class="line">    <span class="comment">// <span class="doctag">TODO:</span> We may actually want to do some sanity checks here (like filter about://chrome).</span></span><br><span class="line">    LoadUrlParams params = <span class="keyword">new</span> LoadUrlParams(url);</span><br><span class="line">    <span class="keyword">if</span> (additionalHttpHeaders != <span class="keyword">null</span>) params.setExtraHeaders(additionalHttpHeaders);</span><br><span class="line">    mAwContents.loadUrl(params);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>我们通常所用的<code>loadUrl(&quot;http://www.foo.com&quot;)</code>，会走到<code>loadUrl(String url, Map&lt;String, String&gt; additionalHttpHeaders)</code>这个方法，可以看到首先把url拼装成了一个<code>LoadUrlParams</code>，那么这个<code>LoadUrlParams</code>是用来做什么的呢？</p>
-<p><strong>LoadUrlParams.java</strong><br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span><br><span class="line"> * Holds parameters for ContentViewCore.LoadUrl. Parameters should match</span><br><span class="line"> * counterparts in NavigationController::LoadURLParams, including default</span><br><span class="line"> * values.</span><br><span class="line"> */</span></span><br><span class="line"><span class="meta">@JNINamespace</span>(<span class="string">"content"</span>)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">LoadUrlParams</span> </span>&#123;</span><br><span class="line">    <span class="comment">// Should match NavigationController::LoadUrlType exactly. See comments</span></span><br><span class="line">    <span class="comment">// there for proper usage. Values are initialized in initializeConstants.</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span> LOAD_TYPE_DEFAULT;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span> LOAD_TYPE_BROWSER_INITIATED_HTTP_POST;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span> LOAD_TYPE_DATA;</span><br><span class="line">    <span class="comment">// Should match NavigationController::UserAgentOverrideOption exactly.</span></span><br><span class="line">    <span class="comment">// See comments there for proper usage. Values are initialized in</span></span><br><span class="line">    <span class="comment">// initializeConstants.</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span> UA_OVERRIDE_INHERIT;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span> UA_OVERRIDE_FALSE;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span> UA_OVERRIDE_TRUE;</span><br><span class="line">    <span class="comment">// Fields with counterparts in NavigationController::LoadURLParams.</span></span><br><span class="line">    <span class="comment">// Package private so that ContentViewCore.loadUrl can pass them down to</span></span><br><span class="line">    <span class="comment">// native code. Should not be accessed directly anywhere else outside of</span></span><br><span class="line">    <span class="comment">// this class.</span></span><br><span class="line">    <span class="keyword">final</span> String mUrl;</span><br><span class="line">    <span class="keyword">int</span> mLoadUrlType;</span><br><span class="line">    <span class="keyword">int</span> mTransitionType;</span><br><span class="line">    <span class="keyword">int</span> mUaOverrideOption;</span><br><span class="line">    <span class="keyword">private</span> Map&lt;String, String&gt; mExtraHeaders;</span><br><span class="line">    <span class="keyword">byte</span>[] mPostData;</span><br><span class="line">    String mBaseUrlForDataUrl;</span><br><span class="line">    String mVirtualUrlForDataUrl;</span><br><span class="line">    <span class="keyword">boolean</span> mCanLoadLocalResources;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">LoadUrlParams</span><span class="params">(String url)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// Check initializeConstants was called.</span></span><br><span class="line">        <span class="keyword">assert</span> LOAD_TYPE_DEFAULT != LOAD_TYPE_BROWSER_INITIATED_HTTP_POST;</span><br><span class="line">        mUrl = url;</span><br><span class="line">        mLoadUrlType = LOAD_TYPE_DEFAULT;</span><br><span class="line">        mTransitionType = PageTransitionTypes.PAGE_TRANSITION_LINK;</span><br><span class="line">        mUaOverrideOption = UA_OVERRIDE_INHERIT;</span><br><span class="line">        mPostData = <span class="keyword">null</span>;</span><br><span class="line">        mBaseUrlForDataUrl = <span class="keyword">null</span>;</span><br><span class="line">        mVirtualUrlForDataUrl = <span class="keyword">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 以下略</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>一个URL竟然可以解析出这么多东西来，逐个看看这些变量的含义：（参考<a href="https://chromium.googlesource.com/chromium/src.git/+/lkcr/content/public/browser/navigation_controller.h" target="_blank" rel="external">navigation_controller.h</a>）</p>
+<p><strong>LoadUrlParams.java</strong><br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Holds parameters for ContentViewCore.LoadUrl. Parameters should match</span></span><br><span class="line"><span class="comment"> * counterparts in NavigationController::LoadURLParams, including default</span></span><br><span class="line"><span class="comment"> * values.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@JNINamespace</span>(<span class="string">"content"</span>)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">LoadUrlParams</span> </span>&#123;</span><br><span class="line">    <span class="comment">// Should match NavigationController::LoadUrlType exactly. See comments</span></span><br><span class="line">    <span class="comment">// there for proper usage. Values are initialized in initializeConstants.</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span> LOAD_TYPE_DEFAULT;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span> LOAD_TYPE_BROWSER_INITIATED_HTTP_POST;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span> LOAD_TYPE_DATA;</span><br><span class="line">    <span class="comment">// Should match NavigationController::UserAgentOverrideOption exactly.</span></span><br><span class="line">    <span class="comment">// See comments there for proper usage. Values are initialized in</span></span><br><span class="line">    <span class="comment">// initializeConstants.</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span> UA_OVERRIDE_INHERIT;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span> UA_OVERRIDE_FALSE;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span> UA_OVERRIDE_TRUE;</span><br><span class="line">    <span class="comment">// Fields with counterparts in NavigationController::LoadURLParams.</span></span><br><span class="line">    <span class="comment">// Package private so that ContentViewCore.loadUrl can pass them down to</span></span><br><span class="line">    <span class="comment">// native code. Should not be accessed directly anywhere else outside of</span></span><br><span class="line">    <span class="comment">// this class.</span></span><br><span class="line">    <span class="keyword">final</span> String mUrl;</span><br><span class="line">    <span class="keyword">int</span> mLoadUrlType;</span><br><span class="line">    <span class="keyword">int</span> mTransitionType;</span><br><span class="line">    <span class="keyword">int</span> mUaOverrideOption;</span><br><span class="line">    <span class="keyword">private</span> Map&lt;String, String&gt; mExtraHeaders;</span><br><span class="line">    <span class="keyword">byte</span>[] mPostData;</span><br><span class="line">    String mBaseUrlForDataUrl;</span><br><span class="line">    String mVirtualUrlForDataUrl;</span><br><span class="line">    <span class="keyword">boolean</span> mCanLoadLocalResources;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">LoadUrlParams</span><span class="params">(String url)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// Check initializeConstants was called.</span></span><br><span class="line">        <span class="keyword">assert</span> LOAD_TYPE_DEFAULT != LOAD_TYPE_BROWSER_INITIATED_HTTP_POST;</span><br><span class="line">        mUrl = url;</span><br><span class="line">        mLoadUrlType = LOAD_TYPE_DEFAULT;</span><br><span class="line">        mTransitionType = PageTransitionTypes.PAGE_TRANSITION_LINK;</span><br><span class="line">        mUaOverrideOption = UA_OVERRIDE_INHERIT;</span><br><span class="line">        mPostData = <span class="keyword">null</span>;</span><br><span class="line">        mBaseUrlForDataUrl = <span class="keyword">null</span>;</span><br><span class="line">        mVirtualUrlForDataUrl = <span class="keyword">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 以下略</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>一个URL竟然可以解析出这么多东西来，逐个看看这些变量的含义：（参考<a href="https://chromium.googlesource.com/chromium/src.git/+/lkcr/content/public/browser/navigation_controller.h" target="_blank" rel="noopener">navigation_controller.h</a>）</p>
 <ul>
 <li>mUrl：最原始的URL</li>
 <li>mLoadUrlType：加载类型，有如下三种<ol>
 <li>LOAD_TYPE_DEFAULT：默认类型，以下两种以外的任意类型。</li>
 <li>LOAD_TYPE_BROWSER_INITIATED_HTTP_POST：POST请求需要设置此类型。</li>
-<li>LOAD_TYPE_DATA：使用Base64编码的图片类型，通过Base64编码图片能够减少一次网络资源加载。(可以使用以下这两个工具，查看如何在图片与Base64编码之间进行转换：<a href="http://dataurl.net/#dataurlmaker" target="_blank" rel="external">http://dataurl.net/#dataurlmaker</a> <a href="http://codebeautify.org/base64-to-image-converter" target="_blank" rel="external">http://codebeautify.org/base64-to-image-converter</a>)</li>
+<li>LOAD_TYPE_DATA：使用Base64编码的图片类型，通过Base64编码图片能够减少一次网络资源加载。(可以使用以下这两个工具，查看如何在图片与Base64编码之间进行转换：<a href="http://dataurl.net/#dataurlmaker" target="_blank" rel="noopener">http://dataurl.net/#dataurlmaker</a> <a href="http://codebeautify.org/base64-to-image-converter" target="_blank" rel="noopener">http://codebeautify.org/base64-to-image-converter</a>)</li>
 </ol>
 </li>
-<li>mTransitionType：页面变化的类型（实在找不出合适的词语来描述），默认为，详见<a href="https://chromium.googlesource.com/chromium/src.git/+/lkcr/ui/base/page_transition_types.h" target="_blank" rel="external">page_transition_types.h</a>，举例说明：<ol>
+<li>mTransitionType：页面变化的类型（实在找不出合适的词语来描述），默认为，详见<a href="https://chromium.googlesource.com/chromium/src.git/+/lkcr/ui/base/page_transition_types.h" target="_blank" rel="noopener">page_transition_types.h</a>，举例说明：<ol>
 <li>PAGE_TRANSITION_LINK：默认值，点击link</li>
 <li>PAGE_TRANSITION_TYPED：在地址栏输入link</li>
 <li>PAGE_TRANSITION_RELOAD：刷新页面</li>
@@ -226,10 +335,10 @@
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (additionalHttpHeaders != <span class="keyword">null</span>) params.setExtraHeaders(additionalHttpHeaders);</span><br></pre></td></tr></table></figure>
 <p>这里设置的<code>ExtraHeaders</code>是一个Map，具体参见http协议的header部分。</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mAwContents.loadUrl(params);</span><br></pre></td></tr></table></figure>
-<p>最终交给<code>AwContent</code>对象处理，完整源码见<a href="https://android.googlesource.com/platform/external/chromium_org/+/c5c1b6121eac447fb8d8691bd637e2b6b188fd75/android_webview/java/src/org/chromium/android_webview/AwContents.java" target="_blank" rel="external">AwContents.java</a>。”Aw”是”Android WebView”的缩写。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span><br><span class="line"> * Exposes the native AwContents class, and together these classes wrap the ContentViewCore</span><br><span class="line"> * and Browser components that are required to implement Android WebView API. This is the</span><br><span class="line"> * primary entry point for the WebViewProvider implementation; it holds a 1:1 object</span><br><span class="line"> * relationship with application WebView instances.</span><br><span class="line"> * (We define this class independent of the hidden WebViewProvider interfaces, to allow</span><br><span class="line"> * continuous build &amp; test in the open source SDK-based tree).</span><br><span class="line"> */</span></span><br></pre></td></tr></table></figure>
+<p>最终交给<code>AwContent</code>对象处理，完整源码见<a href="https://android.googlesource.com/platform/external/chromium_org/+/c5c1b6121eac447fb8d8691bd637e2b6b188fd75/android_webview/java/src/org/chromium/android_webview/AwContents.java" target="_blank" rel="noopener">AwContents.java</a>。”Aw”是”Android WebView”的缩写。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Exposes the native AwContents class, and together these classes wrap the ContentViewCore</span></span><br><span class="line"><span class="comment"> * and Browser components that are required to implement Android WebView API. This is the</span></span><br><span class="line"><span class="comment"> * primary entry point for the WebViewProvider implementation; it holds a 1:1 object</span></span><br><span class="line"><span class="comment"> * relationship with application WebView instances.</span></span><br><span class="line"><span class="comment"> * (We define this class independent of the hidden WebViewProvider interfaces, to allow</span></span><br><span class="line"><span class="comment"> * continuous build &amp; test in the open source SDK-based tree).</span></span><br><span class="line"><span class="comment"> */</span></span><br></pre></td></tr></table></figure>
 <p>上述注释中最重要的是<code>This is the primary entry point for the WebViewProvider implementation; it holds a 1:1 object relationship with application WebView instances.</code>这一句，说明每一个WebView示例，都有一个AwContent对象和它对应。同样，我们只关注<code>loadUrl</code>方法，这里通过我们上一步分析的<code>LoadUrlParams</code>参数进行加载。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span><br><span class="line">     * Load url without fixing up the url string. Consumers of ContentView are responsible for</span><br><span class="line">     * ensuring the URL passed in is properly formatted (i.e. the scheme has been added if left</span><br><span class="line">     * off during user input).</span><br><span class="line">     *</span><br><span class="line">     * <span class="doctag">@param</span> params Parameters for this load.</span><br><span class="line">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">loadUrl</span><span class="params">(LoadUrlParams params)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (params.getLoadUrlType() == LoadUrlParams.LOAD_TYPE_DATA &amp;&amp;</span><br><span class="line">                !params.isBaseUrlDataScheme()) &#123;</span><br><span class="line">            <span class="comment">// This allows data URLs with a non-data base URL access to file:///android_asset/ and</span></span><br><span class="line">            <span class="comment">// file:///android_res/ URLs. If AwSettings.getAllowFileAccess permits, it will also</span></span><br><span class="line">            <span class="comment">// allow access to file:// URLs (subject to OS level permission checks).</span></span><br><span class="line">            params.setCanLoadLocalResources(<span class="keyword">true</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// If we are reloading the same url, then set transition type as reload.</span></span><br><span class="line">        <span class="keyword">if</span> (params.getUrl() != <span class="keyword">null</span> &amp;&amp;</span><br><span class="line">                params.getUrl().equals(mContentViewCore.getUrl()) &amp;&amp;</span><br><span class="line">                params.getTransitionType() == PageTransitionTypes.PAGE_TRANSITION_LINK) &#123;</span><br><span class="line">            params.setTransitionType(PageTransitionTypes.PAGE_TRANSITION_RELOAD);</span><br><span class="line">        &#125;</span><br><span class="line">        params.setTransitionType(</span><br><span class="line">                params.getTransitionType() | PageTransitionTypes.PAGE_TRANSITION_FROM_API);</span><br><span class="line">        <span class="comment">// For WebView, always use the user agent override, which is set</span></span><br><span class="line">        <span class="comment">// every time the user agent in AwSettings is modified.</span></span><br><span class="line">        params.setOverrideUserAgent(LoadUrlParams.UA_OVERRIDE_TRUE);</span><br><span class="line">        <span class="comment">// We don't pass extra headers to the content layer, as WebViewClassic</span></span><br><span class="line">        <span class="comment">// was adding them in a very narrow set of conditions. See http://crbug.com/306873</span></span><br><span class="line">        <span class="comment">// However, if the embedder is attempting to inject a Referer header for their</span></span><br><span class="line">        <span class="comment">// loadUrl call, then we set that separately and remove it from the extra headers map/</span></span><br><span class="line">        <span class="keyword">final</span> String REFERER = <span class="string">"referer"</span>;</span><br><span class="line">        Map&lt;String, String&gt; extraHeaders = params.getExtraHeaders();</span><br><span class="line">        <span class="keyword">if</span> (extraHeaders != <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="keyword">for</span> (String header : extraHeaders.keySet()) &#123;</span><br><span class="line">                <span class="keyword">if</span> (REFERER.equals(header.toLowerCase(Locale.US))) &#123;</span><br><span class="line">                    params.setReferrer(<span class="keyword">new</span> Referrer(extraHeaders.remove(header), <span class="number">1</span>));</span><br><span class="line">                    params.setExtraHeaders(extraHeaders);</span><br><span class="line">                    <span class="keyword">break</span>;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (mNativeAwContents != <span class="number">0</span>) &#123;</span><br><span class="line">            nativeSetExtraHeadersForUrl(</span><br><span class="line">                    mNativeAwContents, params.getUrl(), params.getExtraHttpRequestHeadersString());</span><br><span class="line">        &#125;</span><br><span class="line">        params.setExtraHeaders(<span class="keyword">new</span> HashMap&lt;String, String&gt;());</span><br><span class="line">        mContentViewCore.loadUrl(params);</span><br><span class="line">        <span class="comment">// The behavior of WebViewClassic uses the populateVisitedLinks callback in WebKit.</span></span><br><span class="line">        <span class="comment">// Chromium does not use this use code path and the best emulation of this behavior to call</span></span><br><span class="line">        <span class="comment">// request visited links once on the first URL load of the WebView.</span></span><br><span class="line">        <span class="keyword">if</span> (!mHasRequestedVisitedHistoryFromClient) &#123;</span><br><span class="line">            mHasRequestedVisitedHistoryFromClient = <span class="keyword">true</span>;</span><br><span class="line">            requestVisitedHistoryFromClient();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (params.getLoadUrlType() == LoadUrlParams.LOAD_TYPE_DATA &amp;&amp;</span><br><span class="line">                params.getBaseUrl() != <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="comment">// Data loads with a base url will be resolved in Blink, and not cause an onPageStarted</span></span><br><span class="line">            <span class="comment">// event to be sent. Sending the callback directly from here.</span></span><br><span class="line">            mContentsClient.getCallbackHelper().postOnPageStarted(params.getBaseUrl());</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">     * Load url without fixing up the url string. Consumers of ContentView are responsible for</span></span><br><span class="line"><span class="comment">     * ensuring the URL passed in is properly formatted (i.e. the scheme has been added if left</span></span><br><span class="line"><span class="comment">     * off during user input).</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> params Parameters for this load.</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">loadUrl</span><span class="params">(LoadUrlParams params)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (params.getLoadUrlType() == LoadUrlParams.LOAD_TYPE_DATA &amp;&amp;</span><br><span class="line">                !params.isBaseUrlDataScheme()) &#123;</span><br><span class="line">            <span class="comment">// This allows data URLs with a non-data base URL access to file:///android_asset/ and</span></span><br><span class="line">            <span class="comment">// file:///android_res/ URLs. If AwSettings.getAllowFileAccess permits, it will also</span></span><br><span class="line">            <span class="comment">// allow access to file:// URLs (subject to OS level permission checks).</span></span><br><span class="line">            params.setCanLoadLocalResources(<span class="keyword">true</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// If we are reloading the same url, then set transition type as reload.</span></span><br><span class="line">        <span class="keyword">if</span> (params.getUrl() != <span class="keyword">null</span> &amp;&amp;</span><br><span class="line">                params.getUrl().equals(mContentViewCore.getUrl()) &amp;&amp;</span><br><span class="line">                params.getTransitionType() == PageTransitionTypes.PAGE_TRANSITION_LINK) &#123;</span><br><span class="line">            params.setTransitionType(PageTransitionTypes.PAGE_TRANSITION_RELOAD);</span><br><span class="line">        &#125;</span><br><span class="line">        params.setTransitionType(</span><br><span class="line">                params.getTransitionType() | PageTransitionTypes.PAGE_TRANSITION_FROM_API);</span><br><span class="line">        <span class="comment">// For WebView, always use the user agent override, which is set</span></span><br><span class="line">        <span class="comment">// every time the user agent in AwSettings is modified.</span></span><br><span class="line">        params.setOverrideUserAgent(LoadUrlParams.UA_OVERRIDE_TRUE);</span><br><span class="line">        <span class="comment">// We don't pass extra headers to the content layer, as WebViewClassic</span></span><br><span class="line">        <span class="comment">// was adding them in a very narrow set of conditions. See http://crbug.com/306873</span></span><br><span class="line">        <span class="comment">// However, if the embedder is attempting to inject a Referer header for their</span></span><br><span class="line">        <span class="comment">// loadUrl call, then we set that separately and remove it from the extra headers map/</span></span><br><span class="line">        <span class="keyword">final</span> String REFERER = <span class="string">"referer"</span>;</span><br><span class="line">        Map&lt;String, String&gt; extraHeaders = params.getExtraHeaders();</span><br><span class="line">        <span class="keyword">if</span> (extraHeaders != <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="keyword">for</span> (String header : extraHeaders.keySet()) &#123;</span><br><span class="line">                <span class="keyword">if</span> (REFERER.equals(header.toLowerCase(Locale.US))) &#123;</span><br><span class="line">                    params.setReferrer(<span class="keyword">new</span> Referrer(extraHeaders.remove(header), <span class="number">1</span>));</span><br><span class="line">                    params.setExtraHeaders(extraHeaders);</span><br><span class="line">                    <span class="keyword">break</span>;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (mNativeAwContents != <span class="number">0</span>) &#123;</span><br><span class="line">            nativeSetExtraHeadersForUrl(</span><br><span class="line">                    mNativeAwContents, params.getUrl(), params.getExtraHttpRequestHeadersString());</span><br><span class="line">        &#125;</span><br><span class="line">        params.setExtraHeaders(<span class="keyword">new</span> HashMap&lt;String, String&gt;());</span><br><span class="line">        mContentViewCore.loadUrl(params);</span><br><span class="line">        <span class="comment">// The behavior of WebViewClassic uses the populateVisitedLinks callback in WebKit.</span></span><br><span class="line">        <span class="comment">// Chromium does not use this use code path and the best emulation of this behavior to call</span></span><br><span class="line">        <span class="comment">// request visited links once on the first URL load of the WebView.</span></span><br><span class="line">        <span class="keyword">if</span> (!mHasRequestedVisitedHistoryFromClient) &#123;</span><br><span class="line">            mHasRequestedVisitedHistoryFromClient = <span class="keyword">true</span>;</span><br><span class="line">            requestVisitedHistoryFromClient();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (params.getLoadUrlType() == LoadUrlParams.LOAD_TYPE_DATA &amp;&amp;</span><br><span class="line">                params.getBaseUrl() != <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="comment">// Data loads with a base url will be resolved in Blink, and not cause an onPageStarted</span></span><br><span class="line">            <span class="comment">// event to be sent. Sending the callback directly from here.</span></span><br><span class="line">            mContentsClient.getCallbackHelper().postOnPageStarted(params.getBaseUrl());</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
 <p>设置加载本地文件</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (params.getLoadUrlType() == LoadUrlParams.LOAD_TYPE_DATA &amp;&amp;</span><br><span class="line">        !params.isBaseUrlDataScheme()) &#123;</span><br><span class="line">    <span class="comment">// This allows data URLs with a non-data base URL access to file:///android_asset/ and</span></span><br><span class="line">    <span class="comment">// file:///android_res/ URLs. If AwSettings.getAllowFileAccess permits, it will also</span></span><br><span class="line">    <span class="comment">// allow access to file:// URLs (subject to OS level permission checks).</span></span><br><span class="line">    params.setCanLoadLocalResources(<span class="keyword">true</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>重设transitionType</p>
@@ -242,32 +351,32 @@
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (mNativeAwContents != <span class="number">0</span>) &#123;</span><br><span class="line">    nativeSetExtraHeadersForUrl(</span><br><span class="line">            mNativeAwContents, params.getUrl(), params.getExtraHttpRequestHeadersString());</span><br><span class="line">&#125;</span><br><span class="line">params.setExtraHeaders(<span class="keyword">new</span> HashMap&lt;String, String&gt;());</span><br></pre></td></tr></table></figure>
 <p>对params进行过上述二次加工后，调用mContentViewCore的loadUrl方法</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mContentViewCore.loadUrl(params);</span><br></pre></td></tr></table></figure>
-<p>继续追溯至<a href="https://chromium.googlesource.com/chromium/src/+/4907c84d52411cdc8dd78b613eeeb5bbad5ad0ab/content/public/android/java/src/org/chromium/content/browser/ContentViewCore.java" target="_blank" rel="external">ContentViewCore.java</a>，位于<code>org.chromium.content.browser</code>包中。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span><br><span class="line"> * Load url without fixing up the url string. Consumers of ContentView are responsible for</span><br><span class="line"> * ensuring the URL passed in is properly formatted (i.e. the scheme has been added if left</span><br><span class="line"> * off during user input).</span><br><span class="line"> *</span><br><span class="line"> * <span class="doctag">@param</span> pararms Parameters for this load.</span><br><span class="line"> */</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">loadUrl</span><span class="params">(LoadUrlParams params)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (mNativeContentViewCore == <span class="number">0</span>) <span class="keyword">return</span>;</span><br><span class="line">    <span class="keyword">if</span> (isPersonalityView()) &#123;</span><br><span class="line">        <span class="comment">// For WebView, always use the user agent override, which is set</span></span><br><span class="line">        <span class="comment">// every time the user agent in ContentSettings is modified.</span></span><br><span class="line">        params.setOverrideUserAgent(LoadUrlParams.UA_OVERRIDE_TRUE);</span><br><span class="line">    &#125;</span><br><span class="line">    nativeLoadUrl(mNativeContentViewCore,</span><br><span class="line">            params.mUrl,</span><br><span class="line">            params.mLoadUrlType,</span><br><span class="line">            params.mTransitionType,</span><br><span class="line">            params.mUaOverrideOption,</span><br><span class="line">            params.getExtraHeadersString(),</span><br><span class="line">            params.mPostData,</span><br><span class="line">            params.mBaseUrlForDataUrl,</span><br><span class="line">            params.mVirtualUrlForDataUrl,</span><br><span class="line">            params.mCanLoadLocalResources);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>继续追溯至<a href="https://chromium.googlesource.com/chromium/src/+/4907c84d52411cdc8dd78b613eeeb5bbad5ad0ab/content/public/android/java/src/org/chromium/content/browser/ContentViewCore.java" target="_blank" rel="noopener">ContentViewCore.java</a>，位于<code>org.chromium.content.browser</code>包中。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Load url without fixing up the url string. Consumers of ContentView are responsible for</span></span><br><span class="line"><span class="comment"> * ensuring the URL passed in is properly formatted (i.e. the scheme has been added if left</span></span><br><span class="line"><span class="comment"> * off during user input).</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> pararms Parameters for this load.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">loadUrl</span><span class="params">(LoadUrlParams params)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (mNativeContentViewCore == <span class="number">0</span>) <span class="keyword">return</span>;</span><br><span class="line">    <span class="keyword">if</span> (isPersonalityView()) &#123;</span><br><span class="line">        <span class="comment">// For WebView, always use the user agent override, which is set</span></span><br><span class="line">        <span class="comment">// every time the user agent in ContentSettings is modified.</span></span><br><span class="line">        params.setOverrideUserAgent(LoadUrlParams.UA_OVERRIDE_TRUE);</span><br><span class="line">    &#125;</span><br><span class="line">    nativeLoadUrl(mNativeContentViewCore,</span><br><span class="line">            params.mUrl,</span><br><span class="line">            params.mLoadUrlType,</span><br><span class="line">            params.mTransitionType,</span><br><span class="line">            params.mUaOverrideOption,</span><br><span class="line">            params.getExtraHeadersString(),</span><br><span class="line">            params.mPostData,</span><br><span class="line">            params.mBaseUrlForDataUrl,</span><br><span class="line">            params.mVirtualUrlForDataUrl,</span><br><span class="line">            params.mCanLoadLocalResources);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>这里调用了nativeLoadUrl方法，传入的参数我们之前都已经分析过其含义，除了第一个参数<code>mNativeContentViewCore</code>，它是一个指向<code>ContentViewCoreImpl</code>的指针地址。</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Native pointer to C++ ContentViewCoreImpl object which will be set by nativeInit().</span></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">int</span> mNativeContentViewCore = <span class="number">0</span>;</span><br></pre></td></tr></table></figure>
-<p>接下来就要深入到cpp文件中了，<a href="https://android.googlesource.com/platform/external/chromium_org/+/dc0e1d3/content/browser/android/content_view_core_impl.cc" target="_blank" rel="external">content_view_core_impl.cc</a>。注意！可能是版本的原因，这里的LoadUrl方法多出了第一个参数<code>JNIEnv* env</code>，通过对比可以发现，其它的参数是完全一致的。</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line">void ContentViewCoreImpl::LoadUrl(</span><br><span class="line">    JNIEnv* env, jobject obj,</span><br><span class="line">    jstring url,</span><br><span class="line">    jint load_url_type,</span><br><span class="line">    jint transition_type,</span><br><span class="line">    jint ua_override_option,</span><br><span class="line">    jstring extra_headers,</span><br><span class="line">    jbyteArray post_data,</span><br><span class="line">    jstring base_url_for_data_url,</span><br><span class="line">    jstring virtual_url_for_data_url,</span><br><span class="line">    jboolean can_load_local_resources) &#123;</span><br><span class="line">  DCHECK(url);</span><br><span class="line">  NavigationController::LoadURLParams params(</span><br><span class="line">      GURL(ConvertJavaStringToUTF8(env, url)));</span><br><span class="line">  params.load_type = static_cast&lt;NavigationController::LoadURLType&gt;(</span><br><span class="line">      load_url_type);</span><br><span class="line">  params.transition_type = PageTransitionFromInt(transition_type);</span><br><span class="line">  params.override_user_agent =</span><br><span class="line">      static_cast&lt;NavigationController::UserAgentOverrideOption&gt;(</span><br><span class="line">          ua_override_option);</span><br><span class="line">  if (extra_headers)</span><br><span class="line">    params.extra_headers = ConvertJavaStringToUTF8(env, extra_headers);</span><br><span class="line">  if (post_data) &#123;</span><br><span class="line">    std::vector&lt;uint8&gt; http_body_vector;</span><br><span class="line">    base::android::JavaByteArrayToByteVector(env, post_data, &amp;http_body_vector);</span><br><span class="line">    params.browser_initiated_post_data =</span><br><span class="line">        base::RefCountedBytes::TakeVector(&amp;http_body_vector);</span><br><span class="line">  &#125;</span><br><span class="line">  if (base_url_for_data_url) &#123;</span><br><span class="line">    params.base_url_for_data_url =</span><br><span class="line">        GURL(ConvertJavaStringToUTF8(env, base_url_for_data_url));</span><br><span class="line">  &#125;</span><br><span class="line">  if (virtual_url_for_data_url) &#123;</span><br><span class="line">    params.virtual_url_for_data_url =</span><br><span class="line">        GURL(ConvertJavaStringToUTF8(env, virtual_url_for_data_url));</span><br><span class="line">  &#125;</span><br><span class="line">  params.can_load_local_resources = can_load_local_resources;</span><br><span class="line">  LoadUrl(params);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>接下来就要深入到cpp文件中了，<a href="https://android.googlesource.com/platform/external/chromium_org/+/dc0e1d3/content/browser/android/content_view_core_impl.cc" target="_blank" rel="noopener">content_view_core_impl.cc</a>。注意！可能是版本的原因，这里的LoadUrl方法多出了第一个参数<code>JNIEnv* env</code>，通过对比可以发现，其它的参数是完全一致的。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> ContentViewCoreImpl::LoadUrl(</span><br><span class="line">    JNIEnv* env, jobject obj,</span><br><span class="line">    jstring url,</span><br><span class="line">    jint load_url_type,</span><br><span class="line">    jint transition_type,</span><br><span class="line">    jint ua_override_option,</span><br><span class="line">    jstring extra_headers,</span><br><span class="line">    jbyteArray post_data,</span><br><span class="line">    jstring base_url_for_data_url,</span><br><span class="line">    jstring virtual_url_for_data_url,</span><br><span class="line">    jboolean can_load_local_resources) &#123;</span><br><span class="line">  DCHECK(url);</span><br><span class="line">  NavigationController::<span class="function">LoadURLParams <span class="title">params</span><span class="params">(</span></span></span><br><span class="line">      GURL(ConvertJavaStringToUTF8(env, url)));</span><br><span class="line">  params.load_type = <span class="keyword">static_cast</span>&lt;NavigationController::LoadURLType&gt;(</span><br><span class="line">      load_url_type);</span><br><span class="line">  params.transition_type = PageTransitionFromInt(transition_type);</span><br><span class="line">  params.override_user_agent =</span><br><span class="line">      <span class="keyword">static_cast</span>&lt;NavigationController::UserAgentOverrideOption&gt;(</span><br><span class="line">          ua_override_option);</span><br><span class="line">  <span class="keyword">if</span> (extra_headers)</span><br><span class="line">    params.extra_headers = ConvertJavaStringToUTF8(env, extra_headers);</span><br><span class="line">  <span class="keyword">if</span> (post_data) &#123;</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">vector</span>&lt;uint8&gt; http_body_vector;</span><br><span class="line">    base::android::JavaByteArrayToByteVector(env, post_data, &amp;http_body_vector);</span><br><span class="line">    params.browser_initiated_post_data =</span><br><span class="line">        base::RefCountedBytes::TakeVector(&amp;http_body_vector);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">if</span> (base_url_for_data_url) &#123;</span><br><span class="line">    params.base_url_for_data_url =</span><br><span class="line">        GURL(ConvertJavaStringToUTF8(env, base_url_for_data_url));</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">if</span> (virtual_url_for_data_url) &#123;</span><br><span class="line">    params.virtual_url_for_data_url =</span><br><span class="line">        GURL(ConvertJavaStringToUTF8(env, virtual_url_for_data_url));</span><br><span class="line">  &#125;</span><br><span class="line">  params.can_load_local_resources = can_load_local_resources;</span><br><span class="line">  LoadUrl(params);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>GURL是一个宏，虽然不了解它具体做了什么，但是根据上下文可以猜测这里生成了一个<code>NavigationController::LoadURLParams</code>对象</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">NavigationController::LoadURLParams params(</span><br><span class="line">    GURL(ConvertJavaStringToUTF8(env, url)));</span><br></pre></td></tr></table></figure>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">NavigationController::<span class="function">LoadURLParams <span class="title">params</span><span class="params">(</span></span></span><br><span class="line">    GURL(ConvertJavaStringToUTF8(env, url)));</span><br></pre></td></tr></table></figure>
 <p>随后对几个参数进行类型转换，把它们拼入params中，最后调用<code>LoadUrl(params)</code>方法。</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> ContentViewCoreImpl::LoadUrl(</span><br><span class="line">    NavigationController::LoadURLParams&amp; params) &#123;</span><br><span class="line">  GetWebContents()-&gt;GetController().LoadURLWithParams(params);</span><br><span class="line">  UpdateTabCrashedFlag();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>虽然自己对C语言不是很熟悉，但在这里也可以发现，是把上一步拼装成的params参数集合传递给了某个Controller对象。那么到底是哪一个Controller呢？跟着代码走～</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">WebContents* ContentViewCoreImpl::GetWebContents() <span class="keyword">const</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> web_contents_;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>这里返回成员变量<code>web_contents_</code>，而Controller就在它内部</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> ContentViewCoreImpl::InitWebContents() &#123;</span><br><span class="line">  DCHECK(web_contents_);</span><br><span class="line">  notification_registrar_.Add(</span><br><span class="line">      <span class="keyword">this</span>, NOTIFICATION_RENDER_VIEW_HOST_CHANGED,</span><br><span class="line">      Source&lt;NavigationController&gt;(&amp;web_contents_-&gt;GetController()));</span><br><span class="line">  notification_registrar_.Add(</span><br><span class="line">      <span class="keyword">this</span>, NOTIFICATION_RENDERER_PROCESS_CREATED,</span><br><span class="line">      content::NotificationService::AllBrowserContextsAndSources());</span><br><span class="line">  notification_registrar_.Add(</span><br><span class="line">      <span class="keyword">this</span>, NOTIFICATION_WEB_CONTENTS_CONNECTED,</span><br><span class="line">      Source&lt;WebContents&gt;(web_contents_));</span><br><span class="line">  notification_registrar_.Add(</span><br><span class="line">      <span class="keyword">this</span>, NOTIFICATION_WEB_CONTENTS_SWAPPED,</span><br><span class="line">      Source&lt;WebContents&gt;(web_contents_));</span><br><span class="line">  <span class="keyword">static_cast</span>&lt;WebContentsViewAndroid*&gt;(web_contents_-&gt;GetView())-&gt;</span><br><span class="line">      SetContentViewCore(<span class="keyword">this</span>);</span><br><span class="line">  DCHECK(!web_contents_-&gt;GetUserData(kContentViewUserDataKey));</span><br><span class="line">  web_contents_-&gt;SetUserData(kContentViewUserDataKey,</span><br><span class="line">                             <span class="keyword">new</span> ContentViewUserData(<span class="keyword">this</span>));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>找到了，是NavigationController类型，源码见<a href="https://chromium.googlesource.com/dart/dartium/src/+/releases/1650/content/browser/web_contents/navigation_controller_impl.cc" target="_blank" rel="external">navigation_controller_impl.cc</a>。</p>
+<p>找到了，是NavigationController类型，源码见<a href="https://chromium.googlesource.com/dart/dartium/src/+/releases/1650/content/browser/web_contents/navigation_controller_impl.cc" target="_blank" rel="noopener">navigation_controller_impl.cc</a>。</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> NavigationControllerImpl::LoadURLWithParams(<span class="keyword">const</span> LoadURLParams&amp; params) &#123;</span><br><span class="line">  TRACE_EVENT0(<span class="string">"browser"</span>, <span class="string">"NavigationControllerImpl::LoadURLWithParams"</span>);</span><br><span class="line">  <span class="keyword">if</span> (HandleDebugURL(params.url, params.transition_type))</span><br><span class="line">    <span class="keyword">return</span>;</span><br><span class="line">  <span class="comment">// Checks based on params.load_type.</span></span><br><span class="line">  <span class="keyword">switch</span> (params.load_type) &#123;</span><br><span class="line">    <span class="keyword">case</span> LOAD_TYPE_DEFAULT:</span><br><span class="line">      <span class="keyword">break</span>;</span><br><span class="line">    <span class="keyword">case</span> LOAD_TYPE_BROWSER_INITIATED_HTTP_POST:</span><br><span class="line">      <span class="keyword">if</span> (!params.url.SchemeIs(kHttpScheme) &amp;&amp;</span><br><span class="line">          !params.url.SchemeIs(kHttpsScheme)) &#123;</span><br><span class="line">        NOTREACHED() &lt;&lt; <span class="string">"Http post load must use http(s) scheme."</span>;</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">break</span>;</span><br><span class="line">    <span class="keyword">case</span> LOAD_TYPE_DATA:</span><br><span class="line">      <span class="keyword">if</span> (!params.url.SchemeIs(chrome::kDataScheme)) &#123;</span><br><span class="line">        NOTREACHED() &lt;&lt; <span class="string">"Data load must use data scheme."</span>;</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">break</span>;</span><br><span class="line">    <span class="keyword">default</span>:</span><br><span class="line">      NOTREACHED();</span><br><span class="line">      <span class="keyword">break</span>;</span><br><span class="line">  &#125;;</span><br><span class="line">  <span class="comment">// The user initiated a load, we don't need to reload anymore.</span></span><br><span class="line">  needs_reload_ = <span class="literal">false</span>;</span><br><span class="line">  <span class="keyword">bool</span> override = <span class="literal">false</span>;</span><br><span class="line">  <span class="keyword">switch</span> (params.override_user_agent) &#123;</span><br><span class="line">    <span class="keyword">case</span> UA_OVERRIDE_INHERIT:</span><br><span class="line">      override = ShouldKeepOverride(GetLastCommittedEntry());</span><br><span class="line">      <span class="keyword">break</span>;</span><br><span class="line">    <span class="keyword">case</span> UA_OVERRIDE_TRUE:</span><br><span class="line">      override = <span class="literal">true</span>;</span><br><span class="line">      <span class="keyword">break</span>;</span><br><span class="line">    <span class="keyword">case</span> UA_OVERRIDE_FALSE:</span><br><span class="line">      override = <span class="literal">false</span>;</span><br><span class="line">      <span class="keyword">break</span>;</span><br><span class="line">    <span class="keyword">default</span>:</span><br><span class="line">      NOTREACHED();</span><br><span class="line">      <span class="keyword">break</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  NavigationEntryImpl* entry = NavigationEntryImpl::FromNavigationEntry(</span><br><span class="line">      CreateNavigationEntry(</span><br><span class="line">          params.url,</span><br><span class="line">          params.referrer,</span><br><span class="line">          params.transition_type,</span><br><span class="line">          params.is_renderer_initiated,</span><br><span class="line">          params.extra_headers,</span><br><span class="line">          browser_context_));</span><br><span class="line">  <span class="keyword">if</span> (params.should_replace_current_entry)</span><br><span class="line">    entry-&gt;set_should_replace_entry(<span class="literal">true</span>);</span><br><span class="line">  entry-&gt;set_should_clear_history_list(params.should_clear_history_list);</span><br><span class="line">  entry-&gt;SetIsOverridingUserAgent(override);</span><br><span class="line">  entry-&gt;set_transferred_global_request_id(</span><br><span class="line">      params.transferred_global_request_id);</span><br><span class="line">  entry-&gt;SetFrameToNavigate(params.frame_name);</span><br><span class="line">  <span class="keyword">switch</span> (params.load_type) &#123;</span><br><span class="line">    <span class="keyword">case</span> LOAD_TYPE_DEFAULT:</span><br><span class="line">      <span class="keyword">break</span>;</span><br><span class="line">    <span class="keyword">case</span> LOAD_TYPE_BROWSER_INITIATED_HTTP_POST:</span><br><span class="line">      entry-&gt;SetHasPostData(<span class="literal">true</span>);</span><br><span class="line">      entry-&gt;SetBrowserInitiatedPostData(</span><br><span class="line">          params.browser_initiated_post_data.get());</span><br><span class="line">      <span class="keyword">break</span>;</span><br><span class="line">    <span class="keyword">case</span> LOAD_TYPE_DATA:</span><br><span class="line">      entry-&gt;SetBaseURLForDataURL(params.base_url_for_data_url);</span><br><span class="line">      entry-&gt;SetVirtualURL(params.virtual_url_for_data_url);</span><br><span class="line">      entry-&gt;SetCanLoadLocalResources(params.can_load_local_resources);</span><br><span class="line">      <span class="keyword">break</span>;</span><br><span class="line">    <span class="keyword">default</span>:</span><br><span class="line">      NOTREACHED();</span><br><span class="line">      <span class="keyword">break</span>;</span><br><span class="line">  &#125;;</span><br><span class="line">  LoadEntry(entry);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>这里做的事情与前面类似，取出参数再次拼装成<code>NavigationEntryImpl* entry</code>，然后调用LoadEntry。LoadEntry这里的注释讲解的很清楚，当我们进入新页面时，我们并不清楚是不是要终止上一个页面，因为新页面有可能只是一个下载或者邮件。由于我们的url等信息都保存在entry中，继续追溯 SetPendingEntry(entry) 方法。</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> NavigationControllerImpl::LoadEntry(NavigationEntryImpl* entry) &#123;</span><br><span class="line">  <span class="comment">// When navigating to a new page, we don't know for sure if we will actually</span></span><br><span class="line">  <span class="comment">// end up leaving the current page.  The new page load could for example</span></span><br><span class="line">  <span class="comment">// result in a download or a 'no content' response (e.g., a mailto: URL).</span></span><br><span class="line">  SetPendingEntry(entry);</span><br><span class="line">  NavigateToPendingEntry(NO_RELOAD);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> NavigationControllerImpl::SetPendingEntry(NavigationEntryImpl* entry) &#123;</span><br><span class="line">  DiscardNonCommittedEntriesInternal();</span><br><span class="line">  pending_entry_ = entry;</span><br><span class="line">  NotificationService::current()-&gt;Notify(</span><br><span class="line">      NOTIFICATION_NAV_ENTRY_PENDING,</span><br><span class="line">      Source&lt;NavigationController&gt;(<span class="keyword">this</span>),</span><br><span class="line">      Details&lt;NavigationEntry&gt;(entry));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>上述代码中，先是终止了尚未提交处理的Entry，然后将欲访问的entry保存在<code>pending_entry_</code>变量，最后通过<code>NotificationService::current()-&gt;Notify</code>，把Entry插入一个消息队列，可以在<a href="https://chromium.googlesource.com/dart/dartium/src/+/releases/1650/content/browser/notification_service_impl.cc" target="_blank" rel="external">notification_service_impl.cc</a>的源码中看到，收到这个消息后，会通知所有的Observer</p>
+<p>上述代码中，先是终止了尚未提交处理的Entry，然后将欲访问的entry保存在<code>pending_entry_</code>变量，最后通过<code>NotificationService::current()-&gt;Notify</code>，把Entry插入一个消息队列，可以在<a href="https://chromium.googlesource.com/dart/dartium/src/+/releases/1650/content/browser/notification_service_impl.cc" target="_blank" rel="noopener">notification_service_impl.cc</a>的源码中看到，收到这个消息后，会通知所有的Observer</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> NotificationServiceImpl::Notify(<span class="keyword">int</span> type,</span><br><span class="line">                                     <span class="keyword">const</span> NotificationSource&amp; source,</span><br><span class="line">                                     <span class="keyword">const</span> NotificationDetails&amp; details) &#123;</span><br><span class="line">  DCHECK_GT(type, NOTIFICATION_ALL) &lt;&lt;</span><br><span class="line">      <span class="string">"Allowed for observing, but not posting."</span>;</span><br><span class="line">  <span class="comment">// There's no particular reason for the order in which the different</span></span><br><span class="line">  <span class="comment">// classes of observers get notified here.</span></span><br><span class="line">  <span class="comment">// Notify observers of all types and all sources</span></span><br><span class="line">  <span class="keyword">if</span> (HasKey(observers_[NOTIFICATION_ALL], AllSources()) &amp;&amp;</span><br><span class="line">      source != AllSources()) &#123;</span><br><span class="line">    FOR_EACH_OBSERVER(NotificationObserver,</span><br><span class="line">                      *observers_[NOTIFICATION_ALL][AllSources().map_key()],</span><br><span class="line">                      Observe(type, source, details));</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// Notify observers of all types and the given source</span></span><br><span class="line">  <span class="keyword">if</span> (HasKey(observers_[NOTIFICATION_ALL], source)) &#123;</span><br><span class="line">    FOR_EACH_OBSERVER(NotificationObserver,</span><br><span class="line">                      *observers_[NOTIFICATION_ALL][source.map_key()],</span><br><span class="line">                      Observe(type, source, details));</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// Notify observers of the given type and all sources</span></span><br><span class="line">  <span class="keyword">if</span> (HasKey(observers_[type], AllSources()) &amp;&amp;</span><br><span class="line">      source != AllSources()) &#123;</span><br><span class="line">    FOR_EACH_OBSERVER(NotificationObserver,</span><br><span class="line">                      *observers_[type][AllSources().map_key()],</span><br><span class="line">                      Observe(type, source, details));</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// Notify observers of the given type and the given source</span></span><br><span class="line">  <span class="keyword">if</span> (HasKey(observers_[type], source)) &#123;</span><br><span class="line">    FOR_EACH_OBSERVER(NotificationObserver,</span><br><span class="line">                      *observers_[type][source.map_key()],</span><br><span class="line">                      Observe(type, source, details));</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>我们必须找到是哪个Observer处理了加载Entry的消息，可是到这里，线索似乎断了，怎么才能找到对应的Observer呢？</p>
 <blockquote>
 <p>内事不决问百度，外事不决问谷歌。</p>
 </blockquote>
-<p>在Google的帮助下，找到了这篇文档<a href="https://www.chromium.org/developers/how-tos/getting-around-the-chrome-source-code" target="_blank" rel="external">Getting Around the Chromium Source Code Directory Structure</a>。这里介绍了整个Chromium的架构，重点关注“Navigating from the URL bar”一节。</p>
+<p>在Google的帮助下，找到了这篇文档<a href="https://www.chromium.org/developers/how-tos/getting-around-the-chrome-source-code" target="_blank" rel="noopener">Getting Around the Chromium Source Code Directory Structure</a>。这里介绍了整个Chromium的架构，重点关注“Navigating from the URL bar”一节。</p>
 <h3 id="Navigating-from-the-URL-bar"><a href="#Navigating-from-the-URL-bar" class="headerlink" title="Navigating from the URL bar"></a>Navigating from the URL bar</h3><ol>
 <li>When the user types into or accepts an entry in the URL bar, the autocomplete edit box determines the final target URL and passes that to <code>AutocompleteEdit::OpenURL</code>. (This may not be exactly what the user typed - for example, an URL is generated in the case of a search query.)</li>
 <li>The navigation controller is instructed to navigate to the URL in <code>NavigationController::LoadURL</code>.</li>
@@ -283,145 +392,196 @@
 <p>更多分析，将在后续文章中一一道出。</p>
 <hr>
 
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://lilei.work/2016/11/09/Android-WebView-0-to-1/" data-id="ciznkvjot002hyusuiexafzt3" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Android/">Android</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/源码分析/">源码分析</a></li></ul>
-
-    </footer>
-  </div>
-  
     
-<nav id="article-nav">
-  
-    <a href="/2016/11/10/Android-WebView-0-to-1-part-2/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Newer</strong>
-      <div class="article-nav-title">
-        
-          Android WebView 从0到1（二）
-        
-      </div>
-    </a>
-  
-  
-    <a href="/2016/09/09/Deploy-Web-Application-In-Tomcat/" id="article-nav-older" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">Deploy Web Application In Tomcat</div>
-    </a>
-  
-</nav>
+  </div>
 
   
+      <div class="git"></div>
+  
+
 </article>
 
 
- <section id="comments">
-   <!-- 多说评论框 start -->
-   <div class="ds-thread" data-thread-key="post-Android-WebView-0-to-1" data-title="Android WebView 从0到1（一）" data-url="http://lilei.work/2016/11/09/Android-WebView-0-to-1/"></div>
-   <!-- 多说评论框 end -->
-   <!-- 多说公共JS代码 start (一个网页只需插入一次) -->
-   <script type="text/javascript">
-   var duoshuoQuery = {short_name:'lileiwork'};
-     (function() {
-       var ds = document.createElement('script');
-       ds.type = 'text/javascript';ds.async = true;
-       ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
-       ds.charset = 'UTF-8';
-       (document.getElementsByTagName('head')[0] 
-        || document.getElementsByTagName('body')[0]).appendChild(ds);
-     })();
-     </script>
-   <!-- 多说公共JS代码 end -->
- </section>
- </section>
+   
+
+   
+  <div class="box-prev-next clearfix">
+    <a class="show pull-left" href="/2016/09/09/Deploy-Web-Application-In-Tomcat/">
+        <i class="icon icon-angle-left"></i>
+    </a>
+    <a class="show pull-right" href="/2016/11/10/Android-WebView-0-to-1-part-2/">
+        <i class="icon icon-angle-right"></i>
+    </a>
+  </div>
+
+
+
+
+</div>
+
+
+  <a id="backTop" class="back-top">
+    <i class="icon-angle-up"></i>
+  </a>
+
+
+
+
+  <div class="modal" id="modal">
+  <span id="cover" class="cover hide"></span>
+  <div id="modal-dialog" class="modal-dialog hide-dialog">
+    <div class="modal-header">
+      <span id="close" class="btn-close">关闭</span>
+    </div>
+    <hr>
+    <div class="modal-body">
+      <ul class="list-toolbox">
         
-          <aside id="sidebar">
-  
-    
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Tags</h3>
-    <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Android/">Android</a><span class="tag-list-count">10</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Android-Performance-Patterns/">Android Performance Patterns</a><span class="tag-list-count">29</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Android-Studio/">Android Studio</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Backend/">Backend</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/">Linux</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Shell/">Shell</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/大保健/">大保健</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/工作效率/">工作效率</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/工具/">工具</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/微信小程序/">微信小程序</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/技术流/">技术流</a><span class="tag-list-count">31</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/架构/">架构</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/槑/">槑</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/源码分析/">源码分析</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/自动化测试/">自动化测试</a><span class="tag-list-count">2</span></li></ul>
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/archives/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              博客
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/category/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              分类
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/tag/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              标签
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/link/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              友链
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/about/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              关于
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/search/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              搜索
+            </a>
+          </li>
+        
+      </ul>
+
     </div>
+  </div>
+</div>
+
+
+
+  
+      <div class="fexo-comments comments-post">
+    
+  <section class="disqus-comments">
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    </div>
+  </section>
+
+  <script>
+    var disqus_shortname = 'lilei';
+    
+    var disqus_url = 'http://lilei.work/2016/11/09/Android-WebView-0-to-1/';
+    
+    (function(){
+      var dsq = document.createElement('script');
+      dsq.type = 'text/javascript';
+      dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+  </script>
+
+  <script id="dsq-count-scr" src="//lilei.disqus.com/count.js" async></script>
+
+
+
+    
+    
+
+    
+    
+
+    
+
+    
+    
+
   </div>
 
   
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Archives</h3>
-    <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">February 2017</a><span class="archive-list-count">10</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">January 2017</a><span class="archive-list-count">14</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">November 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">September 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">June 2016</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">March 2016</a><span class="archive-list-count">11</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/02/">February 2016</a><span class="archive-list-count">15</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">January 2016</a><span class="archive-list-count">6</span></li></ul>
-    </div>
-  </div>
 
-  
-    <div class="widget-wrap">
-	<h3 class="widget-title">Links</h3>
-	<div class="widget">
-		<ul class="entry">
-		<li><a href="http://www.dcharm.com" title="dcharm">DCharm.com</a></li>
-		<li><a href="http://www.lightskystreet.com" title="lightSky">lightSky</a></li>
-		</ul>
-	</div>
-</div>
-  
-    <div class="widget-wrap">
-	<h3 class="widget-title">Recent Comments</h3>
-	<div class="widget">
-		<ul class="ds-recent-comments" data-num-items="5" data-show-avatars="0" data-show-time="1" data-show-title="1" data-show-admin="1" data-excerpt-length="70"></ul>
-	</div>
-</div>
+  <script type="text/javascript">
+  function loadScript(url, callback) {
+    var script = document.createElement('script')
+    script.type = 'text/javascript';
 
-<!--多说js加载开始，一个页面只需要加载一次 -->
-<script type="text/javascript">
-if(typeof duoshuoQuery === 'undefined') {
-	  var duoshuoQuery = {short_name:"lileiwork"};
-	  (function() {
-	    var ds = document.createElement('script');
-	    ds.type = 'text/javascript';ds.async = true;
-	    ds.src = 'http://static.duoshuo.com/embed.js';
-	    ds.charset = 'UTF-8';
-	    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(ds);
-	  })();
+    if (script.readyState) { //IE
+      script.onreadystatechange = function() {
+        if (script.readyState == 'loaded' ||
+          script.readyState == 'complete') {
+          script.onreadystatechange = null;
+          callback();
+        }
+      };
+    } else { //Others
+      script.onload = function() {
+        callback();
+      };
+    }
+
+    script.src = url;
+    document.getElementsByTagName('head')[0].appendChild(script);
+  }
+
+  window.onload = function() {
+    loadScript('/js/bundle.js?235683', function() {
+      // load success
+    });
   }
 </script>
-  
-</aside>
-        
-      </div>
-      <footer id="footer">
-  
-  <div class="outer">
-    <div id="footer-info" class="inner">
-      &copy; 2017 Li Lei<br>
-      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
-    </div>
-  </div>
-</footer>
-    </div>
-    <nav id="mobile-nav">
-  
-    <a href="/" class="mobile-nav-link">Home</a>
-  
-    <a href="/archives" class="mobile-nav-link">Archives</a>
-  
-</nav>
-    
 
-<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
-
-
-  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
-  <script src="/fancybox/jquery.fancybox.pack.js"></script>
-
-
-<script src="/js/script.js"></script>
-
-  </div>
 </body>
 </html>

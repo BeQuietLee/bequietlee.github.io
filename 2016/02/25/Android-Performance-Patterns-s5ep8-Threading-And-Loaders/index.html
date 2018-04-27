@@ -1,16 +1,28 @@
 <!DOCTYPE html>
-<html>
+
+
+  <html class="light page-post">
+
+
 <head>
   <meta charset="utf-8">
   
   <title>Android Performance Patterns - s5ep8 Threading And Loaders | One Step, One Punch</title>
+
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+    <meta name="keywords" content="技术流,Android Performance Patterns," />
+  
+
   <meta name="description" content="Let’s say you’ve got some 20 bitmaps being decoded on a worker thread. Well, what happens if your activity is destroyed before that work completes?相比于本期的大叔，笔者更喜欢之前的光头哥Video Link">
+<meta name="keywords" content="技术流,Android Performance Patterns">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Android Performance Patterns - s5ep8 Threading And Loaders">
 <meta property="og:url" content="http://lilei.work/2016/02/25/Android-Performance-Patterns-s5ep8-Threading-And-Loaders/index.html">
 <meta property="og:site_name" content="One Step, One Punch">
 <meta property="og:description" content="Let’s say you’ve got some 20 bitmaps being decoded on a worker thread. Well, what happens if your activity is destroyed before that work completes?相比于本期的大叔，笔者更喜欢之前的光头哥Video Link">
+<meta property="og:locale" content="default">
 <meta property="og:image" content="http://lilei.work/img/160225_app_s5ep8/activity_destroy.png">
 <meta property="og:image" content="http://lilei.work/img/160225_app_s5ep8/use_activity_2.png">
 <meta property="og:image" content="http://lilei.work/img/160225_app_s5ep8/cache_result.png">
@@ -20,79 +32,176 @@
 <meta name="twitter:title" content="Android Performance Patterns - s5ep8 Threading And Loaders">
 <meta name="twitter:description" content="Let’s say you’ve got some 20 bitmaps being decoded on a worker thread. Well, what happens if your activity is destroyed before that work completes?相比于本期的大叔，笔者更喜欢之前的光头哥Video Link">
 <meta name="twitter:image" content="http://lilei.work/img/160225_app_s5ep8/activity_destroy.png">
-  
-    <link rel="alternative" href="/atom.xml" title="One Step, One Punch" type="application/atom+xml">
-  
-  
-    <link rel="icon" href="/favicon.png">
-  
-  <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
-  <link rel="stylesheet" href="/css/style.css">
+
   
 
+  
+    <link rel="icon" href="/favicon.ico">
+  
+
+  <link href="/css/styles.css?v=c114cbe6" rel="stylesheet">
+
+
+  
+    <link rel="stylesheet" href="/css/personal-style.css">
+  
+
+  
+
+  
+
+  
+
+
+  
+    <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+  
+
+  
+    <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.3.0/css/font-awesome.min.css">
+  
 </head>
+
 <body>
-  <div id="container">
-    <div id="wrap">
-      <header id="header">
-  <div id="banner"></div>
-  <div id="header-outer" class="outer">
-    <div id="header-title" class="inner">
-      <h1 id="logo-wrap">
-        <a href="/" id="logo">One Step, One Punch</a>
-      </h1>
-      
-        <h2 id="subtitle-wrap">
-          <a href="/" id="subtitle">bequietlee#gmail.com</a>
-        </h2>
-      
-    </div>
-    <div id="header-inner" class="inner">
-      <nav id="main-nav">
-        <a id="main-nav-toggle" class="nav-icon"></a>
-        
-          <a class="main-nav-link" href="/">Home</a>
-        
-          <a class="main-nav-link" href="/archives">Archives</a>
-        
-      </nav>
-      <nav id="sub-nav">
-        
-          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
-        
-        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
-      </nav>
-      <div id="search-form-wrap">
-        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://lilei.work"></form>
-      </div>
-    </div>
-  </div>
-</header>
-      <div class="outer">
-        <section id="main"><article id="post-Android-Performance-Patterns-s5ep8-Threading-And-Loaders" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2016/02/25/Android-Performance-Patterns-s5ep8-Threading-And-Loaders/" class="article-date">
-  <time datetime="2016-02-25T01:25:53.000Z" itemprop="datePublished">2016-02-25</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
+
+
   
-    <h1 class="article-title" itemprop="name">
-      Android Performance Patterns - s5ep8 Threading And Loaders
-    </h1>
+    <span id="toolbox-mobile" class="toolbox-mobile">导航</span>
   
 
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
+  <div class="post-header CENTER">
+   
+  <div class="toolbox">
+    <a class="toolbox-entry" href="/">
+      <span class="toolbox-entry-text">导航</span>
+      <i class="icon-angle-down"></i>
+      <i class="icon-home"></i>
+    </a>
+    <ul class="list-toolbox">
       
-        <blockquote>
-<p>Let’s say you’ve got some 20 bitmaps being decoded on a worker thread. Well, what happens if your activity is destroyed before that work completes?<br>相比于本期的大叔，笔者更喜欢之前的光头哥<br><a href="https://www.youtube.com/watch?v=s4eAtMHU5gI&amp;index=8&amp;list=PLWz5rJ2EKKc9CBxr3BVjPTPoDPLdPIFCE" target="_blank" rel="external">Video Link</a></p>
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/archives/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            博客
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/category/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            分类
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/tag/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            标签
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/link/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            友链
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/about/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            关于
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/search/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+
+
+</div>
+
+
+  <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#No-One-Writes-to-the-Colonel"><span class="toc-text">No One Writes to the Colonel</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#You-Should-Use-Loaders"><span class="toc-text">You Should Use Loaders</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#The-Downside-of-Loaders"><span class="toc-text">The Downside of Loaders</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Ending"><span class="toc-text">===Ending===</span></a>
+  </div>
+
+
+
+<div class="content content-post CENTER">
+   <article id="post-Android-Performance-Patterns-s5ep8-Threading-And-Loaders" class="article article-type-post" itemprop="blogPost">
+  <header class="article-header">
+    <h1 class="post-title">Android Performance Patterns - s5ep8 Threading And Loaders</h1>
+
+    <div class="article-meta">
+      <span>
+        <i class="icon-calendar"></i>
+        <span>2016.02.25</span>
+      </span>
+
+      
+        <span class="article-author">
+          <i class="icon-user"></i>
+          <span>Li Lei</span>
+        </span>
+      
+
+      
+
+
+      
+        <span>
+          <i class="icon-comment"></i>
+          <a href="http://lilei.workj/2016/02/25/Android-Performance-Patterns-s5ep8-Threading-And-Loaders/#disqus_thread"></a>
+        </span>
+      
+
+      
+      <i class="fa fa-eye"></i> 
+        <span id="busuanzi_container_page_pv">
+           &nbsp热度 <span id="busuanzi_value_page_pv">
+           <i class="fa fa-spinner fa-spin"></i></span>℃
+        </span>
+      
+      
+    </div>
+  </header>
+
+  <div class="article-content">
+    
+      <blockquote>
+<p>Let’s say you’ve got some 20 bitmaps being decoded on a worker thread. Well, what happens if your activity is destroyed before that work completes?<br>相比于本期的大叔，笔者更喜欢之前的光头哥<br><a href="https://www.youtube.com/watch?v=s4eAtMHU5gI&amp;index=8&amp;list=PLWz5rJ2EKKc9CBxr3BVjPTPoDPLdPIFCE" target="_blank" rel="noopener">Video Link</a></p>
 </blockquote>
 <iframe width="560" height="315" src="https://www.youtube.com/embed/s4eAtMHU5gI?list=PLWz5rJ2EKKc9CBxr3BVjPTPoDPLdPIFCE" frameborder="0" allowfullscreen></iframe>
 
@@ -107,157 +216,208 @@
 <p>图2<br><img src="/img/160225_app_s5ep8/use_activity_2.png" alt=""></p>
 <hr>
 <h4 id="You-Should-Use-Loaders"><a href="#You-Should-Use-Loaders" class="headerlink" title="You Should Use Loaders"></a>You Should Use Loaders</h4><p>针对上面的场景，建议使用<code>Loader</code>。设计合理的Loader可以避免内存泄漏、正确处理UI事件、并且不需要重复执行。</p>
-<p><a href="http://developer.android.com/reference/android/content/AsyncTaskLoader.html?utm_campaign=app_series_asyncsamplecode_021816&amp;utm_source=gdev&amp;utm_medium=yt-annt" target="_blank" rel="external"><strong>LoaderManager</strong></a>是用来管理Loader的接口，借助前面链接中例子不难理解Loader运行的机制：获取LoaderManager实例－初始化Loader－实现LoaderCallbacks接口处理回调。</p>
+<p><a href="http://developer.android.com/reference/android/content/AsyncTaskLoader.html?utm_campaign=app_series_asyncsamplecode_021816&amp;utm_source=gdev&amp;utm_medium=yt-annt" target="_blank" rel="noopener"><strong>LoaderManager</strong></a>是用来管理Loader的接口，借助前面链接中例子不难理解Loader运行的机制：获取LoaderManager实例－初始化Loader－实现LoaderCallbacks接口处理回调。</p>
 <p>LoaderManager可以缓存任务执行结果，这样当Activity销毁并重建时，就不需要重复执行前面已经执行过的任务了。</p>
 <p><img src="/img/160225_app_s5ep8/cache_result.png" alt=""></p>
 <p>如果一个Activity被终止后不会重建，我们就应该在LoaderManager的<code>onLoaderReset</code>中处理这种情形，释放引用。</p>
 <p><img src="/img/160225_app_s5ep8/report_stop.png" alt=""></p>
 <hr>
 <h4 id="The-Downside-of-Loaders"><a href="#The-Downside-of-Loaders" class="headerlink" title="The Downside of Loaders"></a>The Downside of Loaders</h4><p>集成较为复杂，代码量大。</p>
-<p>参考下面<a href="http://developer.android.com/reference/android/content/AsyncTaskLoader.html?utm_campaign=app_series_asyncsamplecode_021816&amp;utm_source=gdev&amp;utm_medium=yt-annt" target="_blank" rel="external">Reference</a>给出的例子，实现了Fragment的ListView从联系人ContentProvider中通过CursorLoader获取数据的过程。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">CursorLoaderListFragment</span> <span class="keyword">extends</span> <span class="title">ListFragment</span></span><br><span class="line">        <span class="keyword">implements</span> <span class="title">OnQueryTextListener</span>, <span class="title">OnCloseListener</span>,</span><br><span class="line">        <span class="title">LoaderManager</span>.<span class="title">LoaderCallbacks</span>&lt;<span class="title">Cursor</span>&gt; </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// This is the Adapter being used to display the list's data.</span></span><br><span class="line">    SimpleCursorAdapter mAdapter;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// The SearchView for doing filtering.</span></span><br><span class="line">    SearchView mSearchView;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// If non-null, this is the current filter the user has provided.</span></span><br><span class="line">    String mCurFilter;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span> <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onActivityCreated</span><span class="params">(Bundle savedInstanceState)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>.onActivityCreated(savedInstanceState);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// Give some text to display if there is no data.  In a real</span></span><br><span class="line">        <span class="comment">// application this would come from a resource.</span></span><br><span class="line">        setEmptyText(<span class="string">"No phone numbers"</span>);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// We have a menu item to show in action bar.</span></span><br><span class="line">        setHasOptionsMenu(<span class="keyword">true</span>);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// Create an empty adapter we will use to display the loaded data.</span></span><br><span class="line">        mAdapter = <span class="keyword">new</span> SimpleCursorAdapter(getActivity(),</span><br><span class="line">                android.R.layout.simple_list_item_2, <span class="keyword">null</span>,</span><br><span class="line">                <span class="keyword">new</span> String[] &#123; Contacts.DISPLAY_NAME, Contacts.CONTACT_STATUS &#125;,</span><br><span class="line">                <span class="keyword">new</span> <span class="keyword">int</span>[] &#123; android.R.id.text1, android.R.id.text2 &#125;, <span class="number">0</span>);</span><br><span class="line">        setListAdapter(mAdapter);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// Start out with a progress indicator.</span></span><br><span class="line">        setListShown(<span class="keyword">false</span>);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// Prepare the loader.  Either re-connect with an existing one,</span></span><br><span class="line">        <span class="comment">// or start a new one.</span></span><br><span class="line">        getLoaderManager().initLoader(<span class="number">0</span>, <span class="keyword">null</span>, <span class="keyword">this</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">MySearchView</span> <span class="keyword">extends</span> <span class="title">SearchView</span> </span>&#123;</span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="title">MySearchView</span><span class="params">(Context context)</span> </span>&#123;</span><br><span class="line">            <span class="keyword">super</span>(context);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// The normal SearchView doesn't clear its search text when</span></span><br><span class="line">        <span class="comment">// collapsed, so we will do this for it.</span></span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onActionViewCollapsed</span><span class="params">()</span> </span>&#123;</span><br><span class="line">            setQuery(<span class="string">""</span>, <span class="keyword">false</span>);</span><br><span class="line">            <span class="keyword">super</span>.onActionViewCollapsed();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span> <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onCreateOptionsMenu</span><span class="params">(Menu menu, MenuInflater inflater)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// Place an action bar item for searching.</span></span><br><span class="line">        MenuItem item = menu.add(<span class="string">"Search"</span>);</span><br><span class="line">        item.setIcon(android.R.drawable.ic_menu_search);</span><br><span class="line">        item.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM</span><br><span class="line">                | MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW);</span><br><span class="line">        mSearchView = <span class="keyword">new</span> MySearchView(getActivity());</span><br><span class="line">        mSearchView.setOnQueryTextListener(<span class="keyword">this</span>);</span><br><span class="line">        mSearchView.setOnCloseListener(<span class="keyword">this</span>);</span><br><span class="line">        mSearchView.setIconifiedByDefault(<span class="keyword">true</span>);</span><br><span class="line">        item.setActionView(mSearchView);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">onQueryTextChange</span><span class="params">(String newText)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// Called when the action bar search text has changed.  Update</span></span><br><span class="line">        <span class="comment">// the search filter, and restart the loader to do a new query</span></span><br><span class="line">        <span class="comment">// with this filter.</span></span><br><span class="line">        String newFilter = !TextUtils.isEmpty(newText) ? newText : <span class="keyword">null</span>;</span><br><span class="line">        <span class="comment">// Don't do anything if the filter hasn't actually changed.</span></span><br><span class="line">        <span class="comment">// Prevents restarting the loader when restoring state.</span></span><br><span class="line">        <span class="keyword">if</span> (mCurFilter == <span class="keyword">null</span> &amp;&amp; newFilter == <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (mCurFilter != <span class="keyword">null</span> &amp;&amp; mCurFilter.equals(newFilter)) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        mCurFilter = newFilter;</span><br><span class="line">        getLoaderManager().restartLoader(<span class="number">0</span>, <span class="keyword">null</span>, <span class="keyword">this</span>);</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span> <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">onQueryTextSubmit</span><span class="params">(String query)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// Don't care about this.</span></span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">onClose</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (!TextUtils.isEmpty(mSearchView.getQuery())) &#123;</span><br><span class="line">            mSearchView.setQuery(<span class="keyword">null</span>, <span class="keyword">true</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span> <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onListItemClick</span><span class="params">(ListView l, View v, <span class="keyword">int</span> position, <span class="keyword">long</span> id)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// Insert desired behavior here.</span></span><br><span class="line">        Log.i(<span class="string">"FragmentComplexList"</span>, <span class="string">"Item clicked: "</span> + id);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// These are the Contacts rows that we will retrieve.</span></span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">final</span> String[] CONTACTS_SUMMARY_PROJECTION = <span class="keyword">new</span> String[] &#123;</span><br><span class="line">        Contacts._ID,</span><br><span class="line">        Contacts.DISPLAY_NAME,</span><br><span class="line">        Contacts.CONTACT_STATUS,</span><br><span class="line">        Contacts.CONTACT_PRESENCE,</span><br><span class="line">        Contacts.PHOTO_ID,</span><br><span class="line">        Contacts.LOOKUP_KEY,</span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Loader&lt;Cursor&gt; <span class="title">onCreateLoader</span><span class="params">(<span class="keyword">int</span> id, Bundle args)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// This is called when a new Loader needs to be created.  This</span></span><br><span class="line">        <span class="comment">// sample only has one Loader, so we don't care about the ID.</span></span><br><span class="line">        <span class="comment">// First, pick the base URI to use depending on whether we are</span></span><br><span class="line">        <span class="comment">// currently filtering.</span></span><br><span class="line">        Uri baseUri;</span><br><span class="line">        <span class="keyword">if</span> (mCurFilter != <span class="keyword">null</span>) &#123;</span><br><span class="line">            baseUri = Uri.withAppendedPath(Contacts.CONTENT_FILTER_URI,</span><br><span class="line">                    Uri.encode(mCurFilter));</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            baseUri = Contacts.CONTENT_URI;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// Now create and return a CursorLoader that will take care of</span></span><br><span class="line">        <span class="comment">// creating a Cursor for the data being displayed.</span></span><br><span class="line">        String select = <span class="string">"(("</span> + Contacts.DISPLAY_NAME + <span class="string">" NOTNULL) AND ("</span></span><br><span class="line">                + Contacts.HAS_PHONE_NUMBER + <span class="string">"=1) AND ("</span></span><br><span class="line">                + Contacts.DISPLAY_NAME + <span class="string">" != '' ))"</span>;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> CursorLoader(getActivity(), baseUri,</span><br><span class="line">                CONTACTS_SUMMARY_PROJECTION, select, <span class="keyword">null</span>,</span><br><span class="line">                Contacts.DISPLAY_NAME + <span class="string">" COLLATE LOCALIZED ASC"</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onLoadFinished</span><span class="params">(Loader&lt;Cursor&gt; loader, Cursor data)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// Swap the new cursor in.  (The framework will take care of closing the</span></span><br><span class="line">        <span class="comment">// old cursor once we return.)</span></span><br><span class="line">        mAdapter.swapCursor(data);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// The list should now be shown.</span></span><br><span class="line">        <span class="keyword">if</span> (isResumed()) &#123;</span><br><span class="line">            setListShown(<span class="keyword">true</span>);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            setListShownNoAnimation(<span class="keyword">true</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onLoaderReset</span><span class="params">(Loader&lt;Cursor&gt; loader)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// This is called when the last Cursor provided to onLoadFinished()</span></span><br><span class="line">        <span class="comment">// above is about to be closed.  We need to make sure we are no</span></span><br><span class="line">        <span class="comment">// longer using it.</span></span><br><span class="line">        mAdapter.swapCursor(<span class="keyword">null</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>参考下面<a href="http://developer.android.com/reference/android/content/AsyncTaskLoader.html?utm_campaign=app_series_asyncsamplecode_021816&amp;utm_source=gdev&amp;utm_medium=yt-annt" target="_blank" rel="noopener">Reference</a>给出的例子，实现了Fragment的ListView从联系人ContentProvider中通过CursorLoader获取数据的过程。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">CursorLoaderListFragment</span> <span class="keyword">extends</span> <span class="title">ListFragment</span></span></span><br><span class="line"><span class="class">        <span class="keyword">implements</span> <span class="title">OnQueryTextListener</span>, <span class="title">OnCloseListener</span>,</span></span><br><span class="line"><span class="class">        <span class="title">LoaderManager</span>.<span class="title">LoaderCallbacks</span>&lt;<span class="title">Cursor</span>&gt; </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// This is the Adapter being used to display the list's data.</span></span><br><span class="line">    SimpleCursorAdapter mAdapter;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// The SearchView for doing filtering.</span></span><br><span class="line">    SearchView mSearchView;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// If non-null, this is the current filter the user has provided.</span></span><br><span class="line">    String mCurFilter;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span> <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onActivityCreated</span><span class="params">(Bundle savedInstanceState)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>.onActivityCreated(savedInstanceState);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// Give some text to display if there is no data.  In a real</span></span><br><span class="line">        <span class="comment">// application this would come from a resource.</span></span><br><span class="line">        setEmptyText(<span class="string">"No phone numbers"</span>);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// We have a menu item to show in action bar.</span></span><br><span class="line">        setHasOptionsMenu(<span class="keyword">true</span>);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// Create an empty adapter we will use to display the loaded data.</span></span><br><span class="line">        mAdapter = <span class="keyword">new</span> SimpleCursorAdapter(getActivity(),</span><br><span class="line">                android.R.layout.simple_list_item_2, <span class="keyword">null</span>,</span><br><span class="line">                <span class="keyword">new</span> String[] &#123; Contacts.DISPLAY_NAME, Contacts.CONTACT_STATUS &#125;,</span><br><span class="line">                <span class="keyword">new</span> <span class="keyword">int</span>[] &#123; android.R.id.text1, android.R.id.text2 &#125;, <span class="number">0</span>);</span><br><span class="line">        setListAdapter(mAdapter);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// Start out with a progress indicator.</span></span><br><span class="line">        setListShown(<span class="keyword">false</span>);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// Prepare the loader.  Either re-connect with an existing one,</span></span><br><span class="line">        <span class="comment">// or start a new one.</span></span><br><span class="line">        getLoaderManager().initLoader(<span class="number">0</span>, <span class="keyword">null</span>, <span class="keyword">this</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">MySearchView</span> <span class="keyword">extends</span> <span class="title">SearchView</span> </span>&#123;</span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="title">MySearchView</span><span class="params">(Context context)</span> </span>&#123;</span><br><span class="line">            <span class="keyword">super</span>(context);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// The normal SearchView doesn't clear its search text when</span></span><br><span class="line">        <span class="comment">// collapsed, so we will do this for it.</span></span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onActionViewCollapsed</span><span class="params">()</span> </span>&#123;</span><br><span class="line">            setQuery(<span class="string">""</span>, <span class="keyword">false</span>);</span><br><span class="line">            <span class="keyword">super</span>.onActionViewCollapsed();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span> <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onCreateOptionsMenu</span><span class="params">(Menu menu, MenuInflater inflater)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// Place an action bar item for searching.</span></span><br><span class="line">        MenuItem item = menu.add(<span class="string">"Search"</span>);</span><br><span class="line">        item.setIcon(android.R.drawable.ic_menu_search);</span><br><span class="line">        item.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM</span><br><span class="line">                | MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW);</span><br><span class="line">        mSearchView = <span class="keyword">new</span> MySearchView(getActivity());</span><br><span class="line">        mSearchView.setOnQueryTextListener(<span class="keyword">this</span>);</span><br><span class="line">        mSearchView.setOnCloseListener(<span class="keyword">this</span>);</span><br><span class="line">        mSearchView.setIconifiedByDefault(<span class="keyword">true</span>);</span><br><span class="line">        item.setActionView(mSearchView);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">onQueryTextChange</span><span class="params">(String newText)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// Called when the action bar search text has changed.  Update</span></span><br><span class="line">        <span class="comment">// the search filter, and restart the loader to do a new query</span></span><br><span class="line">        <span class="comment">// with this filter.</span></span><br><span class="line">        String newFilter = !TextUtils.isEmpty(newText) ? newText : <span class="keyword">null</span>;</span><br><span class="line">        <span class="comment">// Don't do anything if the filter hasn't actually changed.</span></span><br><span class="line">        <span class="comment">// Prevents restarting the loader when restoring state.</span></span><br><span class="line">        <span class="keyword">if</span> (mCurFilter == <span class="keyword">null</span> &amp;&amp; newFilter == <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (mCurFilter != <span class="keyword">null</span> &amp;&amp; mCurFilter.equals(newFilter)) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        mCurFilter = newFilter;</span><br><span class="line">        getLoaderManager().restartLoader(<span class="number">0</span>, <span class="keyword">null</span>, <span class="keyword">this</span>);</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span> <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">onQueryTextSubmit</span><span class="params">(String query)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// Don't care about this.</span></span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">onClose</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (!TextUtils.isEmpty(mSearchView.getQuery())) &#123;</span><br><span class="line">            mSearchView.setQuery(<span class="keyword">null</span>, <span class="keyword">true</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span> <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onListItemClick</span><span class="params">(ListView l, View v, <span class="keyword">int</span> position, <span class="keyword">long</span> id)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// Insert desired behavior here.</span></span><br><span class="line">        Log.i(<span class="string">"FragmentComplexList"</span>, <span class="string">"Item clicked: "</span> + id);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// These are the Contacts rows that we will retrieve.</span></span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">final</span> String[] CONTACTS_SUMMARY_PROJECTION = <span class="keyword">new</span> String[] &#123;</span><br><span class="line">        Contacts._ID,</span><br><span class="line">        Contacts.DISPLAY_NAME,</span><br><span class="line">        Contacts.CONTACT_STATUS,</span><br><span class="line">        Contacts.CONTACT_PRESENCE,</span><br><span class="line">        Contacts.PHOTO_ID,</span><br><span class="line">        Contacts.LOOKUP_KEY,</span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Loader&lt;Cursor&gt; <span class="title">onCreateLoader</span><span class="params">(<span class="keyword">int</span> id, Bundle args)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// This is called when a new Loader needs to be created.  This</span></span><br><span class="line">        <span class="comment">// sample only has one Loader, so we don't care about the ID.</span></span><br><span class="line">        <span class="comment">// First, pick the base URI to use depending on whether we are</span></span><br><span class="line">        <span class="comment">// currently filtering.</span></span><br><span class="line">        Uri baseUri;</span><br><span class="line">        <span class="keyword">if</span> (mCurFilter != <span class="keyword">null</span>) &#123;</span><br><span class="line">            baseUri = Uri.withAppendedPath(Contacts.CONTENT_FILTER_URI,</span><br><span class="line">                    Uri.encode(mCurFilter));</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            baseUri = Contacts.CONTENT_URI;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// Now create and return a CursorLoader that will take care of</span></span><br><span class="line">        <span class="comment">// creating a Cursor for the data being displayed.</span></span><br><span class="line">        String select = <span class="string">"(("</span> + Contacts.DISPLAY_NAME + <span class="string">" NOTNULL) AND ("</span></span><br><span class="line">                + Contacts.HAS_PHONE_NUMBER + <span class="string">"=1) AND ("</span></span><br><span class="line">                + Contacts.DISPLAY_NAME + <span class="string">" != '' ))"</span>;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> CursorLoader(getActivity(), baseUri,</span><br><span class="line">                CONTACTS_SUMMARY_PROJECTION, select, <span class="keyword">null</span>,</span><br><span class="line">                Contacts.DISPLAY_NAME + <span class="string">" COLLATE LOCALIZED ASC"</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onLoadFinished</span><span class="params">(Loader&lt;Cursor&gt; loader, Cursor data)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// Swap the new cursor in.  (The framework will take care of closing the</span></span><br><span class="line">        <span class="comment">// old cursor once we return.)</span></span><br><span class="line">        mAdapter.swapCursor(data);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// The list should now be shown.</span></span><br><span class="line">        <span class="keyword">if</span> (isResumed()) &#123;</span><br><span class="line">            setListShown(<span class="keyword">true</span>);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            setListShownNoAnimation(<span class="keyword">true</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onLoaderReset</span><span class="params">(Loader&lt;Cursor&gt; loader)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// This is called when the last Cursor provided to onLoadFinished()</span></span><br><span class="line">        <span class="comment">// above is about to be closed.  We need to make sure we are no</span></span><br><span class="line">        <span class="comment">// longer using it.</span></span><br><span class="line">        mAdapter.swapCursor(<span class="keyword">null</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <hr>
 <h3 id="Ending"><a href="#Ending" class="headerlink" title="===Ending==="></a><em>===Ending===</em></h3><hr>
 
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://lilei.work/2016/02/25/Android-Performance-Patterns-s5ep8-Threading-And-Loaders/" data-id="ciznkvjnu0014yusu2jogjvp5" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Android-Performance-Patterns/">Android Performance Patterns</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/技术流/">技术流</a></li></ul>
-
-    </footer>
-  </div>
-  
     
-<nav id="article-nav">
-  
-    <a href="/2016/02/25/Android-Performance-Patterns-s5ep9-The-Importance-Of-Thread-Priority/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Newer</strong>
-      <div class="article-nav-title">
-        
-          Android Performance Patterns - s5ep9 The Importance Of Thread Priority
-        
-      </div>
-    </a>
-  
-  
-    <a href="/2016/02/24/Android-Performance-Patterns-s5ep7-The-Zen-Of-IntentService/" id="article-nav-older" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">Android Performance Patterns - s5ep7 The Zen Of IntentService</div>
-    </a>
-  
-</nav>
+  </div>
 
   
+      <div class="git"></div>
+  
+
 </article>
 
 
- <section id="comments">
-   <!-- 多说评论框 start -->
-   <div class="ds-thread" data-thread-key="post-Android-Performance-Patterns-s5ep8-Threading-And-Loaders" data-title="Android Performance Patterns - s5ep8 Threading And Loaders" data-url="http://lilei.work/2016/02/25/Android-Performance-Patterns-s5ep8-Threading-And-Loaders/"></div>
-   <!-- 多说评论框 end -->
-   <!-- 多说公共JS代码 start (一个网页只需插入一次) -->
-   <script type="text/javascript">
-   var duoshuoQuery = {short_name:'lileiwork'};
-     (function() {
-       var ds = document.createElement('script');
-       ds.type = 'text/javascript';ds.async = true;
-       ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
-       ds.charset = 'UTF-8';
-       (document.getElementsByTagName('head')[0] 
-        || document.getElementsByTagName('body')[0]).appendChild(ds);
-     })();
-     </script>
-   <!-- 多说公共JS代码 end -->
- </section>
- </section>
+   
+
+   
+  <div class="box-prev-next clearfix">
+    <a class="show pull-left" href="/2016/02/24/Android-Performance-Patterns-s5ep7-The-Zen-Of-IntentService/">
+        <i class="icon icon-angle-left"></i>
+    </a>
+    <a class="show pull-right" href="/2016/02/25/Android-Performance-Patterns-s5ep9-The-Importance-Of-Thread-Priority/">
+        <i class="icon icon-angle-right"></i>
+    </a>
+  </div>
+
+
+
+
+</div>
+
+
+  <a id="backTop" class="back-top">
+    <i class="icon-angle-up"></i>
+  </a>
+
+
+
+
+  <div class="modal" id="modal">
+  <span id="cover" class="cover hide"></span>
+  <div id="modal-dialog" class="modal-dialog hide-dialog">
+    <div class="modal-header">
+      <span id="close" class="btn-close">关闭</span>
+    </div>
+    <hr>
+    <div class="modal-body">
+      <ul class="list-toolbox">
         
-          <aside id="sidebar">
-  
-    
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Tags</h3>
-    <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Android/">Android</a><span class="tag-list-count">10</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Android-Performance-Patterns/">Android Performance Patterns</a><span class="tag-list-count">29</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Android-Studio/">Android Studio</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Backend/">Backend</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/">Linux</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Shell/">Shell</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/大保健/">大保健</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/工作效率/">工作效率</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/工具/">工具</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/微信小程序/">微信小程序</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/技术流/">技术流</a><span class="tag-list-count">31</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/架构/">架构</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/槑/">槑</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/源码分析/">源码分析</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/自动化测试/">自动化测试</a><span class="tag-list-count">2</span></li></ul>
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/archives/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              博客
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/category/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              分类
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/tag/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              标签
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/link/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              友链
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/about/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              关于
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/search/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              搜索
+            </a>
+          </li>
+        
+      </ul>
+
     </div>
+  </div>
+</div>
+
+
+
+  
+      <div class="fexo-comments comments-post">
+    
+  <section class="disqus-comments">
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    </div>
+  </section>
+
+  <script>
+    var disqus_shortname = 'lilei';
+    
+    var disqus_url = 'http://lilei.work/2016/02/25/Android-Performance-Patterns-s5ep8-Threading-And-Loaders/';
+    
+    (function(){
+      var dsq = document.createElement('script');
+      dsq.type = 'text/javascript';
+      dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+  </script>
+
+  <script id="dsq-count-scr" src="//lilei.disqus.com/count.js" async></script>
+
+
+
+    
+    
+
+    
+    
+
+    
+
+    
+    
+
   </div>
 
   
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Archives</h3>
-    <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">February 2017</a><span class="archive-list-count">10</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">January 2017</a><span class="archive-list-count">14</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">November 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">September 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">June 2016</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">March 2016</a><span class="archive-list-count">11</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/02/">February 2016</a><span class="archive-list-count">15</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">January 2016</a><span class="archive-list-count">6</span></li></ul>
-    </div>
-  </div>
 
-  
-    <div class="widget-wrap">
-	<h3 class="widget-title">Links</h3>
-	<div class="widget">
-		<ul class="entry">
-		<li><a href="http://www.dcharm.com" title="dcharm">DCharm.com</a></li>
-		<li><a href="http://www.lightskystreet.com" title="lightSky">lightSky</a></li>
-		</ul>
-	</div>
-</div>
-  
-    <div class="widget-wrap">
-	<h3 class="widget-title">Recent Comments</h3>
-	<div class="widget">
-		<ul class="ds-recent-comments" data-num-items="5" data-show-avatars="0" data-show-time="1" data-show-title="1" data-show-admin="1" data-excerpt-length="70"></ul>
-	</div>
-</div>
+  <script type="text/javascript">
+  function loadScript(url, callback) {
+    var script = document.createElement('script')
+    script.type = 'text/javascript';
 
-<!--多说js加载开始，一个页面只需要加载一次 -->
-<script type="text/javascript">
-if(typeof duoshuoQuery === 'undefined') {
-	  var duoshuoQuery = {short_name:"lileiwork"};
-	  (function() {
-	    var ds = document.createElement('script');
-	    ds.type = 'text/javascript';ds.async = true;
-	    ds.src = 'http://static.duoshuo.com/embed.js';
-	    ds.charset = 'UTF-8';
-	    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(ds);
-	  })();
+    if (script.readyState) { //IE
+      script.onreadystatechange = function() {
+        if (script.readyState == 'loaded' ||
+          script.readyState == 'complete') {
+          script.onreadystatechange = null;
+          callback();
+        }
+      };
+    } else { //Others
+      script.onload = function() {
+        callback();
+      };
+    }
+
+    script.src = url;
+    document.getElementsByTagName('head')[0].appendChild(script);
+  }
+
+  window.onload = function() {
+    loadScript('/js/bundle.js?235683', function() {
+      // load success
+    });
   }
 </script>
-  
-</aside>
-        
-      </div>
-      <footer id="footer">
-  
-  <div class="outer">
-    <div id="footer-info" class="inner">
-      &copy; 2017 Li Lei<br>
-      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
-    </div>
-  </div>
-</footer>
-    </div>
-    <nav id="mobile-nav">
-  
-    <a href="/" class="mobile-nav-link">Home</a>
-  
-    <a href="/archives" class="mobile-nav-link">Archives</a>
-  
-</nav>
-    
 
-<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
-
-
-  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
-  <script src="/fancybox/jquery.fancybox.pack.js"></script>
-
-
-<script src="/js/script.js"></script>
-
-  </div>
 </body>
 </html>

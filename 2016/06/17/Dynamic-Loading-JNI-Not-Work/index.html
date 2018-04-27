@@ -1,92 +1,201 @@
 <!DOCTYPE html>
-<html>
+
+
+  <html class="light page-post">
+
+
 <head>
   <meta charset="utf-8">
   
   <title>Android中动态加载JNI失效问题探究(未完待续) | One Step, One Punch</title>
+
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+    <meta name="keywords" content="技术流,Android Performance Patterns," />
+  
+
   <meta name="description" content="在做so动态加载时遇到了后加载的JNI方法失效的问题">
+<meta name="keywords" content="技术流,Android Performance Patterns">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Android中动态加载JNI失效问题探究(未完待续)">
 <meta property="og:url" content="http://lilei.work/2016/06/17/Dynamic-Loading-JNI-Not-Work/index.html">
 <meta property="og:site_name" content="One Step, One Punch">
 <meta property="og:description" content="在做so动态加载时遇到了后加载的JNI方法失效的问题">
+<meta property="og:locale" content="default">
 <meta property="og:updated_time" content="2016-06-17T11:16:14.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Android中动态加载JNI失效问题探究(未完待续)">
 <meta name="twitter:description" content="在做so动态加载时遇到了后加载的JNI方法失效的问题">
-  
-    <link rel="alternative" href="/atom.xml" title="One Step, One Punch" type="application/atom+xml">
-  
-  
-    <link rel="icon" href="/favicon.png">
-  
-  <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
-  <link rel="stylesheet" href="/css/style.css">
+
   
 
+  
+    <link rel="icon" href="/favicon.ico">
+  
+
+  <link href="/css/styles.css?v=c114cbe6" rel="stylesheet">
+
+
+  
+    <link rel="stylesheet" href="/css/personal-style.css">
+  
+
+  
+
+  
+
+  
+
+
+  
+    <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+  
+
+  
+    <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.3.0/css/font-awesome.min.css">
+  
 </head>
+
 <body>
-  <div id="container">
-    <div id="wrap">
-      <header id="header">
-  <div id="banner"></div>
-  <div id="header-outer" class="outer">
-    <div id="header-title" class="inner">
-      <h1 id="logo-wrap">
-        <a href="/" id="logo">One Step, One Punch</a>
-      </h1>
-      
-        <h2 id="subtitle-wrap">
-          <a href="/" id="subtitle">bequietlee#gmail.com</a>
-        </h2>
-      
-    </div>
-    <div id="header-inner" class="inner">
-      <nav id="main-nav">
-        <a id="main-nav-toggle" class="nav-icon"></a>
-        
-          <a class="main-nav-link" href="/">Home</a>
-        
-          <a class="main-nav-link" href="/archives">Archives</a>
-        
-      </nav>
-      <nav id="sub-nav">
-        
-          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
-        
-        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
-      </nav>
-      <div id="search-form-wrap">
-        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://lilei.work"></form>
-      </div>
-    </div>
-  </div>
-</header>
-      <div class="outer">
-        <section id="main"><article id="post-Dynamic-Loading-JNI-Not-Work" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2016/06/17/Dynamic-Loading-JNI-Not-Work/" class="article-date">
-  <time datetime="2016-06-17T02:33:02.000Z" itemprop="datePublished">2016-06-17</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
+
+
   
-    <h1 class="article-title" itemprop="name">
-      Android中动态加载JNI失效问题探究(未完待续)
-    </h1>
+    <span id="toolbox-mobile" class="toolbox-mobile">导航</span>
   
 
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
+  <div class="post-header CENTER">
+   
+  <div class="toolbox">
+    <a class="toolbox-entry" href="/">
+      <span class="toolbox-entry-text">导航</span>
+      <i class="icon-angle-down"></i>
+      <i class="icon-home"></i>
+    </a>
+    <ul class="list-toolbox">
       
-        <blockquote>
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/archives/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            博客
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/category/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            分类
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/tag/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            标签
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/link/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            友链
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/about/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            关于
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/search/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+
+
+</div>
+
+
+  <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#背景描述"><span class="toc-text">背景描述</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#原因探究"><span class="toc-text">原因探究</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#System-load-过程"><span class="toc-text">System.load 过程</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#System-loadLibrary-过程"><span class="toc-text">System.loadLibrary 过程</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#System-load-amp-System-loadLibrary-加载so库文件"><span class="toc-text">System.load &amp; System.loadLibrary 加载so库文件</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#到这里被BLOCK住了，HELP～"><span class="toc-text">到这里被BLOCK住了，HELP～</span></a>
+  </div>
+
+
+
+<div class="content content-post CENTER">
+   <article id="post-Dynamic-Loading-JNI-Not-Work" class="article article-type-post" itemprop="blogPost">
+  <header class="article-header">
+    <h1 class="post-title">Android中动态加载JNI失效问题探究(未完待续)</h1>
+
+    <div class="article-meta">
+      <span>
+        <i class="icon-calendar"></i>
+        <span>2016.06.17</span>
+      </span>
+
+      
+        <span class="article-author">
+          <i class="icon-user"></i>
+          <span>Li Lei</span>
+        </span>
+      
+
+      
+
+
+      
+        <span>
+          <i class="icon-comment"></i>
+          <a href="http://lilei.workj/2016/06/17/Dynamic-Loading-JNI-Not-Work/#disqus_thread"></a>
+        </span>
+      
+
+      
+      <i class="fa fa-eye"></i> 
+        <span id="busuanzi_container_page_pv">
+           &nbsp热度 <span id="busuanzi_value_page_pv">
+           <i class="fa fa-spinner fa-spin"></i></span>℃
+        </span>
+      
+      
+    </div>
+  </header>
+
+  <div class="article-content">
+    
+      <blockquote>
 <p>在做so动态加载时遇到了后加载的JNI方法失效的问题</p>
 </blockquote>
 <hr>
@@ -97,7 +206,7 @@
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">native</span> String <span class="title">say</span><span class="params">()</span></span>;</span><br></pre></td></tr></table></figure>
 <p>C文件中实现方法很简单，返回一个预定义好的字符串<code>Keep Quiet!</code></p>
 <p><code>jni.c</code></p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="string">"com_leili_season1_jni_activity_JNIActivity.h"</span></span></span><br><span class="line"></span><br><span class="line"><span class="function">JNIEXPORT jstring JNICALL <span class="title">Java_com_leili_season1_jni_activity_JNIActivity_say</span></span><br><span class="line">        <span class="params">(JNIEnv *env, jobject obj)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> (*env)-&gt;NewStringUTF(env, <span class="string">"Keep Quiet!"</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"com_leili_season1_jni_activity_JNIActivity.h"</span></span></span><br><span class="line"></span><br><span class="line">JNIEXPORT jstring JNICALL Java_com_leili_season1_jni_activity_JNIActivity_say</span><br><span class="line">        (JNIEnv *env, jobject obj) &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> (*env)-&gt;NewStringUTF(env, <span class="string">"Keep Quiet!"</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>初始化时，加载返回<code>Keep Quiet!</code>的so文件</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onCreate</span><span class="params">(Bundle savedInstanceState)</span> </span>&#123;</span><br><span class="line">	System.loadLibrary(<span class="string">"Jni"</span>); <span class="comment">// 写法A，通过System.loadLibrary()首次加载</span></span><br><span class="line">	System.load(getFilesDir().getParent() + <span class="string">"/lib/libJni.so"</span>); <span class="comment">// 写法B，通过System.load()首次加载</span></span><br><span class="line">	... <span class="comment">// 以下无关内容省略</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>点击按钮后加载新的so文件，其中修改了<code>say()</code>方法的返回值为<code>Hello World!</code></p>
@@ -107,29 +216,29 @@
 <h3 id="原因探究"><a href="#原因探究" class="headerlink" title="原因探究"></a>原因探究</h3><p>第一个想法是，<code>System.load</code>和<code>System.loadLibrary</code>内部实现有差异，通过<code>System.loadLibrary</code>加载进来的so库，其方法无法被覆盖。</p>
 <p>先来看一下SDK源码中这两个方法的细节，首先是<code>System.load</code>，使用SDK版本为23</p>
 <h4 id="System-load-过程"><a href="#System-load-过程" class="headerlink" title="System.load 过程"></a>System.load 过程</h4><p>System.java</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span><br><span class="line"> * See &#123;<span class="doctag">@link</span> Runtime#load&#125;.</span><br><span class="line"> */</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">load</span><span class="params">(String pathName)</span> </span>&#123;</span><br><span class="line">    Runtime.getRuntime().load(pathName, VMStack.getCallingClassLoader());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * See &#123;<span class="doctag">@link</span> Runtime#load&#125;.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">load</span><span class="params">(String pathName)</span> </span>&#123;</span><br><span class="line">    Runtime.getRuntime().load(pathName, VMStack.getCallingClassLoader());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>调用了Runtime中的load方法</p>
 <p>Runtime.java</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span><br><span class="line"> * Loads the given shared library using the given ClassLoader.</span><br><span class="line"> */</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">load</span><span class="params">(String absolutePath, ClassLoader loader)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (absolutePath == <span class="keyword">null</span>) &#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> NullPointerException(<span class="string">"absolutePath == null"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    String error = doLoad(absolutePath, loader);</span><br><span class="line">    <span class="keyword">if</span> (error != <span class="keyword">null</span>) &#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> UnsatisfiedLinkError(error);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"> * Loads the given shared library using the given ClassLoader.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">load</span><span class="params">(String absolutePath, ClassLoader loader)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (absolutePath == <span class="keyword">null</span>) &#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> NullPointerException(<span class="string">"absolutePath == null"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    String error = doLoad(absolutePath, loader);</span><br><span class="line">    <span class="keyword">if</span> (error != <span class="keyword">null</span>) &#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> UnsatisfiedLinkError(error);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>跟进 doLoad 方法查看</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> String <span class="title">doLoad</span><span class="params">(String name, ClassLoader loader)</span> </span>&#123;</span><br><span class="line">    <span class="comment">// Android apps are forked from the zygote, so they can't have a custom LD_LIBRARY_PATH,</span></span><br><span class="line">    <span class="comment">// which means that by default an app's shared library directory isn't on LD_LIBRARY_PATH.</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// The PathClassLoader set up by frameworks/base knows the appropriate path, so we can load</span></span><br><span class="line">    <span class="comment">// libraries with no dependencies just fine, but an app that has multiple libraries that</span></span><br><span class="line">    <span class="comment">// depend on each other needed to load them in most-dependent-first order.</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// We added API to Android's dynamic linker so we can update the library path used for</span></span><br><span class="line">    <span class="comment">// the currently-running process. We pull the desired path out of the ClassLoader here</span></span><br><span class="line">    <span class="comment">// and pass it to nativeLoad so that it can call the private dynamic linker API.</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// We didn't just change frameworks/base to update the LD_LIBRARY_PATH once at the</span></span><br><span class="line">    <span class="comment">// beginning because multiple apks can run in the same process and third party code can</span></span><br><span class="line">    <span class="comment">// use its own BaseDexClassLoader.</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// We didn't just add a dlopen_with_custom_LD_LIBRARY_PATH call because we wanted any</span></span><br><span class="line">    <span class="comment">// dlopen(3) calls made from a .so's JNI_OnLoad to work too.</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// So, find out what the native library search path is for the ClassLoader in question...</span></span><br><span class="line">    String ldLibraryPath = <span class="keyword">null</span>;</span><br><span class="line">    String dexPath = <span class="keyword">null</span>;</span><br><span class="line">    <span class="keyword">if</span> (loader == <span class="keyword">null</span>) &#123;</span><br><span class="line">        <span class="comment">// We use the given library path for the boot class loader. This is the path</span></span><br><span class="line">        <span class="comment">// also used in loadLibraryName if loader is null.</span></span><br><span class="line">        ldLibraryPath = System.getProperty(<span class="string">"java.library.path"</span>);</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (loader <span class="keyword">instanceof</span> BaseDexClassLoader) &#123;</span><br><span class="line">        BaseDexClassLoader dexClassLoader = (BaseDexClassLoader) loader;</span><br><span class="line">        ldLibraryPath = dexClassLoader.getLdLibraryPath();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// nativeLoad should be synchronized so there's only one LD_LIBRARY_PATH in use regardless</span></span><br><span class="line">    <span class="comment">// of how many ClassLoaders are in the system, but dalvik doesn't support synchronized</span></span><br><span class="line">    <span class="comment">// internal natives.</span></span><br><span class="line">    <span class="keyword">synchronized</span> (<span class="keyword">this</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> nativeLoad(name, loader, ldLibraryPath);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// <span class="doctag">TODO:</span> should be synchronized, but dalvik doesn't support synchronized internal natives.</span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">native</span> String <span class="title">nativeLoad</span><span class="params">(String filename, ClassLoader loader,</span><br><span class="line">        String ldLibraryPath)</span></span>;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> String <span class="title">doLoad</span><span class="params">(String name, ClassLoader loader)</span> </span>&#123;</span><br><span class="line">    <span class="comment">// Android apps are forked from the zygote, so they can't have a custom LD_LIBRARY_PATH,</span></span><br><span class="line">    <span class="comment">// which means that by default an app's shared library directory isn't on LD_LIBRARY_PATH.</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// The PathClassLoader set up by frameworks/base knows the appropriate path, so we can load</span></span><br><span class="line">    <span class="comment">// libraries with no dependencies just fine, but an app that has multiple libraries that</span></span><br><span class="line">    <span class="comment">// depend on each other needed to load them in most-dependent-first order.</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// We added API to Android's dynamic linker so we can update the library path used for</span></span><br><span class="line">    <span class="comment">// the currently-running process. We pull the desired path out of the ClassLoader here</span></span><br><span class="line">    <span class="comment">// and pass it to nativeLoad so that it can call the private dynamic linker API.</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// We didn't just change frameworks/base to update the LD_LIBRARY_PATH once at the</span></span><br><span class="line">    <span class="comment">// beginning because multiple apks can run in the same process and third party code can</span></span><br><span class="line">    <span class="comment">// use its own BaseDexClassLoader.</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// We didn't just add a dlopen_with_custom_LD_LIBRARY_PATH call because we wanted any</span></span><br><span class="line">    <span class="comment">// dlopen(3) calls made from a .so's JNI_OnLoad to work too.</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// So, find out what the native library search path is for the ClassLoader in question...</span></span><br><span class="line">    String ldLibraryPath = <span class="keyword">null</span>;</span><br><span class="line">    String dexPath = <span class="keyword">null</span>;</span><br><span class="line">    <span class="keyword">if</span> (loader == <span class="keyword">null</span>) &#123;</span><br><span class="line">        <span class="comment">// We use the given library path for the boot class loader. This is the path</span></span><br><span class="line">        <span class="comment">// also used in loadLibraryName if loader is null.</span></span><br><span class="line">        ldLibraryPath = System.getProperty(<span class="string">"java.library.path"</span>);</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (loader <span class="keyword">instanceof</span> BaseDexClassLoader) &#123;</span><br><span class="line">        BaseDexClassLoader dexClassLoader = (BaseDexClassLoader) loader;</span><br><span class="line">        ldLibraryPath = dexClassLoader.getLdLibraryPath();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// nativeLoad should be synchronized so there's only one LD_LIBRARY_PATH in use regardless</span></span><br><span class="line">    <span class="comment">// of how many ClassLoaders are in the system, but dalvik doesn't support synchronized</span></span><br><span class="line">    <span class="comment">// internal natives.</span></span><br><span class="line">    <span class="keyword">synchronized</span> (<span class="keyword">this</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> nativeLoad(name, loader, ldLibraryPath);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// <span class="doctag">TODO:</span> should be synchronized, but dalvik doesn't support synchronized internal natives.</span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">native</span> String <span class="title">nativeLoad</span><span class="params">(String filename, ClassLoader loader,</span></span></span><br><span class="line"><span class="function"><span class="params">        String ldLibraryPath)</span></span>;</span><br></pre></td></tr></table></figure>
 <p>可以看到最终通过native调用<code>nativeLoad</code>加载了lib文件。</p>
 <h4 id="System-loadLibrary-过程"><a href="#System-loadLibrary-过程" class="headerlink" title="System.loadLibrary 过程"></a>System.loadLibrary 过程</h4><p>System.loadLibrary 的写法是</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">System.loadLibrary(<span class="string">"Jni"</span>);</span><br></pre></td></tr></table></figure>
 <p>真实加载的so文件是libJni.so，可以猜想内部进行了一个拼接文件名的过程。</p>
 <p>System.java</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span><br><span class="line"> * See &#123;<span class="doctag">@link</span> Runtime#loadLibrary&#125;.</span><br><span class="line"> */</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">loadLibrary</span><span class="params">(String libName)</span> </span>&#123;</span><br><span class="line">    Runtime.getRuntime().loadLibrary(libName, VMStack.getCallingClassLoader());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * See &#123;<span class="doctag">@link</span> Runtime#loadLibrary&#125;.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">loadLibrary</span><span class="params">(String libName)</span> </span>&#123;</span><br><span class="line">    Runtime.getRuntime().loadLibrary(libName, VMStack.getCallingClassLoader());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>Runtime.java中的loadLibrary方法</p>
 <p>Runtime.java</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span><br><span class="line"> * Searches for and loads the given shared library using the given ClassLoader.</span><br><span class="line"> */</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">loadLibrary</span><span class="params">(String libraryName, ClassLoader loader)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (loader != <span class="keyword">null</span>) &#123;</span><br><span class="line">        String filename = loader.findLibrary(libraryName);</span><br><span class="line">        <span class="keyword">if</span> (filename == <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="comment">// It's not necessarily true that the ClassLoader used</span></span><br><span class="line">            <span class="comment">// System.mapLibraryName, but the default setup does, and it's</span></span><br><span class="line">            <span class="comment">// misleading to say we didn't find "libMyLibrary.so" when we</span></span><br><span class="line">            <span class="comment">// actually searched for "liblibMyLibrary.so.so".</span></span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> UnsatisfiedLinkError(loader + <span class="string">" couldn't find \""</span> +</span><br><span class="line">                                           System.mapLibraryName(libraryName) + <span class="string">"\""</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        String error = doLoad(filename, loader);</span><br><span class="line">        <span class="keyword">if</span> (error != <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> UnsatisfiedLinkError(error);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    String filename = System.mapLibraryName(libraryName);</span><br><span class="line">    List&lt;String&gt; candidates = <span class="keyword">new</span> ArrayList&lt;String&gt;();</span><br><span class="line">    String lastError = <span class="keyword">null</span>;</span><br><span class="line">    <span class="keyword">for</span> (String directory : mLibPaths) &#123;</span><br><span class="line">        String candidate = directory + filename;</span><br><span class="line">        candidates.add(candidate);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (IoUtils.canOpenReadOnly(candidate)) &#123;</span><br><span class="line">            String error = doLoad(candidate, loader);</span><br><span class="line">            <span class="keyword">if</span> (error == <span class="keyword">null</span>) &#123;</span><br><span class="line">                <span class="keyword">return</span>; <span class="comment">// We successfully loaded the library. Job done.</span></span><br><span class="line">            &#125;</span><br><span class="line">            lastError = error;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (lastError != <span class="keyword">null</span>) &#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> UnsatisfiedLinkError(lastError);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">throw</span> <span class="keyword">new</span> UnsatisfiedLinkError(<span class="string">"Library "</span> + libraryName + <span class="string">" not found; tried "</span> + candidates);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"> * Searches for and loads the given shared library using the given ClassLoader.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">loadLibrary</span><span class="params">(String libraryName, ClassLoader loader)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (loader != <span class="keyword">null</span>) &#123;</span><br><span class="line">        String filename = loader.findLibrary(libraryName);</span><br><span class="line">        <span class="keyword">if</span> (filename == <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="comment">// It's not necessarily true that the ClassLoader used</span></span><br><span class="line">            <span class="comment">// System.mapLibraryName, but the default setup does, and it's</span></span><br><span class="line">            <span class="comment">// misleading to say we didn't find "libMyLibrary.so" when we</span></span><br><span class="line">            <span class="comment">// actually searched for "liblibMyLibrary.so.so".</span></span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> UnsatisfiedLinkError(loader + <span class="string">" couldn't find \""</span> +</span><br><span class="line">                                           System.mapLibraryName(libraryName) + <span class="string">"\""</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        String error = doLoad(filename, loader);</span><br><span class="line">        <span class="keyword">if</span> (error != <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> UnsatisfiedLinkError(error);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    String filename = System.mapLibraryName(libraryName);</span><br><span class="line">    List&lt;String&gt; candidates = <span class="keyword">new</span> ArrayList&lt;String&gt;();</span><br><span class="line">    String lastError = <span class="keyword">null</span>;</span><br><span class="line">    <span class="keyword">for</span> (String directory : mLibPaths) &#123;</span><br><span class="line">        String candidate = directory + filename;</span><br><span class="line">        candidates.add(candidate);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (IoUtils.canOpenReadOnly(candidate)) &#123;</span><br><span class="line">            String error = doLoad(candidate, loader);</span><br><span class="line">            <span class="keyword">if</span> (error == <span class="keyword">null</span>) &#123;</span><br><span class="line">                <span class="keyword">return</span>; <span class="comment">// We successfully loaded the library. Job done.</span></span><br><span class="line">            &#125;</span><br><span class="line">            lastError = error;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (lastError != <span class="keyword">null</span>) &#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> UnsatisfiedLinkError(lastError);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">throw</span> <span class="keyword">new</span> UnsatisfiedLinkError(<span class="string">"Library "</span> + libraryName + <span class="string">" not found; tried "</span> + candidates);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>注意到这里参数中的<code>libraryName</code>仍然是形如<code>Jni</code>的不包含前缀<code>lib</code>与后缀<code>.so</code>的文件名。真正的文件名补全是在这一步进行的。</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">String filename = loader.findLibrary(libraryName);</span><br></pre></td></tr></table></figure>
-<p><a href="https://android.googlesource.com/platform/libcore-snapshot/+/ics-mr1/dalvik/src/main/java/dalvik/system/BaseDexClassLoader.java" target="_blank" rel="external">BaseDexClassLoader.java</a></p>
+<p><a href="https://android.googlesource.com/platform/libcore-snapshot/+/ics-mr1/dalvik/src/main/java/dalvik/system/BaseDexClassLoader.java" target="_blank" rel="noopener">BaseDexClassLoader.java</a></p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> String <span class="title">findLibrary</span><span class="params">(String name)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> pathList.findLibrary(name);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><a href="https://android.googlesource.com/platform/libcore-snapshot/+/ics-mr1/dalvik/src/main/java/dalvik/system/DexPathList.java" target="_blank" rel="external">DexPathList.java</a></p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span><br><span class="line"> * Finds the named native code library on any of the library</span><br><span class="line"> * directories pointed at by this instance. This will find the</span><br><span class="line"> * one in the earliest listed directory, ignoring any that are not</span><br><span class="line"> * readable regular files.</span><br><span class="line"> *</span><br><span class="line"> * <span class="doctag">@return</span> the complete path to the library or &#123;<span class="doctag">@code</span> null&#125; if no</span><br><span class="line"> * library was found</span><br><span class="line"> */</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> String <span class="title">findLibrary</span><span class="params">(String libraryName)</span> </span>&#123;</span><br><span class="line">    String fileName = System.mapLibraryName(libraryName);</span><br><span class="line">    <span class="keyword">for</span> (File directory : nativeLibraryDirectories) &#123;</span><br><span class="line">        String path = <span class="keyword">new</span> File(directory, fileName).getPath();</span><br><span class="line">        <span class="keyword">if</span> (IoUtils.canOpenReadOnly(path)) &#123;</span><br><span class="line">            <span class="keyword">return</span> path;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><a href="https://android.googlesource.com/platform/libcore-snapshot/+/ics-mr1/dalvik/src/main/java/dalvik/system/DexPathList.java" target="_blank" rel="noopener">DexPathList.java</a></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Finds the named native code library on any of the library</span></span><br><span class="line"><span class="comment"> * directories pointed at by this instance. This will find the</span></span><br><span class="line"><span class="comment"> * one in the earliest listed directory, ignoring any that are not</span></span><br><span class="line"><span class="comment"> * readable regular files.</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@return</span> the complete path to the library or &#123;<span class="doctag">@code</span> null&#125; if no</span></span><br><span class="line"><span class="comment"> * library was found</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> String <span class="title">findLibrary</span><span class="params">(String libraryName)</span> </span>&#123;</span><br><span class="line">    String fileName = System.mapLibraryName(libraryName);</span><br><span class="line">    <span class="keyword">for</span> (File directory : nativeLibraryDirectories) &#123;</span><br><span class="line">        String path = <span class="keyword">new</span> File(directory, fileName).getPath();</span><br><span class="line">        <span class="keyword">if</span> (IoUtils.canOpenReadOnly(path)) &#123;</span><br><span class="line">            <span class="keyword">return</span> path;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>绕了一圈，又回到<code>System</code>这个类中，看到下面这儿一目了然。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span><br><span class="line"> * Returns the platform specific file name format for the shared library</span><br><span class="line"> * named by the argument. On Android, this would turn &#123;<span class="doctag">@code</span> "MyLibrary"&#125; into</span><br><span class="line"> * &#123;<span class="doctag">@code</span> "libMyLibrary.so"&#125;.</span><br><span class="line"> */</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> String <span class="title">mapLibraryName</span><span class="params">(String nickname)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (nickname == <span class="keyword">null</span>) &#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> NullPointerException(<span class="string">"nickname == null"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="string">"lib"</span> + nickname + <span class="string">".so"</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Returns the platform specific file name format for the shared library</span></span><br><span class="line"><span class="comment"> * named by the argument. On Android, this would turn &#123;<span class="doctag">@code</span> "MyLibrary"&#125; into</span></span><br><span class="line"><span class="comment"> * &#123;<span class="doctag">@code</span> "libMyLibrary.so"&#125;.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> String <span class="title">mapLibraryName</span><span class="params">(String nickname)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (nickname == <span class="keyword">null</span>) &#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> NullPointerException(<span class="string">"nickname == null"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="string">"lib"</span> + nickname + <span class="string">".so"</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>追踪过了补全文件名的过程，我们回到最初<code>System.loadLibrary</code>的代码中，可以看到与<code>System.load</code>一样，也是调用了同样的doLoad方法！！！</p>
 <p>到这里可能会有些困惑了，既然两者殊途同归，为什么在应用时会有差别呢？先别急，既然方法是同样的，会不会是参数有区别？</p>
 <hr>
@@ -145,145 +254,196 @@
 <p>最新发现：初次加载时不用<code>System.loadLibrary(&quot;Jni&quot;)</code>，而用<code>System.load(&quot;/data/app/com.leili.season1-2/lib/x86/libJni.so&quot;)</code>来直接加载<code>/data/app</code>的库文件时，一样会阻止后续的加载！</p>
 <h1 id="到这里被BLOCK住了，HELP～"><a href="#到这里被BLOCK住了，HELP～" class="headerlink" title="到这里被BLOCK住了，HELP～"></a>到这里被<strong>BLOCK</strong>住了，HELP～</h1><hr>
 
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://lilei.work/2016/06/17/Dynamic-Loading-JNI-Not-Work/" data-id="ciznkvjoq002ayusus3v6ynpg" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Android-Performance-Patterns/">Android Performance Patterns</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/技术流/">技术流</a></li></ul>
-
-    </footer>
-  </div>
-  
     
-<nav id="article-nav">
-  
-    <a href="/2016/06/22/Android-Studio-gitignore/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Newer</strong>
-      <div class="article-nav-title">
-        
-          Android Studio .gitignore 文件范本
-        
-      </div>
-    </a>
-  
-  
-    <a href="/2016/05/27/Hackathon-1-0/" id="article-nav-older" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">MT&amp;DP Hackathon 小结</div>
-    </a>
-  
-</nav>
+  </div>
 
   
+      <div class="git"></div>
+  
+
 </article>
 
 
- <section id="comments">
-   <!-- 多说评论框 start -->
-   <div class="ds-thread" data-thread-key="post-Dynamic-Loading-JNI-Not-Work" data-title="Android中动态加载JNI失效问题探究(未完待续)" data-url="http://lilei.work/2016/06/17/Dynamic-Loading-JNI-Not-Work/"></div>
-   <!-- 多说评论框 end -->
-   <!-- 多说公共JS代码 start (一个网页只需插入一次) -->
-   <script type="text/javascript">
-   var duoshuoQuery = {short_name:'lileiwork'};
-     (function() {
-       var ds = document.createElement('script');
-       ds.type = 'text/javascript';ds.async = true;
-       ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
-       ds.charset = 'UTF-8';
-       (document.getElementsByTagName('head')[0] 
-        || document.getElementsByTagName('body')[0]).appendChild(ds);
-     })();
-     </script>
-   <!-- 多说公共JS代码 end -->
- </section>
- </section>
+   
+
+   
+  <div class="box-prev-next clearfix">
+    <a class="show pull-left" href="/2016/05/27/Hackathon-1-0/">
+        <i class="icon icon-angle-left"></i>
+    </a>
+    <a class="show pull-right" href="/2016/06/22/Android-Studio-gitignore/">
+        <i class="icon icon-angle-right"></i>
+    </a>
+  </div>
+
+
+
+
+</div>
+
+
+  <a id="backTop" class="back-top">
+    <i class="icon-angle-up"></i>
+  </a>
+
+
+
+
+  <div class="modal" id="modal">
+  <span id="cover" class="cover hide"></span>
+  <div id="modal-dialog" class="modal-dialog hide-dialog">
+    <div class="modal-header">
+      <span id="close" class="btn-close">关闭</span>
+    </div>
+    <hr>
+    <div class="modal-body">
+      <ul class="list-toolbox">
         
-          <aside id="sidebar">
-  
-    
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Tags</h3>
-    <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Android/">Android</a><span class="tag-list-count">10</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Android-Performance-Patterns/">Android Performance Patterns</a><span class="tag-list-count">29</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Android-Studio/">Android Studio</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Backend/">Backend</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/">Linux</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Shell/">Shell</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/大保健/">大保健</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/工作效率/">工作效率</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/工具/">工具</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/微信小程序/">微信小程序</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/技术流/">技术流</a><span class="tag-list-count">31</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/架构/">架构</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/槑/">槑</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/源码分析/">源码分析</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/自动化测试/">自动化测试</a><span class="tag-list-count">2</span></li></ul>
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/archives/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              博客
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/category/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              分类
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/tag/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              标签
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/link/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              友链
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/about/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              关于
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/search/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              搜索
+            </a>
+          </li>
+        
+      </ul>
+
     </div>
+  </div>
+</div>
+
+
+
+  
+      <div class="fexo-comments comments-post">
+    
+  <section class="disqus-comments">
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    </div>
+  </section>
+
+  <script>
+    var disqus_shortname = 'lilei';
+    
+    var disqus_url = 'http://lilei.work/2016/06/17/Dynamic-Loading-JNI-Not-Work/';
+    
+    (function(){
+      var dsq = document.createElement('script');
+      dsq.type = 'text/javascript';
+      dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+  </script>
+
+  <script id="dsq-count-scr" src="//lilei.disqus.com/count.js" async></script>
+
+
+
+    
+    
+
+    
+    
+
+    
+
+    
+    
+
   </div>
 
   
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Archives</h3>
-    <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">February 2017</a><span class="archive-list-count">10</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">January 2017</a><span class="archive-list-count">14</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">November 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">September 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">June 2016</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">March 2016</a><span class="archive-list-count">11</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/02/">February 2016</a><span class="archive-list-count">15</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">January 2016</a><span class="archive-list-count">6</span></li></ul>
-    </div>
-  </div>
 
-  
-    <div class="widget-wrap">
-	<h3 class="widget-title">Links</h3>
-	<div class="widget">
-		<ul class="entry">
-		<li><a href="http://www.dcharm.com" title="dcharm">DCharm.com</a></li>
-		<li><a href="http://www.lightskystreet.com" title="lightSky">lightSky</a></li>
-		</ul>
-	</div>
-</div>
-  
-    <div class="widget-wrap">
-	<h3 class="widget-title">Recent Comments</h3>
-	<div class="widget">
-		<ul class="ds-recent-comments" data-num-items="5" data-show-avatars="0" data-show-time="1" data-show-title="1" data-show-admin="1" data-excerpt-length="70"></ul>
-	</div>
-</div>
+  <script type="text/javascript">
+  function loadScript(url, callback) {
+    var script = document.createElement('script')
+    script.type = 'text/javascript';
 
-<!--多说js加载开始，一个页面只需要加载一次 -->
-<script type="text/javascript">
-if(typeof duoshuoQuery === 'undefined') {
-	  var duoshuoQuery = {short_name:"lileiwork"};
-	  (function() {
-	    var ds = document.createElement('script');
-	    ds.type = 'text/javascript';ds.async = true;
-	    ds.src = 'http://static.duoshuo.com/embed.js';
-	    ds.charset = 'UTF-8';
-	    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(ds);
-	  })();
+    if (script.readyState) { //IE
+      script.onreadystatechange = function() {
+        if (script.readyState == 'loaded' ||
+          script.readyState == 'complete') {
+          script.onreadystatechange = null;
+          callback();
+        }
+      };
+    } else { //Others
+      script.onload = function() {
+        callback();
+      };
+    }
+
+    script.src = url;
+    document.getElementsByTagName('head')[0].appendChild(script);
+  }
+
+  window.onload = function() {
+    loadScript('/js/bundle.js?235683', function() {
+      // load success
+    });
   }
 </script>
-  
-</aside>
-        
-      </div>
-      <footer id="footer">
-  
-  <div class="outer">
-    <div id="footer-info" class="inner">
-      &copy; 2017 Li Lei<br>
-      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
-    </div>
-  </div>
-</footer>
-    </div>
-    <nav id="mobile-nav">
-  
-    <a href="/" class="mobile-nav-link">Home</a>
-  
-    <a href="/archives" class="mobile-nav-link">Archives</a>
-  
-</nav>
-    
 
-<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
-
-
-  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
-  <script src="/fancybox/jquery.fancybox.pack.js"></script>
-
-
-<script src="/js/script.js"></script>
-
-  </div>
 </body>
 </html>
