@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+
+
+  <html class="light page-post">
+
+
+<head>
+  <meta charset="utf-8">
+  
+  <title>Google Architecture Sample TODO MVP 学习 | One Step, One Punch</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+    <meta name="keywords" content="Android,MVP," />
+  
+
+  <meta name="description" content="学习 googlesamples/android-architecture 的第一篇文章  文章思路 我认为MVP模式之所以适合学习和推广，在于它总结出了App最常见的形式，大部分App都是按照“数据、显示、交互”的形式来设计的。在MVP模式中，Model负责维护数据，并提供存取的接口，通常有本地持久化和网络两种途径。View负责绘制界面，并给出控制界面元素变更（包括页面跳转）的接口。一切用户可">
+<meta name="keywords" content="Android,MVP">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Google Architecture Sample TODO MVP 学习">
+<meta property="og:url" content="http://lilei.work/2018/06/26/todo-mvp/index.html">
+<meta property="og:site_name" content="One Step, One Punch">
+<meta property="og:description" content="学习 googlesamples/android-architecture 的第一篇文章  文章思路 我认为MVP模式之所以适合学习和推广，在于它总结出了App最常见的形式，大部分App都是按照“数据、显示、交互”的形式来设计的。在MVP模式中，Model负责维护数据，并提供存取的接口，通常有本地持久化和网络两种途径。View负责绘制界面，并给出控制界面元素变更（包括页面跳转）的接口。一切用户可">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="http://lilei.work/img/180626_todoMVP/todoMVP_思路.png">
+<meta property="og:image" content="http://lilei.work/img/180626_todoMVP/todoMVP_目录结构.png">
+<meta property="og:updated_time" content="2018-07-01T07:07:21.236Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Google Architecture Sample TODO MVP 学习">
+<meta name="twitter:description" content="学习 googlesamples/android-architecture 的第一篇文章  文章思路 我认为MVP模式之所以适合学习和推广，在于它总结出了App最常见的形式，大部分App都是按照“数据、显示、交互”的形式来设计的。在MVP模式中，Model负责维护数据，并提供存取的接口，通常有本地持久化和网络两种途径。View负责绘制界面，并给出控制界面元素变更（包括页面跳转）的接口。一切用户可">
+<meta name="twitter:image" content="http://lilei.work/img/180626_todoMVP/todoMVP_思路.png">
+
+  
+
+  
+    <link rel="icon" href="/favicon.ico">
+  
+
+  <link href="/css/styles.css?v=c114cbe6" rel="stylesheet">
+
+
+  
+    <link rel="stylesheet" href="/css/personal-style.css">
+  
+
+  
+
+  
+
+  
+
+
+  
+    <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+  
+
+  
+    <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.3.0/css/font-awesome.min.css">
+  
+</head>
+
+<body>
+
+
+  
+    <span id="toolbox-mobile" class="toolbox-mobile">导航</span>
+  
+
+  <div class="post-header CENTER">
+   
+  <div class="toolbox">
+    <a class="toolbox-entry" href="/">
+      <span class="toolbox-entry-text">导航</span>
+      <i class="icon-angle-down"></i>
+      <i class="icon-home"></i>
+    </a>
+    <ul class="list-toolbox">
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/archives/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            博客
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/category/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            分类
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/tag/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            标签
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/link/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            友链
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/about/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            关于
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/search/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+
+
+</div>
+
+
+  <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#文章思路"><span class="toc-text">文章思路</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#BaseView和BasePresenter"><span class="toc-text">BaseView和BasePresenter</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Data层"><span class="toc-text">Data层</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#基础服务：MemoryCache"><span class="toc-text">基础服务：MemoryCache</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#基础服务：线程池-ThreadExecutor"><span class="toc-text">基础服务：线程池/ThreadExecutor</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#添加-编辑人物页面（AddEditTask）分析"><span class="toc-text">添加/编辑人物页面（AddEditTask）分析</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#总结"><span class="toc-text">总结</span></a></li></ol>
+  </div>
+
+
+
+<div class="content content-post CENTER">
+   <article id="post-todo-mvp" class="article article-type-post" itemprop="blogPost">
+  <header class="article-header">
+    <h1 class="post-title">Google Architecture Sample TODO MVP 学习</h1>
+
+    <div class="article-meta">
+      <span>
+        <i class="icon-calendar"></i>
+        <span>2018.06.26</span>
+      </span>
+
+      
+        <span class="article-author">
+          <i class="icon-user"></i>
+          <span>Li Lei</span>
+        </span>
+      
+
+      
+
+
+      
+
+      
+      <i class="fa fa-eye"></i> 
+        <span id="busuanzi_container_page_pv">
+           &nbsp热度 <span id="busuanzi_value_page_pv">
+           <i class="fa fa-spinner fa-spin"></i></span>℃
+        </span>
+      
+      
+    </div>
+  </header>
+
+  <div class="article-content">
+    
+      <blockquote>
+<p>学习 <a href="https://github.com/googlesamples/android-architecture/tree/todo-mvp" target="_blank" rel="noopener">googlesamples/android-architecture</a> 的第一篇文章</p>
+</blockquote>
+<h3 id="文章思路"><a href="#文章思路" class="headerlink" title="文章思路"></a>文章思路</h3><p><img src="/img/180626_todoMVP/todoMVP_思路.png" alt="思路"></p>
+<p>我认为MVP模式之所以适合学习和推广，在于它总结出了App最常见的形式，大部分App都是按照“数据、显示、交互”的形式来设计的。在MVP模式中，<code>Model</code>负责维护数据，并提供存取的接口，通常有本地持久化和网络两种途径。<code>View</code>负责绘制界面，并给出控制界面元素变更（包括页面跳转）的接口。一切用户可以进行的页面操作，都被放入<code>Presenter</code>中。最后，由<code>Activity</code>负责将这三者组织到一起，通常<code>Activity</code>的代码不会很复杂。下面结合官方代码进行解读。</p>
+<p><img src="/img/180626_todoMVP/todoMVP_目录结构.png" alt="目录结构"></p>
+<p>首先看一下项目的目录结构，如上图。</p>
+<h3 id="BaseView和BasePresenter"><a href="#BaseView和BasePresenter" class="headerlink" title="BaseView和BasePresenter"></a>BaseView和BasePresenter</h3><p>所有页面的Presenter都实现了<code>BasePresenter</code>接口，它只有一个<code>start()</code>方法，是页面启动后的入口，只会在Fragment（也就是View对象）的<code>onResume()</code>方法中被调用。而为什么<code>BasePresenter.java</code>被写成了一个接口而非抽象类？我认为这与项目中各个页面的接口设计有关，View和Presenter对外开放的接口都会被整合入<code>XXXContract.java</code>中，每个页面都如此，而接口自然是只能继承自接口的，所以<code>BasePresenter.java</code>只能是Interface，<code>BaseView.java</code>也是如此。</p>
+<p><code>BaseView.java</code>中也只有一个<code>setPresenter(T presenter)</code>方法，会在Presenter构造完成后（构造函数最后）进行调用。这里使用范型，是为了保障同一个页面的View只能由对应的Presenter持有。你不可以将<code>AddEditTaskView</code>与<code>TaskDetailPresenter</code>进行关连，反之亦然。</p>
+<h3 id="Data层"><a href="#Data层" class="headerlink" title="Data层"></a>Data层</h3><p>Data（数据）层的代码都位于<code>data</code>包中，由于todoApp比较简单，只有一种元数据<code>Task</code>。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Entity</span>(tableName = <span class="string">"tasks"</span>) <span class="comment">// 这是room的注解，用于声明表名、字段名</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">final</span> <span class="class"><span class="keyword">class</span> <span class="title">Task</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@PrimaryKey</span> <span class="comment">// 在room中声明主键</span></span><br><span class="line">    <span class="meta">@NonNull</span></span><br><span class="line">    <span class="meta">@ColumnInfo</span>(name = <span class="string">"entryid"</span>) <span class="comment">// 若成员变量和column name同名，就无须特别声明</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> String mId;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Nullable</span></span><br><span class="line">    <span class="meta">@ColumnInfo</span>(name = <span class="string">"title"</span>)</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> String mTitle;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Nullable</span></span><br><span class="line">    <span class="meta">@ColumnInfo</span>(name = <span class="string">"description"</span>)</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> String mDescription;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@ColumnInfo</span>(name = <span class="string">"completed"</span>)</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> <span class="keyword">boolean</span> mCompleted;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * Use this constructor to create a new active Task.</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> title       title of the task</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> description description of the task</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@Ignore</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Task</span><span class="params">(@Nullable String title, @Nullable String description)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>(title, description, UUID.randomUUID().toString(), <span class="keyword">false</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * Use this constructor to create an active Task if the Task already has an id (copy of another</span></span><br><span class="line"><span class="comment">     * Task).</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> title       title of the task</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> description description of the task</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> id          id of the task</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@Ignore</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Task</span><span class="params">(@Nullable String title, @Nullable String description, @NonNull String id)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>(title, description, id, <span class="keyword">false</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * Use this constructor to create a new completed Task.</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> title       title of the task</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> description description of the task</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> completed   true if the task is completed, false if it's active</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@Ignore</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Task</span><span class="params">(@Nullable String title, @Nullable String description, <span class="keyword">boolean</span> completed)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>(title, description, UUID.randomUUID().toString(), completed);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * Use this constructor to specify a completed Task if the Task already has an id (copy of</span></span><br><span class="line"><span class="comment">     * another Task).</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> title       title of the task</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> description description of the task</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> id          id of the task</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> completed   true if the task is completed, false if it's active</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Task</span><span class="params">(@Nullable String title, @Nullable String description,</span></span></span><br><span class="line"><span class="function"><span class="params">                @NonNull String id, <span class="keyword">boolean</span> completed)</span> </span>&#123;</span><br><span class="line">        mId = id;</span><br><span class="line">        mTitle = title;</span><br><span class="line">        mDescription = description;</span><br><span class="line">        mCompleted = completed;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@NonNull</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getId</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> mId;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Nullable</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getTitle</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> mTitle;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Nullable</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getTitleForList</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (!Strings.isNullOrEmpty(mTitle)) &#123;</span><br><span class="line">            <span class="keyword">return</span> mTitle;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">return</span> mDescription;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Nullable</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getDescription</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> mDescription;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">isCompleted</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> mCompleted;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">isActive</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> !mCompleted;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">isEmpty</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> Strings.isNullOrEmpty(mTitle) &amp;&amp;</span><br><span class="line">               Strings.isNullOrEmpty(mDescription);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">equals</span><span class="params">(Object o)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (<span class="keyword">this</span> == o) <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">        <span class="keyword">if</span> (o == <span class="keyword">null</span> || getClass() != o.getClass()) <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">        Task task = (Task) o;</span><br><span class="line">        <span class="keyword">return</span> Objects.equal(mId, task.mId) &amp;&amp;</span><br><span class="line">               Objects.equal(mTitle, task.mTitle) &amp;&amp;</span><br><span class="line">               Objects.equal(mDescription, task.mDescription);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">hashCode</span><span class="params">()</span> </span>&#123; <span class="comment">// 覆盖了equals则必须覆盖hashCode，这里使用guava里面的工具方法</span></span><br><span class="line">        <span class="keyword">return</span> Objects.hashCode(mId, mTitle, mDescription);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">toString</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">"Task with title "</span> + mTitle;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>Task的所有操作都位于<code>TasksDataSource</code>这个接口中，demo里使用回调来单独/批量取task，因为是异步请求的缘故。对于如完成、保存、删除等操作则是同步接口，这里我比较困惑，按理来说这些操作都存在失败的可能，类注释里也提了是出于简化的原因才只在加载Task的接口做了异步处理，实则应当所有接口都如是。但<strong>每个接口上都有一个Callback，不会很冗杂吗？有没有更简便的写法？</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">TasksDataSource</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="class"><span class="keyword">interface</span> <span class="title">LoadTasksCallback</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">void</span> <span class="title">onTasksLoaded</span><span class="params">(List&lt;Task&gt; tasks)</span></span>;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">void</span> <span class="title">onDataNotAvailable</span><span class="params">()</span></span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="class"><span class="keyword">interface</span> <span class="title">GetTaskCallback</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">void</span> <span class="title">onTaskLoaded</span><span class="params">(Task task)</span></span>;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">void</span> <span class="title">onDataNotAvailable</span><span class="params">()</span></span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">getTasks</span><span class="params">(@NonNull LoadTasksCallback callback)</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">getTask</span><span class="params">(@NonNull String taskId, @NonNull GetTaskCallback callback)</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">saveTask</span><span class="params">(@NonNull Task task)</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">completeTask</span><span class="params">(@NonNull Task task)</span></span>;</span><br><span class="line"></span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><code>TasksLocalDataSource</code>和<code>TasksRemoteDataSource</code>分别从本地和网络两个维度实现了上面的接口，然而在Data层承担对外功能的是<code>TaskRepository</code>这个类，它集成了Local和Remote的实现，在外部对它进行调用时，是不知道数据来源究竟是本地或者网络的。需要在构造函数里传入这两个实现对象。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Prevent direct instantiation.</span></span><br><span class="line">   <span class="function"><span class="keyword">private</span> <span class="title">TasksRepository</span><span class="params">(@NonNull TasksDataSource tasksRemoteDataSource,</span></span></span><br><span class="line"><span class="function"><span class="params">                           @NonNull TasksDataSource tasksLocalDataSource)</span> </span>&#123;</span><br><span class="line">       mTasksRemoteDataSource = checkNotNull(tasksRemoteDataSource);</span><br><span class="line">       mTasksLocalDataSource = checkNotNull(tasksLocalDataSource);</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">   <span class="comment">/**</span></span><br><span class="line"><span class="comment">    * Returns the single instance of this class, creating it if necessary.</span></span><br><span class="line"><span class="comment">    *</span></span><br><span class="line"><span class="comment">    * <span class="doctag">@param</span> tasksRemoteDataSource the backend data source</span></span><br><span class="line"><span class="comment">    * <span class="doctag">@param</span> tasksLocalDataSource  the device storage data source</span></span><br><span class="line"><span class="comment">    * <span class="doctag">@return</span> the &#123;<span class="doctag">@link</span> TasksRepository&#125; instance</span></span><br><span class="line"><span class="comment">    */</span></span><br><span class="line">   <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> TasksRepository <span class="title">getInstance</span><span class="params">(TasksDataSource tasksRemoteDataSource,</span></span></span><br><span class="line"><span class="function"><span class="params">                                             TasksDataSource tasksLocalDataSource)</span> </span>&#123;</span><br><span class="line">       <span class="keyword">if</span> (INSTANCE == <span class="keyword">null</span>) &#123;</span><br><span class="line">           INSTANCE = <span class="keyword">new</span> TasksRepository(tasksRemoteDataSource, tasksLocalDataSource);</span><br><span class="line">       &#125;</span><br><span class="line">       <span class="keyword">return</span> INSTANCE;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<p>具体到每一个数据操作的调用，就是将其传递给Local/Remote数据源的过程，其中Local数据源使用了<code>android.arch.persistence.room</code>包，好处是简化了声明表名、字段名、增删改查语句的过程，能够很好地将表中的每一行数据与Task对象自由转换。<code>ToDoDatabase.java</code>用于初始化数据库，<code>TasksDao</code>接口（不需要写实现，由room自动生成）包含了所有的增删改查操作;不需要显式建表语句，只需将表名、字段名写在<code>Task.java</code>中，框架会自动创建对应表。</p>
+<p>Remote数据源则使用handler模拟延时网络操作。</p>
+<p>TasksRepository 里用到了 Memory Cache，这里稍微深入一下。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Map&lt;String, Task&gt; mCachedTasks;</span><br></pre></td></tr></table></figure>
+<h3 id="基础服务：MemoryCache"><a href="#基础服务：MemoryCache" class="headerlink" title="基础服务：MemoryCache"></a>基础服务：MemoryCache</h3><p><code>getTasks()</code>的实现，是逐级从cache、local、remote来取数据，直至remote取失败才进行失败回调。需要注意的是项目里在构建TasksRepository时，将FakeTasksRemoteDataSource作为remote数据源传入，其中只是维护了一个列表，用于存取。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">getTasks</span><span class="params">(@NonNull <span class="keyword">final</span> LoadTasksCallback callback)</span> </span>&#123;</span><br><span class="line">    checkNotNull(callback);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Respond immediately with cache if available and not dirty</span></span><br><span class="line">    <span class="keyword">if</span> (mCachedTasks != <span class="keyword">null</span> &amp;&amp; !mCacheIsDirty) &#123;</span><br><span class="line">        callback.onTasksLoaded(<span class="keyword">new</span> ArrayList&lt;&gt;(mCachedTasks.values()));</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (mCacheIsDirty) &#123;</span><br><span class="line">        <span class="comment">// If the cache is dirty we need to fetch new data from the network.</span></span><br><span class="line">        getTasksFromRemoteDataSource(callback);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="comment">// Query the local storage if available. If not, query the network.</span></span><br><span class="line">        mTasksLocalDataSource.getTasks(<span class="keyword">new</span> LoadTasksCallback() &#123;</span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onTasksLoaded</span><span class="params">(List&lt;Task&gt; tasks)</span> </span>&#123;</span><br><span class="line">                refreshCache(tasks);</span><br><span class="line">                callback.onTasksLoaded(<span class="keyword">new</span> ArrayList&lt;&gt;(mCachedTasks.values()));</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onDataNotAvailable</span><span class="params">()</span> </span>&#123;</span><br><span class="line">                getTasksFromRemoteDataSource(callback);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><code>mCacheIsDirty</code>用于标明xxxx，通过<code>refreshTasks()</code>来重置它，对应页面上的操作就是在菜单里选择refresh（下拉刷新不会重置）。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">refreshTasks</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    mCacheIsDirty = <span class="keyword">true</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>当<code>mCacheIsDirty</code>为true时，从remote取数据，取回数据猴更新cache和local</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">getTasksFromRemoteDataSource</span><span class="params">(@NonNull <span class="keyword">final</span> LoadTasksCallback callback)</span> </span>&#123;</span><br><span class="line">    mTasksRemoteDataSource.getTasks(<span class="keyword">new</span> LoadTasksCallback() &#123;</span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onTasksLoaded</span><span class="params">(List&lt;Task&gt; tasks)</span> </span>&#123;</span><br><span class="line">            refreshCache(tasks);</span><br><span class="line">            refreshLocalDataSource(tasks);</span><br><span class="line">            callback.onTasksLoaded(<span class="keyword">new</span> ArrayList&lt;&gt;(mCachedTasks.values()));</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onDataNotAvailable</span><span class="params">()</span> </span>&#123;</span><br><span class="line">            callback.onDataNotAvailable();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">refreshCache</span><span class="params">(List&lt;Task&gt; tasks)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (mCachedTasks == <span class="keyword">null</span>) &#123;</span><br><span class="line">        mCachedTasks = <span class="keyword">new</span> LinkedHashMap&lt;&gt;();</span><br><span class="line">    &#125;</span><br><span class="line">    mCachedTasks.clear();</span><br><span class="line">    <span class="keyword">for</span> (Task task : tasks) &#123;</span><br><span class="line">        mCachedTasks.put(task.getId(), task);</span><br><span class="line">    &#125;</span><br><span class="line">    mCacheIsDirty = <span class="keyword">false</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">refreshLocalDataSource</span><span class="params">(List&lt;Task&gt; tasks)</span> </span>&#123;</span><br><span class="line">    mTasksLocalDataSource.deleteAllTasks();</span><br><span class="line">    <span class="keyword">for</span> (Task task : tasks) &#123;</span><br><span class="line">        mTasksLocalDataSource.saveTask(task);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>Memory Cache在数据操作中的使用过程：</p>
+<ol start="0">
+<li>getTasks: 先判断dirty，如果false则直接返回cached tasks，如果true说明本地数据和内存缓存不一致，需要从远端全量更新cache和local。只要数据来源不是cache，在拉取完成后都会全量更新local与remote。</li>
+<li>getTask: 不关心dirty，直接从memory cache里面取，若为null则先看本地，本地为null或者失败再看remote。获取成功后只更新 memory cache。</li>
+<li>saveTask: 分别调用local和remote的saveTask，并put入cache中。</li>
+<li>activateTask/completeTask: 同saveTask。</li>
+<li>deleteTask/deleteTasks:  同saveTask，只是将put换成 remove。</li>
+</ol>
+<p>采用Memory Cache另一个好处是，如果项目里用到了MVVM框架，可以很好地利用Memory Cache将local和remote进行整合进而绑定UI。</p>
+<h3 id="基础服务：线程池-ThreadExecutor"><a href="#基础服务：线程池-ThreadExecutor" class="headerlink" title="基础服务：线程池/ThreadExecutor"></a>基础服务：线程池/ThreadExecutor</h3><p>项目里面处理异步操作主要集中在util包下AppExecutors这个类，它提供了本地存储、网络、UI变更三个异步处理器。对外开放出获取这三个处理器的接口。这是一个不错的可以参照的Executors框架。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> Executor <span class="title">diskIO</span><span class="params">()</span> </span>&#123;</span><br><span class="line">     <span class="keyword">return</span> diskIO;</span><br><span class="line"> &#125;</span><br><span class="line"></span><br><span class="line"> <span class="function"><span class="keyword">public</span> Executor <span class="title">networkIO</span><span class="params">()</span> </span>&#123;</span><br><span class="line">     <span class="keyword">return</span> networkIO;</span><br><span class="line"> &#125;</span><br><span class="line"></span><br><span class="line"> <span class="function"><span class="keyword">public</span> Executor <span class="title">mainThread</span><span class="params">()</span> </span>&#123;</span><br><span class="line">     <span class="keyword">return</span> mainThread;</span><br><span class="line"> &#125;</span><br><span class="line"></span><br><span class="line"> <span class="function"><span class="keyword">public</span> <span class="title">AppExecutors</span><span class="params">()</span> </span>&#123;</span><br><span class="line">     <span class="keyword">this</span>(<span class="keyword">new</span> DiskIOThreadExecutor(), Executors.newFixedThreadPool(THREAD_COUNT),</span><br><span class="line">             <span class="keyword">new</span> MainThreadExecutor());</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+<p>其中disoIO对数据库进行串行操作，使用的是SingleThreadExecutor；networkIO存在并行可能，使用了count为3的FixedThreadPool；mainThread将事件抛给主线程的Looper中。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">MainThreadExecutor</span> <span class="keyword">implements</span> <span class="title">Executor</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> Handler mainThreadHandler = <span class="keyword">new</span> Handler(Looper.getMainLooper());</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">execute</span><span class="params">(@NonNull Runnable command)</span> </span>&#123;</span><br><span class="line">        mainThreadHandler.post(command);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="添加-编辑人物页面（AddEditTask）分析"><a href="#添加-编辑人物页面（AddEditTask）分析" class="headerlink" title="添加/编辑人物页面（AddEditTask）分析"></a>添加/编辑人物页面（AddEditTask）分析</h3><p>AddEditTaskActivity流程简述</p>
+<ol>
+<li>初始化Activity，设置ActionBar；</li>
+<li>创建Fragment，将taskId（从Intent里传入）传给Fragment；</li>
+<li>使用taskId、fragment和tasksRepository作为参数构造Presenter；</li>
+<li>在View里调用Presenter的start方法，加载数据并更新UI。</li>
+</ol>
+<p>首先看一下Presenter与View的接口，代码位于AddEditTaskContract.java。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">AddEditTaskContract</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="class"><span class="keyword">interface</span> <span class="title">View</span> <span class="keyword">extends</span> <span class="title">BaseView</span>&lt;<span class="title">Presenter</span>&gt; </span>&#123;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">void</span> <span class="title">showEmptyTaskError</span><span class="params">()</span></span>;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">void</span> <span class="title">showTasksList</span><span class="params">()</span></span>;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">void</span> <span class="title">setTitle</span><span class="params">(String title)</span></span>;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">void</span> <span class="title">setDescription</span><span class="params">(String description)</span></span>;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">boolean</span> <span class="title">isActive</span><span class="params">()</span></span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="class"><span class="keyword">interface</span> <span class="title">Presenter</span> <span class="keyword">extends</span> <span class="title">BasePresenter</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">void</span> <span class="title">saveTask</span><span class="params">(String title, String description)</span></span>;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">void</span> <span class="title">populateTask</span><span class="params">()</span></span>; <span class="comment">// 我理解它等价于 getTask</span></span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">boolean</span> <span class="title">isDataMissing</span><span class="params">()</span></span>; <span class="comment">// 标志位，是否应当从local/remote获取</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>AddEditTaskContract.View 提供了所有 UI 的显示与变化， AddEditTaskContract.Presenter 则包含用户可以进行的操作。</p>
+<p>AddEditTaskFragment.java 实现了 AddEditTaskContract.View 的接口，控制页面上所有 UI 元素的显示，包括点击事件绑定与处理等，接口中调用 Presenter 进行数据处理，例如 saveTask 操作：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onActivityCreated</span><span class="params">(Bundle savedInstanceState)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">super</span>.onActivityCreated(savedInstanceState);</span><br><span class="line"></span><br><span class="line">    FloatingActionButton fab =</span><br><span class="line">            (FloatingActionButton) getActivity().findViewById(R.id.fab_edit_task_done);</span><br><span class="line">    fab.setImageResource(R.drawable.ic_done);</span><br><span class="line">    fab.setOnClickListener(<span class="keyword">new</span> View.OnClickListener() &#123;</span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onClick</span><span class="params">(View v)</span> </span>&#123;</span><br><span class="line">            mPresenter.saveTask(mTitle.getText().toString(), mDescription.getText().toString());</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>AddEditTaskPresenter.java 实现了 AddEditTaskContract.Presenter 接口，它充当连接 Data 和 View 的桥梁，在数据处理成功/失败时调用对应的 UI 方法。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Creates a presenter for the add/edit view.</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> taskId ID of the task to edit or null for a new task</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> tasksRepository a repository of data for tasks</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> addTaskView the add/edit view</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> shouldLoadDataFromRepo whether data needs to be loaded or not (for config changes)</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="title">AddEditTaskPresenter</span><span class="params">(@Nullable String taskId, @NonNull TasksDataSource tasksRepository,</span></span></span><br><span class="line"><span class="function"><span class="params">        @NonNull AddEditTaskContract.View addTaskView, <span class="keyword">boolean</span> shouldLoadDataFromRepo)</span> </span>&#123;</span><br><span class="line">    mTaskId = taskId;</span><br><span class="line">    mTasksRepository = checkNotNull(tasksRepository);</span><br><span class="line">    mAddTaskView = checkNotNull(addTaskView);</span><br><span class="line">    mIsDataMissing = shouldLoadDataFromRepo;</span><br><span class="line"></span><br><span class="line">    mAddTaskView.setPresenter(<span class="keyword">this</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在阅读代码时我产生了一个疑问 🤔 ，️Fragment 是在其 onResume 方法里调用 Presenter 的 start() 方法，作为整个页面启动入口的，而且并没有进行 null check ，如果此时 Fragment 持有的 Presenter 对象为 null ，就会发生问题，代码里却没有明确保证这种顺序。找找看 Presenter 对象是何时被传递给 Fragment （也就是 View ）的？是在 Activity 的 onCreate() 方法末尾，也就是 Fragment 被构造完成后。唯一合理的解释是 Fragment 的 onResume() 方法一定发生在其 Activity 的 onCreate() 方法之后，是系统保证了这一点。</p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>官方 Demo 中值得学习的地方还有很多，还有 Injection 、 Mockto 等用法都没有在文中涉及，文章基本代表了自己目前阶段对 MVP 的认识。较多篇幅用在data层设计与线程池的讲解，算是弥补自己之前在基础知识方面的忽视。todoMVP 早在 2016 年就已面世，现在写这篇文章不知算不算过时。但我相信小到客户端开发、大到程序设计，总有些原理性的知识是不会随时间推移而改变的，希望自己可以早日把握其中的“本质”。</p>
+
+    
+  </div>
+
+  
+      <div class="git"></div>
+  
+
+</article>
+
+
+   
+
+   
+  <div class="box-prev-next clearfix">
+    <a class="show pull-left" href="/2018/05/15/schedule2018/">
+        <i class="icon icon-angle-left"></i>
+    </a>
+    <a class="hide pull-right" href="/">
+        <i class="icon icon-angle-right"></i>
+    </a>
+  </div>
+
+
+
+
+</div>
+
+
+  <a id="backTop" class="back-top">
+    <i class="icon-angle-up"></i>
+  </a>
+
+
+
+
+  <div class="modal" id="modal">
+  <span id="cover" class="cover hide"></span>
+  <div id="modal-dialog" class="modal-dialog hide-dialog">
+    <div class="modal-header">
+      <span id="close" class="btn-close">关闭</span>
+    </div>
+    <hr>
+    <div class="modal-body">
+      <ul class="list-toolbox">
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/archives/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              博客
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/category/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              分类
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/tag/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              标签
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/link/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              友链
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/about/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              关于
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/search/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              搜索
+            </a>
+          </li>
+        
+      </ul>
+
+    </div>
+  </div>
+</div>
+
+
+
+  
+      <div class="fexo-comments comments-post">
+    
+
+    
+
+    
+    
+
+    
+
+    
+    
+
+    <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+    <script src="//unpkg.com/valine@latest/dist/Valine.min.js"></script>
+    <div id="comment" class="vcomment" ></div>
+    <script>
+        var notify = 'false' == true ? true : false;
+        var verify = 'false' == true ? true : false;
+        var GUEST_INFO = ['nick','mail','link'];
+        var guest_info = 'nick,mail,link'.split(',').filter(function(item){
+            return GUEST_INFO.indexOf(item) > -1
+        });
+        guest_info = guest_info.length == 0 ? GUEST_INFO :guest_info;
+        window.valine = new Valine({
+            el: '.vcomment',
+            notify: notify,
+            verify: verify,
+            appId: "khG3rBt0nWda7lxDUHpS3Sq0-gzGzoHsz",
+            appKey: "btFkQfcBgJeCRm55mYmUgA5d",
+            avatar:'mm',
+            placeholder: "畅所欲言...",
+            guest_info:guest_info,
+            pageSize:'10'
+        });
+    </script>
+  
+  </div>
+
+  
+
+  <script type="text/javascript">
+  function loadScript(url, callback) {
+    var script = document.createElement('script')
+    script.type = 'text/javascript';
+
+    if (script.readyState) { //IE
+      script.onreadystatechange = function() {
+        if (script.readyState == 'loaded' ||
+          script.readyState == 'complete') {
+          script.onreadystatechange = null;
+          callback();
+        }
+      };
+    } else { //Others
+      script.onload = function() {
+        callback();
+      };
+    }
+
+    script.src = url;
+    document.getElementsByTagName('head')[0].appendChild(script);
+  }
+
+  window.onload = function() {
+    loadScript('/js/bundle.js?235683', function() {
+      // load success
+    });
+  }
+</script>
+
+</body>
+</html>
