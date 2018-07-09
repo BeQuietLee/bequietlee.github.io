@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+
+
+  <html class="light page-post">
+
+
+<head>
+  <meta charset="utf-8">
+  
+  <title>OkHttp 源码学习 | One Step, One Punch</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+    <meta name="keywords" content="Android,源码学习," />
+  
+
+  <meta name="description" content="OkHttp 是由 Square 发布的 HTTP Client，用于处理 HTTP 请求。用官网的描述就是，An HTTP &amp;amp; HTTP/2 client for Android and Java applications.  优点 支持 HTTP/2，多个连接可以共用一个 Socket 连接池可以减少延迟（非 HTTP/2） GZIP 压缩减少流量 Response 缓存 重定向和重">
+<meta name="keywords" content="Android,源码学习">
+<meta property="og:type" content="article">
+<meta property="og:title" content="OkHttp 源码学习">
+<meta property="og:url" content="http://lilei.work/2018/07/06/okhttp/index.html">
+<meta property="og:site_name" content="One Step, One Punch">
+<meta property="og:description" content="OkHttp 是由 Square 发布的 HTTP Client，用于处理 HTTP 请求。用官网的描述就是，An HTTP &amp;amp; HTTP/2 client for Android and Java applications.  优点 支持 HTTP/2，多个连接可以共用一个 Socket 连接池可以减少延迟（非 HTTP/2） GZIP 压缩减少流量 Response 缓存 重定向和重">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2018-07-09T04:34:44.575Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="OkHttp 源码学习">
+<meta name="twitter:description" content="OkHttp 是由 Square 发布的 HTTP Client，用于处理 HTTP 请求。用官网的描述就是，An HTTP &amp;amp; HTTP/2 client for Android and Java applications.  优点 支持 HTTP/2，多个连接可以共用一个 Socket 连接池可以减少延迟（非 HTTP/2） GZIP 压缩减少流量 Response 缓存 重定向和重">
+
+  
+
+  
+    <link rel="icon" href="/favicon.ico">
+  
+
+  <link href="/css/styles.css?v=c114cbe6" rel="stylesheet">
+
+
+  
+    <link rel="stylesheet" href="/css/personal-style.css">
+  
+
+  
+
+  
+
+  
+
+
+  
+    <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+  
+
+  
+    <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.3.0/css/font-awesome.min.css">
+  
+</head>
+
+<body>
+
+
+  
+    <span id="toolbox-mobile" class="toolbox-mobile">导航</span>
+  
+
+  <div class="post-header CENTER">
+   
+  <div class="toolbox">
+    <a class="toolbox-entry" href="/">
+      <span class="toolbox-entry-text">导航</span>
+      <i class="icon-angle-down"></i>
+      <i class="icon-home"></i>
+    </a>
+    <ul class="list-toolbox">
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/archives/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            博客
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/category/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            分类
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/tag/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            标签
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/link/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            友链
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/about/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            关于
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/search/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+
+
+</div>
+
+
+  <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#优点"><span class="toc-text">优点</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#OkHttp-的用法"><span class="toc-text">OkHttp 的用法</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#同步请求"><span class="toc-text">同步请求</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#异步请求"><span class="toc-text">异步请求</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#设置-Header-和参数"><span class="toc-text">设置 Header 和参数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#post-请求"><span class="toc-text">post 请求</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#设计思路"><span class="toc-text">设计思路</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#关键类讲解"><span class="toc-text">关键类讲解</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#设计模式"><span class="toc-text">设计模式</span></a></li></ol>
+  </div>
+
+
+
+<div class="content content-post CENTER">
+   <article id="post-okhttp" class="article article-type-post" itemprop="blogPost">
+  <header class="article-header">
+    <h1 class="post-title">OkHttp 源码学习</h1>
+
+    <div class="article-meta">
+      <span>
+        <i class="icon-calendar"></i>
+        <span>2018.07.06</span>
+      </span>
+
+      
+        <span class="article-author">
+          <i class="icon-user"></i>
+          <span>Li Lei</span>
+        </span>
+      
+
+      
+
+
+      
+
+      
+      <i class="fa fa-eye"></i> 
+        <span id="busuanzi_container_page_pv">
+           &nbsp热度 <span id="busuanzi_value_page_pv">
+           <i class="fa fa-spinner fa-spin"></i></span>℃
+        </span>
+      
+      
+    </div>
+  </header>
+
+  <div class="article-content">
+    
+      <blockquote>
+<p>OkHttp 是由 Square 发布的 HTTP Client，用于处理 HTTP 请求。<br>用官网的描述就是，An HTTP &amp; HTTP/2 client for Android and Java applications.</p>
+</blockquote>
+<h1 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h1><ul>
+<li>支持 HTTP/2，多个连接可以共用一个 Socket</li>
+<li>连接池可以减少延迟（非 HTTP/2）</li>
+<li>GZIP 压缩减少流量</li>
+<li>Response 缓存</li>
+<li>重定向和重试</li>
+</ul>
+<h1 id="OkHttp-的用法"><a href="#OkHttp-的用法" class="headerlink" title="OkHttp 的用法"></a>OkHttp 的用法</h1><h2 id="同步请求"><a href="#同步请求" class="headerlink" title="同步请求"></a>同步请求</h2><p>需要在 AsyncTask 或者起线程来进行，调用<code>execute()</code></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> String <span class="title">doRequest</span><span class="params">(String param)</span> </span>&#123;</span><br><span class="line">	Request.Builder builder = <span class="keyword">new</span> Request.Builder();</span><br><span class="line">	builder.url(param);</span><br><span class="line">	Request request = builder.build();</span><br><span class="line">	<span class="keyword">try</span> &#123;</span><br><span class="line">	    Response response = client.newCall(request).execute();</span><br><span class="line">	    <span class="keyword">return</span> response.body().string();</span><br><span class="line">	&#125;<span class="keyword">catch</span> (Exception e)&#123;</span><br><span class="line">	    e.printStackTrace();</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="异步请求"><a href="#异步请求" class="headerlink" title="异步请求"></a>异步请求</h2><p>调用<code>enqueue()</code></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">OkHttpClient client = <span class="keyword">new</span> OkHttpClient();</span><br><span class="line"></span><br><span class="line">Request request = <span class="keyword">new</span> Request.Builder()</span><br><span class="line">        .url(url)</span><br><span class="line">        .build();</span><br><span class="line"></span><br><span class="line">client.newCall(request).enqueue(<span class="keyword">new</span> Callback() &#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onFailure</span><span class="params">(Call call, IOException e)</span> </span>&#123;</span><br><span class="line">        call.cancel();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onResponse</span><span class="params">(Call call, Response response)</span> <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">final</span> String myResponse = response.body().string();</span><br><span class="line"></span><br><span class="line">        MainActivity.<span class="keyword">this</span>.runOnUiThread(<span class="keyword">new</span> Runnable() &#123;</span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">                txtString.setText(myResponse);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="设置-Header-和参数"><a href="#设置-Header-和参数" class="headerlink" title="设置 Header 和参数"></a>设置 Header 和参数</h2><p>在 URL 构建过程中通过<code>addQueryParameter</code>设置参数，在 Request 构建过程中设置 Header</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">HttpUrl.Builder urlBuilder = HttpUrl.parse(<span class="string">"https://httpbin.org/get).newBuilder();</span></span><br><span class="line"><span class="string">urlBuilder.addQueryParameter("</span>website<span class="string">", "</span>www.journaldev.com<span class="string">");</span></span><br><span class="line"><span class="string">urlBuilder.addQueryParameter("</span>tutorials<span class="string">", "</span>android<span class="string">");</span></span><br><span class="line"><span class="string">String url = urlBuilder.build().toString();</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">Request request = new Request.Builder()</span></span><br><span class="line"><span class="string">			.header("</span>Authorization<span class="string">", "</span>replace <span class="keyword">this</span> text with your token<span class="string">")</span></span><br><span class="line"><span class="string">			.url(url)</span></span><br><span class="line"><span class="string">			.build();</span></span><br></pre></td></tr></table></figure>
+<h2 id="post-请求"><a href="#post-请求" class="headerlink" title="post 请求"></a>post 请求</h2><p>需要声明<code>MediaType</code></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> String postUrl= <span class="string">"https://reqres.in/api/users/"</span>;</span><br><span class="line"><span class="keyword">public</span> String postBody=<span class="string">"&#123;\n"</span> +</span><br><span class="line">        <span class="string">"    \"name\": \"morpheus\",\n"</span> +</span><br><span class="line">        <span class="string">"    \"job\": \"leader\"\n"</span> +</span><br><span class="line">        <span class="string">"&#125;"</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> MediaType JSON = MediaType.parse(<span class="string">"application/json; charset=utf-8"</span>);</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">postRequest</span><span class="params">(String postUrl,String postBody)</span> <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line"></span><br><span class="line">    OkHttpClient client = <span class="keyword">new</span> OkHttpClient();</span><br><span class="line"></span><br><span class="line">    RequestBody body = RequestBody.create(JSON, postBody);</span><br><span class="line"></span><br><span class="line">    Request request = <span class="keyword">new</span> Request.Builder()</span><br><span class="line">            .url(postUrl)</span><br><span class="line">            .post(body)</span><br><span class="line">            .build();</span><br><span class="line"></span><br><span class="line">    client.newCall(request).enqueue(<span class="keyword">new</span> Callback() &#123;</span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onFailure</span><span class="params">(Call call, IOException e)</span> </span>&#123;</span><br><span class="line">            call.cancel();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onResponse</span><span class="params">(Call call, Response response)</span> <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line">            Log.d(<span class="string">"TAG"</span>,response.body().string());</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="设计思路"><a href="#设计思路" class="headerlink" title="设计思路"></a>设计思路</h1><h1 id="关键类讲解"><a href="#关键类讲解" class="headerlink" title="关键类讲解"></a>关键类讲解</h1><h1 id="设计模式"><a href="#设计模式" class="headerlink" title="设计模式"></a>设计模式</h1>
+    
+  </div>
+
+  
+      <div class="git"></div>
+  
+
+</article>
+
+
+   
+
+   
+  <div class="box-prev-next clearfix">
+    <a class="show pull-left" href="/2018/07/03/picasso/">
+        <i class="icon icon-angle-left"></i>
+    </a>
+    <a class="hide pull-right" href="/">
+        <i class="icon icon-angle-right"></i>
+    </a>
+  </div>
+
+
+
+
+</div>
+
+
+  <a id="backTop" class="back-top">
+    <i class="icon-angle-up"></i>
+  </a>
+
+
+
+
+  <div class="modal" id="modal">
+  <span id="cover" class="cover hide"></span>
+  <div id="modal-dialog" class="modal-dialog hide-dialog">
+    <div class="modal-header">
+      <span id="close" class="btn-close">关闭</span>
+    </div>
+    <hr>
+    <div class="modal-body">
+      <ul class="list-toolbox">
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/archives/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              博客
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/category/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              分类
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/tag/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              标签
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/link/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              友链
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/about/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              关于
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/search/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              搜索
+            </a>
+          </li>
+        
+      </ul>
+
+    </div>
+  </div>
+</div>
+
+
+
+  
+      <div class="fexo-comments comments-post">
+    
+
+    
+
+    
+    
+
+    
+
+    
+    
+
+    <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+    <script src="//unpkg.com/valine@latest/dist/Valine.min.js"></script>
+    <div id="comment" class="vcomment" ></div>
+    <script>
+        var notify = 'false' == true ? true : false;
+        var verify = 'false' == true ? true : false;
+        var GUEST_INFO = ['nick','mail','link'];
+        var guest_info = 'nick,mail,link'.split(',').filter(function(item){
+            return GUEST_INFO.indexOf(item) > -1
+        });
+        guest_info = guest_info.length == 0 ? GUEST_INFO :guest_info;
+        window.valine = new Valine({
+            el: '.vcomment',
+            notify: notify,
+            verify: verify,
+            appId: "khG3rBt0nWda7lxDUHpS3Sq0-gzGzoHsz",
+            appKey: "btFkQfcBgJeCRm55mYmUgA5d",
+            avatar:'mm',
+            placeholder: "畅所欲言...",
+            guest_info:guest_info,
+            pageSize:'10'
+        });
+    </script>
+  
+  </div>
+
+  
+
+  <script type="text/javascript">
+  function loadScript(url, callback) {
+    var script = document.createElement('script')
+    script.type = 'text/javascript';
+
+    if (script.readyState) { //IE
+      script.onreadystatechange = function() {
+        if (script.readyState == 'loaded' ||
+          script.readyState == 'complete') {
+          script.onreadystatechange = null;
+          callback();
+        }
+      };
+    } else { //Others
+      script.onload = function() {
+        callback();
+      };
+    }
+
+    script.src = url;
+    document.getElementsByTagName('head')[0].appendChild(script);
+  }
+
+  window.onload = function() {
+    loadScript('/js/bundle.js?235683', function() {
+      // load success
+    });
+  }
+</script>
+
+</body>
+</html>
