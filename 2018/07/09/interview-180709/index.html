@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+
+
+  <html class="light page-post">
+
+
+<head>
+  <meta charset="utf-8">
+  
+  <title>面试知识整理 2018.07.09 | One Step, One Punch</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+    <meta name="keywords" content="Android,面试," />
+  
+
+  <meta name="description" content="HashMap 和 HashTable 区别相同点  都是以 Key - Value 的形式存放键值对  不同点  null 支持：HashMap 允许 null key 和 null value，HashTable 不允许 并发特性：HashMap 线程不安全，效率高，HashTable 线程安全，效率低 默认长度和扩容方式：HashMap 默认长度 16，扩容 2n，HashTable 默认长">
+<meta name="keywords" content="Android,面试">
+<meta property="og:type" content="article">
+<meta property="og:title" content="面试知识整理 2018.07.09">
+<meta property="og:url" content="http://lilei.work/2018/07/09/interview-180709/index.html">
+<meta property="og:site_name" content="One Step, One Punch">
+<meta property="og:description" content="HashMap 和 HashTable 区别相同点  都是以 Key - Value 的形式存放键值对  不同点  null 支持：HashMap 允许 null key 和 null value，HashTable 不允许 并发特性：HashMap 线程不安全，效率高，HashTable 线程安全，效率低 默认长度和扩容方式：HashMap 默认长度 16，扩容 2n，HashTable 默认长">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="http://lilei.work/img/180709_interview/jvm.png">
+<meta property="og:image" content="http://lilei.work/img/180709_interview/标记清除.png">
+<meta property="og:image" content="http://lilei.work/img/180709_interview/复制.png">
+<meta property="og:image" content="http://lilei.work/img/180709_interview/标记压缩.png">
+<meta property="og:image" content="http://lilei.work/img/180709_interview/分代收集.png">
+<meta property="og:image" content="http://lilei.work/img/180709_interview/recyclerview_components.jpeg">
+<meta property="og:image" content="http://lilei.work/img/180709_interview/recyclerview_cache.webp">
+<meta property="og:updated_time" content="2018-07-21T07:01:30.310Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="面试知识整理 2018.07.09">
+<meta name="twitter:description" content="HashMap 和 HashTable 区别相同点  都是以 Key - Value 的形式存放键值对  不同点  null 支持：HashMap 允许 null key 和 null value，HashTable 不允许 并发特性：HashMap 线程不安全，效率高，HashTable 线程安全，效率低 默认长度和扩容方式：HashMap 默认长度 16，扩容 2n，HashTable 默认长">
+<meta name="twitter:image" content="http://lilei.work/img/180709_interview/jvm.png">
+
+  
+
+  
+    <link rel="icon" href="/favicon.ico">
+  
+
+  <link href="/css/styles.css?v=c114cbe6" rel="stylesheet">
+
+
+  
+    <link rel="stylesheet" href="/css/personal-style.css">
+  
+
+  
+
+  
+
+  
+
+
+  
+    <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+  
+
+  
+    <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.3.0/css/font-awesome.min.css">
+  
+</head>
+
+<body>
+
+
+  
+    <span id="toolbox-mobile" class="toolbox-mobile">导航</span>
+  
+
+  <div class="post-header CENTER">
+   
+  <div class="toolbox">
+    <a class="toolbox-entry" href="/">
+      <span class="toolbox-entry-text">导航</span>
+      <i class="icon-angle-down"></i>
+      <i class="icon-home"></i>
+    </a>
+    <ul class="list-toolbox">
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/archives/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            博客
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/category/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            分类
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/tag/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            标签
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/link/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            友链
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/about/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            关于
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/search/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+
+
+</div>
+
+
+  <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#HashMap-和-HashTable-区别"><span class="toc-text">HashMap 和 HashTable 区别</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#JVM-垃圾回收机制-GC"><span class="toc-text">JVM 垃圾回收机制/GC</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#基础知识"><span class="toc-text">基础知识</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#引用计数器"><span class="toc-text">引用计数器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#垃圾收集算法"><span class="toc-text">垃圾收集算法</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#标记-清除-算法"><span class="toc-text">标记-清除 算法</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#复制-算法"><span class="toc-text">复制 算法</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#标记-压缩-算法"><span class="toc-text">标记-压缩 算法</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#分代收集-算法"><span class="toc-text">分代收集 算法</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#参考：jvm-垃圾回收"><span class="toc-text">参考：jvm - 垃圾回收</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#使用OkHttp同时发送3个请求，token过期如何处理"><span class="toc-text">使用OkHttp同时发送3个请求，token过期如何处理</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#一点点反思"><span class="toc-text">一点点反思</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#参考-Android-OkHttp实现全局过期token自动刷新示例"><span class="toc-text">参考 Android OkHttp实现全局过期token自动刷新示例</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#RecyclerView"><span class="toc-text">RecyclerView</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#LayoutManager"><span class="toc-text">LayoutManager</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#动画"><span class="toc-text">动画</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#List-Item-Selection"><span class="toc-text">List-Item Selection</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#RecyclerView-几大重要成员"><span class="toc-text">RecyclerView 几大重要成员</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#RecyclerView-缓存"><span class="toc-text">RecyclerView 缓存</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#参考"><span class="toc-text">参考</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#微信的“分享”页面使用的是哪种启动模式"><span class="toc-text">微信的“分享”页面使用的是哪种启动模式</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#SingleInstance"><span class="toc-text">SingleInstance</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#SingleTask"><span class="toc-text">SingleTask</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#SingleTop"><span class="toc-text">SingleTop</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Standard"><span class="toc-text">Standard</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#IntentService-实现原理"><span class="toc-text">IntentService 实现原理</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#参考：IntentService的原理和实例分析"><span class="toc-text">参考：IntentService的原理和实例分析</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#HTTP-请求和响应头的格式"><span class="toc-text">HTTP 请求和响应头的格式</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#通用头"><span class="toc-text">通用头</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#请求头"><span class="toc-text">请求头</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#响应头"><span class="toc-text">响应头</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#实体信息"><span class="toc-text">实体信息</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#说出你对插件化的理解"><span class="toc-text">说出你对插件化的理解</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#什么是插件化"><span class="toc-text">什么是插件化</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#为什么需要插件化"><span class="toc-text">为什么需要插件化</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#实现插件化的几种手段，对比，大厂实践"><span class="toc-text">实现插件化的几种手段，对比，大厂实践</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#MVP-中对-Presenter-如何进行测试"><span class="toc-text">MVP 中对 Presenter 如何进行测试</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#HTTP-报文组成"><span class="toc-text">HTTP 报文组成</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#屏幕物理尺寸，逻辑像素，dp，px，sp"><span class="toc-text">屏幕物理尺寸，逻辑像素，dp，px，sp</span></a></li></ol>
+  </div>
+
+
+
+<div class="content content-post CENTER">
+   <article id="post-interview-180709" class="article article-type-post" itemprop="blogPost">
+  <header class="article-header">
+    <h1 class="post-title">面试知识整理 2018.07.09</h1>
+
+    <div class="article-meta">
+      <span>
+        <i class="icon-calendar"></i>
+        <span>2018.07.09</span>
+      </span>
+
+      
+        <span class="article-author">
+          <i class="icon-user"></i>
+          <span>Li Lei</span>
+        </span>
+      
+
+      
+
+
+      
+
+      
+      <i class="fa fa-eye"></i> 
+        <span id="busuanzi_container_page_pv">
+           &nbsp热度 <span id="busuanzi_value_page_pv">
+           <i class="fa fa-spinner fa-spin"></i></span>℃
+        </span>
+      
+      
+    </div>
+  </header>
+
+  <div class="article-content">
+    
+      <h2 id="HashMap-和-HashTable-区别"><a href="#HashMap-和-HashTable-区别" class="headerlink" title="HashMap 和 HashTable 区别"></a>HashMap 和 HashTable 区别</h2><p>相同点</p>
+<ul>
+<li>都是以 Key - Value 的形式存放键值对</li>
+</ul>
+<p>不同点</p>
+<ul>
+<li>null 支持：HashMap 允许 null key 和 null value，HashTable 不允许</li>
+<li>并发特性：HashMap 线程不安全，效率高，HashTable 线程安全，效率低</li>
+<li>默认长度和扩容方式：HashMap 默认长度 16，扩容 2n，HashTable 默认长度 11，扩容 2n+1</li>
+<li>父类：HashMap 父类 AbstractMap，其子类还有 ConcurrentHashMap、LinkedHashMap 等，HashTable 父类 Dictionary，子类有 Properties</li>
+</ul>
+<p>结论</p>
+<ul>
+<li>不需要考虑线程安全，用 HashMap</li>
+<li>需要考虑线程安全，用 ConcurrentHashMap</li>
+</ul>
+<h2 id="JVM-垃圾回收机制-GC"><a href="#JVM-垃圾回收机制-GC" class="headerlink" title="JVM 垃圾回收机制/GC"></a>JVM 垃圾回收机制/GC</h2><p>含义：由 JVM 自动回收那些不再使用的对象，清理内存</p>
+<p>意义：程序员不需要人工管理内存，减少开发成本，提高开发效率</p>
+<h3 id="基础知识"><a href="#基础知识" class="headerlink" title="基础知识"></a>基础知识</h3><p>对象实例存在于 Java 堆中</p>
+<p>Java 中对对象的引用分成“强软弱虚”</p>
+<ul>
+<li>强引用，最普遍的引用，只要有强引用存在，对象就不会被回收</li>
+<li>软引用，SoftReference，当 GC 时，如果内存不足，会被回收</li>
+<li>弱引用，WeakReference，当 GC 时，不论内存是否足够，都被回收</li>
+<li>虚引用，PhantomReference，不影响对象的生命周期，在任何时刻都可能被回收</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ReferenceDemo</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] arge)</span> </span>&#123;</span><br><span class="line">        <span class="comment">//强引用</span></span><br><span class="line">        Object object = <span class="keyword">new</span> Object();</span><br><span class="line">        Object[] objects = <span class="keyword">new</span> Object[<span class="number">100</span>];</span><br><span class="line"></span><br><span class="line">        <span class="comment">//软引用</span></span><br><span class="line">        SoftReference&lt;String&gt; stringSoftReference = <span class="keyword">new</span> SoftReference&lt;&gt;(<span class="keyword">new</span> String(<span class="string">"SoftReference"</span>));</span><br><span class="line">        System.out.println(stringSoftReference.get());</span><br><span class="line">        System.gc();</span><br><span class="line">        System.out.println(stringSoftReference.get()); <span class="comment">//手动GC,这时内存充足,对象没有被回收</span></span><br><span class="line"></span><br><span class="line">        System.out.println();</span><br><span class="line"></span><br><span class="line">        <span class="comment">//弱引用</span></span><br><span class="line">        WeakReference&lt;String&gt; stringWeakReference = <span class="keyword">new</span> WeakReference&lt;&gt;(<span class="keyword">new</span> String(<span class="string">"WeakReference"</span>));</span><br><span class="line">        System.out.println(stringWeakReference.get());</span><br><span class="line">        System.gc();</span><br><span class="line">        System.out.println(stringWeakReference.get()); <span class="comment">//手动gc,这时,返回null,对象已经被回收</span></span><br><span class="line"></span><br><span class="line">        System.out.println();</span><br><span class="line"></span><br><span class="line">        <span class="comment">//虚引用</span></span><br><span class="line">        <span class="comment">//虚引用主要用来跟踪对象被垃圾回收器回收的活动。</span></span><br><span class="line">        <span class="comment">//虚引用与软引用和弱引用的一个区别在于：虚引用必须和引用队列 （ReferenceQueue）联合使用。</span></span><br><span class="line">        <span class="comment">//当垃圾回收器准备回收一个对象时，如果发现它还有虚引用，就会在回收对象的内存之前，把这个虚引用加入到与之 关联的引用队列中</span></span><br><span class="line">        ReferenceQueue&lt;String&gt; stringReferenceQueue = <span class="keyword">new</span> ReferenceQueue&lt;&gt;();</span><br><span class="line">        PhantomReference&lt;String&gt; stringPhantomReference = <span class="keyword">new</span> PhantomReference&lt;&gt;(<span class="keyword">new</span> String(<span class="string">"PhantomReference"</span>), stringReferenceQueue);</span><br><span class="line">        System.out.println(stringPhantomReference.get());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="引用计数器"><a href="#引用计数器" class="headerlink" title="引用计数器"></a>引用计数器</h3><p>每个对象拥有一个计数器，当它被引用时，计数器 +1，引用释放时，计数器 -1，当计数器为 0 时，表示可以回收。</p>
+<p>存在的问题是循环引用。为了解决这个问题，又引入了“可达性”（GC Roots Tracing）的概念，目前主流的 JVM 都采用了这种计数。简单说，就是从根部开始向下搜索，如果对象无法被触及，则认为是可以回收的，这种对象称为“不可达对象”。</p>
+<p>看一下 JVM 运行时的内存结构：</p>
+<p><img src="/img/180709_interview/jvm.png" alt="JVM"></p>
+<p>GC Roots 包括</p>
+<ul>
+<li>虚拟机栈的栈帧中的引用对象（来自局部变量表）</li>
+<li>方法区静态属性实体引用的对象</li>
+<li>方法区的常量引用对象</li>
+<li>本地方法栈中 JNI 引用的对象</li>
+</ul>
+<p>在根搜索算法中，要真正宣告一个对象死亡，至少要经历两次标记过程：</p>
+<ul>
+<li>如果对象在进行根搜索后发现没有与 GC Roots 相连接的引用链，那它会被第一次标记并且进行一次筛选，筛选的条件是此对象是否有必要执行 finalize() 方法</li>
+<li>当对象没有覆盖 finalize() 方法，或 finalize() 方法已经被虚拟机调用过，虚拟机将这两种情况都视为没有必要执行</li>
+<li>如果该对象被判定为有必要执行 finalize() 方法，那么这个对象将会被放置在一个名为 F-Queue 队列中，并在稍后由一条由虚拟机自动建立的、低优先级的 Finalizer 线程去执行 finalize() 方法</li>
+<li>finalize() 方法是对象逃脱死亡命运的最后一次机会（因为一个对象的finalize() 方法最多只会被系统自动调用一次）, 稍后GC将对F-Queue中的对象进行第二次小规模的标记，如果要在finalize（）方法中成功拯救自己，只要在finalize() 方法中让该对象重引用链上的任何一个对象建立关联即可。而如果对象这时还没有关联到任何链上的引用，那它就会被回收掉</li>
+</ul>
+<h3 id="垃圾收集算法"><a href="#垃圾收集算法" class="headerlink" title="垃圾收集算法"></a>垃圾收集算法</h3><h4 id="标记-清除-算法"><a href="#标记-清除-算法" class="headerlink" title="标记-清除 算法"></a>标记-清除 算法</h4><p>分为“标记”和“清除”两部，首先标记出需要回收的对象，然后在第二步清除它们。是最基础的回收算法，后续算法都是基于它的基础上进行改进。</p>
+<p><img src="/img/180709_interview/标记清除.png" alt="标记-清除"></p>
+<ul>
+<li>效率问题：需要两次扫描</li>
+<li>空间问题：产生大量内存碎片</li>
+</ul>
+<h4 id="复制-算法"><a href="#复制-算法" class="headerlink" title="复制 算法"></a>复制 算法</h4><p>将可用内存平均分为2块，每次只使用其中的一块。当一块内存使用完成后，将存活对象复制到另一块内存中，然后清空。</p>
+<p><img src="/img/180709_interview/复制.png" alt="复制"></p>
+<p>优点</p>
+<ul>
+<li>每次只操作一块内存，分配时无需要考虑内存碎片情况，只移动指针即可，实现简单，运行高效</li>
+</ul>
+<p>缺点</p>
+<ul>
+<li>利用率问题：可用内存少了一半</li>
+<li>效率问题：老生代对象由于存活率高，频繁复制</li>
+</ul>
+<h4 id="标记-压缩-算法"><a href="#标记-压缩-算法" class="headerlink" title="标记-压缩 算法"></a>标记-压缩 算法</h4><p>标记后，将所有存活对象向一端移动</p>
+<p><img src="/img/180709_interview/标记压缩.png" alt="标记-压缩"></p>
+<p>优点</p>
+<ul>
+<li>对于老年代，会逐渐移动到头部</li>
+</ul>
+<p>缺点</p>
+<ul>
+<li>新生代对象多的话，会频繁移动</li>
+</ul>
+<h4 id="分代收集-算法"><a href="#分代收集-算法" class="headerlink" title="分代收集 算法"></a>分代收集 算法</h4><p>对新生代采用复制算法（Minor GC），老年代采用标记压缩算法（Major GC），全部回收成为 Full GC。</p>
+<p><img src="/img/180709_interview/分代收集.png" alt="分代收集"></p>
+<ul>
+<li>年轻代: 是所有新对象产生的地方.年轻代被分为3个部分(Enden区和两个Survivor区,也叫From和To),当Eden区被对象填满时,就会执行Minor GC,并把所有存活下来的对象转移到其中一个survivor区(Form),Minor GC同样会检查存活下来的对象,并把它们转移到另一个survivor区(To),这样在一段时间内,总会有一个空的survivor区,经过多次GC周期后，仍然存活下来的对象会被转移到年老代内存空间,常这是在年轻代有资格提升到年老代前通过设定年龄阈值来完成的,需要注意，Survivor的两个区是对称的,没先后关系,from和to是相对的.</li>
+<li>老年代: 在年轻代中经历了N次回收后仍然没有被清除的对象,就会被放到年老代中,都是生命周期较长的对象.对于年老代,则会执行Major GC,来清理.在某些情况下,则会触发Full GC,来清理整个堆内存</li>
+<li>元空间: 堆外的一部分内存,通常直接使用的是系统内存,用于存放运行时常量池,等内容,垃圾回收对应元空间来说没有明显的影响</li>
+</ul>
+<h4 id="参考：jvm-垃圾回收"><a href="#参考：jvm-垃圾回收" class="headerlink" title="参考：jvm - 垃圾回收"></a>参考：<a href="https://my.oschina.net/wangkang80/blog/1559071" target="_blank" rel="noopener">jvm - 垃圾回收</a></h4><h2 id="使用OkHttp同时发送3个请求，token过期如何处理"><a href="#使用OkHttp同时发送3个请求，token过期如何处理" class="headerlink" title="使用OkHttp同时发送3个请求，token过期如何处理"></a>使用OkHttp同时发送3个请求，token过期如何处理</h2><blockquote>
+<p>这是面试威佩时的一道面试题</p>
+</blockquote>
+<p>这与发几个请求无关，解决问题的点在于发现 token 过期后如何自动获取 token 并重发请求，也就是，<strong>静默自动登录，然后继续请求</strong>。解决思路是在拦截器链中增加一个 TokenInterceptor，判断返回状态是否为验证失效。</p>
+<ol>
+<li>发送请求给服务端</li>
+<li>根据返回状态码判断是否 token 过期</li>
+<li>如果过期，则调取同步接口获取新 token</li>
+<li>使用新 token 发送请求</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TokenInterceptor</span> <span class="keyword">implements</span> <span class="title">Interceptor</span> </span>&#123;</span><br><span class="line"> </span><br><span class="line">  <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> String TAG = <span class="string">"TokenInterceptor"</span>;</span><br><span class="line"> </span><br><span class="line">  <span class="meta">@Override</span></span><br><span class="line">  <span class="function"><span class="keyword">public</span> Response <span class="title">intercept</span><span class="params">(Chain chain)</span> <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line">    Request request = chain.request();</span><br><span class="line">    Response response = chain.proceed(request);</span><br><span class="line">    Log.d(TAG, <span class="string">"response.code="</span> + response.code());</span><br><span class="line"> </span><br><span class="line">    <span class="comment">//根据和服务端的约定判断token过期</span></span><br><span class="line">    <span class="keyword">if</span> (isTokenExpired(response)) &#123;</span><br><span class="line">      Log.d(TAG, <span class="string">"自动刷新Token,然后重新请求数据"</span>);</span><br><span class="line">      <span class="comment">//同步请求方式，获取最新的Token</span></span><br><span class="line">      String newToken = getNewToken();</span><br><span class="line">      <span class="comment">//使用新的Token，创建新的请求</span></span><br><span class="line">      Request newRequest = chain.request()</span><br><span class="line">          .newBuilder()</span><br><span class="line">          .header(<span class="string">"Authorization"</span>, <span class="string">"Basic "</span> + newToken)</span><br><span class="line">          .build();</span><br><span class="line">      <span class="comment">//重新请求</span></span><br><span class="line">      <span class="keyword">return</span> chain.proceed(newRequest);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> response;</span><br><span class="line">  &#125;</span><br><span class="line"> </span><br><span class="line">  <span class="comment">// 根据Response，判断Token是否失效</span></span><br><span class="line">  <span class="function"><span class="keyword">private</span> <span class="keyword">boolean</span> <span class="title">isTokenExpired</span><span class="params">(Response response)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (response.code() == <span class="number">301</span>) &#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">  &#125;</span><br><span class="line"> </span><br><span class="line">  <span class="comment">// 同步请求方式，获取最新的Token</span></span><br><span class="line">  <span class="function"><span class="keyword">private</span> String <span class="title">getNewToken</span><span class="params">()</span> <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line">    <span class="comment">// 通过获取token的接口，同步请求接口</span></span><br><span class="line">    String newToken = <span class="string">""</span>;</span><br><span class="line">    <span class="keyword">return</span> newToken;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>如果是面试官问的“三个请求同时发送”，那么可以在 token 上增加一个时间戳，通过这个时间戳可以判断该 token 是否为更新过后的。那么，在 A、B、C 三个请求同时发出时，当 A 发现 token 过期并更新 token 后，B 和 C 可以读取新的 token 发送请求，而不必再向服务端获取新的 token。</p>
+<h3 id="一点点反思"><a href="#一点点反思" class="headerlink" title="一点点反思"></a>一点点反思</h3><p>面有赞的那一天自己刚刚撸过 OkHttp 的源码，还写了文字总结，但是被问到这道题时仍然一脸懵逼。问题在于对 OkHttp 以 Interceptor 为核心的根本思想没有把握，其实这道题是稍微有一点小花招。低配版的问法是“如何解决 token 过期”，这就很容易联想到 Interceptor（其实也不容易），高配版才是问“同时三个请求”，需要结合同步来解决。</p>
+<h3 id="参考-Android-OkHttp实现全局过期token自动刷新示例"><a href="#参考-Android-OkHttp实现全局过期token自动刷新示例" class="headerlink" title="参考 Android OkHttp实现全局过期token自动刷新示例"></a>参考 <a href="https://www.jb51.net/article/137444.htm" target="_blank" rel="noopener">Android OkHttp实现全局过期token自动刷新示例</a></h3><h2 id="RecyclerView"><a href="#RecyclerView" class="headerlink" title="RecyclerView"></a>RecyclerView</h2><p>同样是威佩的面试题</p>
+<blockquote>
+<p>The RecyclerView widget is a more advanced and flexible version of ListView.</p>
+</blockquote>
+<p>RecyclerView 支持多种 Layout，如 LinearLayout、GridLayout。使用 RecyclerView 时需要继承 RecyclerView.ViewHolder 类，如果数据发生变化，调用 RecyclerView.Adapter.notify…() 方法。示例代码如下：</p>
+<p>gradle</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">dependencies &#123;</span><br><span class="line">    implementation &apos;com.android.support:recyclerview-v7:27.1.1&apos;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>布局文件，没啥特别的，除了需要声明一个 Scrollbar 的方向</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version="1.0" encoding="utf-8"?&gt;</span><br><span class="line"><span class="comment">&lt;!-- A RecyclerView with some commonly used attributes --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">android.support.v7.widget.RecyclerView</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:id</span>=<span class="string">"@+id/my_recycler_view"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:scrollbars</span>=<span class="string">"vertical"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:layout_width</span>=<span class="string">"match_parent"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:layout_height</span>=<span class="string">"match_parent"</span>/&gt;</span></span><br></pre></td></tr></table></figure>
+<p>Activity，跟 ListView 不同点在：</p>
+<ul>
+<li>如果 RecyclerView 的尺寸不会发生变化，要调用<code>setHasFixedSize(true)</code>来提高性能</li>
+<li>要根据布局设置 LayoutManager</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyActivity</span> <span class="keyword">extends</span> <span class="title">Activity</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> RecyclerView mRecyclerView;</span><br><span class="line">    <span class="keyword">private</span> RecyclerView.Adapter mAdapter;</span><br><span class="line">    <span class="keyword">private</span> RecyclerView.LayoutManager mLayoutManager;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onCreate</span><span class="params">(Bundle savedInstanceState)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>.onCreate(savedInstanceState);</span><br><span class="line">        setContentView(R.layout.my_activity);</span><br><span class="line">        mRecyclerView = (RecyclerView) findViewById(R.id.my_recycler_view);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// use this setting to improve performance if you know that changes</span></span><br><span class="line">        <span class="comment">// in content do not change the layout size of the RecyclerView</span></span><br><span class="line">        mRecyclerView.setHasFixedSize(<span class="keyword">true</span>);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// use a linear layout manager</span></span><br><span class="line">        mLayoutManager = <span class="keyword">new</span> LinearLayoutManager(<span class="keyword">this</span>);</span><br><span class="line">        mRecyclerView.setLayoutManager(mLayoutManager);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// specify an adapter (see also next example)</span></span><br><span class="line">        mAdapter = <span class="keyword">new</span> MyAdapter(myDataset);</span><br><span class="line">        mRecyclerView.setAdapter(mAdapter);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>Adapter，与 ListView 的写法差异较大。</p>
+<ul>
+<li>需要继承自 RecyclerView.Adapter&lt;MyAdapter.ViewHolder&gt;</li>
+<li>必须声明一个静态内部类 ViewHolder</li>
+<li>重载 onCreateViewHolder 方法，需要生成布局，初始化 ViewHolder 并返回</li>
+<li>重载 onBindViewHolder 方法，这一步是将 ViewHolder 中的 View 都赋予正确的数据</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyAdapter</span> <span class="keyword">extends</span> <span class="title">RecyclerView</span>.<span class="title">Adapter</span>&lt;<span class="title">MyAdapter</span>.<span class="title">ViewHolder</span>&gt; </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> String[] mDataset;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Provide a reference to the views for each data item</span></span><br><span class="line">    <span class="comment">// Complex data items may need more than one view per item, and</span></span><br><span class="line">    <span class="comment">// you provide access to all the views for a data item in a view holder</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">ViewHolder</span> <span class="keyword">extends</span> <span class="title">RecyclerView</span>.<span class="title">ViewHolder</span> </span>&#123;</span><br><span class="line">        <span class="comment">// each data item is just a string in this case</span></span><br><span class="line">        <span class="keyword">public</span> TextView mTextView;</span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="title">ViewHolder</span><span class="params">(TextView v)</span> </span>&#123;</span><br><span class="line">            <span class="keyword">super</span>(v);</span><br><span class="line">            mTextView = v;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Provide a suitable constructor (depends on the kind of dataset)</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">MyAdapter</span><span class="params">(String[] myDataset)</span> </span>&#123;</span><br><span class="line">        mDataset = myDataset;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Create new views (invoked by the layout manager)</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> MyAdapter.<span class="function">ViewHolder <span class="title">onCreateViewHolder</span><span class="params">(ViewGroup parent,</span></span></span><br><span class="line"><span class="function"><span class="params">                                                   <span class="keyword">int</span> viewType)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// create a new view</span></span><br><span class="line">        TextView v = (TextView) LayoutInflater.from(parent.getContext())</span><br><span class="line">                .inflate(R.layout.my_text_view, parent, <span class="keyword">false</span>);</span><br><span class="line">        ...</span><br><span class="line">        ViewHolder vh = <span class="keyword">new</span> ViewHolder(v);</span><br><span class="line">        <span class="keyword">return</span> vh;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Replace the contents of a view (invoked by the layout manager)</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onBindViewHolder</span><span class="params">(ViewHolder holder, <span class="keyword">int</span> position)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// - get element from your dataset at this position</span></span><br><span class="line">        <span class="comment">// - replace the contents of the view with that element</span></span><br><span class="line">        holder.mTextView.setText(mDataset[position]);</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Return the size of your dataset (invoked by the layout manager)</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getItemCount</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> mDataset.length;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="LayoutManager"><a href="#LayoutManager" class="headerlink" title="LayoutManager"></a>LayoutManager</h3><p>Android Support Library 自带的有三种，你也可以通过继承 RecyclerView.LayoutManager 来实现自己的布局。</p>
+<ul>
+<li>LinearLayoutManager，一维线性列表，同 ListView</li>
+<li>GridLayoutManager，网格列表，同 GridView</li>
+<li>StaggeredGridLayotManager，瀑布流列表，列之间有错位</li>
+</ul>
+<h3 id="动画"><a href="#动画" class="headerlink" title="动画"></a>动画</h3><p>Item 变化的时候，RecyclerView 使用 animator 来改变外观，animator 继承自 RecyclerView.ItemAnimator。</p>
+<h3 id="List-Item-Selection"><a href="#List-Item-Selection" class="headerlink" title="List-Item Selection"></a>List-Item Selection</h3><p>这部分略，日后写 Demo 补充</p>
+<h3 id="RecyclerView-几大重要成员"><a href="#RecyclerView-几大重要成员" class="headerlink" title="RecyclerView 几大重要成员"></a>RecyclerView 几大重要成员</h3><p><img src="/img/180709_interview/recyclerview_components.jpeg" alt="RecyclerView Components"></p>
+<h3 id="RecyclerView-缓存"><a href="#RecyclerView-缓存" class="headerlink" title="RecyclerView 缓存"></a>RecyclerView 缓存</h3><ul>
+<li>内部两级缓存</li>
+<li>划出界面的 ViewHolder 会被放入 Cache（一级缓存），容量为2。Cache 中的对象都是同种 ViewType。</li>
+<li>从 Cache 中被清除的对象，会被放入 RecycledViewPool，容量为5。RecycledViewPool 中的对象按照 ViewType 分类。</li>
+</ul>
+<p><img src="/img/180709_interview/recyclerview_cache.webp" alt="RecyclerView Cache"></p>
+<h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><ul>
+<li><a href="https://developer.android.com/guide/topics/ui/layout/recyclerview" target="_blank" rel="noopener">RecycyerView - Developers</a></li>
+<li><a href="https://mp.weixin.qq.com/s?src=3&amp;timestamp=1531269425&amp;ver=1&amp;signature=FWpjJw5RhmTc*7UKCIha2t9LR*Hpr*knccH5aD2iiD7suxuKZgREroUCYpvcJxeOaz3lJbk4Ht4MmjXZAHcp-x1Ui7EAekMj8i1-hWpBwyd1YhGg7wx15pshQwnTTm7Dvan5LJDoOJvNoPatOjSrFePotNTHk1ON6c*6K1OZm40=" target="_blank" rel="noopener">深入浅出 RecyclerView</a></li>
+</ul>
+<h2 id="微信的“分享”页面使用的是哪种启动模式"><a href="#微信的“分享”页面使用的是哪种启动模式" class="headerlink" title="微信的“分享”页面使用的是哪种启动模式"></a>微信的“分享”页面使用的是哪种启动模式</h2><p>这是面试有赞时，面试官提问的第一道题目。直觉告诉我 Standard 和 SingleTop 都不适用，但是并不能从 SingleInstance 和 SingleTask 中选出一个合适的来，这一块是知识盲区，以前根本没有从实用的角度来考虑这问题，都是死记硬背启动模式。</p>
+<p>本质上还是考察启动模式的应用场景。</p>
+<h3 id="SingleInstance"><a href="#SingleInstance" class="headerlink" title="SingleInstance"></a>SingleInstance</h3><p>与外部应用共享的页面，一般设置成这种启动模式，也就是作为外部App调用自己客户端程序的入口。这是为了方便其它应用的 Activity 调起本应用。同时，由于 SingleInstance 会单独起一个 Task，当用户操作完成该页面后，点击返回按钮，会自动退回到外部应用。在使用时应该注意声明<code>taskAffinity</code>，以便在任务管理中看到新 Task。</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">activity</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:name</span>=<span class="string">".SingleInstanceActivity"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:label</span>=<span class="string">"singleInstance launchMode"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:launchMode</span>=<span class="string">"singleInstance"</span>/&gt;</span></span><br></pre></td></tr></table></figure>
+<h3 id="SingleTask"><a href="#SingleTask" class="headerlink" title="SingleTask"></a>SingleTask</h3><p>一个 Task 内只允许有一个 SingleTask 的 Activity，启东时如果 Task 内已经有了同 Activity，则会将其上所有的 Activity 按照生命流程进行销毁，同时调用该 Activity 的<code>onNewIntent</code>方法。适合的应用场景是应用内部统一入口，比如浏览器首页、商户详情页等。同样，需要声明<code>taskAffinity</code>以保证它会新起一个 Task。</p>
+<h3 id="SingleTop"><a href="#SingleTop" class="headerlink" title="SingleTop"></a>SingleTop</h3><p>同样，如果 Task 顶已经有了同一个 Activity，会调用<code>onNewIntent</code>传入参数。</p>
+<p>应用场景：</p>
+<ul>
+<li>点击“通知”后打开的详情页面</li>
+<li>浏览器搜索结果页，带有关键词输入框</li>
+</ul>
+<h3 id="Standard"><a href="#Standard" class="headerlink" title="Standard"></a>Standard</h3><p>应用于可以打开多个实例的页面，比如与不同人的聊天页面，撰写邮件页面等。</p>
+<h2 id="IntentService-实现原理"><a href="#IntentService-实现原理" class="headerlink" title="IntentService 实现原理"></a>IntentService 实现原理</h2><p>通过<code>startService(Intent)</code>来启动一个 IntentService，它内部有一个工作队列（Worker Thread），在工作线程内运行，不会影响 UI 线程。IntentService 是一个抽象类，继承它时必须实现<code>onNewIntent</code>方法。</p>
+<ul>
+<li>普通 Service 由于运行在 UI 线程，无法进行耗时操作，IntentService 解决了这个问题</li>
+<li>运行完成后，IntentService 会自动停止</li>
+</ul>
+<p>从原理上讲，IntentService 是创建了一个 HandlerThread，然后用 thread.getLooper() 赋给 Handler，这个 Handler 接收 onStart 时传来的 Intent，并以此 Intent 调用你所覆盖的 onHandleIntent 方法。任务完成后，可以用广播或者 EventBus 等手段通知调用者。</p>
+<h3 id="参考：IntentService的原理和实例分析"><a href="#参考：IntentService的原理和实例分析" class="headerlink" title="参考：IntentService的原理和实例分析"></a>参考：<a href="https://www.jianshu.com/p/4dd46616564d" target="_blank" rel="noopener">IntentService的原理和实例分析</a></h3><h2 id="HTTP-请求和响应头的格式"><a href="#HTTP-请求和响应头的格式" class="headerlink" title="HTTP 请求和响应头的格式"></a>HTTP 请求和响应头的格式</h2><p>有赞和威佩都问到了这一题。</p>
+<p>HTTP的头域包括通用头，请求头，响应头和实体头四个部分。每个头域由一个域名，冒号（:）和域值三部分组成。域名是大小写无关的，域值前可以添加任何数量的空格符，头域可以被扩展为多行，在每行开始处，使用至少一个空格或制表符。</p>
+<h3 id="通用头"><a href="#通用头" class="headerlink" title="通用头"></a>通用头</h3><p>通用头域包含请求和响应消息都支持的头域，通用头域包含Cache-Control、Connection、Date、Pragma、Transfer-Encoding、Upgrade、Via。</p>
+<h3 id="请求头"><a href="#请求头" class="headerlink" title="请求头"></a>请求头</h3><p>请求消息的第一行为下面的格式：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Method　SP　Request-URI　SP　HTTP-Version　CRLF</span><br></pre></td></tr></table></figure>
+<p>请求头域允许客户端向服务器传递关于请求或者关于客户机的附加信息。请求头域可能包含下列字段Accept、Accept-Charset、Accept- Encoding、Accept-Language、Authorization、From、Host、If-Modified-Since、If- Match、If-None-Match、If-Range、If-Range、If-Unmodified-Since、Max-Forwards、 Proxy-Authorization、Range、Referer、User-Agent。</p>
+<h3 id="响应头"><a href="#响应头" class="headerlink" title="响应头"></a>响应头</h3><p>响应消息的第一行为下面的格式：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">HTTP-Version　SP　Status-Code　SP　Reason-Phrase　CRLF</span><br></pre></td></tr></table></figure>
+<p>常见错误码</p>
+<ul>
+<li>1xx:信息响应类，表示接收到请求并且继续处理</li>
+<li>2xx:处理成功响应类，表示动作被成功接收、理解和接受</li>
+<li>3xx:重定向响应类，为了完成指定的动作，必须接受进一步处理</li>
+<li>4xx:客户端错误，客户请求包含语法错误或者是不能正确执行</li>
+<li>5xx:服务端错误，服务器不能正确执行一个正确的请求</li>
+</ul>
+<h3 id="实体信息"><a href="#实体信息" class="headerlink" title="实体信息"></a>实体信息</h3><p>请求消息和响应消息都可以包含实体信息，实体信息一般由实体头域和实体组成。实体头域包含关于实体的原信息，实体头包括Allow、Content-Base、Content-Encoding、Content-Language、 Content-Length、Content-Location、Content-MD5、Content-Range、Content-Type、 Etag、Expires、Last-Modified、extension-header。</p>
+<h2 id="说出你对插件化的理解"><a href="#说出你对插件化的理解" class="headerlink" title="说出你对插件化的理解"></a>说出你对插件化的理解</h2><h3 id="什么是插件化"><a href="#什么是插件化" class="headerlink" title="什么是插件化"></a>什么是插件化</h3><blockquote>
+<p>插件化是一种<strong>遵循一定规范的应用程序</strong>接口编写出来的程序，只能运行在<strong>程序规定的系统平台</strong>下，而不能脱离指定的平台单独运行。</p>
+</blockquote>
+<blockquote>
+<p>插件化提供了一种在运行时动态新增 or 替换已有功能的手段。</p>
+</blockquote>
+<h3 id="为什么需要插件化"><a href="#为什么需要插件化" class="headerlink" title="为什么需要插件化"></a>为什么需要插件化</h3><h3 id="实现插件化的几种手段，对比，大厂实践"><a href="#实现插件化的几种手段，对比，大厂实践" class="headerlink" title="实现插件化的几种手段，对比，大厂实践"></a>实现插件化的几种手段，对比，大厂实践</h3><h2 id="MVP-中对-Presenter-如何进行测试"><a href="#MVP-中对-Presenter-如何进行测试" class="headerlink" title="MVP 中对 Presenter 如何进行测试"></a>MVP 中对 Presenter 如何进行测试</h2><h2 id="HTTP-报文组成"><a href="#HTTP-报文组成" class="headerlink" title="HTTP 报文组成"></a>HTTP 报文组成</h2><h2 id="屏幕物理尺寸，逻辑像素，dp，px，sp"><a href="#屏幕物理尺寸，逻辑像素，dp，px，sp" class="headerlink" title="屏幕物理尺寸，逻辑像素，dp，px，sp"></a>屏幕物理尺寸，逻辑像素，dp，px，sp</h2>
+    
+  </div>
+
+  
+      <div class="git"></div>
+  
+
+</article>
+
+
+   
+
+   
+  <div class="box-prev-next clearfix">
+    <a class="show pull-left" href="/2018/07/06/okhttp/">
+        <i class="icon icon-angle-left"></i>
+    </a>
+    <a class="show pull-right" href="/2018/07/21/dianping-meituan-mobile-share-0721/">
+        <i class="icon icon-angle-right"></i>
+    </a>
+  </div>
+
+
+
+
+</div>
+
+
+  <a id="backTop" class="back-top">
+    <i class="icon-angle-up"></i>
+  </a>
+
+
+
+
+  <div class="modal" id="modal">
+  <span id="cover" class="cover hide"></span>
+  <div id="modal-dialog" class="modal-dialog hide-dialog">
+    <div class="modal-header">
+      <span id="close" class="btn-close">关闭</span>
+    </div>
+    <hr>
+    <div class="modal-body">
+      <ul class="list-toolbox">
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/archives/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              博客
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/category/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              分类
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/tag/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              标签
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/link/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              友链
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/about/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              关于
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/search/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              搜索
+            </a>
+          </li>
+        
+      </ul>
+
+    </div>
+  </div>
+</div>
+
+
+
+  
+      <div class="fexo-comments comments-post">
+    
+
+    
+
+    
+    
+
+    
+
+    
+    
+
+    <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+    <script src="//unpkg.com/valine@latest/dist/Valine.min.js"></script>
+    <div id="comment" class="vcomment" ></div>
+    <script>
+        var notify = 'false' == true ? true : false;
+        var verify = 'false' == true ? true : false;
+        var GUEST_INFO = ['nick','mail','link'];
+        var guest_info = 'nick,mail,link'.split(',').filter(function(item){
+            return GUEST_INFO.indexOf(item) > -1
+        });
+        guest_info = guest_info.length == 0 ? GUEST_INFO :guest_info;
+        window.valine = new Valine({
+            el: '.vcomment',
+            notify: notify,
+            verify: verify,
+            appId: "khG3rBt0nWda7lxDUHpS3Sq0-gzGzoHsz",
+            appKey: "btFkQfcBgJeCRm55mYmUgA5d",
+            avatar:'mm',
+            placeholder: "畅所欲言...",
+            guest_info:guest_info,
+            pageSize:'10'
+        });
+    </script>
+  
+  </div>
+
+  
+
+  <script type="text/javascript">
+  function loadScript(url, callback) {
+    var script = document.createElement('script')
+    script.type = 'text/javascript';
+
+    if (script.readyState) { //IE
+      script.onreadystatechange = function() {
+        if (script.readyState == 'loaded' ||
+          script.readyState == 'complete') {
+          script.onreadystatechange = null;
+          callback();
+        }
+      };
+    } else { //Others
+      script.onload = function() {
+        callback();
+      };
+    }
+
+    script.src = url;
+    document.getElementsByTagName('head')[0].appendChild(script);
+  }
+
+  window.onload = function() {
+    loadScript('/js/bundle.js?235683', function() {
+      // load success
+    });
+  }
+</script>
+
+</body>
+</html>
