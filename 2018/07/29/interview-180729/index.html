@@ -7,31 +7,26 @@
 <head>
   <meta charset="utf-8">
   
-  <title>Android Performance Patterns - s4ep6 Service Performance Patterns | One Step, One Punch</title>
+  <title>面试知识整理 2018.07.29 | One Step, One Punch</title>
 
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
   
-    <meta name="keywords" content="Android Performance Patterns,技术流," />
+    <meta name="keywords" content="Android,面试," />
   
 
-  <meta name="description" content="Services are an integral component of almost every android application. But the functionality they provide comes with a drain on battery and system resources. And if you’re not paying attention, serv">
-<meta name="keywords" content="Android Performance Patterns,技术流">
+  <meta name="description" content="有什么手段可以减少APK体积模块化插件化Get 和 Post 区别LeakCanary 检查内存泄漏的原理创建一个对象/new Object 时内部流程">
+<meta name="keywords" content="Android,面试">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Android Performance Patterns - s4ep6 Service Performance Patterns">
-<meta property="og:url" content="http://lilei.work/2016/03/20/Android-Performance-Patterns-s4ep6-Service-Performance-Patterns/index.html">
+<meta property="og:title" content="面试知识整理 2018.07.29">
+<meta property="og:url" content="http://lilei.work/2018/07/29/interview-180729/index.html">
 <meta property="og:site_name" content="One Step, One Punch">
-<meta property="og:description" content="Services are an integral component of almost every android application. But the functionality they provide comes with a drain on battery and system resources. And if you’re not paying attention, serv">
+<meta property="og:description" content="有什么手段可以减少APK体积模块化插件化Get 和 Post 区别LeakCanary 检查内存泄漏的原理创建一个对象/new Object 时内部流程">
 <meta property="og:locale" content="default">
-<meta property="og:image" content="http://lilei.work/img/160320_app_s4ep6/cost.png">
-<meta property="og:image" content="http://lilei.work/img/160320_app_s4ep6/started_services.png">
-<meta property="og:image" content="http://lilei.work/img/160320_app_s4ep6/bound_services.png">
-<meta property="og:image" content="http://lilei.work/img/160320_app_s4ep6/mixed_services.png">
-<meta property="og:updated_time" content="2016-06-29T06:22:28.000Z">
+<meta property="og:updated_time" content="2018-07-29T04:50:22.478Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Android Performance Patterns - s4ep6 Service Performance Patterns">
-<meta name="twitter:description" content="Services are an integral component of almost every android application. But the functionality they provide comes with a drain on battery and system resources. And if you’re not paying attention, serv">
-<meta name="twitter:image" content="http://lilei.work/img/160320_app_s4ep6/cost.png">
+<meta name="twitter:title" content="面试知识整理 2018.07.29">
+<meta name="twitter:description" content="有什么手段可以减少APK体积模块化插件化Get 和 Post 区别LeakCanary 检查内存泄漏的原理创建一个对象/new Object 时内部流程">
 
   
 
@@ -154,20 +149,20 @@
 
   <div id="toc" class="toc-article">
     <strong class="toc-title">文章目录</strong>
-    <ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#On-System-Level-Services-Ain’t-Free"><span class="toc-text">On System Level, Services Ain’t Free</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Service-May-Cost-Frame-Lost"><span class="toc-text">Service May Cost Frame Lost</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Don’t-Use-Services"><span class="toc-text">Don’t Use Services</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Async-Event-Functions"><span class="toc-text">Async Event Functions</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Do-not-Let-Services-Live-Longer-Than-They-Needed"><span class="toc-text">Do not Let Services Live Longer Than They Needed</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Tools"><span class="toc-text">Tools</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Ending"><span class="toc-text">===Ending===</span></a></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#有什么手段可以减少APK体积"><span class="toc-text">有什么手段可以减少APK体积</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#模块化"><span class="toc-text">模块化</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#插件化"><span class="toc-text">插件化</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Get-和-Post-区别"><span class="toc-text">Get 和 Post 区别</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#LeakCanary-检查内存泄漏的原理"><span class="toc-text">LeakCanary 检查内存泄漏的原理</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#创建一个对象-new-Object-时内部流程"><span class="toc-text">创建一个对象/new Object 时内部流程</span></a></li></ol>
   </div>
 
 
 
 <div class="content content-post CENTER">
-   <article id="post-Android-Performance-Patterns-s4ep6-Service-Performance-Patterns" class="article article-type-post" itemprop="blogPost">
+   <article id="post-interview-180729" class="article article-type-post" itemprop="blogPost">
   <header class="article-header">
-    <h1 class="post-title">Android Performance Patterns - s4ep6 Service Performance Patterns</h1>
+    <h1 class="post-title">面试知识整理 2018.07.29</h1>
 
     <div class="article-meta">
       <span>
         <i class="icon-calendar"></i>
-        <span>2016.03.20</span>
+        <span>2018.07.29</span>
       </span>
 
       
@@ -195,54 +190,7 @@
 
   <div class="article-content">
     
-      <blockquote>
-<p>Services are an integral component of almost every android application. But the functionality they provide comes with a drain on battery and system resources. And if you’re not paying attention, services can easily stick around longer than they should which wastes system resources, and can often cause performance problems for your rendering thread. But Colt McAnlis has the answer : using services in the most efficient way possible means killing them off the right way, and sometimes, not even using them.<br><a href="https://www.youtube.com/watch?v=NJsq0TU0qeg&amp;index=16&amp;list=PLWz5rJ2EKKc9CBxr3BVjPTPoDPLdPIFCE" target="_blank" rel="noopener">Video Link</a></p>
-</blockquote>
-<iframe width="560" height="315" src="https://www.youtube.com/embed/NJsq0TU0qeg?list=PLWz5rJ2EKKc9CBxr3BVjPTPoDPLdPIFCE" frameborder="0" allowfullscreen></iframe>
-
-<hr>
-<a id="more"></a>
-<h4 id="On-System-Level-Services-Ain’t-Free"><a href="#On-System-Level-Services-Ain’t-Free" class="headerlink" title="On System Level, Services Ain’t Free"></a>On System Level, Services Ain’t Free</h4><p>创建、销毁 Service 需要时间与内存</p>
-<p><img src="/img/160320_app_s4ep6/cost.png" alt=""></p>
-<hr>
-<h4 id="Service-May-Cost-Frame-Lost"><a href="#Service-May-Cost-Frame-Lost" class="headerlink" title="Service May Cost Frame Lost"></a>Service May Cost Frame Lost</h4><ol>
-<li>作为 Local Service 启动，对应的 Service 运行在主进程的主线程上</li>
-<li>作为 Remote Service 启动，对应的 Service 则是运行在独立进程的主线程上</li>
-</ol>
-<p>对于<code>1</code>中的情况，如果 Service 中进行了耗时操作（超过了16ms），则在屏幕绘制时可能引起丢帧。</p>
-<hr>
-<h4 id="Don’t-Use-Services"><a href="#Don’t-Use-Services" class="headerlink" title="Don’t Use Services"></a>Don’t Use Services</h4><p>if you don’t have to…</p>
-<p>参见下一节罗列的 Solutions</p>
-<hr>
-<h4 id="Async-Event-Functions"><a href="#Async-Event-Functions" class="headerlink" title="Async Event Functions"></a>Async Event Functions</h4><ul>
-<li>GCM</li>
-<li>BroadcastReceiver</li>
-<li>LocalBroadcastReceiver</li>
-<li>HandlerThreads</li>
-<li>AsyncTaskLoaders</li>
-<li>IntentService</li>
-</ul>
-<hr>
-<h4 id="Do-not-Let-Services-Live-Longer-Than-They-Needed"><a href="#Do-not-Let-Services-Live-Longer-Than-They-Needed" class="headerlink" title="Do not Let Services Live Longer Than They Needed"></a>Do not Let Services Live Longer Than They Needed</h4><p>Service 有两种不同的启动方法，对应的种植方法也为两种</p>
-<ul>
-<li>Started Services：在 Service 中调用<code>stopSelf()</code>，或者在外面调用<code>stopService()</code>来终止</li>
-</ul>
-<p><img src="/img/160320_app_s4ep6/started_services.png" alt=""></p>
-<ul>
-<li>Bound Services：通过<code>unBindService()</code>来终止</li>
-</ul>
-<p><img src="/img/160320_app_s4ep6/bound_services.png" alt=""></p>
-<ul>
-<li>Mixed：如果是先通过<code>startService()</code>启动，再用<code>bindService()</code>绑定的 Service，那么在<code>unBind()</code>后，还要显示通过<code>stopService()</code>来终止</li>
-</ul>
-<p><img src="/img/160320_app_s4ep6/mixed_services.png" alt=""></p>
-<hr>
-<h4 id="Tools"><a href="#Tools" class="headerlink" title="Tools"></a>Tools</h4><ul>
-<li>光头哥又在推销 <a href="http://developer.android.com/tools/help/systrace.html" target="_blank" rel="noopener">Systrace</a> 了</li>
-</ul>
-<hr>
-<h4 id="Ending"><a href="#Ending" class="headerlink" title="===Ending==="></a><em>===Ending===</em></h4><hr>
-
+      <h1 id="有什么手段可以减少APK体积"><a href="#有什么手段可以减少APK体积" class="headerlink" title="有什么手段可以减少APK体积"></a>有什么手段可以减少APK体积</h1><h1 id="模块化"><a href="#模块化" class="headerlink" title="模块化"></a>模块化</h1><h1 id="插件化"><a href="#插件化" class="headerlink" title="插件化"></a>插件化</h1><h1 id="Get-和-Post-区别"><a href="#Get-和-Post-区别" class="headerlink" title="Get 和 Post 区别"></a>Get 和 Post 区别</h1><h1 id="LeakCanary-检查内存泄漏的原理"><a href="#LeakCanary-检查内存泄漏的原理" class="headerlink" title="LeakCanary 检查内存泄漏的原理"></a>LeakCanary 检查内存泄漏的原理</h1><h1 id="创建一个对象-new-Object-时内部流程"><a href="#创建一个对象-new-Object-时内部流程" class="headerlink" title="创建一个对象/new Object 时内部流程"></a>创建一个对象/new Object 时内部流程</h1>
     
   </div>
 
@@ -257,10 +205,10 @@
 
    
   <div class="box-prev-next clearfix">
-    <a class="show pull-left" href="/2016/03/08/Android-Performance-Patterns-s4ep5-Minimizing-Asset-Payload/">
+    <a class="show pull-left" href="/2018/07/28/hello-mr-billionaire/">
         <i class="icon icon-angle-left"></i>
     </a>
-    <a class="show pull-right" href="/2016/03/24/Nova-Automation-Develop-Plan/">
+    <a class="show pull-right" href="/2018/07/30/weekly-20180723-20180729/">
         <i class="icon icon-angle-right"></i>
     </a>
   </div>

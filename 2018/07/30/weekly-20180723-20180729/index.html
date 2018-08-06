@@ -7,31 +7,26 @@
 <head>
   <meta charset="utf-8">
   
-  <title>Android Performance Patterns - s4ep6 Service Performance Patterns | One Step, One Punch</title>
+  <title>本周总结 20180723 ~ 20180729 | One Step, One Punch</title>
 
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
   
-    <meta name="keywords" content="Android Performance Patterns,技术流," />
+    <meta name="keywords" content="周报," />
   
 
-  <meta name="description" content="Services are an integral component of almost every android application. But the functionality they provide comes with a drain on battery and system resources. And if you’re not paying attention, serv">
-<meta name="keywords" content="Android Performance Patterns,技术流">
+  <meta name="description" content="你的痛苦是因为，包裹你心智的外壳，正在破裂毁伤。你必须经历痛苦，正如果壳必须破裂，果仁才见阳光。  刚刚度过七月的最后一周，这一周自己往返跑了两次杭州，一共面了5家公司，其中两家现场，三家电面。七月的杭州气温达到三十七度，比上海平均高出四五度，顶着烈日奔波在城东城西，这样的经历，还真是难得啊。 求职现场：Rokid，海拍客Rokid 位于西溪湿地艺术家集合村里，环境相当不错，就是找起来有些麻烦。">
+<meta name="keywords" content="周报">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Android Performance Patterns - s4ep6 Service Performance Patterns">
-<meta property="og:url" content="http://lilei.work/2016/03/20/Android-Performance-Patterns-s4ep6-Service-Performance-Patterns/index.html">
+<meta property="og:title" content="本周总结 20180723 ~ 20180729">
+<meta property="og:url" content="http://lilei.work/2018/07/30/weekly-20180723-20180729/index.html">
 <meta property="og:site_name" content="One Step, One Punch">
-<meta property="og:description" content="Services are an integral component of almost every android application. But the functionality they provide comes with a drain on battery and system resources. And if you’re not paying attention, serv">
+<meta property="og:description" content="你的痛苦是因为，包裹你心智的外壳，正在破裂毁伤。你必须经历痛苦，正如果壳必须破裂，果仁才见阳光。  刚刚度过七月的最后一周，这一周自己往返跑了两次杭州，一共面了5家公司，其中两家现场，三家电面。七月的杭州气温达到三十七度，比上海平均高出四五度，顶着烈日奔波在城东城西，这样的经历，还真是难得啊。 求职现场：Rokid，海拍客Rokid 位于西溪湿地艺术家集合村里，环境相当不错，就是找起来有些麻烦。">
 <meta property="og:locale" content="default">
-<meta property="og:image" content="http://lilei.work/img/160320_app_s4ep6/cost.png">
-<meta property="og:image" content="http://lilei.work/img/160320_app_s4ep6/started_services.png">
-<meta property="og:image" content="http://lilei.work/img/160320_app_s4ep6/bound_services.png">
-<meta property="og:image" content="http://lilei.work/img/160320_app_s4ep6/mixed_services.png">
-<meta property="og:updated_time" content="2016-06-29T06:22:28.000Z">
+<meta property="og:updated_time" content="2018-08-01T08:59:28.350Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Android Performance Patterns - s4ep6 Service Performance Patterns">
-<meta name="twitter:description" content="Services are an integral component of almost every android application. But the functionality they provide comes with a drain on battery and system resources. And if you’re not paying attention, serv">
-<meta name="twitter:image" content="http://lilei.work/img/160320_app_s4ep6/cost.png">
+<meta name="twitter:title" content="本周总结 20180723 ~ 20180729">
+<meta name="twitter:description" content="你的痛苦是因为，包裹你心智的外壳，正在破裂毁伤。你必须经历痛苦，正如果壳必须破裂，果仁才见阳光。  刚刚度过七月的最后一周，这一周自己往返跑了两次杭州，一共面了5家公司，其中两家现场，三家电面。七月的杭州气温达到三十七度，比上海平均高出四五度，顶着烈日奔波在城东城西，这样的经历，还真是难得啊。 求职现场：Rokid，海拍客Rokid 位于西溪湿地艺术家集合村里，环境相当不错，就是找起来有些麻烦。">
 
   
 
@@ -154,20 +149,20 @@
 
   <div id="toc" class="toc-article">
     <strong class="toc-title">文章目录</strong>
-    <ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#On-System-Level-Services-Ain’t-Free"><span class="toc-text">On System Level, Services Ain’t Free</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Service-May-Cost-Frame-Lost"><span class="toc-text">Service May Cost Frame Lost</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Don’t-Use-Services"><span class="toc-text">Don’t Use Services</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Async-Event-Functions"><span class="toc-text">Async Event Functions</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Do-not-Let-Services-Live-Longer-Than-They-Needed"><span class="toc-text">Do not Let Services Live Longer Than They Needed</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Tools"><span class="toc-text">Tools</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Ending"><span class="toc-text">===Ending===</span></a></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#求职"><span class="toc-text">求职</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#现场：Rokid，海拍客"><span class="toc-text">现场：Rokid，海拍客</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#电面：阿里天猫，海康威视，八维通"><span class="toc-text">电面：阿里天猫，海康威视，八维通</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#积累"><span class="toc-text">积累</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#生活"><span class="toc-text">生活</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#感悟"><span class="toc-text">感悟</span></a></li></ol>
   </div>
 
 
 
 <div class="content content-post CENTER">
-   <article id="post-Android-Performance-Patterns-s4ep6-Service-Performance-Patterns" class="article article-type-post" itemprop="blogPost">
+   <article id="post-weekly-20180723-20180729" class="article article-type-post" itemprop="blogPost">
   <header class="article-header">
-    <h1 class="post-title">Android Performance Patterns - s4ep6 Service Performance Patterns</h1>
+    <h1 class="post-title">本周总结 20180723 ~ 20180729</h1>
 
     <div class="article-meta">
       <span>
         <i class="icon-calendar"></i>
-        <span>2016.03.20</span>
+        <span>2018.07.30</span>
       </span>
 
       
@@ -196,52 +191,14 @@
   <div class="article-content">
     
       <blockquote>
-<p>Services are an integral component of almost every android application. But the functionality they provide comes with a drain on battery and system resources. And if you’re not paying attention, services can easily stick around longer than they should which wastes system resources, and can often cause performance problems for your rendering thread. But Colt McAnlis has the answer : using services in the most efficient way possible means killing them off the right way, and sometimes, not even using them.<br><a href="https://www.youtube.com/watch?v=NJsq0TU0qeg&amp;index=16&amp;list=PLWz5rJ2EKKc9CBxr3BVjPTPoDPLdPIFCE" target="_blank" rel="noopener">Video Link</a></p>
+<p>你的痛苦是因为，包裹你心智的外壳，正在破裂毁伤。<br>你必须经历痛苦，正如果壳必须破裂，果仁才见阳光。</p>
 </blockquote>
-<iframe width="560" height="315" src="https://www.youtube.com/embed/NJsq0TU0qeg?list=PLWz5rJ2EKKc9CBxr3BVjPTPoDPLdPIFCE" frameborder="0" allowfullscreen></iframe>
-
-<hr>
-<a id="more"></a>
-<h4 id="On-System-Level-Services-Ain’t-Free"><a href="#On-System-Level-Services-Ain’t-Free" class="headerlink" title="On System Level, Services Ain’t Free"></a>On System Level, Services Ain’t Free</h4><p>创建、销毁 Service 需要时间与内存</p>
-<p><img src="/img/160320_app_s4ep6/cost.png" alt=""></p>
-<hr>
-<h4 id="Service-May-Cost-Frame-Lost"><a href="#Service-May-Cost-Frame-Lost" class="headerlink" title="Service May Cost Frame Lost"></a>Service May Cost Frame Lost</h4><ol>
-<li>作为 Local Service 启动，对应的 Service 运行在主进程的主线程上</li>
-<li>作为 Remote Service 启动，对应的 Service 则是运行在独立进程的主线程上</li>
+<p>刚刚度过七月的最后一周，这一周自己往返跑了两次杭州，一共面了5家公司，其中两家现场，三家电面。七月的杭州气温达到三十七度，比上海平均高出四五度，顶着烈日奔波在城东城西，这样的经历，还真是难得啊。</p>
+<h1 id="求职"><a href="#求职" class="headerlink" title="求职"></a>求职</h1><h2 id="现场：Rokid，海拍客"><a href="#现场：Rokid，海拍客" class="headerlink" title="现场：Rokid，海拍客"></a>现场：Rokid，海拍客</h2><p>Rokid 位于西溪湿地艺术家集合村里，环境相当不错，就是找起来有些麻烦。第一轮是客户端主管面试，考察网络知识多，比如设计一个登陆模块，如何发送 https 请求，设计一个 http 协议的实现，多线程同时向一个 Socket 里写数据，断点续传等等；第二轮是 Research 部门负责人面试，基本没有针对算法问什么，还是项目上的问题，大概是因为自己算法太弱；第三轮 HRBP 面，聊了聊 Rokid 的竞争力在哪儿。给我的感觉是这家创业公司很有朝气，办公环境是开放式的，不远处的办公区一直有人在讨论问题。团队是做 SDK 集成、智能眼镜的软件开发，跟我之前在依图做的有一些类似。但我认为可穿戴设备目前还没有一个不可替代的应用场景，你能想到的功能，似乎都可以用手机满足，做 SDK 这种东西，技术难度有限，对个人能力提升不太看好。</p>
+<p>海拍客靠近西溪湿地北门，去的那天有雨。第一轮技术面，第二轮 CTO 面，第三轮 HRBP 面。</p>
+<h2 id="电面：阿里天猫，海康威视，八维通"><a href="#电面：阿里天猫，海康威视，八维通" class="headerlink" title="电面：阿里天猫，海康威视，八维通"></a>电面：阿里天猫，海康威视，八维通</h2><h1 id="积累"><a href="#积累" class="headerlink" title="积累"></a>积累</h1><h1 id="生活"><a href="#生活" class="headerlink" title="生活"></a>生活</h1><h1 id="感悟"><a href="#感悟" class="headerlink" title="感悟"></a>感悟</h1><ol>
+<li>去面试，去和别人沟通</li>
 </ol>
-<p>对于<code>1</code>中的情况，如果 Service 中进行了耗时操作（超过了16ms），则在屏幕绘制时可能引起丢帧。</p>
-<hr>
-<h4 id="Don’t-Use-Services"><a href="#Don’t-Use-Services" class="headerlink" title="Don’t Use Services"></a>Don’t Use Services</h4><p>if you don’t have to…</p>
-<p>参见下一节罗列的 Solutions</p>
-<hr>
-<h4 id="Async-Event-Functions"><a href="#Async-Event-Functions" class="headerlink" title="Async Event Functions"></a>Async Event Functions</h4><ul>
-<li>GCM</li>
-<li>BroadcastReceiver</li>
-<li>LocalBroadcastReceiver</li>
-<li>HandlerThreads</li>
-<li>AsyncTaskLoaders</li>
-<li>IntentService</li>
-</ul>
-<hr>
-<h4 id="Do-not-Let-Services-Live-Longer-Than-They-Needed"><a href="#Do-not-Let-Services-Live-Longer-Than-They-Needed" class="headerlink" title="Do not Let Services Live Longer Than They Needed"></a>Do not Let Services Live Longer Than They Needed</h4><p>Service 有两种不同的启动方法，对应的种植方法也为两种</p>
-<ul>
-<li>Started Services：在 Service 中调用<code>stopSelf()</code>，或者在外面调用<code>stopService()</code>来终止</li>
-</ul>
-<p><img src="/img/160320_app_s4ep6/started_services.png" alt=""></p>
-<ul>
-<li>Bound Services：通过<code>unBindService()</code>来终止</li>
-</ul>
-<p><img src="/img/160320_app_s4ep6/bound_services.png" alt=""></p>
-<ul>
-<li>Mixed：如果是先通过<code>startService()</code>启动，再用<code>bindService()</code>绑定的 Service，那么在<code>unBind()</code>后，还要显示通过<code>stopService()</code>来终止</li>
-</ul>
-<p><img src="/img/160320_app_s4ep6/mixed_services.png" alt=""></p>
-<hr>
-<h4 id="Tools"><a href="#Tools" class="headerlink" title="Tools"></a>Tools</h4><ul>
-<li>光头哥又在推销 <a href="http://developer.android.com/tools/help/systrace.html" target="_blank" rel="noopener">Systrace</a> 了</li>
-</ul>
-<hr>
-<h4 id="Ending"><a href="#Ending" class="headerlink" title="===Ending==="></a><em>===Ending===</em></h4><hr>
 
     
   </div>
@@ -257,10 +214,10 @@
 
    
   <div class="box-prev-next clearfix">
-    <a class="show pull-left" href="/2016/03/08/Android-Performance-Patterns-s4ep5-Minimizing-Asset-Payload/">
+    <a class="show pull-left" href="/2018/07/29/interview-180729/">
         <i class="icon icon-angle-left"></i>
     </a>
-    <a class="show pull-right" href="/2016/03/24/Nova-Automation-Develop-Plan/">
+    <a class="hide pull-right" href="/">
         <i class="icon icon-angle-right"></i>
     </a>
   </div>
