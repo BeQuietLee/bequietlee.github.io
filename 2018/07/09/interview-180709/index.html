@@ -35,7 +35,7 @@
 <meta property="og:image" content="http://lilei.work/img/180709_interview/ip_3gs_4s.png">
 <meta property="og:image" content="http://lilei.work/img/180709_interview/Android_dpi.png">
 <meta property="og:image" content="http://lilei.work/img/180709_interview/Android_Screen_Size.png">
-<meta property="og:updated_time" content="2018-08-05T09:13:41.118Z">
+<meta property="og:updated_time" content="2018-08-06T06:09:28.648Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="面试知识整理 2018.07.09">
 <meta name="twitter:description" content="HashMap 和 HashTable 区别相同点  都是以 Key - Value 的形式存放键值对  不同点  null 支持：HashMap 允许 null key 和 null value，HashTable 不允许 并发特性：HashMap 线程不安全，效率高，HashTable 线程安全，效率低 默认长度和扩容方式：HashMap 默认长度 16，扩容 2n，HashTable 默认长">
@@ -276,7 +276,7 @@
 <ul>
 <li>新生代对象多的话，会频繁移动</li>
 </ul>
-<h4 id="分代收集-算法"><a href="#分代收集-算法" class="headerlink" title="分代收集 算法"></a>分代收集 算法</h4><p>对新生代采用复制算法（Minor GC），老年代采用标记压缩算法（Major GC），全部回收成为 Full GC。</p>
+<h4 id="分代收集-算法"><a href="#分代收集-算法" class="headerlink" title="分代收集 算法"></a>分代收集 算法</h4><p>对新生代采用复制算法（Minor GC），老年代采用标记压缩算法（Major GC），全部回收称为 Full GC。</p>
 <p><img src="/img/180709_interview/分代收集.png" alt="分代收集"></p>
 <ul>
 <li>年轻代: 是所有新对象产生的地方.年轻代被分为3个部分(Enden区和两个Survivor区,也叫From和To),当Eden区被对象填满时,就会执行Minor GC,并把所有存活下来的对象转移到其中一个survivor区(Form),Minor GC同样会检查存活下来的对象,并把它们转移到另一个survivor区(To),这样在一段时间内,总会有一个空的survivor区,经过多次GC周期后，仍然存活下来的对象会被转移到年老代内存空间,常这是在年轻代有资格提升到年老代前通过设定年龄阈值来完成的,需要注意，Survivor的两个区是对称的,没先后关系,from和to是相对的.</li>
