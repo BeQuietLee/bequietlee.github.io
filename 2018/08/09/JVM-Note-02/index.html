@@ -24,7 +24,10 @@
 <meta property="og:description" content="本章从概念上介绍 Java 虚拟机内存的各个区域，从作用、服务对象、可能产生的问题几个方面进行讲解。  运行时数据区域根据《Java 虚拟机运行规范》的规定，Java 虚拟机所管理的内存将会包括以下几个运行时区域：    线程私有：程序计数器，虚拟机栈，本地方法栈 线程共享：堆，方法区  程序计数器（Program Counter Register）程序计数器是一块较小的内存空间，可以看作是当前">
 <meta property="og:locale" content="default">
 <meta property="og:image" content="http://lilei.work/img/180809_jvm_02/虚拟机数据分区.png">
-<meta property="og:updated_time" content="2018-08-10T03:14:20.199Z">
+<meta property="og:image" content="http://lilei.work/img/180809_jvm_02/并不简单.jpg">
+<meta property="og:image" content="http://lilei.work/img/180809_jvm_02/句柄.jpeg">
+<meta property="og:image" content="http://lilei.work/img/180809_jvm_02/直接指针.jpeg">
+<meta property="og:updated_time" content="2018-08-10T04:33:46.292Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="深入理解 Java 虚拟机（二）JVM 内存区域与内存溢出异常">
 <meta name="twitter:description" content="本章从概念上介绍 Java 虚拟机内存的各个区域，从作用、服务对象、可能产生的问题几个方面进行讲解。  运行时数据区域根据《Java 虚拟机运行规范》的规定，Java 虚拟机所管理的内存将会包括以下几个运行时区域：    线程私有：程序计数器，虚拟机栈，本地方法栈 线程共享：堆，方法区  程序计数器（Program Counter Register）程序计数器是一块较小的内存空间，可以看作是当前">
@@ -151,7 +154,7 @@
 
   <div id="toc" class="toc-article">
     <strong class="toc-title">文章目录</strong>
-    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#运行时数据区域"><span class="toc-text">运行时数据区域</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#程序计数器（Program-Counter-Register）"><span class="toc-text">程序计数器（Program Counter Register）</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Java-虚拟机栈（Java-Virtual-Machine-Stacks）"><span class="toc-text">Java 虚拟机栈（Java Virtual Machine Stacks）</span></a></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#运行时数据区域"><span class="toc-text">运行时数据区域</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#程序计数器（Program-Counter-Register）"><span class="toc-text">程序计数器（Program Counter Register）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Java-虚拟机栈（Java-Virtual-Machine-Stacks）"><span class="toc-text">Java 虚拟机栈（Java Virtual Machine Stacks）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#本地方法栈（Native-Method-Stack）"><span class="toc-text">本地方法栈（Native Method Stack）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Java-堆（Heap）"><span class="toc-text">Java 堆（Heap）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#方法区（Method-Area）"><span class="toc-text">方法区（Method Area）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#直接内存（Direct-Memory）"><span class="toc-text">直接内存（Direct Memory）</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#HotSpot-虚拟机对象探秘"><span class="toc-text">HotSpot 虚拟机对象探秘</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#对象创建"><span class="toc-text">对象创建</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#类加载"><span class="toc-text">类加载</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#分配内存"><span class="toc-text">分配内存</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#对象设置"><span class="toc-text">对象设置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#init"><span class="toc-text">init</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#对象内存布局"><span class="toc-text">对象内存布局</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#对象访问定位"><span class="toc-text">对象访问定位</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#句柄"><span class="toc-text">句柄</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#直接指针"><span class="toc-text">直接指针</span></a></li></ol></li></ol></li></ol>
   </div>
 
 
@@ -201,21 +204,68 @@
 <li>线程私有：程序计数器，虚拟机栈，本地方法栈</li>
 <li>线程共享：堆，方法区</li>
 </ul>
-<h1 id="程序计数器（Program-Counter-Register）"><a href="#程序计数器（Program-Counter-Register）" class="headerlink" title="程序计数器（Program Counter Register）"></a>程序计数器（Program Counter Register）</h1><p>程序计数器是一块较小的内存空间，可以看作是当前线程执行的字节码行号指示器，JVM 通过改变这个计数器的值，来选取下一条需要执行的字节码指令，分支、循环、跳转、异常处理、线程恢复等基础功能。</p>
+<h2 id="程序计数器（Program-Counter-Register）"><a href="#程序计数器（Program-Counter-Register）" class="headerlink" title="程序计数器（Program Counter Register）"></a>程序计数器（Program Counter Register）</h2><p>程序计数器是一块较小的内存空间，可以看作是当前线程执行的字节码行号指示器，JVM 通过改变这个计数器的值，来选取下一条需要执行的字节码指令，分支、循环、跳转、异常处理、线程恢复等基础功能。</p>
 <p>程序计数器空间是私有的，原因在于 Java 虚拟机是通过线程轮流切换并分配处理器时间来实现的多线程，为了线程切换后能恢复到正确的执行位置，每个线程都需要一个独立的程序计数器。</p>
 <ul>
 <li>如果线程正在执行 Java 方法，则程序计数器记录的是虚拟机字节码指令地址</li>
 <li>如果线程正在执行 Native 方法，则程序计数器值为空（Undefined）</li>
 </ul>
 <p>程序计数器是唯一一个在 Java 虚拟机规范中不会发生 OutOfMemoryError 的区域。</p>
-<h1 id="Java-虚拟机栈（Java-Virtual-Machine-Stacks）"><a href="#Java-虚拟机栈（Java-Virtual-Machine-Stacks）" class="headerlink" title="Java 虚拟机栈（Java Virtual Machine Stacks）"></a>Java 虚拟机栈（Java Virtual Machine Stacks）</h1><p>描述 Java 方法执行的内存模型：每个方法在执行时都会创建一个栈帧（Stack Frame），用于存储局部变量表、操作数栈、动态链接、方法出口等信息。方法运行从开始到结束，对应的是栈帧在虚拟机栈中入栈及出栈的过程。</p>
+<h2 id="Java-虚拟机栈（Java-Virtual-Machine-Stacks）"><a href="#Java-虚拟机栈（Java-Virtual-Machine-Stacks）" class="headerlink" title="Java 虚拟机栈（Java Virtual Machine Stacks）"></a>Java 虚拟机栈（Java Virtual Machine Stacks）</h2><p>描述 Java 方法执行的内存模型：每个方法在执行时都会创建一个栈帧（Stack Frame），用于存储局部变量表、操作数栈、动态链接、方法出口等信息。方法运行从开始到结束，对应的是栈帧在虚拟机栈中入栈及出栈的过程。以下着重介绍<strong>局部变量表</strong>。</p>
 <p>局部变量表存放以下类型的变量，其中 64 位长度的 long 和 double 类型数据会占用 2 个局部变量空间（Slot），其余数据类型只占据 1 个。</p>
 <ul>
 <li>编译期已知的各种基本数据类型：boolean、byte、char、short、int、float、long、double</li>
 <li>对象引用：reference 类型，可能是一个指向对象起始地址的引用指针，也可能是指向一个代表对象的句柄或其他与此对象相关的位置</li>
 <li>returnAddress 类型：指向字节码指令地址</li>
 </ul>
-<p>局部变量表所需的内促农建在编译期间完成分配，在方法运行期间不会更改局部变量表的大小</p>
+<p>局部变量表所需的内促农建在编译期间完成分配，在方法运行期间不会更改局部变量表的大小。</p>
+<p>在 Java 虚拟机规范中，对这个区域规定了两种异常情况：</p>
+<ol>
+<li>StackOverflowError: 线程请求的栈深度大于虚拟机所允许的深度</li>
+<li>OutOfMemoryError: 虚拟机栈进行动态扩展时无法申请到足够的内存</li>
+</ol>
+<h2 id="本地方法栈（Native-Method-Stack）"><a href="#本地方法栈（Native-Method-Stack）" class="headerlink" title="本地方法栈（Native Method Stack）"></a>本地方法栈（Native Method Stack）</h2><p>类似于虚拟机栈，只不过本地方法栈是为本地方法服务。同样会抛出 StackOverflowError 和 OutOfMemoryError。</p>
+<h2 id="Java-堆（Heap）"><a href="#Java-堆（Heap）" class="headerlink" title="Java 堆（Heap）"></a>Java 堆（Heap）</h2><p>是 Java 虚拟机所管理的内存中最大的一块区域，被所有线程共享。堆存在的唯一意义是存放对象实例，在 Java 虚拟机规范中的表述是“所有的对象和数组都要在堆上分配”。但是随着 JIT 编译器的发展与逃逸分析技术逐渐成熟，栈上分配、标量替换优化技术将会导致这一规则不再那么绝对。GC 就是对堆上的对象进行回收。堆区域空间不足会导致 OOM。</p>
+<h2 id="方法区（Method-Area）"><a href="#方法区（Method-Area）" class="headerlink" title="方法区（Method Area）"></a>方法区（Method Area）</h2><p>也是线程共享的区域，用于存储已被虚拟机加载的类信息、常量、静态变量、即时编译器编译后的代码等数据。别名 Non-Heap。HotSpot 虚拟机设计团队选择把 GC 分代收集扩展至方法区，导致也有人称呼方法区为“永久代”（Permanent Generation），但这并不是一个好的实践，会导致内存溢出问题，而且极少数的方法会因为这个原因而在不同虚拟机上产生不同表现。</p>
+<p>垃圾收集行为在方法区是较少出现的，而且回收率不高，回收目标主要是针对常量池的回收和对类型的卸载。</p>
+<p><strong>运行时常量池（Runtime Constant Pool）</strong> 是方法区的一部分，Class 文件除了有类的版本、字段、方法、接口等描述信息外，还有一项信息是常量池（Constant Pool Table），用于存放编译期间生成的各种字面量和符号引用。可能会抛出 OOM 异常。</p>
+<h2 id="直接内存（Direct-Memory）"><a href="#直接内存（Direct-Memory）" class="headerlink" title="直接内存（Direct Memory）"></a>直接内存（Direct Memory）</h2><p>直接内存不是 JVM 运行时数据区的一部分，JDK 1.4 中新加入了 NIO（New Input/Output）类，引入了一种基于通道（Channel）与缓冲区（Buffer）的 I/O 方式，可以使用 Native 函数库直接分配堆外内存，然后通过一个存储在 Java 堆的 DirectByteBuffer 对象作为这块内存的引用进行操作。从而避免在 Java 堆和 Native 堆中来回复制护具，在一些场景中显著提高性能。使用不当会有 OOM 异常。</p>
+<h1 id="HotSpot-虚拟机对象探秘"><a href="#HotSpot-虚拟机对象探秘" class="headerlink" title="HotSpot 虚拟机对象探秘"></a>HotSpot 虚拟机对象探秘</h1><p>基于实用优先原则，以 HotSpot 虚拟机为例，学习在它在 Java 堆中对象分配、布局和访问的全过程。</p>
+<h2 id="对象创建"><a href="#对象创建" class="headerlink" title="对象创建"></a>对象创建</h2><p>在语言层面上，对象创建只需要<code>new</code>关键字即可完成。但是在虚拟机中，这一过程背后实际上并不那么简单。</p>
+<p><img src="/img/180809_jvm_02/并不简单.jpg" alt="并不简单"> </p>
+<h3 id="类加载"><a href="#类加载" class="headerlink" title="类加载"></a>类加载</h3><p>虚拟机收到一条<code>new</code>指令时，首先去检查指令参数能否在常量池中定位到一个类的符号引用，并且检查这个符号引用代表的类是否已经被加载、解析和初始化过。如果没有，则会进行相应的类加载过程。</p>
+<h3 id="分配内存"><a href="#分配内存" class="headerlink" title="分配内存"></a>分配内存</h3><p>对象所需内存大小在类加载完成后即可完全确定，为对象分配内存的操作相当于从堆中划分出一块可使用的区域。有两种分配方式：</p>
+<ul>
+<li>指针碰撞 (Bump the Pointer）：当 Java 堆中的内存是绝对规整的，用过的内存和空闲的内存分两边存放，并且有指针指向明确的界限，此时分配内存只需要将指针移动与对象大小相同距离即可。Serial、ParNew 等带 Compact 过程的收集器采用这种方法。</li>
+<li>空闲列表（Free List）：当内存不规整、用过的内存和空闲的内存交叉排列时，需要由虚拟机维护一个列表记录哪些内存块是可用的，分配时为对象寻找一块足够大的区域并更新列表。CMS 这种基于 Mark-Sweep 算法的收集器采用这种方法。</li>
+</ul>
+<p>除了划分可用空间外，还需要考虑移动指针带来的并发问题。解决并发问题有两个方案：</p>
+<ul>
+<li>对分配内存空间的动作进行同步处理，虚拟机采用 CAS 配上失败重试的方法保证更新操作的原子性</li>
+<li>把内存分配的动作按照线程划分在不同空间进行，每个线程在 Java 堆中预先分配一小块内存，称为本地线程分配缓冲（Thread Local Allocation Buffer，TLAB）。线程在各自的 TLAB 上为对象分配内存，只有当 TLAB 用尽并分配新的 TLAB 时，才需要同步锁定。</li>
+</ul>
+<p>内存分配完成后，虚拟机会讲所分配到的内存空间都初始化为零值。</p>
+<h3 id="对象设置"><a href="#对象设置" class="headerlink" title="对象设置"></a>对象设置</h3><p>虚拟机会设置对象信息（对象是哪个类的实例、如何找到类的元数据信息、哈希码、GC 分代年龄），这些信息保存在对象头（Object Header）中。</p>
+<h3 id="init"><a href="#init" class="headerlink" title="init"></a>init</h3><p>在以上步骤都完成后，开始对象创建，即执行<code>&lt;init&gt;</code>方法，将对象按照构造函数进行初始化，这样一个真正可用的对象才算完全产生出来。</p>
+<h2 id="对象内存布局"><a href="#对象内存布局" class="headerlink" title="对象内存布局"></a>对象内存布局</h2><p>在 HotSpot 虚拟机中，对象在内存中存储的布局分为三块：对象头（Header）、实例数据（Instance Data）、对齐填充（Padding）。</p>
+<p><strong>对象头</strong> 包括两部分信息</p>
+<ul>
+<li>对象自身运行时数据，如哈希码（HashCode）、GC 分代年龄、锁状态标志、线程持有的锁、偏向线程 ID、偏向时间戳等。这部分数据长度在 32 位和 64 位虚拟机中分别是 32bit 和 64bit，官方称它为“Mark Word”。是一个非固定的数据结构。</li>
+<li>类型指针，即对象指向它的类元数据的指针，虚拟机通过这个指针来确定这个对象是哪个类的实例。如果对象是 Java 数组，还需要一块用于记录数组长度的数据。</li>
+</ul>
+<p><strong>实例数据</strong> 是对象真正存储的有效信息，也就是各种类型字段内容。存储顺序受虚拟机分配策略参数（FieldsAllocationStyle）和字段在 Java 代码中定义顺序影响。</p>
+<ol>
+<li>HotSpot 虚拟机默认分配策略是 longs/doubles、ints、shorts/chars、bytes/booleans、oops（Ordinary Object Pointers），相同宽度的字段总被分配到一起</li>
+<li>在满足上一条件的前提下，在父类中定义的变量会出现在子类之前。如果 CompactFields 参数值为 true，则子类中较窄的变量也可能会插入到父类变量空隙之中。</li>
+</ol>
+<p><strong>对齐填充</strong> 不是必须存在的，因为 HotSpot 虚拟机内存管理系统要求对象起始地址必须是 8 字节的整数倍，因此当 <strong>实例数据</strong> 部分没有对齐时，就要通过对齐填充来补齐。</p>
+<h2 id="对象访问定位"><a href="#对象访问定位" class="headerlink" title="对象访问定位"></a>对象访问定位</h2><p>JVM 栈中保存的是 reference 数据，指向存放在堆中的对象，对象的访问（定位）方式取决于虚拟机具体实现，主流的有句柄和直接指针两种，它们各有优劣。</p>
+<h3 id="句柄"><a href="#句柄" class="headerlink" title="句柄"></a>句柄</h3><p>Java 堆中划分出一块内存来作为句柄池，reference 中保存的是句柄地址，句柄中包含对象实例数据与类型数据各自的具体地址信息。</p>
+<p><img src="/img/180809_jvm_02/句柄.jpeg" alt="句柄"> </p>
+<p><strong>优点</strong> reference 中保存的是稳定的句柄地址，在对象被移动（比如 GC）时只会改变句柄中实例数据指针的地址， reference 本身不变。在对象频繁异动的场景里性能更好。</p>
+<h3 id="直接指针"><a href="#直接指针" class="headerlink" title="直接指针"></a>直接指针</h3><p>Java 堆对象头重保存类型数据信息，reference 直接指向对象地址。</p>
+<p><img src="/img/180809_jvm_02/直接指针.jpeg" alt="直接指针"> </p>
+<p><strong>优点</strong> 速度更快，节省了一次指针定位开销，在对象频繁访问的场景里性能更好。HotSpot VM 使用的是直接指针方式。</p>
 
     
   </div>
