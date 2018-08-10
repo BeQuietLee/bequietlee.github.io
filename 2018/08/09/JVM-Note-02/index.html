@@ -7,7 +7,7 @@
 <head>
   <meta charset="utf-8">
   
-  <title>深入理解 Java 虚拟机（一）走近 Java | One Step, One Punch</title>
+  <title>深入理解 Java 虚拟机（二）JVM 内存区域与内存溢出异常 | One Step, One Punch</title>
 
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
@@ -15,20 +15,20 @@
     <meta name="keywords" content="读书笔记,JVM," />
   
 
-  <meta name="description" content="最近阅读周志明的《深入理解 Java 虚拟机 JVM 高级特性与最佳实践》，以读书笔记的形式记录下所学所得，先给自己定个小目标，完成10篇笔记。   世界上并没有完美的程序，但我们并不因此而沮丧，因为写程序本来就是一个不断追求完美的过程。  概述Java 不仅仅是一门编程语言，更是一个由一系列计算机软件和规范形成的技术体系，这个技术体系提供了完整的用于软件开发和跨平台部署的支持环境。它有一系列优">
+  <meta name="description" content="本章从概念上介绍 Java 虚拟机内存的各个区域，从作用、服务对象、可能产生的问题几个方面进行讲解。  运行时数据区域根据《Java 虚拟机运行规范》的规定，Java 虚拟机所管理的内存将会包括以下几个运行时区域：    线程私有：程序计数器，虚拟机栈，本地方法栈 线程共享：堆，方法区  程序计数器（Program Counter Register）程序计数器是一块较小的内存空间，可以看作是当前">
 <meta name="keywords" content="读书笔记,JVM">
 <meta property="og:type" content="article">
-<meta property="og:title" content="深入理解 Java 虚拟机（一）走近 Java">
-<meta property="og:url" content="http://lilei.work/2018/08/09/JVM-Note-01/index.html">
+<meta property="og:title" content="深入理解 Java 虚拟机（二）JVM 内存区域与内存溢出异常">
+<meta property="og:url" content="http://lilei.work/2018/08/09/JVM-Note-02/index.html">
 <meta property="og:site_name" content="One Step, One Punch">
-<meta property="og:description" content="最近阅读周志明的《深入理解 Java 虚拟机 JVM 高级特性与最佳实践》，以读书笔记的形式记录下所学所得，先给自己定个小目标，完成10篇笔记。   世界上并没有完美的程序，但我们并不因此而沮丧，因为写程序本来就是一个不断追求完美的过程。  概述Java 不仅仅是一门编程语言，更是一个由一系列计算机软件和规范形成的技术体系，这个技术体系提供了完整的用于软件开发和跨平台部署的支持环境。它有一系列优">
+<meta property="og:description" content="本章从概念上介绍 Java 虚拟机内存的各个区域，从作用、服务对象、可能产生的问题几个方面进行讲解。  运行时数据区域根据《Java 虚拟机运行规范》的规定，Java 虚拟机所管理的内存将会包括以下几个运行时区域：    线程私有：程序计数器，虚拟机栈，本地方法栈 线程共享：堆，方法区  程序计数器（Program Counter Register）程序计数器是一块较小的内存空间，可以看作是当前">
 <meta property="og:locale" content="default">
-<meta property="og:image" content="http://lilei.work/img/180809_jvm_01/Java技术体系.png">
-<meta property="og:updated_time" content="2018-08-09T07:30:01.476Z">
+<meta property="og:image" content="http://lilei.work/img/180809_jvm_02/虚拟机数据分区.png">
+<meta property="og:updated_time" content="2018-08-10T03:14:20.199Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="深入理解 Java 虚拟机（一）走近 Java">
-<meta name="twitter:description" content="最近阅读周志明的《深入理解 Java 虚拟机 JVM 高级特性与最佳实践》，以读书笔记的形式记录下所学所得，先给自己定个小目标，完成10篇笔记。   世界上并没有完美的程序，但我们并不因此而沮丧，因为写程序本来就是一个不断追求完美的过程。  概述Java 不仅仅是一门编程语言，更是一个由一系列计算机软件和规范形成的技术体系，这个技术体系提供了完整的用于软件开发和跨平台部署的支持环境。它有一系列优">
-<meta name="twitter:image" content="http://lilei.work/img/180809_jvm_01/Java技术体系.png">
+<meta name="twitter:title" content="深入理解 Java 虚拟机（二）JVM 内存区域与内存溢出异常">
+<meta name="twitter:description" content="本章从概念上介绍 Java 虚拟机内存的各个区域，从作用、服务对象、可能产生的问题几个方面进行讲解。  运行时数据区域根据《Java 虚拟机运行规范》的规定，Java 虚拟机所管理的内存将会包括以下几个运行时区域：    线程私有：程序计数器，虚拟机栈，本地方法栈 线程共享：堆，方法区  程序计数器（Program Counter Register）程序计数器是一块较小的内存空间，可以看作是当前">
+<meta name="twitter:image" content="http://lilei.work/img/180809_jvm_02/虚拟机数据分区.png">
 
   
 
@@ -151,15 +151,15 @@
 
   <div id="toc" class="toc-article">
     <strong class="toc-title">文章目录</strong>
-    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#概述"><span class="toc-text">概述</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Java-技术体系"><span class="toc-text">Java 技术体系</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Java-发展史"><span class="toc-text">Java 发展史</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#实践：编译-JDK"><span class="toc-text">实践：编译 JDK</span></a></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#运行时数据区域"><span class="toc-text">运行时数据区域</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#程序计数器（Program-Counter-Register）"><span class="toc-text">程序计数器（Program Counter Register）</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Java-虚拟机栈（Java-Virtual-Machine-Stacks）"><span class="toc-text">Java 虚拟机栈（Java Virtual Machine Stacks）</span></a></li></ol>
   </div>
 
 
 
 <div class="content content-post CENTER">
-   <article id="post-JVM-Note-01" class="article article-type-post" itemprop="blogPost">
+   <article id="post-JVM-Note-02" class="article article-type-post" itemprop="blogPost">
   <header class="article-header">
-    <h1 class="post-title">深入理解 Java 虚拟机（一）走近 Java</h1>
+    <h1 class="post-title">深入理解 Java 虚拟机（二）JVM 内存区域与内存溢出异常</h1>
 
     <div class="article-meta">
       <span>
@@ -193,45 +193,29 @@
   <div class="article-content">
     
       <blockquote>
-<p>最近阅读周志明的《深入理解 Java 虚拟机 JVM 高级特性与最佳实践》，以读书笔记的形式记录下所学所得，先给自己定个小目标，完成10篇笔记。</p>
+<p>本章从概念上介绍 Java 虚拟机内存的各个区域，从作用、服务对象、可能产生的问题几个方面进行讲解。</p>
 </blockquote>
-<blockquote>
-<p>世界上并没有完美的程序，但我们并不因此而沮丧，因为写程序本来就是一个不断追求完美的过程。</p>
-</blockquote>
-<h1 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h1><p>Java 不仅仅是一门编程语言，更是一个由一系列计算机软件和规范形成的技术体系，这个技术体系提供了完整的用于软件开发和跨平台部署的支持环境。它有一系列优点：</p>
+<h1 id="运行时数据区域"><a href="#运行时数据区域" class="headerlink" title="运行时数据区域"></a>运行时数据区域</h1><p>根据《Java 虚拟机运行规范》的规定，Java 虚拟机所管理的内存将会包括以下几个运行时区域：</p>
+<p><img src="/img/180809_jvm_02/虚拟机数据分区.png" alt="虚拟机数据分区"> </p>
 <ul>
-<li>拥有一门结构严谨、面向对象的编程语言</li>
-<li>摆脱硬件平台束缚，实现“一次编写，处处运行”</li>
-<li>提供相对安全的内存管理和访问机制，避免了绝大部分内存泄露和指针越界</li>
-<li>实现热点代码检测和运行时编译及优化，使得 Java 应用能随着运行时间的增加而获取更高的性能</li>
-<li>有一套完善的应用程序接口，还有无数第三方类库实现各种功能</li>
+<li>线程私有：程序计数器，虚拟机栈，本地方法栈</li>
+<li>线程共享：堆，方法区</li>
 </ul>
-<h1 id="Java-技术体系"><a href="#Java-技术体系" class="headerlink" title="Java 技术体系"></a>Java 技术体系</h1><p><strong>按照组成部分来分</strong>，Sun 官方定义的 Java 技术体系包括以下几个方面内容</p>
+<h1 id="程序计数器（Program-Counter-Register）"><a href="#程序计数器（Program-Counter-Register）" class="headerlink" title="程序计数器（Program Counter Register）"></a>程序计数器（Program Counter Register）</h1><p>程序计数器是一块较小的内存空间，可以看作是当前线程执行的字节码行号指示器，JVM 通过改变这个计数器的值，来选取下一条需要执行的字节码指令，分支、循环、跳转、异常处理、线程恢复等基础功能。</p>
+<p>程序计数器空间是私有的，原因在于 Java 虚拟机是通过线程轮流切换并分配处理器时间来实现的多线程，为了线程切换后能恢复到正确的执行位置，每个线程都需要一个独立的程序计数器。</p>
 <ul>
-<li>Java 程序设计语言</li>
-<li>各种硬件平台上的 Java 虚拟机</li>
-<li>Class 文件格式</li>
-<li>Java API 类库</li>
-<li>来自商业机构和开源社区的第三方 Java 类库</li>
+<li>如果线程正在执行 Java 方法，则程序计数器记录的是虚拟机字节码指令地址</li>
+<li>如果线程正在执行 Native 方法，则程序计数器值为空（Undefined）</li>
 </ul>
-<p><strong>JDK（Java Development Kit）</strong>：Java 程序设计语言 + Java 虚拟机 + Java API 类库，是支持 Java 程序开发的最小环境</p>
-<p><strong>JRE（Java Runtime Environment）</strong>：Java 虚拟机 + Java SE API，支持Java 程序运行的最小环境</p>
-<p><img src="/img/180809_jvm_01/Java技术体系.png" alt="Java技术体系所包含的内容"></p>
-<p><strong>按照所服务的领域来分</strong>，Java 技术体系可以分为4个平台</p>
+<p>程序计数器是唯一一个在 Java 虚拟机规范中不会发生 OutOfMemoryError 的区域。</p>
+<h1 id="Java-虚拟机栈（Java-Virtual-Machine-Stacks）"><a href="#Java-虚拟机栈（Java-Virtual-Machine-Stacks）" class="headerlink" title="Java 虚拟机栈（Java Virtual Machine Stacks）"></a>Java 虚拟机栈（Java Virtual Machine Stacks）</h1><p>描述 Java 方法执行的内存模型：每个方法在执行时都会创建一个栈帧（Stack Frame），用于存储局部变量表、操作数栈、动态链接、方法出口等信息。方法运行从开始到结束，对应的是栈帧在虚拟机栈中入栈及出栈的过程。</p>
+<p>局部变量表存放以下类型的变量，其中 64 位长度的 long 和 double 类型数据会占用 2 个局部变量空间（Slot），其余数据类型只占据 1 个。</p>
 <ul>
-<li>Java Card：支持一些 Java 小程序（Applets）运行在小内存设备上的平台</li>
-<li>Java ME（Micro Edition）：支持 Java 程序运行在移动终端（手机、PDA）平台，对 Java API 有所精简，并加入了针对移动终端的支持，旧称 J2ME</li>
-<li>Java SE（Standard Edition）：支持面向桌面级应用（如 Windows 下的应用程序）的 Java 平台，提供完整的 Java 核心 API，旧称 J2SE</li>
-<li>Java EE（Enterprise Edition）：支持面向多层架构的企业应用（如 ERP、CRM）的 Java 平台，除了提供 Java SE API 外，还对其做了大量补充以及部署支持，旧称 J2EE</li>
+<li>编译期已知的各种基本数据类型：boolean、byte、char、short、int、float、long、double</li>
+<li>对象引用：reference 类型，可能是一个指向对象起始地址的引用指针，也可能是指向一个代表对象的句柄或其他与此对象相关的位置</li>
+<li>returnAddress 类型：指向字节码指令地址</li>
 </ul>
-<h1 id="Java-发展史"><a href="#Java-发展史" class="headerlink" title="Java 发展史"></a>Java 发展史</h1><ol>
-<li>1991 年 4 月，Oak（橡树）出现，目的在于开发一种能够在各种消费型电子产品（机顶盒、冰箱、收音机）上运行的程序架构，是为 Java 前身</li>
-<li>1995 年，Oak 正式更名为 Java，并且在 SunWorld 大会上正式发布 1.0 版本，同时提出“Write Once，Run Everywhere”口号</li>
-<li>1998 年，发布里程碑式的 1.2 版本，Sun 在这个版本中将 Java 按照服务领域拆分为三个方向：J2SE, J2ME, J2EE，并且第一次内置了 JIT 编译器，以及内置 Classic、HotSpot、Exact 三种 VM</li>
-<li>2002 年，发布第一个真正成熟的版本 1.4，同年出现 .NET</li>
-<li>2009 年，发布 1.7，代号 Dolphin 海豚</li>
-</ol>
-<h1 id="实践：编译-JDK"><a href="#实践：编译-JDK" class="headerlink" title="实践：编译 JDK"></a>实践：编译 JDK</h1><p>时间原因没有进行进行编译，只是把源码下载下来，日后有需要会补上</p>
+<p>局部变量表所需的内促农建在编译期间完成分配，在方法运行期间不会更改局部变量表的大小</p>
 
     
   </div>
@@ -247,10 +231,10 @@
 
    
   <div class="box-prev-next clearfix">
-    <a class="show pull-left" href="/2018/07/30/weekly-20180723-20180729/">
+    <a class="show pull-left" href="/2018/08/09/JVM-Note-01/">
         <i class="icon icon-angle-left"></i>
     </a>
-    <a class="show pull-right" href="/2018/08/09/JVM-Note-02/">
+    <a class="hide pull-right" href="/">
         <i class="icon icon-angle-right"></i>
     </a>
   </div>
