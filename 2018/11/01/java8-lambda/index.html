@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+
+
+  <html class="light page-post">
+
+
+<head>
+  <meta charset="utf-8">
+  
+  <title>Java SE 8 Lambda 快速入门 | One Step, One Punch</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+    <meta name="keywords" content="Java," />
+  
+
+  <meta name="description" content="本文是对Java SE 8: Lambda Quick Start的翻译，供个人学习Lambda表达式之用。成文日期：2018-11-01，所有以引文出现的文字为笔者阅读过程中添加，非原文内容。强烈建议CET4以上的读者阅读原文。  概述目标本文旨在介绍在 Java SE 8 中引进的 Lambda 表达式。 阅读时间大约 1 小时 简介Lambda 表达式是 Java SE 8 新引入的重要特">
+<meta name="keywords" content="Java">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java SE 8 Lambda 快速入门">
+<meta property="og:url" content="http://lilei.work/2018/11/01/java8-lambda/index.html">
+<meta property="og:site_name" content="One Step, One Punch">
+<meta property="og:description" content="本文是对Java SE 8: Lambda Quick Start的翻译，供个人学习Lambda表达式之用。成文日期：2018-11-01，所有以引文出现的文字为笔者阅读过程中添加，非原文内容。强烈建议CET4以上的读者阅读原文。  概述目标本文旨在介绍在 Java SE 8 中引进的 Lambda 表达式。 阅读时间大约 1 小时 简介Lambda 表达式是 Java SE 8 新引入的重要特">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="http://lilei.work/img/181101_lambda/6_heroes_more.jpg">
+<meta property="og:updated_time" content="2018-11-05T16:18:25.669Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Java SE 8 Lambda 快速入门">
+<meta name="twitter:description" content="本文是对Java SE 8: Lambda Quick Start的翻译，供个人学习Lambda表达式之用。成文日期：2018-11-01，所有以引文出现的文字为笔者阅读过程中添加，非原文内容。强烈建议CET4以上的读者阅读原文。  概述目标本文旨在介绍在 Java SE 8 中引进的 Lambda 表达式。 阅读时间大约 1 小时 简介Lambda 表达式是 Java SE 8 新引入的重要特">
+<meta name="twitter:image" content="http://lilei.work/img/181101_lambda/6_heroes_more.jpg">
+
+  
+
+  
+    <link rel="icon" href="/favicon.ico">
+  
+
+  <link href="/css/styles.css?v=c114cbe6" rel="stylesheet">
+
+
+  
+    <link rel="stylesheet" href="/css/personal-style.css">
+  
+
+  
+
+  
+
+  
+
+
+  
+    <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+  
+
+  
+    <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.3.0/css/font-awesome.min.css">
+  
+</head>
+
+<body>
+
+
+  
+    <span id="toolbox-mobile" class="toolbox-mobile">导航</span>
+  
+
+  <div class="post-header CENTER">
+   
+  <div class="toolbox">
+    <a class="toolbox-entry" href="/">
+      <span class="toolbox-entry-text">导航</span>
+      <i class="icon-angle-down"></i>
+      <i class="icon-home"></i>
+    </a>
+    <ul class="list-toolbox">
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/archives/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            博客
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/category/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            分类
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/tag/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            标签
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/link/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            友链
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/about/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            关于
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/search/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+
+
+</div>
+
+
+  <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#概述"><span class="toc-text">概述</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#目标"><span class="toc-text">目标</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#阅读时间"><span class="toc-text">阅读时间</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#简介"><span class="toc-text">简介</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#硬件和软件需求"><span class="toc-text">硬件和软件需求</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#（运行样例的）先决条件"><span class="toc-text">（运行样例的）先决条件</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#背景知识"><span class="toc-text">背景知识</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#匿名内部类（Anonymous-Inner-Class）"><span class="toc-text">匿名内部类（Anonymous Inner Class）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#函数接口（Functional-Interfaces）"><span class="toc-text">函数接口（Functional Interfaces）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Lambda-表达式语法"><span class="toc-text">Lambda 表达式语法</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Lambda-样例（Lambda-Examples）"><span class="toc-text">Lambda 样例（Lambda Examples）</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Runnable-Lambda"><span class="toc-text">Runnable Lambda</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Comparator-Lambda"><span class="toc-text">Comparator Lambda</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Listener-Lambda"><span class="toc-text">Listener Lambda</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#资源下载"><span class="toc-text">资源下载</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#通过-Lambda-表达式优化代码"><span class="toc-text">通过 Lambda 表达式优化代码</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#一个查询的-Case"><span class="toc-text">一个查询的 Case</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Person-类"><span class="toc-text">Person 类</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#第一次尝试"><span class="toc-text">第一次尝试</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#重构这些方法"><span class="toc-text">重构这些方法</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#匿名内部类"><span class="toc-text">匿名内部类</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Lambda-表达式解千愁"><span class="toc-text">Lambda 表达式解千愁</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#垂直问题迎刃而解"><span class="toc-text">垂直问题迎刃而解</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#资源下载-1"><span class="toc-text">资源下载</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#java-util-function包"><span class="toc-text">java.util.function包</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#东方取名法以及方法调用"><span class="toc-text">东方取名法以及方法调用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#老式写法的例子"><span class="toc-text">老式写法的例子</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Function接口"><span class="toc-text">Function接口</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#样例输出"><span class="toc-text">样例输出</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#资源下载-2"><span class="toc-text">资源下载</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Lambda-表达式和集合"><span class="toc-text">Lambda 表达式和集合</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Lambda-表达式和集合-1"><span class="toc-text">Lambda 表达式和集合</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#类增强"><span class="toc-text">类增强</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#循环"><span class="toc-text">循环</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#链式调用与过滤器"><span class="toc-text">链式调用与过滤器</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#偷点儿懒"><span class="toc-text">偷点儿懒</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#stream方法"><span class="toc-text">stream方法</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#变更与运算结果"><span class="toc-text">变更与运算结果</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#使用map进行计算"><span class="toc-text">使用map进行计算</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#资源下载-3"><span class="toc-text">资源下载</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#总结"><span class="toc-text">总结</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#更多资源"><span class="toc-text">更多资源</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#著者"><span class="toc-text">著者</span></a></li></ol></li></ol>
+  </div>
+
+
+
+<div class="content content-post CENTER">
+   <article id="post-java8-lambda" class="article article-type-post" itemprop="blogPost">
+  <header class="article-header">
+    <h1 class="post-title">Java SE 8 Lambda 快速入门</h1>
+
+    <div class="article-meta">
+      <span>
+        <i class="icon-calendar"></i>
+        <span>2018.11.01</span>
+      </span>
+
+      
+        <span class="article-author">
+          <i class="icon-user"></i>
+          <span>Li Lei</span>
+        </span>
+      
+
+      
+
+
+      
+
+      
+      <i class="fa fa-eye"></i> 
+        <span id="busuanzi_container_page_pv">
+           &nbsp热度 <span id="busuanzi_value_page_pv">
+           <i class="fa fa-spinner fa-spin"></i></span>℃
+        </span>
+      
+      
+    </div>
+  </header>
+
+  <div class="article-content">
+    
+      <blockquote>
+<p>本文是对<a href="https://www.oracle.com/webfolder/technetwork/tutorials/obe/java/Lambda-QuickStart/index.html" target="_blank" rel="noopener">Java SE 8: Lambda Quick Start</a>的翻译，供个人学习Lambda表达式之用。成文日期：2018-11-01，所有以引文出现的文字为笔者阅读过程中添加，非原文内容。<br>强烈建议CET4以上的读者阅读原文。</p>
+</blockquote>
+<h1 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h1><h2 id="目标"><a href="#目标" class="headerlink" title="目标"></a>目标</h2><p>本文旨在介绍在 Java SE 8 中引进的 Lambda 表达式。</p>
+<h2 id="阅读时间"><a href="#阅读时间" class="headerlink" title="阅读时间"></a>阅读时间</h2><p>大约 1 小时</p>
+<h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>Lambda 表达式是 Java SE 8 新引入的重要特性。它提供了通过一个表达式表示指代接口的简洁方法。Lambda 表达式也在遍历、过滤、以及读取数据方面优化了<code>Collection</code>类的使用。此外，新的并发特性提升了多核环境下的程序性能。</p>
+<blockquote>
+<p>总结一下就是三个优点：1.更简洁的匿名类写法，2.更便利的集合类处理，3.多核环境性能优化。</p>
+</blockquote>
+<p>本文首先提供了对 Lambda 表达式的介绍说明，然后介绍匿名内部函数，接着对函数借口和新的 Lambda 语法进行讨论。然后列举出一些常用使用方法模版。</p>
+<p>下节通过对一个搜索场景的讨论，引申出 Lambda 表达式如何优化这种功能实现。然后介绍了一些<code>java.util.function</code>包里面常用的函数接口，如<code>Predicate</code>和<code>Function</code>，并举了一些栗子。</p>
+<p>文末介绍如何通过 Lambda 优化集合类使用。</p>
+<p>提供所有样例源码。</p>
+<h2 id="硬件和软件需求"><a href="#硬件和软件需求" class="headerlink" title="硬件和软件需求"></a>硬件和软件需求</h2><p>以下是硬件和软件需求列表</p>
+<ul>
+<li>JDK 8</li>
+<li>NetBeans 7.4</li>
+</ul>
+<blockquote>
+<p>可以用IDEA代替NetBeans</p>
+</blockquote>
+<h2 id="（运行样例的）先决条件"><a href="#（运行样例的）先决条件" class="headerlink" title="（运行样例的）先决条件"></a>（运行样例的）先决条件</h2><p>要运行样例，你的电脑上必须安装有JDK 8和NetBeans 7.4或更高版本。你可以在<a href="http://openjdk.java.net/projects/lambda/" target="_blank" rel="noopener">the main Lambda site</a>找到下载链接。或者可以直接使用下面的链接。</p>
+<ul>
+<li><a href="https://jdk8.java.net/download.html" target="_blank" rel="noopener">Java Development Kit 8 (JDK8) Early Access</a></li>
+<li><a href="http://netbeans.org/" target="_blank" rel="noopener">NetBeans 7.4 or later</a></li>
+</ul>
+<p><strong>注意：</strong> 安装包适用于所有主流操作系统。本文基于 Linux Mint 13（Ubuntu/Debian）完成。</p>
+<p>安装完成JDK8和NetBeans后。将它们的<code>bin</code>文件夹添加到你的环境变量<code>PATH</code>中。</p>
+<p><strong>注意：</strong> 本文最后更新于 2013 年十二月。</p>
+<blockquote>
+<p>竟然是5年以前的文章了…</p>
+</blockquote>
+<h1 id="背景知识"><a href="#背景知识" class="headerlink" title="背景知识"></a>背景知识</h1><h2 id="匿名内部类（Anonymous-Inner-Class）"><a href="#匿名内部类（Anonymous-Inner-Class）" class="headerlink" title="匿名内部类（Anonymous Inner Class）"></a>匿名内部类（Anonymous Inner Class）</h2><p>在 Java 中，匿名内部类提供一种实现仅使用一次的类的途径。例如，在标准的 Swing 或者 JavaFX 应用中，需要用一系列的 handler 来处理键盘和鼠标事件。除了为每一个事件单独写一个事件处理类（该类需要实现 ActionListener 接口）这种方式，你可以用以下代码来实现类似需求</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">JButton testButton = <span class="keyword">new</span> JButton(<span class="string">"Test Button"</span>);</span><br><span class="line">testButton.addActionListener(<span class="keyword">new</span> ActionListener()&#123;</span><br><span class="line">    <span class="meta">@Override</span> <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">actionPerformed</span><span class="params">(ActionEvent ae)</span></span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"Click Detected by Anon Class"</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>除此之外，你需要为每一个事件都写下类似的代码，它们都需要实现<code>ActionListener</code>接口。通过上述匿名内部类的写法，代码似乎变得容易阅读一些。然而这种写法很不优雅，因为有太多无用的模版代码，我们需要的其实只是“在函数里我要做什么事”这个信息。</p>
+<h2 id="函数接口（Functional-Interfaces）"><a href="#函数接口（Functional-Interfaces）" class="headerlink" title="函数接口（Functional Interfaces）"></a>函数接口（Functional Interfaces）</h2><p>定义<code>ActionListener</code>的类代码如下</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> java.awt.event;</span><br><span class="line"><span class="keyword">import</span> java.util.EventListener;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">ActionListener</span> <span class="keyword">extends</span> <span class="title">EventListener</span> </span>&#123;</span><br><span class="line">    </span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">actionPerformed</span><span class="params">(ActionEvent e)</span></span>;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><code>ActionListener</code>的梨子是一个只含有一个函数声明的接口。在 Java SE 8 中，这种模式的接口被称为“函数接口”。</p>
+<p><strong>注意：</strong> 这种接口之前被称为“Single Abstrace Method type”（单一抽象方法类型）</p>
+<p>在 Java 中使用匿名类实现函数接口是一种常见写法。除了<code>EventListener</code>类以外，像<code>Runnable</code>和<code>Comparator</code>这样的接口也有一样的模式。因此，函数式接口是我们使用 Lambda 表达式的一个重要原因。</p>
+<h2 id="Lambda-表达式语法"><a href="#Lambda-表达式语法" class="headerlink" title="Lambda 表达式语法"></a>Lambda 表达式语法</h2><p>Lambda 可以把匿名内部类的代码从 5 行精简到 1 行，极大的缩减了代码的冗余。如下这种“水平的”解决方案解决了匿名内部类带来的“垂直的”问题。</p>
+<blockquote>
+<p>这里“水平”和“垂直”是指代码块在页面中呈现的形式</p>
+</blockquote>
+<p>一个 Lambda 表达式由三部分构成</p>
+<table>
+<thead>
+<tr>
+<th>Argument List</th>
+<th>Arrow Token</th>
+<th>Body</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>(int x, int y)</td>
+<td>-&gt;</td>
+<td>x + y</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>这三个部分可以翻译为“参数列表”、“箭头标志”、“函数体”，不过下文仍然以英文称呼，为了加深记忆。</p>
+</blockquote>
+<p>Body 部分可以是一个简单的表达式（expression）或者代码块（statement block）。在上面的模版中，body 中进行了简单的计算和返回。在代码块格式中，body 呈现形式与普通函数写法一样，同样需要一个 return 语句来返回结果给匿名函数的调用者。<code>break</code>和<code>continue</code>关键字在最外层是禁止使用的，不过如果代码里存在循环（loops），则可以使用。如果 body 需要返回一个结果值，每一条控制路径都必需有值返回，或者抛出异常。</p>
+<p>看一下这些栗子：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">(<span class="keyword">int</span> x, <span class="keyword">int</span> y) -&gt; x + y</span><br><span class="line"></span><br><span class="line">() -&gt; <span class="number">42</span></span><br><span class="line"></span><br><span class="line">(String s) -&gt; &#123; System.out.println(s); &#125;</span><br></pre></td></tr></table></figure>
+<p>第一个表达式读取两个整型参数，<code>x</code>和<code>y</code>，然后返回<code>x+y</code>的结果。第二个表达式不需要参数，使用“表达式”格式的返回结果，值为42。第三个表达式读取字符串参数，然后将它打印在控制台，不返回任何结果。</p>
+<p>有了上面的基础知识，我们再来看一些样例。</p>
+<h1 id="Lambda-样例（Lambda-Examples）"><a href="#Lambda-样例（Lambda-Examples）" class="headerlink" title="Lambda 样例（Lambda Examples）"></a>Lambda 样例（Lambda Examples）</h1><p>这里是一些使用到上面提到的栗子的常见用法。</p>
+<h2 id="Runnable-Lambda"><a href="#Runnable-Lambda" class="headerlink" title="Runnable Lambda"></a>Runnable Lambda</h2><p>你可以用 Lambda 来写一个实现了 Runnable 接口的对象</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">RunnableTest</span> </span>&#123;</span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">    </span><br><span class="line">    System.out.println(<span class="string">"=== RunnableTest ==="</span>);</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// Anonymous Runnable</span></span><br><span class="line">    Runnable r1 = <span class="keyword">new</span> Runnable()&#123;</span><br><span class="line">      <span class="meta">@Override</span></span><br><span class="line">      <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span></span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"Hello world one!"</span>);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// Lambda Runnable</span></span><br><span class="line">    Runnable r2 = () -&gt; System.out.println(<span class="string">"Hello world two!"</span>);</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// Run em!</span></span><br><span class="line">    r1.run();</span><br><span class="line">    r2.run();</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在两种场景里，请注意到接口不需要读取参数，也没有返回值。<code>Runnable</code>的 Lambda 表达式使用了代码块模式，将 5 行代码浓缩为 1 行。</p>
+<blockquote>
+<p>“代码块”应为原作者笔误，实际上是“表达式”格式。</p>
+</blockquote>
+<h2 id="Comparator-Lambda"><a href="#Comparator-Lambda" class="headerlink" title="Comparator Lambda"></a>Comparator Lambda</h2><p><code>Comparator</code>类在 Java 中用于给集合排序。在以下的例子中，一个由<code>Person</code>对象构成的<code>ArrayList</code>被按照<code>surName</code>进行排序。以下是<code>Person</code>类的成员变量</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Person</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> String givenName;</span><br><span class="line">    <span class="keyword">private</span> String surName;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> age;</span><br><span class="line">    <span class="keyword">private</span> Gender gender;</span><br><span class="line">    <span class="keyword">private</span> String eMail;</span><br><span class="line">    <span class="keyword">private</span> String phone;</span><br><span class="line">    <span class="keyword">private</span> String address;</span><br></pre></td></tr></table></figure>
+<p>以下代码分别使用了匿名内部类和 Lambda 表达式两种方式生成<code>Comparator</code>进行排序。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ComparatorTest</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">   </span><br><span class="line">    List&lt;Person&gt; personList = Person.createShortList();</span><br><span class="line">  </span><br><span class="line">    <span class="comment">// Sort with Inner Class</span></span><br><span class="line">    Collections.sort(personList, <span class="keyword">new</span> Comparator&lt;Person&gt;()&#123;</span><br><span class="line">      <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">compare</span><span class="params">(Person p1, Person p2)</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> p1.getSurName().compareTo(p2.getSurName());</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;);</span><br><span class="line">    </span><br><span class="line">    System.out.println(<span class="string">"=== Sorted Asc SurName ==="</span>);</span><br><span class="line">    <span class="keyword">for</span>(Person p:personList)&#123;</span><br><span class="line">      p.printName();</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// Use Lambda instead</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">// Print Asc</span></span><br><span class="line">    System.out.println(<span class="string">"=== Sorted Asc SurName ==="</span>);</span><br><span class="line">    Collections.sort(personList, (Person p1, Person p2) -&gt; p1.getSurName().compareTo(p2.getSurName()));</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span>(Person p:personList)&#123;</span><br><span class="line">      p.printName();</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// Print Desc</span></span><br><span class="line">    System.out.println(<span class="string">"=== Sorted Desc SurName ==="</span>);</span><br><span class="line">    Collections.sort(personList, (p1,  p2) -&gt; p2.getSurName().compareTo(p1.getSurName()));</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span>(Person p:personList)&#123;</span><br><span class="line">      p.printName();</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>由于 Markdown 不支持代码行数表示，这里的行数请自行体会。</p>
+</blockquote>
+<p>17 - 21 行的排序语句可以被 32 行的 Lambda 表达式精简。注意到第一个 Lambda 表达式声明了传进来的参数类型。第二个 Lambda 表达式则省略了类型声明。Lambda 支持“target typing”（类型自动匹配？），意味着它可以自动从上下文中获取到对象类型信息。因为我们将<code>Comparator</code>应用于泛型集合类（personList），编译器能够自动判断参数类型为<code>Person</code>。</p>
+<h2 id="Listener-Lambda"><a href="#Listener-Lambda" class="headerlink" title="Listener Lambda"></a>Listener Lambda</h2><p>最后我们来看一下<code>ActionListener</code>的例子</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ListenerTest</span> </span>&#123;</span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        </span><br><span class="line">    JButton testButton = <span class="keyword">new</span> JButton(<span class="string">"Test Button"</span>);</span><br><span class="line">    testButton.addActionListener(<span class="keyword">new</span> ActionListener()&#123;</span><br><span class="line">        <span class="meta">@Override</span> <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">actionPerformed</span><span class="params">(ActionEvent ae)</span></span>&#123;</span><br><span class="line">            System.out.println(<span class="string">"Click Detected by Anon Class"</span>);</span><br><span class="line">          &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">    </span><br><span class="line">    testButton.addActionListener(e -&gt; System.out.println(<span class="string">"Click Detected by Lambda Listner"</span>));</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// Swing stuff</span></span><br><span class="line">    JFrame frame = <span class="keyword">new</span> JFrame(<span class="string">"Listener Test"</span>);</span><br><span class="line">    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);</span><br><span class="line">    frame.add(testButton, BorderLayout.CENTER);</span><br><span class="line">    frame.pack();</span><br><span class="line">    frame.setVisible(<span class="keyword">true</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>注意 Lambda 表达式作为参数被传入。类型自动匹配可以应用在很多场景中，以下举例说明：</p>
+<ul>
+<li>Variable declarations（变量声明）</li>
+<li>Assignments（赋值）</li>
+<li>Return statements（返回语句）</li>
+<li>Array initializers（数组初始化）</li>
+<li>Method or constructor arguments（方法或构造器参数）</li>
+<li>Lambda expression bodies（Lambda 表达式体）</li>
+<li>Conditional expressions?:（三元运算符?:）</li>
+<li>Cast expressions（类型转换语句）</li>
+</ul>
+<blockquote>
+<p>简单说就是所有为<code>expression</code>的地方，都可以使用 Lambda 表达式，它本身就是一个 expression/statement。</p>
+</blockquote>
+<h2 id="资源下载"><a href="#资源下载" class="headerlink" title="资源下载"></a>资源下载</h2><p>本小节中的 NetBeans 工程样例代码可以在下面下载到</p>
+<p><a href="https://www.oracle.com/webfolder/technetwork/tutorials/obe/java/Lambda-QuickStart/examples/LambdaExamples01.zip" target="_blank" rel="noopener">LambdaExamples01.zip</a></p>
+<h1 id="通过-Lambda-表达式优化代码"><a href="#通过-Lambda-表达式优化代码" class="headerlink" title="通过 Lambda 表达式优化代码"></a>通过 Lambda 表达式优化代码</h1><p>在你掌握了前面展示的例子后，本节将介绍如何借助 Lambda 改进你的代码。Lambda 表达式将帮助你轻松实现“Don’t Repeat Yourself(DRY)”原则，并且使你的代码更加简洁易于阅读。</p>
+<h2 id="一个查询的-Case"><a href="#一个查询的-Case" class="headerlink" title="一个查询的 Case"></a>一个查询的 Case</h2><p>一个常见的应用程序场景是，从一个集合中遍历，找出那些符合某种过滤条件的成员。在 2012 年的 JavaOne 大会上，Stuart Marks 和 Mike Duigou 通过格外出色的<a href="http://www.youtube.com/watch?v=bzO5GSujdqI" target="_blank" rel="noopener">Jump-Starting Lambda</a>展示了这种应用场景。给你一个名单列表以及一系列筛选条件，需要找出那些符合条件的人并且自动呼叫他们。这个指南在有一些轻微变更的情况下实现了上述需求。</p>
+<p>在这个例子中，我们需要从以下三个美国群体中提取出消息：</p>
+<ul>
+<li><strong>司机：</strong> 年龄大于 16 岁</li>
+<li><strong>入伍人员：</strong> 男性，18 ~ 25 岁</li>
+<li><strong>飞行员（特指商业飞行员）：</strong> 23 ~ 65 岁</li>
+</ul>
+<p>我们将要实现上述需求，不过不是通过打电话或者发邮件，而是在控制台输出信息。信息内容包括姓名、年龄和联系方式（例如邮件地址或者电话号码）</p>
+<h2 id="Person-类"><a href="#Person-类" class="headerlink" title="Person 类"></a>Person 类</h2><p>属性定义如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Person</span> </span>&#123;</span><br><span class="line"> <span class="keyword">private</span> String givenName;</span><br><span class="line"> <span class="keyword">private</span> String surName;</span><br><span class="line"> <span class="keyword">private</span> <span class="keyword">int</span> age;</span><br><span class="line"> <span class="keyword">private</span> Gender gender;</span><br><span class="line"> <span class="keyword">private</span> String eMail;</span><br><span class="line"> <span class="keyword">private</span> String phone;</span><br><span class="line"> <span class="keyword">private</span> String address;</span><br><span class="line"> </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><code>Person</code>类通过<code>Builder</code>来创建新对象，使用<code>createShortList</code>来创建人员列表。如下方代码片段所示。<strong>注意：</strong> 以下所有样例代码都可以在本节末尾给出的 NetBeans 工程里找到。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> List&lt;Person&gt; <span class="title">createShortList</span><span class="params">()</span></span>&#123;</span><br><span class="line">  List&lt;Person&gt; people = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">  </span><br><span class="line">  people.add(</span><br><span class="line">    <span class="keyword">new</span> Person.Builder()</span><br><span class="line">          .givenName(<span class="string">"Bob"</span>)</span><br><span class="line">          .surName(<span class="string">"Baker"</span>)</span><br><span class="line">          .age(<span class="number">21</span>)</span><br><span class="line">          .gender(Gender.MALE)</span><br><span class="line">          .email(<span class="string">"bob.baker@example.com"</span>)</span><br><span class="line">          .phoneNumber(<span class="string">"201-121-4678"</span>)</span><br><span class="line">          .address(<span class="string">"44 4th St, Smallville, KS 12333"</span>)</span><br><span class="line">          .build() </span><br><span class="line">    );</span><br><span class="line">  </span><br><span class="line">  people.add(</span><br><span class="line">    <span class="keyword">new</span> Person.Builder()</span><br><span class="line">          .givenName(<span class="string">"Jane"</span>)</span><br><span class="line">          .surName(<span class="string">"Doe"</span>)</span><br><span class="line">          .age(<span class="number">25</span>)</span><br><span class="line">          .gender(Gender.FEMALE)</span><br><span class="line">          .email(<span class="string">"jane.doe@example.com"</span>)</span><br><span class="line">          .phoneNumber(<span class="string">"202-123-4678"</span>)</span><br><span class="line">          .address(<span class="string">"33 3rd St, Smallville, KS 12333"</span>)</span><br><span class="line">          .build() </span><br><span class="line">    );</span><br><span class="line">  </span><br><span class="line">  people.add(</span><br><span class="line">    <span class="keyword">new</span> Person.Builder()</span><br><span class="line">          .givenName(<span class="string">"John"</span>)</span><br><span class="line">          .surName(<span class="string">"Doe"</span>)</span><br><span class="line">          .age(<span class="number">25</span>)</span><br><span class="line">          .gender(Gender.MALE)</span><br><span class="line">          .email(<span class="string">"john.doe@example.com"</span>)</span><br><span class="line">          .phoneNumber(<span class="string">"202-123-4678"</span>)</span><br><span class="line">          .address(<span class="string">"33 3rd St, Smallville, KS 12333"</span>)</span><br><span class="line">          .build()</span><br><span class="line">  );</span><br></pre></td></tr></table></figure>
+<h2 id="第一次尝试"><a href="#第一次尝试" class="headerlink" title="第一次尝试"></a>第一次尝试</h2><p>有了上面的<code>Person</code>类，加上定义好的检索条件，你可以写一个<code>RoboContact</code>类。一个可以参考的写法中定义了每种使用场景里的方法：</p>
+<p><code>RoboContactMethods.java</code></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.example.lambda;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.util.List;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span> MikeW</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">RoboContactMethods</span> </span>&#123;</span><br><span class="line">  </span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">callDrivers</span><span class="params">(List&lt;Person&gt; pl)</span></span>&#123;</span><br><span class="line">    <span class="keyword">for</span>(Person p:pl)&#123;</span><br><span class="line">      <span class="keyword">if</span> (p.getAge() &gt;= <span class="number">16</span>)&#123;</span><br><span class="line">        roboCall(p);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">emailDraftees</span><span class="params">(List&lt;Person&gt; pl)</span></span>&#123;</span><br><span class="line">    <span class="keyword">for</span>(Person p:pl)&#123;</span><br><span class="line">      <span class="keyword">if</span> (p.getAge() &gt;= <span class="number">18</span> &amp;&amp; p.getAge() &lt;= <span class="number">25</span> &amp;&amp; p.getGender() == Gender.MALE)&#123;</span><br><span class="line">        roboEmail(p);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">mailPilots</span><span class="params">(List&lt;Person&gt; pl)</span></span>&#123;</span><br><span class="line">    <span class="keyword">for</span>(Person p:pl)&#123;</span><br><span class="line">      <span class="keyword">if</span> (p.getAge() &gt;= <span class="number">23</span> &amp;&amp; p.getAge() &lt;= <span class="number">65</span>)&#123;</span><br><span class="line">        roboMail(p);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  </span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">roboCall</span><span class="params">(Person p)</span></span>&#123;</span><br><span class="line">    System.out.println(<span class="string">"Calling "</span> + p.getGivenName() + <span class="string">" "</span> + p.getSurName() + <span class="string">" age "</span> + p.getAge() + <span class="string">" at "</span> + p.getPhone());</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">roboEmail</span><span class="params">(Person p)</span></span>&#123;</span><br><span class="line">    System.out.println(<span class="string">"EMailing "</span> + p.getGivenName() + <span class="string">" "</span> + p.getSurName() + <span class="string">" age "</span> + p.getAge() + <span class="string">" at "</span> + p.getEmail());</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">roboMail</span><span class="params">(Person p)</span></span>&#123;</span><br><span class="line">    System.out.println(<span class="string">"Mailing "</span> + p.getGivenName() + <span class="string">" "</span> + p.getSurName() + <span class="string">" age "</span> + p.getAge() + <span class="string">" at "</span> + p.getAddress());</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>如上所示，上面列出的方法说明了对不同对象采取的行为（打电话、发电子邮件、发实体邮件）。可以清楚地看出过滤条件和采取的行为。然而，这种设计存在一些缺陷：</p>
+<ul>
+<li>没有践行 DRY 原则<ul>
+<li>每一个方法都是重复的模版</li>
+<li>必须为每个方法重写过滤条件</li>
+</ul>
+</li>
+<li>每个用户场景都需要实现大量的方法（比如今天是打电话给入伍人员，发邮件给飞行员；明天可能就是打电话给飞行员，发邮件给入伍人员）</li>
+<li>代码呆板。如果过滤条件发生改变，不得不改动大量代码。因此，这段代码是难以维护的。</li>
+</ul>
+<h2 id="重构这些方法"><a href="#重构这些方法" class="headerlink" title="重构这些方法"></a>重构这些方法</h2><p>如何修复这个类？可以从过滤条件入手。如果可以把过滤调价提取出一个独立的方法，将会有一些提升。</p>
+<p><code>RoboContactMethods2.java</code></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.example.lambda;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.util.List;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span> MikeW</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">RoboContactMethods2</span> </span>&#123;</span><br><span class="line">  </span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">callDrivers</span><span class="params">(List&lt;Person&gt; pl)</span></span>&#123;</span><br><span class="line">    <span class="keyword">for</span>(Person p:pl)&#123;</span><br><span class="line">      <span class="keyword">if</span> (isDriver(p))&#123;</span><br><span class="line">        roboCall(p);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">emailDraftees</span><span class="params">(List&lt;Person&gt; pl)</span></span>&#123;</span><br><span class="line">    <span class="keyword">for</span>(Person p:pl)&#123;</span><br><span class="line">      <span class="keyword">if</span> (isDraftee(p))&#123;</span><br><span class="line">        roboEmail(p);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">mailPilots</span><span class="params">(List&lt;Person&gt; pl)</span></span>&#123;</span><br><span class="line">    <span class="keyword">for</span>(Person p:pl)&#123;</span><br><span class="line">      <span class="keyword">if</span> (isPilot(p))&#123;</span><br><span class="line">        roboMail(p);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">isDriver</span><span class="params">(Person p)</span></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> p.getAge() &gt;= <span class="number">16</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">isDraftee</span><span class="params">(Person p)</span></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> p.getAge() &gt;= <span class="number">18</span> &amp;&amp; p.getAge() &lt;= <span class="number">25</span> &amp;&amp; p.getGender() == Gender.MALE;</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">isPilot</span><span class="params">(Person p)</span></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> p.getAge() &gt;= <span class="number">23</span> &amp;&amp; p.getAge() &lt;= <span class="number">65</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">roboCall</span><span class="params">(Person p)</span></span>&#123;</span><br><span class="line">    System.out.println(<span class="string">"Calling "</span> + p.getGivenName() + <span class="string">" "</span> + p.getSurName() + <span class="string">" age "</span> + p.getAge() + <span class="string">" at "</span> + p.getPhone());</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">roboEmail</span><span class="params">(Person p)</span></span>&#123;</span><br><span class="line">    System.out.println(<span class="string">"EMailing "</span> + p.getGivenName() + <span class="string">" "</span> + p.getSurName() + <span class="string">" age "</span> + p.getAge() + <span class="string">" at "</span> + p.getEmail());</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">roboMail</span><span class="params">(Person p)</span></span>&#123;</span><br><span class="line">    System.out.println(<span class="string">"Mailing "</span> + p.getGivenName() + <span class="string">" "</span> + p.getSurName() + <span class="string">" age "</span> + p.getAge() + <span class="string">" at "</span> + p.getAddress());</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>比起上一个例子，这次的过滤条件被封装在单独的方法里。这些判断用的代码可以复用，需求变更时也避免了在类里面进行大范围的修改。然而，仍然存在着大量重复代码，以及必需为每种联系方法（打电话、发电子邮件、发邮件）单独写一个方法。是否有更好的将过滤条件传递给这些联系方法的方式？</p>
+<h1 id="匿名内部类"><a href="#匿名内部类" class="headerlink" title="匿名内部类"></a>匿名内部类</h1><p>在 Lambda 表达式问世之前，可采用匿名内部类的方案。例如，一个解决方法是声明一个具有返回布尔值的<code>test</code>方法的<code>MyTest.java</code>类。把过滤条件在这个方法里，如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">MyTest</span>&lt;<span class="title">T</span>&gt; </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">test</span><span class="params">(T t)</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>更新后的模拟联系方式类如下：</p>
+<p><code>RobocontactAnon.java</code></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">RoboContactAnon</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">phoneContacts</span><span class="params">(List&lt;Person&gt; pl, MyTest&lt;Person&gt; aTest)</span></span>&#123;</span><br><span class="line">    <span class="keyword">for</span>(Person p:pl)&#123;</span><br><span class="line">      <span class="keyword">if</span> (aTest.test(p))&#123;</span><br><span class="line">        roboCall(p);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">emailContacts</span><span class="params">(List&lt;Person&gt; pl, MyTest&lt;Person&gt; aTest)</span></span>&#123;</span><br><span class="line">    <span class="keyword">for</span>(Person p:pl)&#123;</span><br><span class="line">      <span class="keyword">if</span> (aTest.test(p))&#123;</span><br><span class="line">        roboEmail(p);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">mailContacts</span><span class="params">(List&lt;Person&gt; pl, MyTest&lt;Person&gt; aTest)</span></span>&#123;</span><br><span class="line">    <span class="keyword">for</span>(Person p:pl)&#123;</span><br><span class="line">      <span class="keyword">if</span> (aTest.test(p))&#123;</span><br><span class="line">        roboMail(p);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;  </span><br><span class="line">  </span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">roboCall</span><span class="params">(Person p)</span></span>&#123;</span><br><span class="line">    System.out.println(<span class="string">"Calling "</span> + p.getGivenName() + <span class="string">" "</span> + p.getSurName() + <span class="string">" age "</span> + p.getAge() + <span class="string">" at "</span> + p.getPhone());</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">roboEmail</span><span class="params">(Person p)</span></span>&#123;</span><br><span class="line">    System.out.println(<span class="string">"EMailing "</span> + p.getGivenName() + <span class="string">" "</span> + p.getSurName() + <span class="string">" age "</span> + p.getAge() + <span class="string">" at "</span> + p.getEmail());</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">roboMail</span><span class="params">(Person p)</span></span>&#123;</span><br><span class="line">    System.out.println(<span class="string">"Mailing "</span> + p.getGivenName() + <span class="string">" "</span> + p.getSurName() + <span class="string">" age "</span> + p.getAge() + <span class="string">" at "</span> + p.getAddress());</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这里无疑是有了一些优化，因为只需要 3 个用于进行联系的方法。然而，在实际进行调用时，代码会有一些丑陋。看下面的测试代码：</p>
+<p><code>RoboCallTest03.java</code></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.example.lambda;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.util.List;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span> MikeW</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">RoboCallTest03</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">    </span><br><span class="line">    List&lt;Person&gt; pl = Person.createShortList();</span><br><span class="line">    RoboContactAnon robo = <span class="keyword">new</span> RoboContactAnon();</span><br><span class="line">    </span><br><span class="line">    System.out.println(<span class="string">"\n==== Test 03 ===="</span>);</span><br><span class="line">    System.out.println(<span class="string">"\n=== Calling all Drivers ==="</span>);</span><br><span class="line">    robo.phoneContacts(pl, </span><br><span class="line">        <span class="keyword">new</span> MyTest&lt;Person&gt;()&#123;</span><br><span class="line">          <span class="meta">@Override</span></span><br><span class="line">          <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">test</span><span class="params">(Person p)</span></span>&#123;</span><br><span class="line">            <span class="keyword">return</span> p.getAge() &gt;=<span class="number">16</span>;</span><br><span class="line">          &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    );</span><br><span class="line">    </span><br><span class="line">    System.out.println(<span class="string">"\n=== Emailing all Draftees ==="</span>);</span><br><span class="line">    robo.emailContacts(pl, </span><br><span class="line">        <span class="keyword">new</span> MyTest&lt;Person&gt;()&#123;</span><br><span class="line">          <span class="meta">@Override</span></span><br><span class="line">          <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">test</span><span class="params">(Person p)</span></span>&#123;</span><br><span class="line">            <span class="keyword">return</span> p.getAge() &gt;= <span class="number">18</span> &amp;&amp; p.getAge() &lt;= <span class="number">25</span> &amp;&amp; p.getGender() == Gender.MALE;</span><br><span class="line">          &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    );</span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line">    System.out.println(<span class="string">"\n=== Mail all Pilots ==="</span>);</span><br><span class="line">    robo.mailContacts(pl, </span><br><span class="line">        <span class="keyword">new</span> MyTest&lt;Person&gt;()&#123;</span><br><span class="line">          <span class="meta">@Override</span></span><br><span class="line">          <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">test</span><span class="params">(Person p)</span></span>&#123;</span><br><span class="line">            <span class="keyword">return</span> p.getAge() &gt;= <span class="number">23</span> &amp;&amp; p.getAge() &lt;= <span class="number">65</span>;</span><br><span class="line">          &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    );</span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这是“垂直”代码的一个典型案例。这样的代码难以阅读。此外，我们必须为每一种使用场景单独写自定义的过滤条件。</p>
+<h2 id="Lambda-表达式解千愁"><a href="#Lambda-表达式解千愁" class="headerlink" title="Lambda 表达式解千愁"></a>Lambda 表达式解千愁</h2><p>Lambda 表达式可以解决目前为止我们遇到的一切问题。不过，让我们先了解一点别的。</p>
+<p><code>java.uitl.function</code></p>
+<p>在上一个例子中，<code>MyTest</code>函数接口将匿名内部类传递给方法调用。然而，写一个接口并不是必需的。Java SE 8 提供了<code>java.util.function</code>包，其中有一系列标准的函数借口。在这种场景下，<code>Predicate</code>接口符合我们的需求。</p>
+<blockquote>
+<p><code>Predict</code>意为“谓语，断言”，即判断条件的意思</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">Predicate</span>&lt;<span class="title">T</span>&gt; </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">test</span><span class="params">(T t)</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><code>test</code>方法接收一个泛型类，返回一个布尔值。这正是我们所需要的过滤场景。下面是模拟联系方式类的最终版本。</p>
+<p><code>RobocontactsLambda.java</code></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.example.lambda;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.util.List;</span><br><span class="line"><span class="keyword">import</span> java.util.function.Predicate;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span> MikeW</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">RoboContactLambda</span> </span>&#123;</span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">phoneContacts</span><span class="params">(List&lt;Person&gt; pl, Predicate&lt;Person&gt; pred)</span></span>&#123;</span><br><span class="line">    <span class="keyword">for</span>(Person p:pl)&#123;</span><br><span class="line">      <span class="keyword">if</span> (pred.test(p))&#123;</span><br><span class="line">        roboCall(p);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">emailContacts</span><span class="params">(List&lt;Person&gt; pl, Predicate&lt;Person&gt; pred)</span></span>&#123;</span><br><span class="line">    <span class="keyword">for</span>(Person p:pl)&#123;</span><br><span class="line">      <span class="keyword">if</span> (pred.test(p))&#123;</span><br><span class="line">        roboEmail(p);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">mailContacts</span><span class="params">(List&lt;Person&gt; pl, Predicate&lt;Person&gt; pred)</span></span>&#123;</span><br><span class="line">    <span class="keyword">for</span>(Person p:pl)&#123;</span><br><span class="line">      <span class="keyword">if</span> (pred.test(p))&#123;</span><br><span class="line">        roboMail(p);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;  </span><br><span class="line">  </span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">roboCall</span><span class="params">(Person p)</span></span>&#123;</span><br><span class="line">    System.out.println(<span class="string">"Calling "</span> + p.getGivenName() + <span class="string">" "</span> + p.getSurName() + <span class="string">" age "</span> + p.getAge() + <span class="string">" at "</span> + p.getPhone());</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">roboEmail</span><span class="params">(Person p)</span></span>&#123;</span><br><span class="line">    System.out.println(<span class="string">"EMailing "</span> + p.getGivenName() + <span class="string">" "</span> + p.getSurName() + <span class="string">" age "</span> + p.getAge() + <span class="string">" at "</span> + p.getEmail());</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">roboMail</span><span class="params">(Person p)</span></span>&#123;</span><br><span class="line">    System.out.println(<span class="string">"Mailing "</span> + p.getGivenName() + <span class="string">" "</span> + p.getSurName() + <span class="string">" age "</span> + p.getAge() + <span class="string">" at "</span> + p.getAddress());</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在这种写法里，只需要三个方法用来模拟联系候选人。Lambda 表达式作为参数被传递给方法，用来过滤需要联系的人员。</p>
+<h2 id="垂直问题迎刃而解"><a href="#垂直问题迎刃而解" class="headerlink" title="垂直问题迎刃而解"></a>垂直问题迎刃而解</h2><p>Lambda 表达式解决了垂直代码的问题，并且更容易重用。来看看新的使用了 Lambda 表达式的测试类。</p>
+<p><code>RoboCallTest04.java</code></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.example.lambda;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.util.List;</span><br><span class="line"><span class="keyword">import</span> java.util.function.Predicate;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span> MikeW</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">RoboCallTest04</span> </span>&#123;</span><br><span class="line">  </span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span></span>&#123; </span><br><span class="line"></span><br><span class="line">    List&lt;Person&gt; pl = Person.createShortList();</span><br><span class="line">    RoboContactLambda robo = <span class="keyword">new</span> RoboContactLambda();</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// Predicates</span></span><br><span class="line">    Predicate&lt;Person&gt; allDrivers = p -&gt; p.getAge() &gt;= <span class="number">16</span>;</span><br><span class="line">    Predicate&lt;Person&gt; allDraftees = p -&gt; p.getAge() &gt;= <span class="number">18</span> &amp;&amp; p.getAge() &lt;= <span class="number">25</span> &amp;&amp; p.getGender() == Gender.MALE;</span><br><span class="line">    Predicate&lt;Person&gt; allPilots = p -&gt; p.getAge() &gt;= <span class="number">23</span> &amp;&amp; p.getAge() &lt;= <span class="number">65</span>;</span><br><span class="line">    </span><br><span class="line">    System.out.println(<span class="string">"\n==== Test 04 ===="</span>);</span><br><span class="line">    System.out.println(<span class="string">"\n=== Calling all Drivers ==="</span>);</span><br><span class="line">    robo.phoneContacts(pl, allDrivers);</span><br><span class="line">    </span><br><span class="line">    System.out.println(<span class="string">"\n=== Emailing all Draftees ==="</span>);</span><br><span class="line">    robo.emailContacts(pl, allDraftees);</span><br><span class="line">    </span><br><span class="line">    System.out.println(<span class="string">"\n=== Mail all Pilots ==="</span>);</span><br><span class="line">    robo.mailContacts(pl, allPilots);</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// Mix and match becomes easy</span></span><br><span class="line">    System.out.println(<span class="string">"\n=== Mail all Draftees ==="</span>);</span><br><span class="line">    robo.mailContacts(pl, allDraftees);  </span><br><span class="line">    </span><br><span class="line">    System.out.println(<span class="string">"\n=== Call all Pilots ==="</span>);</span><br><span class="line">    robo.phoneContacts(pl, allPilots);    </span><br><span class="line">    </span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>注意到，我们为每组联系人（allDrivers, allDraftees, allPilots）声明了一个断言（<code>Predicate</code>）。你可以将任何一个断言传给模拟联系的方法。代码简洁易于阅读，并且减少了重复代码。</p>
+<h2 id="资源下载-1"><a href="#资源下载-1" class="headerlink" title="资源下载"></a>资源下载</h2><p>本小节中的 NetBeans 工程样例代码可以在下面下载到</p>
+<p><a href="https://www.oracle.com/webfolder/technetwork/tutorials/obe/java/Lambda-QuickStart/examples/RoboCallExample.zip" target="_blank" rel="noopener">RoboCallExample.zip</a></p>
+<h1 id="java-util-function包"><a href="#java-util-function包" class="headerlink" title="java.util.function包"></a><code>java.util.function</code>包</h1><p>上节介绍的<code>Predicate</code>并不是 Java SE 8 所提供的唯一函数接口。开发者可以使用一系列的标准接口帮助开发。</p>
+<p><img src="/img/181101_lambda/6_heroes_more.jpg" alt="像我这么吊的"></p>
+<ul>
+<li><code>Predicate</code>：参数对象的某个属性</li>
+<li><code>Consumer</code>：对参数对象执行的某种操作</li>
+<li><code>Function</code>：把 T 转换为 U</li>
+<li><code>Supplieer</code>：提供一个 T 的实例（例如工厂）</li>
+<li><code>UnaryOperator</code>：一个单元运算符，T -&gt; T</li>
+<li><code>BinaryOperator</code>：一个双元运算符，(T, T) -&gt; T</li>
+</ul>
+<p>此外，很多接口都有原始形式（类似上文中的<code>Predicate</code>和人工过滤器这种比较），可以帮助你更好地理解 Lambda 表达式。</p>
+<h2 id="东方取名法以及方法调用"><a href="#东方取名法以及方法调用" class="headerlink" title="东方取名法以及方法调用"></a>东方取名法以及方法调用</h2><p>在写上面一个例子时，我认为<code>Person</code>类应当具备一个灵活的输出系统。一个需求是以西方和东方两种命名方式打印出名字。在西方，名在前，姓在后。在东方则恰好相反。</p>
+<h2 id="老式写法的例子"><a href="#老式写法的例子" class="headerlink" title="老式写法的例子"></a>老式写法的例子</h2><p>这是在未使用 Lambda 表达式时的写法</p>
+<p><code>Person.java</code></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">printWesternName</span><span class="params">()</span></span>&#123;</span><br><span class="line"></span><br><span class="line">  System.out.println(<span class="string">"\nName: "</span> + <span class="keyword">this</span>.getGivenName() + <span class="string">" "</span> + <span class="keyword">this</span>.getSurName() + <span class="string">"\n"</span> +</span><br><span class="line">           <span class="string">"Age: "</span> + <span class="keyword">this</span>.getAge() + <span class="string">"  "</span> + <span class="string">"Gender: "</span> + <span class="keyword">this</span>.getGender() + <span class="string">"\n"</span> +</span><br><span class="line">           <span class="string">"EMail: "</span> + <span class="keyword">this</span>.getEmail() + <span class="string">"\n"</span> + </span><br><span class="line">           <span class="string">"Phone: "</span> + <span class="keyword">this</span>.getPhone() + <span class="string">"\n"</span> +</span><br><span class="line">           <span class="string">"Address: "</span> + <span class="keyword">this</span>.getAddress());</span><br><span class="line">&#125;</span><br><span class="line">  </span><br><span class="line">  </span><br><span class="line">  </span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">printEasternName</span><span class="params">()</span></span>&#123;</span><br><span class="line">    </span><br><span class="line">  System.out.println(<span class="string">"\nName: "</span> + <span class="keyword">this</span>.getSurName() + <span class="string">" "</span> + <span class="keyword">this</span>.getGivenName() + <span class="string">"\n"</span> +</span><br><span class="line">           <span class="string">"Age: "</span> + <span class="keyword">this</span>.getAge() + <span class="string">"  "</span> + <span class="string">"Gender: "</span> + <span class="keyword">this</span>.getGender() + <span class="string">"\n"</span> +</span><br><span class="line">           <span class="string">"EMail: "</span> + <span class="keyword">this</span>.getEmail() + <span class="string">"\n"</span> + </span><br><span class="line">           <span class="string">"Phone: "</span> + <span class="keyword">this</span>.getPhone() + <span class="string">"\n"</span> +</span><br><span class="line">           <span class="string">"Address: "</span> + <span class="keyword">this</span>.getAddress());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>你需要两个方法，分别打印西方命名、东方命名</p>
+<h2 id="Function接口"><a href="#Function接口" class="headerlink" title="Function接口"></a><code>Function</code>接口</h2><p><code>Function</code>接口适用于这个问题。它只有一个名为<code>apply</code>的方法，方法签名如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> R <span class="title">apply</span><span class="params">(T t)</span></span>&#123; &#125;</span><br></pre></td></tr></table></figure>
+<p>它接收一个泛型 T 的参数，然后返回一个 R 的对象。对于这个例子，传入<code>Person</code>类型，返回<code>String</code>类型。一个更加灵活的打印方法如下所示：</p>
+<p><code>Person.java</code></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> String <span class="title">printCuston</span><span class="params">(Function &lt;Person, String&gt; f)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> f.apply(<span class="keyword">this</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这可真简单。方法接收一个<code>Function</code>参数，返回一个字符串。<code>apply</code>方法通过一个 Lambda 表达式返回<code>Person</code>对象的信息。</p>
+<p><code>Function</code>是如何定义的？如下是测试的样例代码。</p>
+<p><code>NameTestNew.java</code></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">NameTestNew</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">    </span><br><span class="line">    System.out.println(<span class="string">"\n==== NameTestNew02 ==="</span>);</span><br><span class="line">    </span><br><span class="line">    List&lt;Person&gt; list1 = Person.createShortList();</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// Print Custom First Name and e-mail</span></span><br><span class="line">    System.out.println(<span class="string">"===Custom List==="</span>);</span><br><span class="line">    <span class="keyword">for</span> (Person person:list1)&#123;</span><br><span class="line">        System.out.println(</span><br><span class="line">            person.printCustom(p -&gt; <span class="string">"Name: "</span> + p.getGivenName() + <span class="string">" EMail: "</span> + p.getEmail())</span><br><span class="line">        );</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    </span><br><span class="line">    <span class="comment">// Define Western and Eastern Lambdas</span></span><br><span class="line">    </span><br><span class="line">    Function&lt;Person, String&gt; westernStyle = p -&gt; &#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="string">"\nName: "</span> + p.getGivenName() + <span class="string">" "</span> + p.getSurName() + <span class="string">"\n"</span> +</span><br><span class="line">             <span class="string">"Age: "</span> + p.getAge() + <span class="string">"  "</span> + <span class="string">"Gender: "</span> + p.getGender() + <span class="string">"\n"</span> +</span><br><span class="line">             <span class="string">"EMail: "</span> + p.getEmail() + <span class="string">"\n"</span> + </span><br><span class="line">             <span class="string">"Phone: "</span> + p.getPhone() + <span class="string">"\n"</span> +</span><br><span class="line">             <span class="string">"Address: "</span> + p.getAddress();</span><br><span class="line">    &#125;;</span><br><span class="line">    </span><br><span class="line">    Function&lt;Person, String&gt; easternStyle =  p -&gt; <span class="string">"\nName: "</span> + p.getSurName() + <span class="string">" "</span> </span><br><span class="line">            + p.getGivenName() + <span class="string">"\n"</span> + <span class="string">"Age: "</span> + p.getAge() + <span class="string">"  "</span> + </span><br><span class="line">            <span class="string">"Gender: "</span> + p.getGender() + <span class="string">"\n"</span> +</span><br><span class="line">            <span class="string">"EMail: "</span> + p.getEmail() + <span class="string">"\n"</span> + </span><br><span class="line">            <span class="string">"Phone: "</span> + p.getPhone() + <span class="string">"\n"</span> +</span><br><span class="line">            <span class="string">"Address: "</span> + p.getAddress();   </span><br><span class="line">    </span><br><span class="line">    <span class="comment">// Print Western List</span></span><br><span class="line">    System.out.println(<span class="string">"\n===Western List==="</span>);</span><br><span class="line">    <span class="keyword">for</span> (Person person:list1)&#123;</span><br><span class="line">        System.out.println(</span><br><span class="line">            person.printCustom(westernStyle)</span><br><span class="line">        );</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Print Eastern List</span></span><br><span class="line">    System.out.println(<span class="string">"\n===Eastern List==="</span>);</span><br><span class="line">    <span class="keyword">for</span> (Person person:list1)&#123;</span><br><span class="line">        System.out.println(</span><br><span class="line">            person.printCustom(easternStyle)</span><br><span class="line">        );</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>第一个循环只是打印出名字和电子邮件地址。不过可以把任何的表达式传给<code>printCuston</code>方法。东方命名法和西方命名法使用 Lambda 表达式定义，并且保存在变量中。这些变量接下来被传入最后的两个循环。可以很容易地将 Lambda<br>表达式合并成为<code>Map</code>，用起来更加方便。Lambda 表达式提供了显著的灵活性。</p>
+<h2 id="样例输出"><a href="#样例输出" class="headerlink" title="样例输出"></a>样例输出</h2><p>下面是程序的样例输出。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br></pre></td><td class="code"><pre><span class="line">==== NameTestNew02 ===</span><br><span class="line">===Custom List===</span><br><span class="line">Name: Bob EMail: bob.baker@example.com</span><br><span class="line">Name: Jane EMail: jane.doe@example.com</span><br><span class="line">Name: John EMail: john.doe@example.com</span><br><span class="line">Name: James EMail: james.johnson@example.com</span><br><span class="line">Name: Joe EMail: joebob.bailey@example.com</span><br><span class="line">Name: Phil EMail: phil.smith@examp;e.com</span><br><span class="line">Name: Betty EMail: betty.jones@example.com</span><br><span class="line"></span><br><span class="line">===Western List===</span><br><span class="line"></span><br><span class="line">Name: Bob Baker</span><br><span class="line">Age: 21  Gender: MALE</span><br><span class="line">EMail: bob.baker@example.com</span><br><span class="line">Phone: 201-121-4678</span><br><span class="line">Address: 44 4th St, Smallville, KS 12333</span><br><span class="line"></span><br><span class="line">Name: Jane Doe</span><br><span class="line">Age: 25  Gender: FEMALE</span><br><span class="line">EMail: jane.doe@example.com</span><br><span class="line">Phone: 202-123-4678</span><br><span class="line">Address: 33 3rd St, Smallville, KS 12333</span><br><span class="line"></span><br><span class="line">Name: John Doe</span><br><span class="line">Age: 25  Gender: MALE</span><br><span class="line">EMail: john.doe@example.com</span><br><span class="line">Phone: 202-123-4678</span><br><span class="line">Address: 33 3rd St, Smallville, KS 12333</span><br><span class="line"></span><br><span class="line">Name: James Johnson</span><br><span class="line">Age: 45  Gender: MALE</span><br><span class="line">EMail: james.johnson@example.com</span><br><span class="line">Phone: 333-456-1233</span><br><span class="line">Address: 201 2nd St, New York, NY 12111</span><br><span class="line"></span><br><span class="line">Name: Joe Bailey</span><br><span class="line">Age: 67  Gender: MALE</span><br><span class="line">EMail: joebob.bailey@example.com</span><br><span class="line">Phone: 112-111-1111</span><br><span class="line">Address: 111 1st St, Town, CA 11111</span><br><span class="line"></span><br><span class="line">Name: Phil Smith</span><br><span class="line">Age: 55  Gender: MALE</span><br><span class="line">EMail: phil.smith@examp;e.com</span><br><span class="line">Phone: 222-33-1234</span><br><span class="line">Address: 22 2nd St, New Park, CO 222333</span><br><span class="line"></span><br><span class="line">Name: Betty Jones</span><br><span class="line">Age: 85  Gender: FEMALE</span><br><span class="line">EMail: betty.jones@example.com</span><br><span class="line">Phone: 211-33-1234</span><br><span class="line">Address: 22 4th St, New Park, CO 222333</span><br><span class="line"></span><br><span class="line">===Eastern List===</span><br><span class="line"></span><br><span class="line">Name: Baker Bob</span><br><span class="line">Age: 21  Gender: MALE</span><br><span class="line">EMail: bob.baker@example.com</span><br><span class="line">Phone: 201-121-4678</span><br><span class="line">Address: 44 4th St, Smallville, KS 12333</span><br><span class="line"></span><br><span class="line">Name: Doe Jane</span><br><span class="line">Age: 25  Gender: FEMALE</span><br><span class="line">EMail: jane.doe@example.com</span><br><span class="line">Phone: 202-123-4678</span><br><span class="line">Address: 33 3rd St, Smallville, KS 12333</span><br><span class="line"></span><br><span class="line">Name: Doe John</span><br><span class="line">Age: 25  Gender: MALE</span><br><span class="line">EMail: john.doe@example.com</span><br><span class="line">Phone: 202-123-4678</span><br><span class="line">Address: 33 3rd St, Smallville, KS 12333</span><br><span class="line"></span><br><span class="line">Name: Johnson James</span><br><span class="line">Age: 45  Gender: MALE</span><br><span class="line">EMail: james.johnson@example.com</span><br><span class="line">Phone: 333-456-1233</span><br><span class="line">Address: 201 2nd St, New York, NY 12111</span><br><span class="line"></span><br><span class="line">Name: Bailey Joe</span><br><span class="line">Age: 67  Gender: MALE</span><br><span class="line">EMail: joebob.bailey@example.com</span><br><span class="line">Phone: 112-111-1111</span><br><span class="line">Address: 111 1st St, Town, CA 11111</span><br><span class="line"></span><br><span class="line">Name: Smith Phil</span><br><span class="line">Age: 55  Gender: MALE</span><br><span class="line">EMail: phil.smith@examp;e.com</span><br><span class="line">Phone: 222-33-1234</span><br><span class="line">Address: 22 2nd St, New Park, CO 222333</span><br><span class="line"></span><br><span class="line">Name: Jones Betty</span><br><span class="line">Age: 85  Gender: FEMALE</span><br><span class="line">EMail: betty.jones@example.com</span><br><span class="line">Phone: 211-33-1234</span><br><span class="line">Address: 22 4th St, New Park, CO 222333</span><br></pre></td></tr></table></figure>
+<h2 id="资源下载-2"><a href="#资源下载-2" class="headerlink" title="资源下载"></a>资源下载</h2><p>本小节中的 NetBeans 工程样例代码可以在下面下载到</p>
+<p><a href="https://www.oracle.com/webfolder/technetwork/tutorials/obe/java/Lambda-QuickStart/examples/LambdaFunctionExamples.zip" target="_blank" rel="noopener">LambdaFunctionExamples.zip</a></p>
+<h1 id="Lambda-表达式和集合"><a href="#Lambda-表达式和集合" class="headerlink" title="Lambda 表达式和集合"></a>Lambda 表达式和集合</h1><p>上节介绍了<code>Function</code>接口和示例语法。本节我们将看到 Lambda 表达式如何提升<code>Collections</code>类。</p>
+<h2 id="Lambda-表达式和集合-1"><a href="#Lambda-表达式和集合-1" class="headerlink" title="Lambda 表达式和集合"></a>Lambda 表达式和集合</h2><p>到目前为止的例子中，集合类出现的很少。然而，相当一部分 Lambda 表达式的特征改变了我们使用集合类的方式。本节介绍其中的一部分。</p>
+<h2 id="类增强"><a href="#类增强" class="headerlink" title="类增强"></a>类增强</h2><p>司机、飞行员、入伍人员的过滤条件被包装进了<code>SearchCriteria</code>类。</p>
+<p><code>SearchCriteria.java</code></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.example.lambda;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.util.HashMap;</span><br><span class="line"><span class="keyword">import</span> java.util.Map;</span><br><span class="line"><span class="keyword">import</span> java.util.function.Predicate;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span> MikeW</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SearchCriteria</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">private</span> <span class="keyword">final</span> Map&lt;String, Predicate&lt;Person&gt;&gt; searchMap = <span class="keyword">new</span> HashMap&lt;&gt;();</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">private</span> <span class="title">SearchCriteria</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">super</span>();</span><br><span class="line">    initSearchMap();</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">initSearchMap</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    Predicate&lt;Person&gt; allDrivers = p -&gt; p.getAge() &gt;= <span class="number">16</span>;</span><br><span class="line">    Predicate&lt;Person&gt; allDraftees = p -&gt; p.getAge() &gt;= <span class="number">18</span> &amp;&amp; p.getAge() &lt;= <span class="number">25</span> &amp;&amp; p.getGender() == Gender.MALE;</span><br><span class="line">    Predicate&lt;Person&gt; allPilots = p -&gt; p.getAge() &gt;= <span class="number">23</span> &amp;&amp; p.getAge() &lt;= <span class="number">65</span>;</span><br><span class="line"></span><br><span class="line">    searchMap.put(<span class="string">"allDrivers"</span>, allDrivers);</span><br><span class="line">    searchMap.put(<span class="string">"allDraftees"</span>, allDraftees);</span><br><span class="line">    searchMap.put(<span class="string">"allPilots"</span>, allPilots);</span><br><span class="line"></span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">public</span> Predicate&lt;Person&gt; <span class="title">getCriteria</span><span class="params">(String PredicateName)</span> </span>&#123;</span><br><span class="line">    Predicate&lt;Person&gt; target;</span><br><span class="line"></span><br><span class="line">    target = searchMap.get(PredicateName);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (target == <span class="keyword">null</span>) &#123;</span><br><span class="line"></span><br><span class="line">      System.out.println(<span class="string">"Search Criteria not found... "</span>);</span><br><span class="line">      System.exit(<span class="number">1</span>);</span><br><span class="line">    </span><br><span class="line">    &#125;</span><br><span class="line">      </span><br><span class="line">    <span class="keyword">return</span> target;</span><br><span class="line"></span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> SearchCriteria <span class="title">getInstance</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> SearchCriteria();</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>本例的编码不是很规范，作为参数的<code>PredicateName</code>应该写为<code>predicateName</code>更严谨。</p>
+</blockquote>
+<p>这个类保存了基于<code>Predicate</code>的搜索过滤条件，你可以在测试用例中使用它们。</p>
+<h2 id="循环"><a href="#循环" class="headerlink" title="循环"></a>循环</h2><p>首先登场的是任何集合类都可以使用的<code>forEach</code>方法。这里是一些打印出<code>Person</code>列表的例子。</p>
+<p><code>Test01ForEach.java</code></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Test01ForEach</span> </span>&#123;</span><br><span class="line">  </span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">    </span><br><span class="line">    List&lt;Person&gt; pl = Person.createShortList();</span><br><span class="line">    </span><br><span class="line">    System.out.println(<span class="string">"\n=== Western Phone List ==="</span>);</span><br><span class="line">    pl.forEach( p -&gt; p.printWesternName() );</span><br><span class="line">    </span><br><span class="line">    System.out.println(<span class="string">"\n=== Eastern Phone List ==="</span>);</span><br><span class="line">    pl.forEach(Person::printEasternName);</span><br><span class="line">    </span><br><span class="line">    System.out.println(<span class="string">"\n=== Custom Phone List ==="</span>);</span><br><span class="line">    pl.forEach(p -&gt; &#123; System.out.println(p.printCustom(r -&gt; <span class="string">"Name: "</span> + r.getGivenName() + <span class="string">" EMail: "</span> + r.getEmail())); &#125;);</span><br><span class="line">    </span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>例 1 展示了一个 Lambda 表达式，它调用<code>printWesternName</code>方法打印出列表里每个人的名字。例 2 展示了一个 <strong>方法调用</strong>。当已经存在对类对象操作的方法时，这种写法可以代替通用 Lambda 表达式的写法。最后，例 3 展示了<code>printCustom</code>方法也可以在这种场景下使用。注意 Lambda 表达式嵌套时，变量名的细小差别。</p>
+<p>你可以用这种方式遍历任何集合。基础结构与增强型<code>for</code>训话类似。然而，一些增强型机制能带来很多好处。</p>
+<h2 id="链式调用与过滤器"><a href="#链式调用与过滤器" class="headerlink" title="链式调用与过滤器"></a>链式调用与过滤器</h2><p>除了遍历集合内元素，你还可以将方法组装成链式。第一个要讲解的方法是<code>filter</code>，它接收一个<code>Predicate</code>类型的参数。</p>
+<p>下面例子在过滤元素后，遍历列表。</p>
+<p><code>Test02Filter.java</code></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Test02Filter</span> </span>&#123;</span><br><span class="line">  </span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    List&lt;Person&gt; pl = Person.createShortList();</span><br><span class="line">    </span><br><span class="line">    SearchCriteria search = SearchCriteria.getInstance();</span><br><span class="line">    </span><br><span class="line">    System.out.println(<span class="string">"\n=== Western Pilot Phone List ==="</span>);</span><br><span class="line"></span><br><span class="line">    pl.stream().filter(search.getCriteria(<span class="string">"allPilots"</span>))</span><br><span class="line">      .forEach(Person::printWesternName);</span><br><span class="line">    </span><br><span class="line">   </span><br><span class="line">    System.out.println(<span class="string">"\n=== Eastern Draftee Phone List ==="</span>);</span><br><span class="line"></span><br><span class="line">    pl.stream().filter(search.getCriteria(<span class="string">"allDraftees"</span>))</span><br><span class="line">      .forEach(Person::printEasternName);</span><br><span class="line">    </span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>第一个和最后一个循环展示了<code>List</code>如何基于过滤条件被过滤。控制台输出如下所示：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">=== Eastern Draftee Phone List ===</span><br><span class="line"></span><br><span class="line">Name: Baker Bob</span><br><span class="line">Age: 21  Gender: MALE</span><br><span class="line">EMail: bob.baker@example.com</span><br><span class="line">Phone: 201-121-4678</span><br><span class="line">Address: 44 4th St, Smallville, KS 12333</span><br><span class="line"></span><br><span class="line">Name: Doe John</span><br><span class="line">Age: 25  Gender: MALE</span><br><span class="line">EMail: john.doe@example.com</span><br><span class="line">Phone: 202-123-4678</span><br><span class="line">Address: 33 3rd St, Smallville, KS 12333</span><br></pre></td></tr></table></figure>
+<h3 id="偷点儿懒"><a href="#偷点儿懒" class="headerlink" title="偷点儿懒"></a>偷点儿懒</h3><p>这些特征虽然有价值，但是在已经有了一个完美的<code>for</code>循环语法的情况下，把它们引入集合类的意义何在？通过将集合操作归纳成库，Java 开发者可以在代码上进行更多的优化。首先看一对名词解释。</p>
+<ul>
+<li><strong>懒惰</strong>：在编程领域，懒惰意味着只处理你需要处理的对象。在先前的例子中，最后一个循环是“懒惰”的，因为它只遍历了<code>List</code>被过滤出来的两个<code>Person</code>对象。这样的代码效率更高，因为最后只处理了两个对象，（而非整个列表）。</li>
+<li><strong>主动性</strong>：处理列表中每个元素的代码被称为“主动性强”的。例如，一个增强型<code>for</code>循环遍历整个列表，只为处理 2 个元素，这种方式被认为“主动性”很强。</li>
+</ul>
+<h3 id="stream方法"><a href="#stream方法" class="headerlink" title="stream方法"></a><code>stream</code>方法</h3><p>在先前的代码样例中，你会发现在对列表进行过滤和遍历之前，我们调用了<code>stream</code>方法。这个方法接收<code>Collection</code>类型的参数，返回<code>java.util.stream.Stream</code>类型的结果。一个<code>Stream</code>对象意味着一个元素序列，你可以在上面进行链式操作。默认地，一旦元素被消费了，他们就不再处于 Stream 中。此外，随着调用方法不同，<code>Stream</code>可以用在串行（默认）或者并行的场景中。本节末尾将介绍一个并行的场景。</p>
+<h2 id="变更与运算结果"><a href="#变更与运算结果" class="headerlink" title="变更与运算结果"></a>变更与运算结果</h2><p>如刚才所提到的，<code>Stream</code>在使用完成后就会被丢弃。因此，我们无法通过<code>Stream</code>来对列表中的元素进行修改。然而，如果你想要保存链式处理后的元素呢？你可以将它们存入一个新的集合。如下代码所示：</p>
+<p><code>Test03toList.java</code></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Test03toList</span> </span>&#123;</span><br><span class="line">  </span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">    </span><br><span class="line">    List&lt;Person&gt; pl = Person.createShortList();</span><br><span class="line">    </span><br><span class="line">    SearchCriteria search = SearchCriteria.getInstance();</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// Make a new list after filtering.</span></span><br><span class="line">    List&lt;Person&gt; pilotList = pl</span><br><span class="line">            .stream()</span><br><span class="line">            .filter(search.getCriteria(<span class="string">"allPilots"</span>))</span><br><span class="line">            .collect(Collectors.toList());</span><br><span class="line">    </span><br><span class="line">    System.out.println(<span class="string">"\n=== Western Pilot Phone List ==="</span>);</span><br><span class="line">    pilotList.forEach(Person::printWesternName);</span><br><span class="line"></span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><code>collect</code>方法只有一个参数，是<code>Collector</code>类。<code>Collector</code>类用于从处理流的结果中生成一个<code>List</code>或者<code>Set</code>。上例介绍了如何将列表过滤后的结果存成<code>List</code>。</p>
+<h2 id="使用map进行计算"><a href="#使用map进行计算" class="headerlink" title="使用map进行计算"></a>使用<code>map</code>进行计算</h2><p><code>map</code>方法通常和<code>filter</code>搭配使用。这个方法去除类里面的某个属性，然后对它进行操作。如下代码基于年龄字段进行了一系列计算。</p>
+<p><code>Test04Map.java</code></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Test04Map</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">    List&lt;Person&gt; pl = Person.createShortList();</span><br><span class="line">    </span><br><span class="line">    SearchCriteria search = SearchCriteria.getInstance();</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// Calc average age of pilots old style</span></span><br><span class="line">    System.out.println(<span class="string">"== Calc Old Style =="</span>);</span><br><span class="line">    <span class="keyword">int</span> sum = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">int</span> count = <span class="number">0</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span> (Person p:pl)&#123;</span><br><span class="line">      <span class="keyword">if</span> (p.getAge() &gt;= <span class="number">23</span> &amp;&amp; p.getAge() &lt;= <span class="number">65</span> )&#123;</span><br><span class="line">        sum = sum + p.getAge();</span><br><span class="line">        count++;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">long</span> average = sum / count;</span><br><span class="line">    System.out.println(<span class="string">"Total Ages: "</span> + sum);</span><br><span class="line">    System.out.println(<span class="string">"Average Age: "</span> + average);</span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line">    <span class="comment">// Get sum of ages</span></span><br><span class="line">    System.out.println(<span class="string">"\n== Calc New Style =="</span>);</span><br><span class="line">    <span class="keyword">long</span> totalAge = pl</span><br><span class="line">            .stream()</span><br><span class="line">            .filter(search.getCriteria(<span class="string">"allPilots"</span>))</span><br><span class="line">            .mapToInt(p -&gt; p.getAge())</span><br><span class="line">            .sum();</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Get average of ages</span></span><br><span class="line">    OptionalDouble averageAge = pl</span><br><span class="line">            .parallelStream()</span><br><span class="line">            .filter(search.getCriteria(<span class="string">"allPilots"</span>))</span><br><span class="line">            .mapToDouble(p -&gt; p.getAge())</span><br><span class="line">            .average();</span><br><span class="line"></span><br><span class="line">    System.out.println(<span class="string">"Total Ages: "</span> + totalAge);</span><br><span class="line">    System.out.println(<span class="string">"Average Age: "</span> + averageAge.getAsDouble());    </span><br><span class="line">    </span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>输出如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">== Calc Old Style ==</span><br><span class="line">Total Ages: 150</span><br><span class="line">Average Age: 37</span><br><span class="line"></span><br><span class="line">== Calc New Style ==</span><br><span class="line">Total Ages: 150</span><br><span class="line">Average Age: 37.5</span><br></pre></td></tr></table></figure>
+<p>这段代码计算列表中所有飞行员的平均年龄。第一个循环展示了老式用<code>for</code>循环的写法。第二个循环使用了<code>map</code>方法获取串流中的每个人的年龄。注意<code>totalAge</code>是一个<code>long</code>类型对象。<code>map</code>方法返回一个<code>IntStream</code>对象，可以对其调用<code>sum</code>方法，这会返回一个<code>long</code>值。</p>
+<p><strong>注意：</strong> 第二次计算平均年龄时，再对所有值求和是多余的。然而，上例中这样写是为了展示<code>sum</code>函数的调用方法。</p>
+<p>最后一个循环基于串流计算平均年龄。注意<code>parallelStream</code>方法，它是 Java 8 中流式计算的并行版本，返回结果也不是简单的<code>double</code>，而是<code>OptionalDouble</code>。</p>
+<blockquote>
+<p><code>parallelStream</code>提供了一种并发处理集合元素的方法，以上文的列表求平均值为例，如果一共有 100 个元素，<code>parallelStream</code>会将任务分为 n 份（n 是线程池的大小，默认为 CPU 核数），每份任务交由单独一个线程处理，最终再汇总这些任务的结果，得出平均值</p>
+</blockquote>
+<h2 id="资源下载-3"><a href="#资源下载-3" class="headerlink" title="资源下载"></a>资源下载</h2><p>本小节中的NetBeans工程样例代码可以在下面下载到</p>
+<p><a href="https://www.oracle.com/webfolder/technetwork/tutorials/obe/java/Lambda-QuickStart/examples/LambdaCollectionExamples.zip" target="_blank" rel="noopener">LambdaCollectionExamples.zip</a></p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>在本篇指南中，你学会了使用以下技能：</p>
+<ul>
+<li>Java 匿名内部类</li>
+<li>使用 Java SE 8 的 Lambda 表达式代替匿名内部类</li>
+<li>Lambda 表达式的语法</li>
+<li>通过<code>Predicate</code>接口在列表中查找</li>
+<li>通过<code>Function</code>接口处理对象，并得到一个新类型的对象</li>
+<li>Java SE 8 中新增的支持 Lambda 表达式的集合特性</li>
+</ul>
+<h2 id="更多资源"><a href="#更多资源" class="headerlink" title="更多资源"></a>更多资源</h2><p>如果你想要了解更多关于 Lambda 表达式和 Java SE 8 的信息，参考以下链接：</p>
+<ul>
+<li><a href="http://openjdk.java.net/projects/jdk8/" target="_blank" rel="noopener">Java 8</a></li>
+<li><a href="http://openjdk.java.net/projects/lambda/" target="_blank" rel="noopener">Project Lambda</a></li>
+<li><a href="http://cr.openjdk.java.net/~briangoetz/lambda/lambda-state-4.html" target="_blank" rel="noopener">State of the Lambda</a></li>
+<li><a href="http://cr.openjdk.java.net/~briangoetz/lambda/sotc3.html" target="_blank" rel="noopener">State of the Lambda Collections</a></li>
+<li><a href="http://www.youtube.com/watch?v=bzO5GSujdqI" target="_blank" rel="noopener">Jump-Starting Lambda JavaOne 2012(You Tube)</a></li>
+<li>若想要学习更多关于 Java 的内容，请点击<a href="http://www.oracle.com/goto/oll" target="_blank" rel="noopener">Oracle Learning Library</a></li>
+</ul>
+<h2 id="著者"><a href="#著者" class="headerlink" title="著者"></a>著者</h2><ul>
+<li>课程组长：Michael Williams</li>
+<li>QA：Juan Quesada Nunez</li>
+<li>翻译：李磊</li>
+</ul>
+
+    
+  </div>
+
+  
+      <div class="git"></div>
+  
+
+</article>
+
+
+   
+
+   
+  <div class="box-prev-next clearfix">
+    <a class="show pull-left" href="/2018/09/23/finance-Xiangshuai-week02/">
+        <i class="icon icon-angle-left"></i>
+    </a>
+    <a class="hide pull-right" href="/">
+        <i class="icon icon-angle-right"></i>
+    </a>
+  </div>
+
+
+
+
+</div>
+
+
+  <a id="backTop" class="back-top">
+    <i class="icon-angle-up"></i>
+  </a>
+
+
+
+
+  <div class="modal" id="modal">
+  <span id="cover" class="cover hide"></span>
+  <div id="modal-dialog" class="modal-dialog hide-dialog">
+    <div class="modal-header">
+      <span id="close" class="btn-close">关闭</span>
+    </div>
+    <hr>
+    <div class="modal-body">
+      <ul class="list-toolbox">
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/archives/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              博客
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/category/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              分类
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/tag/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              标签
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/link/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              友链
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/about/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              关于
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/search/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              搜索
+            </a>
+          </li>
+        
+      </ul>
+
+    </div>
+  </div>
+</div>
+
+
+
+  
+      <div class="fexo-comments comments-post">
+    
+
+    
+
+    
+    
+
+    
+
+    
+    
+
+    <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+    <script src="//unpkg.com/valine@latest/dist/Valine.min.js"></script>
+    <div id="comment" class="vcomment" ></div>
+    <script>
+        var notify = 'false' == true ? true : false;
+        var verify = 'false' == true ? true : false;
+        var GUEST_INFO = ['nick','mail','link'];
+        var guest_info = 'nick,mail,link'.split(',').filter(function(item){
+            return GUEST_INFO.indexOf(item) > -1
+        });
+        guest_info = guest_info.length == 0 ? GUEST_INFO :guest_info;
+        window.valine = new Valine({
+            el: '.vcomment',
+            notify: notify,
+            verify: verify,
+            appId: "khG3rBt0nWda7lxDUHpS3Sq0-gzGzoHsz",
+            appKey: "btFkQfcBgJeCRm55mYmUgA5d",
+            avatar:'mm',
+            placeholder: "畅所欲言...",
+            guest_info:guest_info,
+            pageSize:'10'
+        });
+    </script>
+  
+  </div>
+
+  
+
+  <script type="text/javascript">
+  function loadScript(url, callback) {
+    var script = document.createElement('script')
+    script.type = 'text/javascript';
+
+    if (script.readyState) { //IE
+      script.onreadystatechange = function() {
+        if (script.readyState == 'loaded' ||
+          script.readyState == 'complete') {
+          script.onreadystatechange = null;
+          callback();
+        }
+      };
+    } else { //Others
+      script.onload = function() {
+        callback();
+      };
+    }
+
+    script.src = url;
+    document.getElementsByTagName('head')[0].appendChild(script);
+  }
+
+  window.onload = function() {
+    loadScript('/js/bundle.js?235683', function() {
+      // load success
+    });
+  }
+</script>
+
+</body>
+</html>
