@@ -1,205 +1,203 @@
 <!DOCTYPE html>
-
-
-  <html class="light page-post">
-
-
+<html>
 <head>
-  <meta charset="utf-8">
-  
-  <title>深入理解 Java 虚拟机（二）JVM 内存区域与内存溢出异常 | One Step, One Punch</title>
+    
 
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
 
-  
-    <meta name="keywords" content="读书笔记,JVM," />
-  
+    
 
-  <meta name="description" content="本章从概念上介绍 Java 虚拟机内存的各个区域，从作用、服务对象、可能产生的问题几个方面进行讲解。  运行时数据区域根据《Java 虚拟机运行规范》的规定，Java 虚拟机所管理的内存将会包括以下几个运行时区域：    线程私有：程序计数器，虚拟机栈，本地方法栈 线程共享：堆，方法区  程序计数器（Program Counter Register）程序计数器是一块较小的内存空间，可以看作是当前">
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    
+    <title>深入理解 Java 虚拟机（二）JVM 内存区域与内存溢出异常 | 柘个角落 | IF YOU WANT SOMETHING, GO GET IT. PERIOD.</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="读书笔记,JVM">
+    <meta name="description" content="本章从概念上介绍 Java 虚拟机内存的各个区域，从作用、服务对象、可能产生的问题几个方面进行讲解。  运行时数据区域根据《Java 虚拟机运行规范》的规定，Java 虚拟机所管理的内存将会包括以下几个运行时区域：">
 <meta name="keywords" content="读书笔记,JVM">
 <meta property="og:type" content="article">
 <meta property="og:title" content="深入理解 Java 虚拟机（二）JVM 内存区域与内存溢出异常">
-<meta property="og:url" content="http://lilei.work/2018/08/09/JVM-Note-02/index.html">
-<meta property="og:site_name" content="One Step, One Punch">
-<meta property="og:description" content="本章从概念上介绍 Java 虚拟机内存的各个区域，从作用、服务对象、可能产生的问题几个方面进行讲解。  运行时数据区域根据《Java 虚拟机运行规范》的规定，Java 虚拟机所管理的内存将会包括以下几个运行时区域：    线程私有：程序计数器，虚拟机栈，本地方法栈 线程共享：堆，方法区  程序计数器（Program Counter Register）程序计数器是一块较小的内存空间，可以看作是当前">
+<meta property="og:url" content="https://lilei.pro/2018/08/09/JVM-Note-02/index.html">
+<meta property="og:site_name" content="柘个角落">
+<meta property="og:description" content="本章从概念上介绍 Java 虚拟机内存的各个区域，从作用、服务对象、可能产生的问题几个方面进行讲解。  运行时数据区域根据《Java 虚拟机运行规范》的规定，Java 虚拟机所管理的内存将会包括以下几个运行时区域：">
 <meta property="og:locale" content="default">
-<meta property="og:image" content="http://lilei.work/img/180809_jvm_02/虚拟机数据分区.png">
-<meta property="og:image" content="http://lilei.work/img/180809_jvm_02/并不简单.jpg">
-<meta property="og:image" content="http://lilei.work/img/180809_jvm_02/句柄.jpeg">
-<meta property="og:image" content="http://lilei.work/img/180809_jvm_02/直接指针.jpeg">
+<meta property="og:image" content="https://lilei.pro/img/180809_jvm_02/虚拟机数据分区.png">
+<meta property="og:image" content="https://lilei.pro/img/180809_jvm_02/并不简单.jpg">
+<meta property="og:image" content="https://lilei.pro/img/180809_jvm_02/句柄.jpeg">
+<meta property="og:image" content="https://lilei.pro/img/180809_jvm_02/直接指针.jpeg">
 <meta property="og:updated_time" content="2018-08-10T04:33:46.292Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="深入理解 Java 虚拟机（二）JVM 内存区域与内存溢出异常">
-<meta name="twitter:description" content="本章从概念上介绍 Java 虚拟机内存的各个区域，从作用、服务对象、可能产生的问题几个方面进行讲解。  运行时数据区域根据《Java 虚拟机运行规范》的规定，Java 虚拟机所管理的内存将会包括以下几个运行时区域：    线程私有：程序计数器，虚拟机栈，本地方法栈 线程共享：堆，方法区  程序计数器（Program Counter Register）程序计数器是一块较小的内存空间，可以看作是当前">
-<meta name="twitter:image" content="http://lilei.work/img/180809_jvm_02/虚拟机数据分区.png">
+<meta name="twitter:description" content="本章从概念上介绍 Java 虚拟机内存的各个区域，从作用、服务对象、可能产生的问题几个方面进行讲解。  运行时数据区域根据《Java 虚拟机运行规范》的规定，Java 虚拟机所管理的内存将会包括以下几个运行时区域：">
+<meta name="twitter:image" content="https://lilei.pro/img/180809_jvm_02/虚拟机数据分区.png">
+    
+        <link rel="alternate" type="application/atom+xml" title="柘个角落" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/img/favicon.ico">
+    <link rel="stylesheet" href="//unpkg.com/hexo-theme-material-indigo@latest/css/style.css">
+    <script>window.lazyScripts=[]</script>
 
-  
+    <!-- custom head -->
+    
 
-  
-    <link rel="icon" href="/favicon.ico">
-  
-
-  <link href="/css/styles.css?v=c114cbe6" rel="stylesheet">
-
-
-  
-    <link rel="stylesheet" href="/css/personal-style.css">
-  
-
-  
-
-  
-
-  
-
-
-  
-    <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
-  
-
-  
-    <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.3.0/css/font-awesome.min.css">
-  
 </head>
 
 <body>
+    <div id="loading" class="active"></div>
 
-
-  
-    <span id="toolbox-mobile" class="toolbox-mobile">导航</span>
-  
-
-  <div class="post-header CENTER">
-   
-  <div class="toolbox">
-    <a class="toolbox-entry" href="/">
-      <span class="toolbox-entry-text">导航</span>
-      <i class="icon-angle-down"></i>
-      <i class="icon-home"></i>
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
     </a>
-    <ul class="list-toolbox">
-      
-        <li class="item-toolbox">
-          <a
-            class="CIRCLE"
-            href="/archives/"
-            rel="noopener noreferrer"
-            target="_self"
-            >
-            博客
-          </a>
-        </li>
-      
-        <li class="item-toolbox">
-          <a
-            class="CIRCLE"
-            href="/category/"
-            rel="noopener noreferrer"
-            target="_self"
-            >
-            分类
-          </a>
-        </li>
-      
-        <li class="item-toolbox">
-          <a
-            class="CIRCLE"
-            href="/tag/"
-            rel="noopener noreferrer"
-            target="_self"
-            >
-            标签
-          </a>
-        </li>
-      
-        <li class="item-toolbox">
-          <a
-            class="CIRCLE"
-            href="/link/"
-            rel="noopener noreferrer"
-            target="_self"
-            >
-            友链
-          </a>
-        </li>
-      
-        <li class="item-toolbox">
-          <a
-            class="CIRCLE"
-            href="/about/"
-            rel="noopener noreferrer"
-            target="_self"
-            >
-            关于
-          </a>
-        </li>
-      
-        <li class="item-toolbox">
-          <a
-            class="CIRCLE"
-            href="/search/"
-            rel="noopener noreferrer"
-            target="_self"
-            >
-            搜索
-          </a>
-        </li>
-      
-    </ul>
-  </div>
-
-
-</div>
-
-
-  <div id="toc" class="toc-article">
-    <strong class="toc-title">文章目录</strong>
-    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#运行时数据区域"><span class="toc-text">运行时数据区域</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#程序计数器（Program-Counter-Register）"><span class="toc-text">程序计数器（Program Counter Register）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Java-虚拟机栈（Java-Virtual-Machine-Stacks）"><span class="toc-text">Java 虚拟机栈（Java Virtual Machine Stacks）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#本地方法栈（Native-Method-Stack）"><span class="toc-text">本地方法栈（Native Method Stack）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Java-堆（Heap）"><span class="toc-text">Java 堆（Heap）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#方法区（Method-Area）"><span class="toc-text">方法区（Method Area）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#直接内存（Direct-Memory）"><span class="toc-text">直接内存（Direct Memory）</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#HotSpot-虚拟机对象探秘"><span class="toc-text">HotSpot 虚拟机对象探秘</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#对象创建"><span class="toc-text">对象创建</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#类加载"><span class="toc-text">类加载</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#分配内存"><span class="toc-text">分配内存</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#对象设置"><span class="toc-text">对象设置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#init"><span class="toc-text">init</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#对象内存布局"><span class="toc-text">对象内存布局</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#对象访问定位"><span class="toc-text">对象访问定位</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#句柄"><span class="toc-text">句柄</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#直接指针"><span class="toc-text">直接指针</span></a></li></ol></li></ol></li></ol>
-  </div>
-
-
-
-<div class="content content-post CENTER">
-   <article id="post-JVM-Note-02" class="article article-type-post" itemprop="blogPost">
-  <header class="article-header">
-    <h1 class="post-title">深入理解 Java 虚拟机（二）JVM 内存区域与内存溢出异常</h1>
-
-    <div class="article-meta">
-      <span>
-        <i class="icon-calendar"></i>
-        <span>2018.08.09</span>
-      </span>
-
-      
-        <span class="article-author">
-          <i class="icon-user"></i>
-          <span>Li Lei</span>
-        </span>
-      
-
-      
-
-
-      
-
-      
-      <i class="fa fa-eye"></i> 
-        <span id="busuanzi_container_page_pv">
-           &nbsp热度 <span id="busuanzi_value_page_pv">
-           <i class="fa fa-spinner fa-spin"></i></span>℃
-        </span>
-      
-      
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/avatar.jpeg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">Li Lei</h5>
+          <a href="mailto:bequietlee#gmail.com" title="bequietlee#gmail.com" class="mail">bequietlee#gmail.com</a>
+        </hgroup>
+      </div>
     </div>
-  </header>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                文章
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+                标签
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/bequietlee" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/2019/03/10/links"  >
+                <i class="icon icon-lg icon-link"></i>
+                友情链接
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
 
-  <div class="article-content">
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">深入理解 Java 虚拟机（二）JVM 内存区域与内存溢出异常</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="Search">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">深入理解 Java 虚拟机（二）JVM 内存区域与内存溢出异常</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2018-08-09T07:30:23.000Z" itemprop="datePublished" class="page-time">
+  2018-08-09
+</time>
+
+
+            
+        </h5>
+    </div>
+
     
-      <blockquote>
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#运行时数据区域"><span class="post-toc-number">1.</span> <span class="post-toc-text">运行时数据区域</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#程序计数器（Program-Counter-Register）"><span class="post-toc-number">1.1.</span> <span class="post-toc-text">程序计数器（Program Counter Register）</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Java-虚拟机栈（Java-Virtual-Machine-Stacks）"><span class="post-toc-number">1.2.</span> <span class="post-toc-text">Java 虚拟机栈（Java Virtual Machine Stacks）</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#本地方法栈（Native-Method-Stack）"><span class="post-toc-number">1.3.</span> <span class="post-toc-text">本地方法栈（Native Method Stack）</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Java-堆（Heap）"><span class="post-toc-number">1.4.</span> <span class="post-toc-text">Java 堆（Heap）</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#方法区（Method-Area）"><span class="post-toc-number">1.5.</span> <span class="post-toc-text">方法区（Method Area）</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#直接内存（Direct-Memory）"><span class="post-toc-number">1.6.</span> <span class="post-toc-text">直接内存（Direct Memory）</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#HotSpot-虚拟机对象探秘"><span class="post-toc-number">2.</span> <span class="post-toc-text">HotSpot 虚拟机对象探秘</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#对象创建"><span class="post-toc-number">2.1.</span> <span class="post-toc-text">对象创建</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#类加载"><span class="post-toc-number">2.1.1.</span> <span class="post-toc-text">类加载</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#分配内存"><span class="post-toc-number">2.1.2.</span> <span class="post-toc-text">分配内存</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#对象设置"><span class="post-toc-number">2.1.3.</span> <span class="post-toc-text">对象设置</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#init"><span class="post-toc-number">2.1.4.</span> <span class="post-toc-text">init</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#对象内存布局"><span class="post-toc-number">2.2.</span> <span class="post-toc-text">对象内存布局</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#对象访问定位"><span class="post-toc-number">2.3.</span> <span class="post-toc-text">对象访问定位</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#句柄"><span class="post-toc-number">2.3.1.</span> <span class="post-toc-text">句柄</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#直接指针"><span class="post-toc-number">2.3.2.</span> <span class="post-toc-text">直接指针</span></a></li></ol></li></ol></li></ol>
+        </nav>
+    </aside>
+
+
+<article id="post-JVM-Note-02"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">深入理解 Java 虚拟机（二）JVM 内存区域与内存溢出异常</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2018-08-09 15:30:23" datetime="2018-08-09T07:30:23.000Z"  itemprop="datePublished">2018-08-09</time>
+
+            
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <blockquote>
 <p>本章从概念上介绍 Java 虚拟机内存的各个区域，从作用、服务对象、可能产生的问题几个方面进行讲解。</p>
 </blockquote>
 <h1 id="运行时数据区域"><a href="#运行时数据区域" class="headerlink" title="运行时数据区域"></a>运行时数据区域</h1><p>根据《Java 虚拟机运行规范》的规定，Java 虚拟机所管理的内存将会包括以下几个运行时区域：</p>
-<p><img src="/img/180809_jvm_02/虚拟机数据分区.png" alt="虚拟机数据分区"> </p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="/img/180809_jvm_02/虚拟机数据分区.png" alt="虚拟机数据分区" title="">
+                </div>
+                <div class="image-caption">虚拟机数据分区</div>
+            </figure> 
 <ul>
 <li>线程私有：程序计数器，虚拟机栈，本地方法栈</li>
 <li>线程共享：堆，方法区</li>
@@ -232,7 +230,13 @@
 <h2 id="直接内存（Direct-Memory）"><a href="#直接内存（Direct-Memory）" class="headerlink" title="直接内存（Direct Memory）"></a>直接内存（Direct Memory）</h2><p>直接内存不是 JVM 运行时数据区的一部分，JDK 1.4 中新加入了 NIO（New Input/Output）类，引入了一种基于通道（Channel）与缓冲区（Buffer）的 I/O 方式，可以使用 Native 函数库直接分配堆外内存，然后通过一个存储在 Java 堆的 DirectByteBuffer 对象作为这块内存的引用进行操作。从而避免在 Java 堆和 Native 堆中来回复制护具，在一些场景中显著提高性能。使用不当会有 OOM 异常。</p>
 <h1 id="HotSpot-虚拟机对象探秘"><a href="#HotSpot-虚拟机对象探秘" class="headerlink" title="HotSpot 虚拟机对象探秘"></a>HotSpot 虚拟机对象探秘</h1><p>基于实用优先原则，以 HotSpot 虚拟机为例，学习在它在 Java 堆中对象分配、布局和访问的全过程。</p>
 <h2 id="对象创建"><a href="#对象创建" class="headerlink" title="对象创建"></a>对象创建</h2><p>在语言层面上，对象创建只需要<code>new</code>关键字即可完成。但是在虚拟机中，这一过程背后实际上并不那么简单。</p>
-<p><img src="/img/180809_jvm_02/并不简单.jpg" alt="并不简单"> </p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="/img/180809_jvm_02/并不简单.jpg" alt="并不简单" title="">
+                </div>
+                <div class="image-caption">并不简单</div>
+            </figure> 
 <h3 id="类加载"><a href="#类加载" class="headerlink" title="类加载"></a>类加载</h3><p>虚拟机收到一条<code>new</code>指令时，首先去检查指令参数能否在常量池中定位到一个类的符号引用，并且检查这个符号引用代表的类是否已经被加载、解析和初始化过。如果没有，则会进行相应的类加载过程。</p>
 <h3 id="分配内存"><a href="#分配内存" class="headerlink" title="分配内存"></a>分配内存</h3><p>对象所需内存大小在类加载完成后即可完全确定，为对象分配内存的操作相当于从堆中划分出一块可使用的区域。有两种分配方式：</p>
 <ul>
@@ -261,202 +265,274 @@
 <p><strong>对齐填充</strong> 不是必须存在的，因为 HotSpot 虚拟机内存管理系统要求对象起始地址必须是 8 字节的整数倍，因此当 <strong>实例数据</strong> 部分没有对齐时，就要通过对齐填充来补齐。</p>
 <h2 id="对象访问定位"><a href="#对象访问定位" class="headerlink" title="对象访问定位"></a>对象访问定位</h2><p>JVM 栈中保存的是 reference 数据，指向存放在堆中的对象，对象的访问（定位）方式取决于虚拟机具体实现，主流的有句柄和直接指针两种，它们各有优劣。</p>
 <h3 id="句柄"><a href="#句柄" class="headerlink" title="句柄"></a>句柄</h3><p>Java 堆中划分出一块内存来作为句柄池，reference 中保存的是句柄地址，句柄中包含对象实例数据与类型数据各自的具体地址信息。</p>
-<p><img src="/img/180809_jvm_02/句柄.jpeg" alt="句柄"> </p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="/img/180809_jvm_02/句柄.jpeg" alt="句柄" title="">
+                </div>
+                <div class="image-caption">句柄</div>
+            </figure> 
 <p><strong>优点</strong> reference 中保存的是稳定的句柄地址，在对象被移动（比如 GC）时只会改变句柄中实例数据指针的地址， reference 本身不变。在对象频繁异动的场景里性能更好。</p>
 <h3 id="直接指针"><a href="#直接指针" class="headerlink" title="直接指针"></a>直接指针</h3><p>Java 堆对象头重保存类型数据信息，reference 直接指向对象地址。</p>
-<p><img src="/img/180809_jvm_02/直接指针.jpeg" alt="直接指针"> </p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="/img/180809_jvm_02/直接指针.jpeg" alt="直接指针" title="">
+                </div>
+                <div class="image-caption">直接指针</div>
+            </figure> 
 <p><strong>优点</strong> 速度更快，节省了一次指针定位开销，在对象频繁访问的场景里性能更好。HotSpot VM 使用的是直接指针方式。</p>
 
+        </div>
+
+        <blockquote class="post-copyright">
     
-  </div>
+    <div class="content">
+        
+<span class="post-time">
+    Last updated: <time datetime="2018-08-10T04:33:46.292Z" itemprop="dateUpdated">2018-08-10 12:33:46</time>
+</span><br>
+
+
+        
+        这里可以写作者留言，标签和 hexo 中所有变量及辅助函数等均可调用，示例：<a href="/2018/08/09/JVM-Note-02/" target="_blank" rel="external">https://lilei.pro/2018/08/09/JVM-Note-02/</a>
+        
+    </div>
+    
+    <footer>
+        <a href="https://lilei.pro">
+            <img src="/img/avatar.jpeg" alt="Li Lei">
+            Li Lei
+        </a>
+    </footer>
+</blockquote>
+
+        
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JVM/">JVM</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/读书笔记/">读书笔记</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://lilei.pro/2018/08/09/JVM-Note-02/&title=《深入理解 Java 虚拟机（二）JVM 内存区域与内存溢出异常》 — 柘个角落&pic=https://lilei.pro/img/avatar.jpeg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://lilei.pro/2018/08/09/JVM-Note-02/&title=《深入理解 Java 虚拟机（二）JVM 内存区域与内存溢出异常》 — 柘个角落&source=技术与生活上的点滴积累" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://lilei.pro/2018/08/09/JVM-Note-02/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《深入理解 Java 虚拟机（二）JVM 内存区域与内存溢出异常》 — 柘个角落&url=https://lilei.pro/2018/08/09/JVM-Note-02/&via=https://lilei.pro" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://lilei.pro/2018/08/09/JVM-Note-02/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/2018/08/15/JVM-Note-03/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">深入理解 Java 虚拟机（三）垃圾收集器与内存分配策略</h4>
+      </a>
+    </div>
+  
 
   
-      <div class="git"></div>
+    <div class="waves-block waves-effect next">
+      <a href="/2018/08/09/JVM-Note-01/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">深入理解 Java 虚拟机（一）走近 Java</h4>
+      </a>
+    </div>
   
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 </article>
 
 
-   
-
-   
-  <div class="box-prev-next clearfix">
-    <a class="show pull-left" href="/2018/08/09/JVM-Note-01/">
-        <i class="icon icon-angle-left"></i>
-    </a>
-    <a class="show pull-right" href="/2018/08/15/JVM-Note-03/">
-        <i class="icon icon-angle-right"></i>
-    </a>
-  </div>
-
-
-
 
 </div>
 
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        站点总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        站点总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
 
-  <a id="backTop" class="back-top">
-    <i class="icon-angle-up"></i>
-  </a>
 
-
-
-
-  <div class="modal" id="modal">
-  <span id="cover" class="cover hide"></span>
-  <div id="modal-dialog" class="modal-dialog hide-dialog">
-    <div class="modal-header">
-      <span id="close" class="btn-close">关闭</span>
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>This blog is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.</span>
+        </p>
     </div>
-    <hr>
-    <div class="modal-body">
-      <ul class="list-toolbox">
-        
-          <li class="item-toolbox">
-            <a
-              class="CIRCLE"
-              href="/archives/"
-              rel="noopener noreferrer"
-              target="_self"
-              >
-              博客
-            </a>
-          </li>
-        
-          <li class="item-toolbox">
-            <a
-              class="CIRCLE"
-              href="/category/"
-              rel="noopener noreferrer"
-              target="_self"
-              >
-              分类
-            </a>
-          </li>
-        
-          <li class="item-toolbox">
-            <a
-              class="CIRCLE"
-              href="/tag/"
-              rel="noopener noreferrer"
-              target="_self"
-              >
-              标签
-            </a>
-          </li>
-        
-          <li class="item-toolbox">
-            <a
-              class="CIRCLE"
-              href="/link/"
-              rel="noopener noreferrer"
-              target="_self"
-              >
-              友链
-            </a>
-          </li>
-        
-          <li class="item-toolbox">
-            <a
-              class="CIRCLE"
-              href="/about/"
-              rel="noopener noreferrer"
-              target="_self"
-              >
-              关于
-            </a>
-          </li>
-        
-          <li class="item-toolbox">
-            <a
-              class="CIRCLE"
-              href="/search/"
-              rel="noopener noreferrer"
-              target="_self"
-              >
-              搜索
-            </a>
-          </li>
-        
-      </ul>
-
+    <div class="bottom">
+        <p><span>Li Lei &copy; 2015 - 2019</span>
+            <span>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
     </div>
-  </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://lilei.pro/2018/08/09/JVM-Note-02/&title=《深入理解 Java 虚拟机（二）JVM 内存区域与内存溢出异常》 — 柘个角落&pic=https://lilei.pro/img/avatar.jpeg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://lilei.pro/2018/08/09/JVM-Note-02/&title=《深入理解 Java 虚拟机（二）JVM 内存区域与内存溢出异常》 — 柘个角落&source=技术与生活上的点滴积累" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://lilei.pro/2018/08/09/JVM-Note-02/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《深入理解 Java 虚拟机（二）JVM 内存区域与内存溢出异常》 — 柘个角落&url=https://lilei.pro/2018/08/09/JVM-Note-02/&via=https://lilei.pro" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://lilei.pro/2018/08/09/JVM-Note-02/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAK4AAACuCAAAAACKZ2kyAAABvUlEQVR42u3aS44CMQwFQO5/aWaLNCL9HKcNSJUVApSu9MKKP49HvJ4v6/Wbd//5/+t6t8MLFxe3zX0u1/oBa+K7Hdb7XxwbFxd3kPsuYux93nsdawMuLu73c6sPzvfHxcX9dW7+a74DLi7u93Dz8LQOap2r0uFcDRcXt8HtXEdOfb6lvouLi7vFfRbXqWPsLVxc3BluHlBOXXqqgQwXF/dT3PVj9h7fgUbJDy4u7iC3k0XtlUrzHAcXF3eGm49S7VUnqg3ai9eHi4s7wi03ONsXlOTwm7kaLi7uIW6neHFqJKtwYFxc3BHuXtJSDVXJ5SZ/Kbi4uPPcvGBaPUAVd5H84OLi3sztJC39Jms5V8PFxR3kJolKf/QqQbSaOri4uIe4+cWi03zN97w4GC4u7iC3043JA1NeLik0WXFxcUe4nUtMMlrRabTg4uLeze0/uNMUKR8MFxd3hFsNLgdapO0hD1xc3BluNf3IBzWqbdqoxYKLizvI7SQ/eTn1wH9wcXG/mJsXWPeuTbi4uL/F7Y9oVFu2rSsOLi5ug1sdpaqGtupQ5kWTFRcX92ZuNZQkgxenCqyt+i4uLu4O9w8jlJp5FhODuQAAAABJRU5ErkJggg==" alt="微信分享二维码">
 </div>
 
 
 
-  
-      <div class="fexo-comments comments-post">
-    
 
-    
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: false };
 
-    
-    
 
-    
-
-    
-    
-
-    <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
-    <script src="//unpkg.com/valine@latest/dist/Valine.min.js"></script>
-    <div id="comment" class="vcomment" ></div>
-    <script>
-        var notify = 'false' == true ? true : false;
-        var verify = 'false' == true ? true : false;
-        var GUEST_INFO = ['nick','mail','link'];
-        var guest_info = 'nick,mail,link'.split(',').filter(function(item){
-            return GUEST_INFO.indexOf(item) > -1
-        });
-        guest_info = guest_info.length == 0 ? GUEST_INFO :guest_info;
-        window.valine = new Valine({
-            el: '.vcomment',
-            notify: notify,
-            verify: verify,
-            appId: "khG3rBt0nWda7lxDUHpS3Sq0-gzGzoHsz",
-            appKey: "btFkQfcBgJeCRm55mYmUgA5d",
-            avatar:'mm',
-            placeholder: "畅所欲言...",
-            guest_info:guest_info,
-            pageSize:'10'
-        });
-    </script>
-  
-  </div>
-
-  
-
-  <script type="text/javascript">
-  function loadScript(url, callback) {
-    var script = document.createElement('script')
-    script.type = 'text/javascript';
-
-    if (script.readyState) { //IE
-      script.onreadystatechange = function() {
-        if (script.readyState == 'loaded' ||
-          script.readyState == 'complete') {
-          script.onreadystatechange = null;
-          callback();
-        }
-      };
-    } else { //Others
-      script.onload = function() {
-        callback();
-      };
-    }
-
-    script.src = url;
-    document.getElementsByTagName('head')[0].appendChild(script);
-  }
-
-  window.onload = function() {
-    loadScript('/js/bundle.js?235683', function() {
-      // load success
-    });
-  }
 </script>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/main.min.js"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/search.min.js" async></script>
+
+
+
+
+
+
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
 
 </body>
 </html>

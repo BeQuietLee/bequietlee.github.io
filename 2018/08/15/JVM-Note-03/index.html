@@ -1,201 +1,193 @@
 <!DOCTYPE html>
-
-
-  <html class="light page-post">
-
-
+<html>
 <head>
-  <meta charset="utf-8">
-  
-  <title>深入理解 Java 虚拟机（三）垃圾收集器与内存分配策略 | One Step, One Punch</title>
+    
 
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
 
-  
-    <meta name="keywords" content="读书笔记,JVM," />
-  
+    
 
-  <meta name="description" content="本章介绍垃圾收集器的设计思路、算法以及常见实现，同时介绍为对象分配空间时采取的策略。  垃圾收集（Garbage Collection）GC 的历史比 Java 久远，1960 年诞生于 MIT 的 Lisp 是第一门真正使用内存动态分配和垃圾回收技术的语言。不论是什么语言，在设计 GC 时都必须要解决以下三个问题：  哪些内存需要回收（Who） 什么时候回收（When） 如何回收（How）">
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    
+    <title>深入理解 Java 虚拟机（三）垃圾收集器与内存分配策略 | 柘个角落 | IF YOU WANT SOMETHING, GO GET IT. PERIOD.</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="读书笔记,JVM">
+    <meta name="description" content="本章介绍垃圾收集器的设计思路、算法以及常见实现，同时介绍为对象分配空间时采取的策略。  垃圾收集（Garbage Collection）GC 的历史比 Java 久远，1960 年诞生于 MIT 的 Lisp 是第一门真正使用内存动态分配和垃圾回收技术的语言。不论是什么语言，在设计 GC 时都必须要解决以下三个问题：  哪些内存需要回收（Who） 什么时候回收（When） 如何回收（How）">
 <meta name="keywords" content="读书笔记,JVM">
 <meta property="og:type" content="article">
 <meta property="og:title" content="深入理解 Java 虚拟机（三）垃圾收集器与内存分配策略">
-<meta property="og:url" content="http://lilei.work/2018/08/15/JVM-Note-03/index.html">
-<meta property="og:site_name" content="One Step, One Punch">
+<meta property="og:url" content="https://lilei.pro/2018/08/15/JVM-Note-03/index.html">
+<meta property="og:site_name" content="柘个角落">
 <meta property="og:description" content="本章介绍垃圾收集器的设计思路、算法以及常见实现，同时介绍为对象分配空间时采取的策略。  垃圾收集（Garbage Collection）GC 的历史比 Java 久远，1960 年诞生于 MIT 的 Lisp 是第一门真正使用内存动态分配和垃圾回收技术的语言。不论是什么语言，在设计 GC 时都必须要解决以下三个问题：  哪些内存需要回收（Who） 什么时候回收（When） 如何回收（How）">
 <meta property="og:locale" content="default">
-<meta property="og:image" content="http://lilei.work/img/180815_jvm_03/标记清除.jpeg">
-<meta property="og:image" content="http://lilei.work/img/180815_jvm_03/复制.jpg">
-<meta property="og:image" content="http://lilei.work/img/180815_jvm_03/标记整理.png">
-<meta property="og:image" content="http://lilei.work/img/180815_jvm_03/hotspot垃圾收集器.jpg">
+<meta property="og:image" content="https://lilei.pro/img/180815_jvm_03/标记清除.jpeg">
+<meta property="og:image" content="https://lilei.pro/img/180815_jvm_03/复制.jpg">
+<meta property="og:image" content="https://lilei.pro/img/180815_jvm_03/标记整理.png">
+<meta property="og:image" content="https://lilei.pro/img/180815_jvm_03/hotspot垃圾收集器.jpg">
 <meta property="og:updated_time" content="2018-08-30T10:03:04.408Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="深入理解 Java 虚拟机（三）垃圾收集器与内存分配策略">
 <meta name="twitter:description" content="本章介绍垃圾收集器的设计思路、算法以及常见实现，同时介绍为对象分配空间时采取的策略。  垃圾收集（Garbage Collection）GC 的历史比 Java 久远，1960 年诞生于 MIT 的 Lisp 是第一门真正使用内存动态分配和垃圾回收技术的语言。不论是什么语言，在设计 GC 时都必须要解决以下三个问题：  哪些内存需要回收（Who） 什么时候回收（When） 如何回收（How）">
-<meta name="twitter:image" content="http://lilei.work/img/180815_jvm_03/标记清除.jpeg">
+<meta name="twitter:image" content="https://lilei.pro/img/180815_jvm_03/标记清除.jpeg">
+    
+        <link rel="alternate" type="application/atom+xml" title="柘个角落" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/img/favicon.ico">
+    <link rel="stylesheet" href="//unpkg.com/hexo-theme-material-indigo@latest/css/style.css">
+    <script>window.lazyScripts=[]</script>
 
-  
+    <!-- custom head -->
+    
 
-  
-    <link rel="icon" href="/favicon.ico">
-  
-
-  <link href="/css/styles.css?v=c114cbe6" rel="stylesheet">
-
-
-  
-    <link rel="stylesheet" href="/css/personal-style.css">
-  
-
-  
-
-  
-
-  
-
-
-  
-    <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
-  
-
-  
-    <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.3.0/css/font-awesome.min.css">
-  
 </head>
 
 <body>
+    <div id="loading" class="active"></div>
 
-
-  
-    <span id="toolbox-mobile" class="toolbox-mobile">导航</span>
-  
-
-  <div class="post-header CENTER">
-   
-  <div class="toolbox">
-    <a class="toolbox-entry" href="/">
-      <span class="toolbox-entry-text">导航</span>
-      <i class="icon-angle-down"></i>
-      <i class="icon-home"></i>
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
     </a>
-    <ul class="list-toolbox">
-      
-        <li class="item-toolbox">
-          <a
-            class="CIRCLE"
-            href="/archives/"
-            rel="noopener noreferrer"
-            target="_self"
-            >
-            博客
-          </a>
-        </li>
-      
-        <li class="item-toolbox">
-          <a
-            class="CIRCLE"
-            href="/category/"
-            rel="noopener noreferrer"
-            target="_self"
-            >
-            分类
-          </a>
-        </li>
-      
-        <li class="item-toolbox">
-          <a
-            class="CIRCLE"
-            href="/tag/"
-            rel="noopener noreferrer"
-            target="_self"
-            >
-            标签
-          </a>
-        </li>
-      
-        <li class="item-toolbox">
-          <a
-            class="CIRCLE"
-            href="/link/"
-            rel="noopener noreferrer"
-            target="_self"
-            >
-            友链
-          </a>
-        </li>
-      
-        <li class="item-toolbox">
-          <a
-            class="CIRCLE"
-            href="/about/"
-            rel="noopener noreferrer"
-            target="_self"
-            >
-            关于
-          </a>
-        </li>
-      
-        <li class="item-toolbox">
-          <a
-            class="CIRCLE"
-            href="/search/"
-            rel="noopener noreferrer"
-            target="_self"
-            >
-            搜索
-          </a>
-        </li>
-      
-    </ul>
-  </div>
-
-
-</div>
-
-
-  <div id="toc" class="toc-article">
-    <strong class="toc-title">文章目录</strong>
-    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#垃圾收集（Garbage-Collection）"><span class="toc-text">垃圾收集（Garbage Collection）</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#对象已死吗？"><span class="toc-text">对象已死吗？</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#引用计数器法"><span class="toc-text">引用计数器法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#可达性分析法"><span class="toc-text">可达性分析法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#JDK-1-2-后的几种引用"><span class="toc-text">JDK 1.2 后的几种引用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#两次标记宣告对象死亡"><span class="toc-text">两次标记宣告对象死亡</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#回收方法区"><span class="toc-text">回收方法区</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#垃圾收集算法"><span class="toc-text">垃圾收集算法</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#标记-清除算法"><span class="toc-text">标记-清除算法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#复制算法"><span class="toc-text">复制算法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#标记-整理算法"><span class="toc-text">标记-整理算法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#分代收集算法"><span class="toc-text">分代收集算法</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#HotSpot-的算法实现"><span class="toc-text">HotSpot 的算法实现</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#枚举根节点"><span class="toc-text">枚举根节点</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#安全点"><span class="toc-text">安全点</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#安全区域"><span class="toc-text">安全区域</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#垃圾收集器"><span class="toc-text">垃圾收集器</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Serial-收集器"><span class="toc-text">Serial 收集器</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ParNew-收集器"><span class="toc-text">ParNew 收集器</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Parallel-Scavenge-收集器"><span class="toc-text">Parallel Scavenge 收集器</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Serail-Old-收集器"><span class="toc-text">Serail Old 收集器</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Parallel-Old-收集器"><span class="toc-text">Parallel Old 收集器</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#CMS（Concurrent-Mark-Sweep）收集器"><span class="toc-text">CMS（Concurrent Mark Sweep）收集器</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#G1（Garbage-First）-收集器"><span class="toc-text">G1（Garbage-First） 收集器</span></a></li></ol></li></ol>
-  </div>
-
-
-
-<div class="content content-post CENTER">
-   <article id="post-JVM-Note-03" class="article article-type-post" itemprop="blogPost">
-  <header class="article-header">
-    <h1 class="post-title">深入理解 Java 虚拟机（三）垃圾收集器与内存分配策略</h1>
-
-    <div class="article-meta">
-      <span>
-        <i class="icon-calendar"></i>
-        <span>2018.08.15</span>
-      </span>
-
-      
-        <span class="article-author">
-          <i class="icon-user"></i>
-          <span>Li Lei</span>
-        </span>
-      
-
-      
-
-
-      
-
-      
-      <i class="fa fa-eye"></i> 
-        <span id="busuanzi_container_page_pv">
-           &nbsp热度 <span id="busuanzi_value_page_pv">
-           <i class="fa fa-spinner fa-spin"></i></span>℃
-        </span>
-      
-      
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/avatar.jpeg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">Li Lei</h5>
+          <a href="mailto:bequietlee#gmail.com" title="bequietlee#gmail.com" class="mail">bequietlee#gmail.com</a>
+        </hgroup>
+      </div>
     </div>
-  </header>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                文章
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+                标签
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/bequietlee" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/2019/03/10/links"  >
+                <i class="icon icon-lg icon-link"></i>
+                友情链接
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
 
-  <div class="article-content">
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">深入理解 Java 虚拟机（三）垃圾收集器与内存分配策略</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="Search">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">深入理解 Java 虚拟机（三）垃圾收集器与内存分配策略</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2018-08-15T09:26:32.000Z" itemprop="datePublished" class="page-time">
+  2018-08-15
+</time>
+
+
+            
+        </h5>
+    </div>
+
     
-      <blockquote>
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#垃圾收集（Garbage-Collection）"><span class="post-toc-number">1.</span> <span class="post-toc-text">垃圾收集（Garbage Collection）</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#对象已死吗？"><span class="post-toc-number">2.</span> <span class="post-toc-text">对象已死吗？</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#引用计数器法"><span class="post-toc-number">2.1.</span> <span class="post-toc-text">引用计数器法</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#可达性分析法"><span class="post-toc-number">2.2.</span> <span class="post-toc-text">可达性分析法</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#JDK-1-2-后的几种引用"><span class="post-toc-number">2.3.</span> <span class="post-toc-text">JDK 1.2 后的几种引用</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#两次标记宣告对象死亡"><span class="post-toc-number">2.4.</span> <span class="post-toc-text">两次标记宣告对象死亡</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#回收方法区"><span class="post-toc-number">2.5.</span> <span class="post-toc-text">回收方法区</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#垃圾收集算法"><span class="post-toc-number">3.</span> <span class="post-toc-text">垃圾收集算法</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#标记-清除算法"><span class="post-toc-number">3.1.</span> <span class="post-toc-text">标记-清除算法</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#复制算法"><span class="post-toc-number">3.2.</span> <span class="post-toc-text">复制算法</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#标记-整理算法"><span class="post-toc-number">3.3.</span> <span class="post-toc-text">标记-整理算法</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#分代收集算法"><span class="post-toc-number">3.4.</span> <span class="post-toc-text">分代收集算法</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#HotSpot-的算法实现"><span class="post-toc-number">4.</span> <span class="post-toc-text">HotSpot 的算法实现</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#枚举根节点"><span class="post-toc-number">4.1.</span> <span class="post-toc-text">枚举根节点</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#安全点"><span class="post-toc-number">4.2.</span> <span class="post-toc-text">安全点</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#安全区域"><span class="post-toc-number">4.3.</span> <span class="post-toc-text">安全区域</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#垃圾收集器"><span class="post-toc-number">5.</span> <span class="post-toc-text">垃圾收集器</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Serial-收集器"><span class="post-toc-number">5.1.</span> <span class="post-toc-text">Serial 收集器</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#ParNew-收集器"><span class="post-toc-number">5.2.</span> <span class="post-toc-text">ParNew 收集器</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Parallel-Scavenge-收集器"><span class="post-toc-number">5.3.</span> <span class="post-toc-text">Parallel Scavenge 收集器</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Serail-Old-收集器"><span class="post-toc-number">5.4.</span> <span class="post-toc-text">Serail Old 收集器</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Parallel-Old-收集器"><span class="post-toc-number">5.5.</span> <span class="post-toc-text">Parallel Old 收集器</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#CMS（Concurrent-Mark-Sweep）收集器"><span class="post-toc-number">5.6.</span> <span class="post-toc-text">CMS（Concurrent Mark Sweep）收集器</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#G1（Garbage-First）-收集器"><span class="post-toc-number">5.7.</span> <span class="post-toc-text">G1（Garbage-First） 收集器</span></a></li></ol></li></ol>
+        </nav>
+    </aside>
+
+
+<article id="post-JVM-Note-03"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">深入理解 Java 虚拟机（三）垃圾收集器与内存分配策略</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2018-08-15 17:26:32" datetime="2018-08-15T09:26:32.000Z"  itemprop="datePublished">2018-08-15</time>
+
+            
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <blockquote>
 <p>本章介绍垃圾收集器的设计思路、算法以及常见实现，同时介绍为对象分配空间时采取的策略。</p>
 </blockquote>
 <h1 id="垃圾收集（Garbage-Collection）"><a href="#垃圾收集（Garbage-Collection）" class="headerlink" title="垃圾收集（Garbage Collection）"></a>垃圾收集（Garbage Collection）</h1><p>GC 的历史比 Java 久远，1960 年诞生于 MIT 的 Lisp 是第一门真正使用内存动态分配和垃圾回收技术的语言。不论是什么语言，在设计 GC 时都必须要解决以下三个问题：</p>
@@ -257,14 +249,26 @@
 <li>统一回收所有被标记的对象</li>
 </ol>
 <p>标记-清除算法的示意图如下</p>
-<p><img src="/img/180815_jvm_03/标记清除.jpeg" alt="标记清除"></p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="/img/180815_jvm_03/标记清除.jpeg" alt="标记清除" title="">
+                </div>
+                <div class="image-caption">标记清除</div>
+            </figure>
 <p>标记-清除算法主要不足有两个</p>
 <ol>
 <li>效率问题，标记和清除的效率都不高</li>
 <li>空间问题，清楚之后会产生大量不连续的内存碎片</li>
 </ol>
 <h2 id="复制算法"><a href="#复制算法" class="headerlink" title="复制算法"></a>复制算法</h2><p>复制（Copying）算法主要目的是解决效率问题，它将可用内存平均分为两个半区，每次只使用其中一个半区，在进行垃圾回收时，将仍存活的对象复制到另半区上，然后清空刚刚使用的半区。复制算法的实现简单运行高效，不足是空间利用率太低，只使用了一半的内存。</p>
-<p><img src="/img/180815_jvm_03/复制.jpg" alt="复制"></p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="/img/180815_jvm_03/复制.jpg" alt="复制" title="">
+                </div>
+                <div class="image-caption">复制</div>
+            </figure>
 <p>现在的商业虚拟机都采用复制算法来回收<strong>新生代</strong>，IBM 研究表明新生代中的对象多达 98% 是朝生夕死的，所以不需要按照 1:1 的比例来划分内存。而是将内存分为一块较大的 Eden 空间和两块较小的 Survivor 空间，每次使用 Eden 空间和其中一块 Survivor 空间（称为 From Survivor），在回收时将存活对象复制到另一块 Survivor 空间（称为 To Survivor），并清理掉 Eden 以及 From Survivor 空间。HotSpot 虚拟机默认对 Eden 和 Survivor 空间分配比例为 8:1。</p>
 <p>当 GC 过程中发现 To Survivor 空间不够用时，需要依赖其他内存（老年代）进行分配担保（Handle Promotion）。</p>
 <h2 id="标记-整理算法"><a href="#标记-整理算法" class="headerlink" title="标记-整理算法"></a>标记-整理算法</h2><p>复制算法对于对象存活率高的场景并不适用，因为需要频繁进行复制操作；并且它还需要额外空间进行分配担保。因此，在老年代中通常不使用复制算法进行内存回收，而是使用的标记-整理（Mark-Compact）算法：</p>
@@ -273,7 +277,13 @@
 <li>把所有存活对象向一端移动</li>
 <li>清理掉端边界以外的内存</li>
 </ol>
-<p><img src="/img/180815_jvm_03/标记整理.png" alt="标记整理"></p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="/img/180815_jvm_03/标记整理.png" alt="标记整理" title="">
+                </div>
+                <div class="image-caption">标记整理</div>
+            </figure>
 <h2 id="分代收集算法"><a href="#分代收集算法" class="headerlink" title="分代收集算法"></a>分代收集算法</h2><p>当代商业虚拟机采用的都是分代收集算法（Generational Collection），将 Java 堆分为新生代和老年代，根据各个年代的特点采用最合适的收集算法。</p>
 <ul>
 <li>新生代：对象存活周期短，每次垃圾收集时有大量对象死去，只有少量存活，使用<strong>复制</strong>算法</li>
@@ -300,7 +310,13 @@
 <li>当线程需要离开 Safe Region 时，检查系统是否已经完成了根节点枚举，如果完成则线程继续执行，否则等待直至收到可以安全离开 Safe Region 的信号为止</li>
 </ul>
 <h1 id="垃圾收集器"><a href="#垃圾收集器" class="headerlink" title="垃圾收集器"></a>垃圾收集器</h1><p>如果说收集算法是内存回收的方法论，那么垃圾收集器就是内存回收的具体实现。下图展示了 7 种作用于不同分代的垃圾收集器，存在连线的垃圾收集器可以搭配使用。</p>
-<p><img src="/img/180815_jvm_03/hotspot垃圾收集器.jpg" alt="HotSpot垃圾收集器"></p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="/img/180815_jvm_03/hotspot垃圾收集器.jpg" alt="HotSpot垃圾收集器" title="">
+                </div>
+                <div class="image-caption">HotSpot垃圾收集器</div>
+            </figure>
 <h2 id="Serial-收集器"><a href="#Serial-收集器" class="headerlink" title="Serial 收集器"></a>Serial 收集器</h2><ul>
 <li>最基本、发展历史最悠久的收集器</li>
 <li>单线程，进行垃圾收集时必须暂停其他所有工作线程（Stop The World）</li>
@@ -359,196 +375,256 @@
 <li>筛选回收</li>
 </ol>
 
+        </div>
+
+        <blockquote class="post-copyright">
     
-  </div>
+    <div class="content">
+        
+<span class="post-time">
+    Last updated: <time datetime="2018-08-30T10:03:04.408Z" itemprop="dateUpdated">2018-08-30 18:03:04</time>
+</span><br>
+
+
+        
+        这里可以写作者留言，标签和 hexo 中所有变量及辅助函数等均可调用，示例：<a href="/2018/08/15/JVM-Note-03/" target="_blank" rel="external">https://lilei.pro/2018/08/15/JVM-Note-03/</a>
+        
+    </div>
+    
+    <footer>
+        <a href="https://lilei.pro">
+            <img src="/img/avatar.jpeg" alt="Li Lei">
+            Li Lei
+        </a>
+    </footer>
+</blockquote>
+
+        
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JVM/">JVM</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/读书笔记/">读书笔记</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://lilei.pro/2018/08/15/JVM-Note-03/&title=《深入理解 Java 虚拟机（三）垃圾收集器与内存分配策略》 — 柘个角落&pic=https://lilei.pro/img/avatar.jpeg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://lilei.pro/2018/08/15/JVM-Note-03/&title=《深入理解 Java 虚拟机（三）垃圾收集器与内存分配策略》 — 柘个角落&source=技术与生活上的点滴积累" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://lilei.pro/2018/08/15/JVM-Note-03/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《深入理解 Java 虚拟机（三）垃圾收集器与内存分配策略》 — 柘个角落&url=https://lilei.pro/2018/08/15/JVM-Note-03/&via=https://lilei.pro" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://lilei.pro/2018/08/15/JVM-Note-03/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/2018/09/09/finance-Xiangshuai-week01/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">香帅的北大金融学课（一）金融世界观</h4>
+      </a>
+    </div>
+  
 
   
-      <div class="git"></div>
+    <div class="waves-block waves-effect next">
+      <a href="/2018/08/09/JVM-Note-02/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">深入理解 Java 虚拟机（二）JVM 内存区域与内存溢出异常</h4>
+      </a>
+    </div>
   
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 </article>
 
 
-   
-
-   
-  <div class="box-prev-next clearfix">
-    <a class="show pull-left" href="/2018/08/09/JVM-Note-02/">
-        <i class="icon icon-angle-left"></i>
-    </a>
-    <a class="show pull-right" href="/2018/09/09/finance-Xiangshuai-week01/">
-        <i class="icon icon-angle-right"></i>
-    </a>
-  </div>
-
-
-
 
 </div>
 
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        站点总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        站点总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
 
-  <a id="backTop" class="back-top">
-    <i class="icon-angle-up"></i>
-  </a>
 
-
-
-
-  <div class="modal" id="modal">
-  <span id="cover" class="cover hide"></span>
-  <div id="modal-dialog" class="modal-dialog hide-dialog">
-    <div class="modal-header">
-      <span id="close" class="btn-close">关闭</span>
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>This blog is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.</span>
+        </p>
     </div>
-    <hr>
-    <div class="modal-body">
-      <ul class="list-toolbox">
-        
-          <li class="item-toolbox">
-            <a
-              class="CIRCLE"
-              href="/archives/"
-              rel="noopener noreferrer"
-              target="_self"
-              >
-              博客
-            </a>
-          </li>
-        
-          <li class="item-toolbox">
-            <a
-              class="CIRCLE"
-              href="/category/"
-              rel="noopener noreferrer"
-              target="_self"
-              >
-              分类
-            </a>
-          </li>
-        
-          <li class="item-toolbox">
-            <a
-              class="CIRCLE"
-              href="/tag/"
-              rel="noopener noreferrer"
-              target="_self"
-              >
-              标签
-            </a>
-          </li>
-        
-          <li class="item-toolbox">
-            <a
-              class="CIRCLE"
-              href="/link/"
-              rel="noopener noreferrer"
-              target="_self"
-              >
-              友链
-            </a>
-          </li>
-        
-          <li class="item-toolbox">
-            <a
-              class="CIRCLE"
-              href="/about/"
-              rel="noopener noreferrer"
-              target="_self"
-              >
-              关于
-            </a>
-          </li>
-        
-          <li class="item-toolbox">
-            <a
-              class="CIRCLE"
-              href="/search/"
-              rel="noopener noreferrer"
-              target="_self"
-              >
-              搜索
-            </a>
-          </li>
-        
-      </ul>
-
+    <div class="bottom">
+        <p><span>Li Lei &copy; 2015 - 2019</span>
+            <span>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
     </div>
-  </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://lilei.pro/2018/08/15/JVM-Note-03/&title=《深入理解 Java 虚拟机（三）垃圾收集器与内存分配策略》 — 柘个角落&pic=https://lilei.pro/img/avatar.jpeg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://lilei.pro/2018/08/15/JVM-Note-03/&title=《深入理解 Java 虚拟机（三）垃圾收集器与内存分配策略》 — 柘个角落&source=技术与生活上的点滴积累" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://lilei.pro/2018/08/15/JVM-Note-03/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《深入理解 Java 虚拟机（三）垃圾收集器与内存分配策略》 — 柘个角落&url=https://lilei.pro/2018/08/15/JVM-Note-03/&via=https://lilei.pro" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://lilei.pro/2018/08/15/JVM-Note-03/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAK4AAACuCAAAAACKZ2kyAAABx0lEQVR42u3aS27DMAwFwN7/0inQVYEg8qNosUYxWgVOLI+zIPjR11e8Xj9rfeX929/r/a71Dq2Fi4vb5r6Wa81dX092yA24uLjz3HXw2gs6a3qyPy4u7vO5ebLyMQzh4uL+O+7et3s74OLiPoGbFD95OFuXRkO1Gi4uboNbbZie+Hywv4uLi1vkvhorL2OSEih6Ii4u7gg3aWEkUWWdBu3tU7gBFxf3GDdpfSbEflP14gouLu5hbn54Yi94VdOdi/YKLi7uIHedUlSPXt0bvMplDy4ubptbbZImhyr2RrBJwoSLizvJ3StvquPV2yY/uLi4g9w8uam+an7YInolXFzcEW515HnDoDRosuDi4v4tN3mbvev90cvHXg4uLu5hbv7TTqTMi6WojYKLizvI3WxVNOiboxRcXNxBbj44Se49USDh4uLOc6vhLEl6kmKpPD3BxcU9xt0LMdUDWHmL5OLvw8XFHeF2It/6MdXjWbi4uE/jVo9e3dsYrSZJuLi4k9z8wR3iXuj8OBPGxcV9DLfaQs3bKEkLFRcX92ncThs0T2UudsPFxR3kVpub1QRob4do5oOLi3uA2ylFZl6p1d/FxcWtcb8BgsHnHtqUX68AAAAASUVORK5CYII=" alt="微信分享二维码">
 </div>
 
 
 
-  
-      <div class="fexo-comments comments-post">
-    
 
-    
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: false };
 
-    
-    
 
-    
-
-    
-    
-
-    <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
-    <script src="//unpkg.com/valine@latest/dist/Valine.min.js"></script>
-    <div id="comment" class="vcomment" ></div>
-    <script>
-        var notify = 'false' == true ? true : false;
-        var verify = 'false' == true ? true : false;
-        var GUEST_INFO = ['nick','mail','link'];
-        var guest_info = 'nick,mail,link'.split(',').filter(function(item){
-            return GUEST_INFO.indexOf(item) > -1
-        });
-        guest_info = guest_info.length == 0 ? GUEST_INFO :guest_info;
-        window.valine = new Valine({
-            el: '.vcomment',
-            notify: notify,
-            verify: verify,
-            appId: "khG3rBt0nWda7lxDUHpS3Sq0-gzGzoHsz",
-            appKey: "btFkQfcBgJeCRm55mYmUgA5d",
-            avatar:'mm',
-            placeholder: "畅所欲言...",
-            guest_info:guest_info,
-            pageSize:'10'
-        });
-    </script>
-  
-  </div>
-
-  
-
-  <script type="text/javascript">
-  function loadScript(url, callback) {
-    var script = document.createElement('script')
-    script.type = 'text/javascript';
-
-    if (script.readyState) { //IE
-      script.onreadystatechange = function() {
-        if (script.readyState == 'loaded' ||
-          script.readyState == 'complete') {
-          script.onreadystatechange = null;
-          callback();
-        }
-      };
-    } else { //Others
-      script.onload = function() {
-        callback();
-      };
-    }
-
-    script.src = url;
-    document.getElementsByTagName('head')[0].appendChild(script);
-  }
-
-  window.onload = function() {
-    loadScript('/js/bundle.js?235683', function() {
-      // load success
-    });
-  }
 </script>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/main.min.js"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/search.min.js" async></script>
+
+
+
+
+
+
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
 
 </body>
 </html>

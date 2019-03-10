@@ -1,215 +1,786 @@
 <!DOCTYPE html>
-
-
-  <html class="light page-home">
-
-
+<html>
 <head>
-  <meta charset="utf-8">
-  
-  <title>One Step, One Punch</title>
+    
 
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
 
-  
-    <meta name="keywords" content="李磊,lilei,Android,Java,iOS,Hexo" />
-  
+    
 
-  <meta property="og:type" content="website">
-<meta property="og:title" content="One Step, One Punch">
-<meta property="og:url" content="http://lilei.work/page/7/index.html">
-<meta property="og:site_name" content="One Step, One Punch">
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    
+    <title>柘个角落 | IF YOU WANT SOMETHING, GO GET IT. PERIOD.</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="undefined">
+    <meta name="description" content="技术与生活上的点滴积累">
+<meta property="og:type" content="website">
+<meta property="og:title" content="柘个角落">
+<meta property="og:url" content="https://lilei.pro/page/7/index.html">
+<meta property="og:site_name" content="柘个角落">
+<meta property="og:description" content="技术与生活上的点滴积累">
 <meta property="og:locale" content="default">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="One Step, One Punch">
+<meta name="twitter:title" content="柘个角落">
+<meta name="twitter:description" content="技术与生活上的点滴积累">
+    
+        <link rel="alternate" type="application/atom+xml" title="柘个角落" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/img/favicon.ico">
+    <link rel="stylesheet" href="//unpkg.com/hexo-theme-material-indigo@latest/css/style.css">
+    <script>window.lazyScripts=[]</script>
 
-  
+    <!-- custom head -->
+    
 
-  
-    <link rel="icon" href="/favicon.ico">
-  
-
-  <link href="/css/styles.css?v=c114cbe6" rel="stylesheet">
-
-
-  
-    <link rel="stylesheet" href="/css/personal-style.css">
-  
-
-  
-
-  
-
-  
-
-
-  
-    <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
-  
-
-  
-    <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.3.0/css/font-awesome.min.css">
-  
 </head>
 
 <body>
+    <div id="loading" class="active"></div>
 
-
-  
-
-  
-  <div class="content-home text-center">
-  <a class="avatar" href="/">
-    <img src="/images/avatar.jpeg" alt="" />
-  </a>
-  <h1 class="name" style="font-family: calligraffittiregular">
-    李磊&#39;s blog
-  </h1>
-  <div class="slogan">
-    One Step, One Punch
-  </div>
-
-  <hr>
-
-  <ul class="text-center nav">
-    
-      <li class="item">
-        
-          <a href="/archives">Blog</a>
-        
-        <span>|</span>
-      </li>
-    
-      <li class="item">
-        
-          <a href="https://github.com/BeQuietLee" rel="noopener noreferrer" target="_blank">Github</a>
-        
-        <span>|</span>
-      </li>
-    
-  </ul>
-
-</div>
-
-
-
-
-
-  <div class="modal" id="modal">
-  <span id="cover" class="cover hide"></span>
-  <div id="modal-dialog" class="modal-dialog hide-dialog">
-    <div class="modal-header">
-      <span id="close" class="btn-close">关闭</span>
+    <aside id="menu"  >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/avatar.jpeg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">Li Lei</h5>
+          <a href="mailto:bequietlee#gmail.com" title="bequietlee#gmail.com" class="mail">bequietlee#gmail.com</a>
+        </hgroup>
+      </div>
     </div>
-    <hr>
-    <div class="modal-body">
-      <ul class="list-toolbox">
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
         
-          <li class="item-toolbox">
-            <a
-              class="CIRCLE"
-              href="/archives/"
-              rel="noopener noreferrer"
-              target="_self"
-              >
-              博客
-            </a>
-          </li>
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                主页
+              </a>
+            </li>
         
-          <li class="item-toolbox">
-            <a
-              class="CIRCLE"
-              href="/category/"
-              rel="noopener noreferrer"
-              target="_self"
-              >
-              分类
-            </a>
-          </li>
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                文章
+              </a>
+            </li>
         
-          <li class="item-toolbox">
-            <a
-              class="CIRCLE"
-              href="/tag/"
-              rel="noopener noreferrer"
-              target="_self"
-              >
-              标签
-            </a>
-          </li>
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+                标签
+              </a>
+            </li>
         
-          <li class="item-toolbox">
-            <a
-              class="CIRCLE"
-              href="/link/"
-              rel="noopener noreferrer"
-              target="_self"
-              >
-              友链
-            </a>
-          </li>
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/bequietlee" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
         
-          <li class="item-toolbox">
-            <a
-              class="CIRCLE"
-              href="/about/"
-              rel="noopener noreferrer"
-              target="_self"
-              >
-              关于
-            </a>
-          </li>
-        
-          <li class="item-toolbox">
-            <a
-              class="CIRCLE"
-              href="/search/"
-              rel="noopener noreferrer"
-              target="_self"
-              >
-              搜索
-            </a>
-          </li>
+            <li class="waves-block waves-effect">
+              <a href="/2019/03/10/links"  >
+                <i class="icon icon-lg icon-link"></i>
+                友情链接
+              </a>
+            </li>
         
       </ul>
-
     </div>
   </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">柘个角落</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="Search">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header index-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">柘个角落</h1>
+        <h5 class="subtitle">
+            
+                IF YOU WANT SOMETHING, GO GET IT. PERIOD.
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+<div class="container body-wrap">
+
+    <ul class="post-list">
+    
+        <li class="post-list-item fade">
+            <article id="post-Nova-Automation-Develop-Plan"
+  class="article-card article-type-post" itemprop="blogPost">
+
+    <div class="post-meta">
+        <time class="post-time" title="2016-03-24 17:27:17" datetime="2016-03-24T09:27:17.000Z"  itemprop="datePublished">2016-03-24</time>
+
+        
+
+
+    </div>
+
+    
+
+
+  
+    <h3 class="post-title" itemprop="name">
+      <a class="post-title-link" href="/2016/03/24/Nova-Automation-Develop-Plan/">nova自动化测试后续内容安排</a>
+    </h3>
+  
+
+
+
+
+    <div class="post-content" id="post-content" itemprop="postContent">
+
+    
+        上篇链接
+    
+
+        <a href="/2016/03/24/Nova-Automation-Develop-Plan/" class="post-more waves-effect waves-button">
+            Continue reading...
+        </a>
+    </div>
+    
+    <div class="post-footer">
+        
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/技术流/">技术流</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/自动化测试/">自动化测试</a></li></ul>
+
+    </div>
+    
+</article>
+
+        </li>
+    
+        <li class="post-list-item fade">
+            <article id="post-Android-Performance-Patterns-s4ep6-Service-Performance-Patterns"
+  class="article-card article-type-post" itemprop="blogPost">
+
+    <div class="post-meta">
+        <time class="post-time" title="2016-03-20 19:03:45" datetime="2016-03-20T11:03:45.000Z"  itemprop="datePublished">2016-03-20</time>
+
+        
+
+
+    </div>
+
+    
+
+
+  
+    <h3 class="post-title" itemprop="name">
+      <a class="post-title-link" href="/2016/03/20/Android-Performance-Patterns-s4ep6-Service-Performance-Patterns/">Android Performance Patterns - s4ep6 Service Performance Patterns</a>
+    </h3>
+  
+
+
+
+
+    <div class="post-content" id="post-content" itemprop="postContent">
+
+    
+        
+Services are an integral component of almost every android application. But the functionality they provide comes with a drain on battery and system resources. And if you’re not paying attention, services can easily stick around longer than they should which wastes system resources, and can often cause performance problems for your rendering thread. But Colt McAnlis has the answer : using services in the most efficient way possible means killing them off the right way, and sometimes, not even using them.Video Link
+
+
+
+
+    
+
+        <a href="/2016/03/20/Android-Performance-Patterns-s4ep6-Service-Performance-Patterns/" class="post-more waves-effect waves-button">
+            Continue reading...
+        </a>
+    </div>
+    
+    <div class="post-footer">
+        
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Android-Performance-Patterns/">Android Performance Patterns</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/技术流/">技术流</a></li></ul>
+
+    </div>
+    
+</article>
+
+        </li>
+    
+        <li class="post-list-item fade">
+            <article id="post-Android-Performance-Patterns-s4ep5-Minimizing-Asset-Payload"
+  class="article-card article-type-post" itemprop="blogPost">
+
+    <div class="post-meta">
+        <time class="post-time" title="2016-03-08 21:29:35" datetime="2016-03-08T13:29:35.000Z"  itemprop="datePublished">2016-03-08</time>
+
+        
+
+
+    </div>
+
+    
+
+
+  
+    <h3 class="post-title" itemprop="name">
+      <a class="post-title-link" href="/2016/03/08/Android-Performance-Patterns-s4ep5-Minimizing-Asset-Payload/">Android Performance Patterns - s4ep5 Minimizing Asset Payload</a>
+    </h3>
+  
+
+
+
+
+    <div class="post-content" id="post-content" itemprop="postContent">
+
+    
+        
+No matter how aggressively you’ve optimized your networking code for performance, there’s still a huge problematic performance issue that you haven’t seen: Bloated asset files. If you’re not aggressively attacking the size of the assets you’re transferring to your users, you’re basically stealing time (and money) from them.Video Link
+
+
+
+
+    
+
+        <a href="/2016/03/08/Android-Performance-Patterns-s4ep5-Minimizing-Asset-Payload/" class="post-more waves-effect waves-button">
+            Continue reading...
+        </a>
+    </div>
+    
+    <div class="post-footer">
+        
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Android-Performance-Patterns/">Android Performance Patterns</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/技术流/">技术流</a></li></ul>
+
+    </div>
+    
+</article>
+
+        </li>
+    
+        <li class="post-list-item fade">
+            <article id="post-Android-Performance-Patterns-s4ep4-Adapting-to-Latency"
+  class="article-card article-type-post" itemprop="blogPost">
+
+    <div class="post-meta">
+        <time class="post-time" title="2016-03-08 20:26:26" datetime="2016-03-08T12:26:26.000Z"  itemprop="datePublished">2016-03-08</time>
+
+        
+
+
+    </div>
+
+    
+
+
+  
+    <h3 class="post-title" itemprop="name">
+      <a class="post-title-link" href="/2016/03/08/Android-Performance-Patterns-s4ep4-Adapting-to-Latency/">Android Performance Patterns - s4ep4 Adapting to Latency</a>
+    </h3>
+  
+
+
+
+
+    <div class="post-content" id="post-content" itemprop="postContent">
+
+    
+        
+One of the most frequent performance problems your users will notice is how your app reacts when moving from a great network connection to a bad one. If things slow down, get sluggish, or start showing too many spinners, they can show your app the “uninstall“ button.Video Link
+
+
+
+
+    
+
+        <a href="/2016/03/08/Android-Performance-Patterns-s4ep4-Adapting-to-Latency/" class="post-more waves-effect waves-button">
+            Continue reading...
+        </a>
+    </div>
+    
+    <div class="post-footer">
+        
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Android-Performance-Patterns/">Android Performance Patterns</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/技术流/">技术流</a></li></ul>
+
+    </div>
+    
+</article>
+
+        </li>
+    
+        <li class="post-list-item fade">
+            <article id="post-Android-Performance-Patterns-s4ep3-Effective-Prefetching"
+  class="article-card article-type-post" itemprop="blogPost">
+
+    <div class="post-meta">
+        <time class="post-time" title="2016-03-08 20:03:11" datetime="2016-03-08T12:03:11.000Z"  itemprop="datePublished">2016-03-08</time>
+
+        
+
+
+    </div>
+
+    
+
+
+  
+    <h3 class="post-title" itemprop="name">
+      <a class="post-title-link" href="/2016/03/08/Android-Performance-Patterns-s4ep3-Effective-Prefetching/">Android Performance Patterns - s4ep3 Effective Prefetching</a>
+    </h3>
+  
+
+
+
+
+    <div class="post-content" id="post-content" itemprop="postContent">
+
+    
+        
+If you’re looking for the optimal way to batch requests to reduce overall network traffic, then prefetching is for you.Video Link
+
+
+
+
+    
+
+        <a href="/2016/03/08/Android-Performance-Patterns-s4ep3-Effective-Prefetching/" class="post-more waves-effect waves-button">
+            Continue reading...
+        </a>
+    </div>
+    
+    <div class="post-footer">
+        
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Android-Performance-Patterns/">Android Performance Patterns</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/技术流/">技术流</a></li></ul>
+
+    </div>
+    
+</article>
+
+        </li>
+    
+        <li class="post-list-item fade">
+            <article id="post-Android-Performance-Patterns-s4ep2-Optimizing-Network-Request-Frequencies"
+  class="article-card article-type-post" itemprop="blogPost">
+
+    <div class="post-meta">
+        <time class="post-time" title="2016-03-07 20:11:36" datetime="2016-03-07T12:11:36.000Z"  itemprop="datePublished">2016-03-07</time>
+
+        
+
+
+    </div>
+
+    
+
+
+  
+    <h3 class="post-title" itemprop="name">
+      <a class="post-title-link" href="/2016/03/07/Android-Performance-Patterns-s4ep2-Optimizing-Network-Request-Frequencies/">Android Performance Patterns - s4ep2 Optimizing Network Request Frequencies</a>
+    </h3>
+  
+
+
+
+
+    <div class="post-content" id="post-content" itemprop="postContent">
+
+    
+        
+Syncing too often, can be the worst idea for the performance of your application.Video Link
+
+
+
+
+    
+
+        <a href="/2016/03/07/Android-Performance-Patterns-s4ep2-Optimizing-Network-Request-Frequencies/" class="post-more waves-effect waves-button">
+            Continue reading...
+        </a>
+    </div>
+    
+    <div class="post-footer">
+        
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Android-Performance-Patterns/">Android Performance Patterns</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/技术流/">技术流</a></li></ul>
+
+    </div>
+    
+</article>
+
+        </li>
+    
+        <li class="post-list-item fade">
+            <article id="post-Android-Performance-Patterns-s4ep1-Cachematters-for-networking"
+  class="article-card article-type-post" itemprop="blogPost">
+
+    <div class="post-meta">
+        <time class="post-time" title="2016-03-07 09:31:26" datetime="2016-03-07T01:31:26.000Z"  itemprop="datePublished">2016-03-07</time>
+
+        
+
+
+    </div>
+
+    
+
+
+  
+    <h3 class="post-title" itemprop="name">
+      <a class="post-title-link" href="/2016/03/07/Android-Performance-Patterns-s4ep1-Cachematters-for-networking/">Android Performance Patterns - s4ep1 Cachematters for networking</a>
+    </h3>
+  
+
+
+
+
+    <div class="post-content" id="post-content" itemprop="postContent">
+
+    
+        
+You know what the fastest, most efficient piece of content for networking performance is? The one you never have to download.Video Link
+
+
+
+
+
+    
+
+        <a href="/2016/03/07/Android-Performance-Patterns-s4ep1-Cachematters-for-networking/" class="post-more waves-effect waves-button">
+            Continue reading...
+        </a>
+    </div>
+    
+    <div class="post-footer">
+        
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Android-Performance-Patterns/">Android Performance Patterns</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/技术流/">技术流</a></li></ul>
+
+    </div>
+    
+</article>
+
+        </li>
+    
+        <li class="post-list-item fade">
+            <article id="post-Changning-Swimming-Pool-Opening-Hours"
+  class="article-card article-type-post" itemprop="blogPost">
+
+    <div class="post-meta">
+        <time class="post-time" title="2016-03-04 09:45:22" datetime="2016-03-04T01:45:22.000Z"  itemprop="datePublished">2016-03-04</time>
+
+        
+
+
+    </div>
+
+    
+
+
+  
+    <h3 class="post-title" itemprop="name">
+      <a class="post-title-link" href="/2016/03/04/Changning-Swimming-Pool-Opening-Hours/">长宁国际体操中心游泳馆开放时间</a>
+    </h3>
+  
+
+
+
+
+    <div class="post-content" id="post-content" itemprop="postContent">
+
+    
+        🏊🏊🏊🏊🏊🏊🏊🏊🏊🏊🏊🏊🏊🏊🏊
+
+
+性价比最高时段依旧为工作日6:30~8:30，水质好，人少，价格低游泳馆网址：link
+
+
+
+===Ending===
+
+    
+
+        <a href="/2016/03/04/Changning-Swimming-Pool-Opening-Hours/" class="post-more waves-effect waves-button">
+            Continue reading...
+        </a>
+    </div>
+    
+    <div class="post-footer">
+        
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/大保健/">大保健</a></li></ul>
+
+    </div>
+    
+</article>
+
+        </li>
+    
+        <li class="post-list-item fade">
+            <article id="post-Android-Performance-Patterns-s5ep10-Profile-GPU-Rendering"
+  class="article-card article-type-post" itemprop="blogPost">
+
+    <div class="post-meta">
+        <time class="post-time" title="2016-02-25 21:49:59" datetime="2016-02-25T13:49:59.000Z"  itemprop="datePublished">2016-02-25</time>
+
+        
+
+
+    </div>
+
+    
+
+
+  
+    <h3 class="post-title" itemprop="name">
+      <a class="post-title-link" href="/2016/02/25/Android-Performance-Patterns-s5ep10-Profile-GPU-Rendering/">Android Performance Patterns - s5ep10 Profile GPU Rendering, M Update</a>
+    </h3>
+  
+
+
+
+
+    <div class="post-content" id="post-content" itemprop="postContent">
+
+    
+        
+Season 5 的最后一期，Android M 中新增了GPU渲染分析工具光头哥，我们下一季再见！PS. 光头哥的大名是 Colt McAnlisVideo Link
+
+
+
+
+    
+
+        <a href="/2016/02/25/Android-Performance-Patterns-s5ep10-Profile-GPU-Rendering/" class="post-more waves-effect waves-button">
+            Continue reading...
+        </a>
+    </div>
+    
+    <div class="post-footer">
+        
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Android-Performance-Patterns/">Android Performance Patterns</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/技术流/">技术流</a></li></ul>
+
+    </div>
+    
+</article>
+
+        </li>
+    
+        <li class="post-list-item fade">
+            <article id="post-Android-Performance-Patterns-s5ep9-The-Importance-Of-Thread-Priority"
+  class="article-card article-type-post" itemprop="blogPost">
+
+    <div class="post-meta">
+        <time class="post-time" title="2016-02-25 20:57:25" datetime="2016-02-25T12:57:25.000Z"  itemprop="datePublished">2016-02-25</time>
+
+        
+
+
+    </div>
+
+    
+
+
+  
+    <h3 class="post-title" itemprop="name">
+      <a class="post-title-link" href="/2016/02/25/Android-Performance-Patterns-s5ep9-The-Importance-Of-Thread-Priority/">Android Performance Patterns - s5ep9 The Importance Of Thread Priority</a>
+    </h3>
+  
+
+
+
+
+    <div class="post-content" id="post-content" itemprop="postContent">
+
+    
+        
+CPU同一时间只能处理有限数目的线程，赋予线程怎样的优先级，将决定其最终在CPU上得以执行的顺序光头哥回归啦！读信的样子简直不要太萌！Video Link
+
+
+
+
+    
+
+        <a href="/2016/02/25/Android-Performance-Patterns-s5ep9-The-Importance-Of-Thread-Priority/" class="post-more waves-effect waves-button">
+            Continue reading...
+        </a>
+    </div>
+    
+    <div class="post-footer">
+        
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Android-Performance-Patterns/">Android Performance Patterns</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/技术流/">技术流</a></li></ul>
+
+    </div>
+    
+</article>
+
+        </li>
+    
+    </ul>
+
+    
+<nav id="page-nav">
+    <div class="inner">
+    <a class="extend prev" rel="prev" href="/page/6/">上一页</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><a class="page-number" href="/page/6/">6</a><span class="page-number current">7</span><a class="page-number" href="/page/8/">8</a><a class="page-number" href="/page/9/">9</a><a class="extend next" rel="next" href="/page/8/">下一页</a>
+    </div>
+</nav>
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        站点总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        站点总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>This blog is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.</span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>Li Lei &copy; 2015 - 2019</span>
+            <span>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://lilei.pro/page/7/&title=柘个角落&pic=https://lilei.pro/img/avatar.jpeg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://lilei.pro/page/7/&title=柘个角落&source=技术与生活上的点滴积累" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://lilei.pro/page/7/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=柘个角落&url=https://lilei.pro/page/7/&via=https://lilei.pro" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://lilei.pro/page/7/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAJYAAACWCAAAAAAZai4+AAABWklEQVR42u3aQQ7DIAwF0d7/0um2UgSabzeqiodV1Cb4ZREDhtcLt+vW+J37+1tNlqyDWNe23e/5/OV+veqfx5IlazKLdEeC7Z8lsWTJkkVYPMyeK0uWrD6LDO0/SBCyZP05qxaGpIPH5/KyZB3B4lWd/vUj9S1Zsv6cdYVt9Wytt2UUWbKGsfgHTIgkuZD+ZcmaxvoWqLYxs5yay5I1jEW2SfhnX1usLmPJkjWMlYZH4z8ewouFJFmyDmWlBwhqbxmnBlmyhrEIsVYS6m+CypI1gcU//vTzLh41kCVrMIscp0sXrgSEzkHIkjWGRRaiPEHU0kdc0pUl6whWfxKcvhL6V5asYay0hsM7/cIaWpasYax0M5IM5GmCkCVLFinx8O54Ngrm8rJkyQqH2GI66CcIWbKGsdJl534SsDTIkjWS1T80UFsloz0fWbIGsDoTXF7wfaTJknUC6w2A5u42DoZbbQAAAABJRU5ErkJggg==" alt="微信分享二维码">
 </div>
 
 
 
-  
 
-  <script type="text/javascript">
-  function loadScript(url, callback) {
-    var script = document.createElement('script')
-    script.type = 'text/javascript';
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: false };
 
-    if (script.readyState) { //IE
-      script.onreadystatechange = function() {
-        if (script.readyState == 'loaded' ||
-          script.readyState == 'complete') {
-          script.onreadystatechange = null;
-          callback();
-        }
-      };
-    } else { //Others
-      script.onload = function() {
-        callback();
-      };
-    }
 
-    script.src = url;
-    document.getElementsByTagName('head')[0].appendChild(script);
-  }
-
-  window.onload = function() {
-    loadScript('/js/bundle.js?235683', function() {
-      // load success
-    });
-  }
 </script>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/main.min.js"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/search.min.js" async></script>
+
+
+
+
+
+
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
 
 </body>
 </html>

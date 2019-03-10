@@ -1,196 +1,188 @@
 <!DOCTYPE html>
-
-
-  <html class="light page-post">
-
-
+<html>
 <head>
-  <meta charset="utf-8">
-  
-  <title>Android中动态加载JNI失效问题探究(未完待续) | One Step, One Punch</title>
+    
 
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
 
-  
-    <meta name="keywords" content="技术流,Android Performance Patterns," />
-  
+    
 
-  <meta name="description" content="在做so动态加载时遇到了后加载的JNI方法失效的问题">
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    
+    <title>Android中动态加载JNI失效问题探究(未完待续) | 柘个角落 | IF YOU WANT SOMETHING, GO GET IT. PERIOD.</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="技术流,Android Performance Patterns">
+    <meta name="description" content="在做so动态加载时遇到了后加载的JNI方法失效的问题">
 <meta name="keywords" content="技术流,Android Performance Patterns">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Android中动态加载JNI失效问题探究(未完待续)">
-<meta property="og:url" content="http://lilei.work/2016/06/17/Dynamic-Loading-JNI-Not-Work/index.html">
-<meta property="og:site_name" content="One Step, One Punch">
+<meta property="og:url" content="https://lilei.pro/2016/06/17/Dynamic-Loading-JNI-Not-Work/index.html">
+<meta property="og:site_name" content="柘个角落">
 <meta property="og:description" content="在做so动态加载时遇到了后加载的JNI方法失效的问题">
 <meta property="og:locale" content="default">
 <meta property="og:updated_time" content="2016-06-17T11:16:14.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Android中动态加载JNI失效问题探究(未完待续)">
 <meta name="twitter:description" content="在做so动态加载时遇到了后加载的JNI方法失效的问题">
+    
+        <link rel="alternate" type="application/atom+xml" title="柘个角落" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/img/favicon.ico">
+    <link rel="stylesheet" href="//unpkg.com/hexo-theme-material-indigo@latest/css/style.css">
+    <script>window.lazyScripts=[]</script>
 
-  
+    <!-- custom head -->
+    
 
-  
-    <link rel="icon" href="/favicon.ico">
-  
-
-  <link href="/css/styles.css?v=c114cbe6" rel="stylesheet">
-
-
-  
-    <link rel="stylesheet" href="/css/personal-style.css">
-  
-
-  
-
-  
-
-  
-
-
-  
-    <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
-  
-
-  
-    <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.3.0/css/font-awesome.min.css">
-  
 </head>
 
 <body>
+    <div id="loading" class="active"></div>
 
-
-  
-    <span id="toolbox-mobile" class="toolbox-mobile">导航</span>
-  
-
-  <div class="post-header CENTER">
-   
-  <div class="toolbox">
-    <a class="toolbox-entry" href="/">
-      <span class="toolbox-entry-text">导航</span>
-      <i class="icon-angle-down"></i>
-      <i class="icon-home"></i>
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
     </a>
-    <ul class="list-toolbox">
-      
-        <li class="item-toolbox">
-          <a
-            class="CIRCLE"
-            href="/archives/"
-            rel="noopener noreferrer"
-            target="_self"
-            >
-            博客
-          </a>
-        </li>
-      
-        <li class="item-toolbox">
-          <a
-            class="CIRCLE"
-            href="/category/"
-            rel="noopener noreferrer"
-            target="_self"
-            >
-            分类
-          </a>
-        </li>
-      
-        <li class="item-toolbox">
-          <a
-            class="CIRCLE"
-            href="/tag/"
-            rel="noopener noreferrer"
-            target="_self"
-            >
-            标签
-          </a>
-        </li>
-      
-        <li class="item-toolbox">
-          <a
-            class="CIRCLE"
-            href="/link/"
-            rel="noopener noreferrer"
-            target="_self"
-            >
-            友链
-          </a>
-        </li>
-      
-        <li class="item-toolbox">
-          <a
-            class="CIRCLE"
-            href="/about/"
-            rel="noopener noreferrer"
-            target="_self"
-            >
-            关于
-          </a>
-        </li>
-      
-        <li class="item-toolbox">
-          <a
-            class="CIRCLE"
-            href="/search/"
-            rel="noopener noreferrer"
-            target="_self"
-            >
-            搜索
-          </a>
-        </li>
-      
-    </ul>
-  </div>
-
-
-</div>
-
-
-  <div id="toc" class="toc-article">
-    <strong class="toc-title">文章目录</strong>
-    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#背景描述"><span class="toc-text">背景描述</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#原因探究"><span class="toc-text">原因探究</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#System-load-过程"><span class="toc-text">System.load 过程</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#System-loadLibrary-过程"><span class="toc-text">System.loadLibrary 过程</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#System-load-amp-System-loadLibrary-加载so库文件"><span class="toc-text">System.load &amp; System.loadLibrary 加载so库文件</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#到这里被BLOCK住了，HELP～"><span class="toc-text">到这里被BLOCK住了，HELP～</span></a>
-  </div>
-
-
-
-<div class="content content-post CENTER">
-   <article id="post-Dynamic-Loading-JNI-Not-Work" class="article article-type-post" itemprop="blogPost">
-  <header class="article-header">
-    <h1 class="post-title">Android中动态加载JNI失效问题探究(未完待续)</h1>
-
-    <div class="article-meta">
-      <span>
-        <i class="icon-calendar"></i>
-        <span>2016.06.17</span>
-      </span>
-
-      
-        <span class="article-author">
-          <i class="icon-user"></i>
-          <span>Li Lei</span>
-        </span>
-      
-
-      
-
-
-      
-
-      
-      <i class="fa fa-eye"></i> 
-        <span id="busuanzi_container_page_pv">
-           &nbsp热度 <span id="busuanzi_value_page_pv">
-           <i class="fa fa-spinner fa-spin"></i></span>℃
-        </span>
-      
-      
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/avatar.jpeg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">Li Lei</h5>
+          <a href="mailto:bequietlee#gmail.com" title="bequietlee#gmail.com" class="mail">bequietlee#gmail.com</a>
+        </hgroup>
+      </div>
     </div>
-  </header>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                文章
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+                标签
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/bequietlee" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/2019/03/10/links"  >
+                <i class="icon icon-lg icon-link"></i>
+                友情链接
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
 
-  <div class="article-content">
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">Android中动态加载JNI失效问题探究(未完待续)</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="Search">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">Android中动态加载JNI失效问题探究(未完待续)</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2016-06-17T02:33:02.000Z" itemprop="datePublished" class="page-time">
+  2016-06-17
+</time>
+
+
+            
+        </h5>
+    </div>
+
     
-      <blockquote>
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#背景描述"><span class="post-toc-number">1.</span> <span class="post-toc-text">背景描述</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#原因探究"><span class="post-toc-number">2.</span> <span class="post-toc-text">原因探究</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#System-load-过程"><span class="post-toc-number">2.1.</span> <span class="post-toc-text">System.load 过程</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#System-loadLibrary-过程"><span class="post-toc-number">2.2.</span> <span class="post-toc-text">System.loadLibrary 过程</span></a></li></ol></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#System-load-amp-System-loadLibrary-加载so库文件"><span class="post-toc-number">3.</span> <span class="post-toc-text">System.load &amp; System.loadLibrary 加载so库文件</span></a></li></ol></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#到这里被BLOCK住了，HELP～"><span class="post-toc-number"></span> <span class="post-toc-text">到这里被BLOCK住了，HELP～</span></a>
+        </nav>
+    </aside>
+
+
+<article id="post-Dynamic-Loading-JNI-Not-Work"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">Android中动态加载JNI失效问题探究(未完待续)</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2016-06-17 10:33:02" datetime="2016-06-17T02:33:02.000Z"  itemprop="datePublished">2016-06-17</time>
+
+            
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <blockquote>
 <p>在做so动态加载时遇到了后加载的JNI方法失效的问题</p>
 </blockquote>
 <hr>
@@ -249,196 +241,262 @@
 <p>最新发现：初次加载时不用<code>System.loadLibrary(&quot;Jni&quot;)</code>，而用<code>System.load(&quot;/data/app/com.leili.season1-2/lib/x86/libJni.so&quot;)</code>来直接加载<code>/data/app</code>的库文件时，一样会阻止后续的加载！</p>
 <h1 id="到这里被BLOCK住了，HELP～"><a href="#到这里被BLOCK住了，HELP～" class="headerlink" title="到这里被BLOCK住了，HELP～"></a>到这里被<strong>BLOCK</strong>住了，HELP～</h1><hr>
 
+        </div>
+
+        <blockquote class="post-copyright">
     
-  </div>
+    <div class="content">
+        
+<span class="post-time">
+    Last updated: <time datetime="2016-06-17T11:16:14.000Z" itemprop="dateUpdated">2016-06-17 19:16:14</time>
+</span><br>
+
+
+        
+        这里可以写作者留言，标签和 hexo 中所有变量及辅助函数等均可调用，示例：<a href="/2016/06/17/Dynamic-Loading-JNI-Not-Work/" target="_blank" rel="external">https://lilei.pro/2016/06/17/Dynamic-Loading-JNI-Not-Work/</a>
+        
+    </div>
+    
+    <footer>
+        <a href="https://lilei.pro">
+            <img src="/img/avatar.jpeg" alt="Li Lei">
+            Li Lei
+        </a>
+    </footer>
+</blockquote>
+
+        
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Android-Performance-Patterns/">Android Performance Patterns</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/技术流/">技术流</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://lilei.pro/2016/06/17/Dynamic-Loading-JNI-Not-Work/&title=《Android中动态加载JNI失效问题探究(未完待续)》 — 柘个角落&pic=https://lilei.pro/img/avatar.jpeg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://lilei.pro/2016/06/17/Dynamic-Loading-JNI-Not-Work/&title=《Android中动态加载JNI失效问题探究(未完待续)》 — 柘个角落&source=
+在做so动态加载时遇到了后加载的JNI方法失效的问题
+
+" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://lilei.pro/2016/06/17/Dynamic-Loading-JNI-Not-Work/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《Android中动态加载JNI失效问题探究(未完待续)》 — 柘个角落&url=https://lilei.pro/2016/06/17/Dynamic-Loading-JNI-Not-Work/&via=https://lilei.pro" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://lilei.pro/2016/06/17/Dynamic-Loading-JNI-Not-Work/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/2016/06/22/Android-Studio-gitignore/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">Android Studio .gitignore 文件范本</h4>
+      </a>
+    </div>
+  
 
   
-      <div class="git"></div>
+    <div class="waves-block waves-effect next">
+      <a href="/2016/05/27/Hackathon-1-0/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">MT&amp;DP Hackathon 小结</h4>
+      </a>
+    </div>
   
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 </article>
 
 
-   
-
-   
-  <div class="box-prev-next clearfix">
-    <a class="show pull-left" href="/2016/05/27/Hackathon-1-0/">
-        <i class="icon icon-angle-left"></i>
-    </a>
-    <a class="show pull-right" href="/2016/06/22/Android-Studio-gitignore/">
-        <i class="icon icon-angle-right"></i>
-    </a>
-  </div>
-
-
-
 
 </div>
 
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        站点总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        站点总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
 
-  <a id="backTop" class="back-top">
-    <i class="icon-angle-up"></i>
-  </a>
 
-
-
-
-  <div class="modal" id="modal">
-  <span id="cover" class="cover hide"></span>
-  <div id="modal-dialog" class="modal-dialog hide-dialog">
-    <div class="modal-header">
-      <span id="close" class="btn-close">关闭</span>
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>This blog is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.</span>
+        </p>
     </div>
-    <hr>
-    <div class="modal-body">
-      <ul class="list-toolbox">
-        
-          <li class="item-toolbox">
-            <a
-              class="CIRCLE"
-              href="/archives/"
-              rel="noopener noreferrer"
-              target="_self"
-              >
-              博客
-            </a>
-          </li>
-        
-          <li class="item-toolbox">
-            <a
-              class="CIRCLE"
-              href="/category/"
-              rel="noopener noreferrer"
-              target="_self"
-              >
-              分类
-            </a>
-          </li>
-        
-          <li class="item-toolbox">
-            <a
-              class="CIRCLE"
-              href="/tag/"
-              rel="noopener noreferrer"
-              target="_self"
-              >
-              标签
-            </a>
-          </li>
-        
-          <li class="item-toolbox">
-            <a
-              class="CIRCLE"
-              href="/link/"
-              rel="noopener noreferrer"
-              target="_self"
-              >
-              友链
-            </a>
-          </li>
-        
-          <li class="item-toolbox">
-            <a
-              class="CIRCLE"
-              href="/about/"
-              rel="noopener noreferrer"
-              target="_self"
-              >
-              关于
-            </a>
-          </li>
-        
-          <li class="item-toolbox">
-            <a
-              class="CIRCLE"
-              href="/search/"
-              rel="noopener noreferrer"
-              target="_self"
-              >
-              搜索
-            </a>
-          </li>
-        
-      </ul>
-
+    <div class="bottom">
+        <p><span>Li Lei &copy; 2015 - 2019</span>
+            <span>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
     </div>
-  </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://lilei.pro/2016/06/17/Dynamic-Loading-JNI-Not-Work/&title=《Android中动态加载JNI失效问题探究(未完待续)》 — 柘个角落&pic=https://lilei.pro/img/avatar.jpeg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://lilei.pro/2016/06/17/Dynamic-Loading-JNI-Not-Work/&title=《Android中动态加载JNI失效问题探究(未完待续)》 — 柘个角落&source=
+在做so动态加载时遇到了后加载的JNI方法失效的问题
+
+" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://lilei.pro/2016/06/17/Dynamic-Loading-JNI-Not-Work/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《Android中动态加载JNI失效问题探究(未完待续)》 — 柘个角落&url=https://lilei.pro/2016/06/17/Dynamic-Loading-JNI-Not-Work/&via=https://lilei.pro" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://lilei.pro/2016/06/17/Dynamic-Loading-JNI-Not-Work/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACIElEQVR42u3aSW7DMBAEQP//08oDAgndQ9uAyeIpCBSRpcOEs7xe8bpu1t2Tz79/fs/dG96wMDAwfpZxPa7/z6y/P38mORsGBsY5jCRE3m38/PvkEHd7FWEdAwMDo3x1y8g/HwYGBkbLyC+UsyQWAwMDo01ik2R1VrD7ai6OgYHxg4y8ZPb9nz/S38DAwPgpxlWu9XZCchGsT4WBgbE1o732rRTO3htwMTAwzmG0QXO90Na2P5PPgYGBsTcjOehseGsl02wHPjAwME5gtE3KJEF9b2guWhEYGBjbMfKkdOWC+HztK4Lp3UkwMDC2Zgz/YDRskTdH29YCBgbG3oy84NWW75MDJTsmHxoDA+MERjsMMUtuZ58m+WeAgYGxNyNvDLRHWb9K5m0JDAyMvRl5E/FdhbmvzoxgYGBswVhpAMwC6Doy2hEDA2NTxuxSOGst5Mlwfa3EwMDYjpEXs5IBi6RUN0tx6xYmBgbGRowZoB2kWCnVtSk0BgbGroxZujgbRb2CNRv+wMDAOIHRDlIkgbItwy2V9jAwMA5g5NuvD1J85KKJgYGxKeMqV1sgywN32yrAwMA4h7ES7GbgNj1+PnqNwcDA+FlGcqCV8YtPtBMwMDDOZKyMOyQF/fxq2M5RYGBgYOQHzRPUvD1ZBG4MDAyMYPtZqzK5DkZPYmBgHMCYlfJnz7QjF9GnxMDA2JqRp46zhkFbUJs1NTEwMDZl/AFxzEHPwiFdewAAAABJRU5ErkJggg==" alt="微信分享二维码">
 </div>
 
 
 
-  
-      <div class="fexo-comments comments-post">
-    
 
-    
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: false };
 
-    
-    
 
-    
-
-    
-    
-
-    <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
-    <script src="//unpkg.com/valine@latest/dist/Valine.min.js"></script>
-    <div id="comment" class="vcomment" ></div>
-    <script>
-        var notify = 'false' == true ? true : false;
-        var verify = 'false' == true ? true : false;
-        var GUEST_INFO = ['nick','mail','link'];
-        var guest_info = 'nick,mail,link'.split(',').filter(function(item){
-            return GUEST_INFO.indexOf(item) > -1
-        });
-        guest_info = guest_info.length == 0 ? GUEST_INFO :guest_info;
-        window.valine = new Valine({
-            el: '.vcomment',
-            notify: notify,
-            verify: verify,
-            appId: "khG3rBt0nWda7lxDUHpS3Sq0-gzGzoHsz",
-            appKey: "btFkQfcBgJeCRm55mYmUgA5d",
-            avatar:'mm',
-            placeholder: "畅所欲言...",
-            guest_info:guest_info,
-            pageSize:'10'
-        });
-    </script>
-  
-  </div>
-
-  
-
-  <script type="text/javascript">
-  function loadScript(url, callback) {
-    var script = document.createElement('script')
-    script.type = 'text/javascript';
-
-    if (script.readyState) { //IE
-      script.onreadystatechange = function() {
-        if (script.readyState == 'loaded' ||
-          script.readyState == 'complete') {
-          script.onreadystatechange = null;
-          callback();
-        }
-      };
-    } else { //Others
-      script.onload = function() {
-        callback();
-      };
-    }
-
-    script.src = url;
-    document.getElementsByTagName('head')[0].appendChild(script);
-  }
-
-  window.onload = function() {
-    loadScript('/js/bundle.js?235683', function() {
-      // load success
-    });
-  }
 </script>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/main.min.js"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/search.min.js" async></script>
+
+
+
+
+
+
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
 
 </body>
 </html>

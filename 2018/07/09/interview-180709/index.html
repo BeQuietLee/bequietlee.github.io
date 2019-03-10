@@ -1,209 +1,201 @@
 <!DOCTYPE html>
-
-
-  <html class="light page-post">
-
-
+<html>
 <head>
-  <meta charset="utf-8">
-  
-  <title>面试知识整理 2018.07.09 | One Step, One Punch</title>
+    
 
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
 
-  
-    <meta name="keywords" content="Android,面试," />
-  
+    
 
-  <meta name="description" content="HashMap 和 HashTable 区别相同点  都是以 Key - Value 的形式存放键值对  不同点  null 支持：HashMap 允许 null key 和 null value，HashTable 不允许 并发特性：HashMap 线程不安全，效率高，HashTable 线程安全，效率低 默认长度和扩容方式：HashMap 默认长度 16，扩容 2n，HashTable 默认长">
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    
+    <title>面试知识整理 2018.07.09 | 柘个角落 | IF YOU WANT SOMETHING, GO GET IT. PERIOD.</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="Android,面试">
+    <meta name="description" content="HashMap 和 HashTable 区别相同点  都是以 Key - Value 的形式存放键值对  不同点  null 支持：HashMap 允许 null key 和 null value，HashTable 不允许 并发特性：HashMap 线程不安全，效率高，HashTable 线程安全，效率低 默认长度和扩容方式：HashMap 默认长度 16，扩容 2n，HashTable 默认长">
 <meta name="keywords" content="Android,面试">
 <meta property="og:type" content="article">
 <meta property="og:title" content="面试知识整理 2018.07.09">
-<meta property="og:url" content="http://lilei.work/2018/07/09/interview-180709/index.html">
-<meta property="og:site_name" content="One Step, One Punch">
+<meta property="og:url" content="https://lilei.pro/2018/07/09/interview-180709/index.html">
+<meta property="og:site_name" content="柘个角落">
 <meta property="og:description" content="HashMap 和 HashTable 区别相同点  都是以 Key - Value 的形式存放键值对  不同点  null 支持：HashMap 允许 null key 和 null value，HashTable 不允许 并发特性：HashMap 线程不安全，效率高，HashTable 线程安全，效率低 默认长度和扩容方式：HashMap 默认长度 16，扩容 2n，HashTable 默认长">
 <meta property="og:locale" content="default">
-<meta property="og:image" content="http://lilei.work/img/180709_interview/jvm.png">
-<meta property="og:image" content="http://lilei.work/img/180709_interview/标记清除.png">
-<meta property="og:image" content="http://lilei.work/img/180709_interview/复制.png">
-<meta property="og:image" content="http://lilei.work/img/180709_interview/标记压缩.png">
-<meta property="og:image" content="http://lilei.work/img/180709_interview/分代收集.png">
-<meta property="og:image" content="http://lilei.work/img/180709_interview/recyclerview_components.jpeg">
-<meta property="og:image" content="http://lilei.work/img/180709_interview/recyclerview_cache.webp">
-<meta property="og:image" content="http://lilei.work/img/180709_interview/mvp_ut.png">
-<meta property="og:image" content="http://lilei.work/img/180709_interview/5x_screen_size.jpg">
-<meta property="og:image" content="http://lilei.work/img/180709_interview/ip_3gs_4s.png">
-<meta property="og:image" content="http://lilei.work/img/180709_interview/Android_dpi.png">
-<meta property="og:image" content="http://lilei.work/img/180709_interview/Android_Screen_Size.png">
+<meta property="og:image" content="https://lilei.pro/img/180709_interview/jvm.png">
+<meta property="og:image" content="https://lilei.pro/img/180709_interview/标记清除.png">
+<meta property="og:image" content="https://lilei.pro/img/180709_interview/复制.png">
+<meta property="og:image" content="https://lilei.pro/img/180709_interview/标记压缩.png">
+<meta property="og:image" content="https://lilei.pro/img/180709_interview/分代收集.png">
+<meta property="og:image" content="https://lilei.pro/img/180709_interview/recyclerview_components.jpeg">
+<meta property="og:image" content="https://lilei.pro/img/180709_interview/recyclerview_cache.webp">
+<meta property="og:image" content="https://lilei.pro/img/180709_interview/mvp_ut.png">
+<meta property="og:image" content="https://lilei.pro/img/180709_interview/5x_screen_size.jpg">
+<meta property="og:image" content="https://lilei.pro/img/180709_interview/ip_3gs_4s.png">
+<meta property="og:image" content="https://lilei.pro/img/180709_interview/Android_dpi.png">
+<meta property="og:image" content="https://lilei.pro/img/180709_interview/Android_Screen_Size.png">
 <meta property="og:updated_time" content="2018-08-06T06:09:28.648Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="面试知识整理 2018.07.09">
 <meta name="twitter:description" content="HashMap 和 HashTable 区别相同点  都是以 Key - Value 的形式存放键值对  不同点  null 支持：HashMap 允许 null key 和 null value，HashTable 不允许 并发特性：HashMap 线程不安全，效率高，HashTable 线程安全，效率低 默认长度和扩容方式：HashMap 默认长度 16，扩容 2n，HashTable 默认长">
-<meta name="twitter:image" content="http://lilei.work/img/180709_interview/jvm.png">
+<meta name="twitter:image" content="https://lilei.pro/img/180709_interview/jvm.png">
+    
+        <link rel="alternate" type="application/atom+xml" title="柘个角落" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/img/favicon.ico">
+    <link rel="stylesheet" href="//unpkg.com/hexo-theme-material-indigo@latest/css/style.css">
+    <script>window.lazyScripts=[]</script>
 
-  
+    <!-- custom head -->
+    
 
-  
-    <link rel="icon" href="/favicon.ico">
-  
-
-  <link href="/css/styles.css?v=c114cbe6" rel="stylesheet">
-
-
-  
-    <link rel="stylesheet" href="/css/personal-style.css">
-  
-
-  
-
-  
-
-  
-
-
-  
-    <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
-  
-
-  
-    <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.3.0/css/font-awesome.min.css">
-  
 </head>
 
 <body>
+    <div id="loading" class="active"></div>
 
-
-  
-    <span id="toolbox-mobile" class="toolbox-mobile">导航</span>
-  
-
-  <div class="post-header CENTER">
-   
-  <div class="toolbox">
-    <a class="toolbox-entry" href="/">
-      <span class="toolbox-entry-text">导航</span>
-      <i class="icon-angle-down"></i>
-      <i class="icon-home"></i>
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
     </a>
-    <ul class="list-toolbox">
-      
-        <li class="item-toolbox">
-          <a
-            class="CIRCLE"
-            href="/archives/"
-            rel="noopener noreferrer"
-            target="_self"
-            >
-            博客
-          </a>
-        </li>
-      
-        <li class="item-toolbox">
-          <a
-            class="CIRCLE"
-            href="/category/"
-            rel="noopener noreferrer"
-            target="_self"
-            >
-            分类
-          </a>
-        </li>
-      
-        <li class="item-toolbox">
-          <a
-            class="CIRCLE"
-            href="/tag/"
-            rel="noopener noreferrer"
-            target="_self"
-            >
-            标签
-          </a>
-        </li>
-      
-        <li class="item-toolbox">
-          <a
-            class="CIRCLE"
-            href="/link/"
-            rel="noopener noreferrer"
-            target="_self"
-            >
-            友链
-          </a>
-        </li>
-      
-        <li class="item-toolbox">
-          <a
-            class="CIRCLE"
-            href="/about/"
-            rel="noopener noreferrer"
-            target="_self"
-            >
-            关于
-          </a>
-        </li>
-      
-        <li class="item-toolbox">
-          <a
-            class="CIRCLE"
-            href="/search/"
-            rel="noopener noreferrer"
-            target="_self"
-            >
-            搜索
-          </a>
-        </li>
-      
-    </ul>
-  </div>
-
-
-</div>
-
-
-  <div id="toc" class="toc-article">
-    <strong class="toc-title">文章目录</strong>
-    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#HashMap-和-HashTable-区别"><span class="toc-text">HashMap 和 HashTable 区别</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#JVM-垃圾回收机制-GC"><span class="toc-text">JVM 垃圾回收机制/GC</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#基础知识"><span class="toc-text">基础知识</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#引用计数器"><span class="toc-text">引用计数器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#垃圾收集算法"><span class="toc-text">垃圾收集算法</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#标记-清除-算法"><span class="toc-text">标记-清除 算法</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#复制-算法"><span class="toc-text">复制 算法</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#标记-压缩-算法"><span class="toc-text">标记-压缩 算法</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#分代收集-算法"><span class="toc-text">分代收集 算法</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#参考：jvm-垃圾回收"><span class="toc-text">参考：jvm - 垃圾回收</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#使用OkHttp同时发送3个请求，token过期如何处理"><span class="toc-text">使用OkHttp同时发送3个请求，token过期如何处理</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#一点点反思"><span class="toc-text">一点点反思</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#参考-Android-OkHttp实现全局过期token自动刷新示例"><span class="toc-text">参考 Android OkHttp实现全局过期token自动刷新示例</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#RecyclerView"><span class="toc-text">RecyclerView</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#LayoutManager"><span class="toc-text">LayoutManager</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#动画"><span class="toc-text">动画</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#List-Item-Selection"><span class="toc-text">List-Item Selection</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#RecyclerView-几大重要成员"><span class="toc-text">RecyclerView 几大重要成员</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#RecyclerView-缓存"><span class="toc-text">RecyclerView 缓存</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#参考"><span class="toc-text">参考</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#微信的“分享”页面使用的是哪种启动模式"><span class="toc-text">微信的“分享”页面使用的是哪种启动模式</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#SingleInstance"><span class="toc-text">SingleInstance</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#SingleTask"><span class="toc-text">SingleTask</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#SingleTop"><span class="toc-text">SingleTop</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Standard"><span class="toc-text">Standard</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#场景：应用进程被杀后再次启动"><span class="toc-text">场景：应用进程被杀后再次启动</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#参考：如何让你的app在后台被干掉后优雅的启动"><span class="toc-text">参考：如何让你的app在后台被干掉后优雅的启动</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#IntentService-实现原理"><span class="toc-text">IntentService 实现原理</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#参考：IntentService的原理和实例分析"><span class="toc-text">参考：IntentService的原理和实例分析</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#HTTP-请求和响应头的格式"><span class="toc-text">HTTP 请求和响应头的格式</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#通用头"><span class="toc-text">通用头</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#请求头"><span class="toc-text">请求头</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#响应头"><span class="toc-text">响应头</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#实体信息"><span class="toc-text">实体信息</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#MVP-中对-Presenter-如何进行测试"><span class="toc-text">MVP 中对 Presenter 如何进行测试</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#各层单元测试选型"><span class="toc-text">各层单元测试选型</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#屏幕物理尺寸，像素，dp，px，sp"><span class="toc-text">屏幕物理尺寸，像素，dp，px，sp</span></a></li></ol>
-  </div>
-
-
-
-<div class="content content-post CENTER">
-   <article id="post-interview-180709" class="article article-type-post" itemprop="blogPost">
-  <header class="article-header">
-    <h1 class="post-title">面试知识整理 2018.07.09</h1>
-
-    <div class="article-meta">
-      <span>
-        <i class="icon-calendar"></i>
-        <span>2018.07.09</span>
-      </span>
-
-      
-        <span class="article-author">
-          <i class="icon-user"></i>
-          <span>Li Lei</span>
-        </span>
-      
-
-      
-
-
-      
-
-      
-      <i class="fa fa-eye"></i> 
-        <span id="busuanzi_container_page_pv">
-           &nbsp热度 <span id="busuanzi_value_page_pv">
-           <i class="fa fa-spinner fa-spin"></i></span>℃
-        </span>
-      
-      
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/avatar.jpeg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">Li Lei</h5>
+          <a href="mailto:bequietlee#gmail.com" title="bequietlee#gmail.com" class="mail">bequietlee#gmail.com</a>
+        </hgroup>
+      </div>
     </div>
-  </header>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                文章
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+                标签
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/bequietlee" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/2019/03/10/links"  >
+                <i class="icon icon-lg icon-link"></i>
+                友情链接
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
 
-  <div class="article-content">
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">面试知识整理 2018.07.09</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="Search">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">面试知识整理 2018.07.09</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2018-07-09T10:00:17.000Z" itemprop="datePublished" class="page-time">
+  2018-07-09
+</time>
+
+
+            
+        </h5>
+    </div>
+
     
-      <h2 id="HashMap-和-HashTable-区别"><a href="#HashMap-和-HashTable-区别" class="headerlink" title="HashMap 和 HashTable 区别"></a>HashMap 和 HashTable 区别</h2><p>相同点</p>
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#HashMap-和-HashTable-区别"><span class="post-toc-number">1.</span> <span class="post-toc-text">HashMap 和 HashTable 区别</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#JVM-垃圾回收机制-GC"><span class="post-toc-number">2.</span> <span class="post-toc-text">JVM 垃圾回收机制/GC</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#基础知识"><span class="post-toc-number">2.1.</span> <span class="post-toc-text">基础知识</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#引用计数器"><span class="post-toc-number">2.2.</span> <span class="post-toc-text">引用计数器</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#垃圾收集算法"><span class="post-toc-number">2.3.</span> <span class="post-toc-text">垃圾收集算法</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#标记-清除-算法"><span class="post-toc-number">2.3.1.</span> <span class="post-toc-text">标记-清除 算法</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#复制-算法"><span class="post-toc-number">2.3.2.</span> <span class="post-toc-text">复制 算法</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#标记-压缩-算法"><span class="post-toc-number">2.3.3.</span> <span class="post-toc-text">标记-压缩 算法</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#分代收集-算法"><span class="post-toc-number">2.3.4.</span> <span class="post-toc-text">分代收集 算法</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#参考：jvm-垃圾回收"><span class="post-toc-number">2.3.5.</span> <span class="post-toc-text">参考：jvm - 垃圾回收</span></a></li></ol></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#使用OkHttp同时发送3个请求，token过期如何处理"><span class="post-toc-number">3.</span> <span class="post-toc-text">使用OkHttp同时发送3个请求，token过期如何处理</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#一点点反思"><span class="post-toc-number">3.1.</span> <span class="post-toc-text">一点点反思</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#参考-Android-OkHttp实现全局过期token自动刷新示例"><span class="post-toc-number">3.2.</span> <span class="post-toc-text">参考 Android OkHttp实现全局过期token自动刷新示例</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#RecyclerView"><span class="post-toc-number">4.</span> <span class="post-toc-text">RecyclerView</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#LayoutManager"><span class="post-toc-number">4.1.</span> <span class="post-toc-text">LayoutManager</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#动画"><span class="post-toc-number">4.2.</span> <span class="post-toc-text">动画</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#List-Item-Selection"><span class="post-toc-number">4.3.</span> <span class="post-toc-text">List-Item Selection</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#RecyclerView-几大重要成员"><span class="post-toc-number">4.4.</span> <span class="post-toc-text">RecyclerView 几大重要成员</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#RecyclerView-缓存"><span class="post-toc-number">4.5.</span> <span class="post-toc-text">RecyclerView 缓存</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#参考"><span class="post-toc-number">4.6.</span> <span class="post-toc-text">参考</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#微信的“分享”页面使用的是哪种启动模式"><span class="post-toc-number">5.</span> <span class="post-toc-text">微信的“分享”页面使用的是哪种启动模式</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#SingleInstance"><span class="post-toc-number">5.1.</span> <span class="post-toc-text">SingleInstance</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#SingleTask"><span class="post-toc-number">5.2.</span> <span class="post-toc-text">SingleTask</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#SingleTop"><span class="post-toc-number">5.3.</span> <span class="post-toc-text">SingleTop</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#Standard"><span class="post-toc-number">5.4.</span> <span class="post-toc-text">Standard</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#场景：应用进程被杀后再次启动"><span class="post-toc-number">5.5.</span> <span class="post-toc-text">场景：应用进程被杀后再次启动</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#参考：如何让你的app在后台被干掉后优雅的启动"><span class="post-toc-number">5.6.</span> <span class="post-toc-text">参考：如何让你的app在后台被干掉后优雅的启动</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#IntentService-实现原理"><span class="post-toc-number">6.</span> <span class="post-toc-text">IntentService 实现原理</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#参考：IntentService的原理和实例分析"><span class="post-toc-number">6.1.</span> <span class="post-toc-text">参考：IntentService的原理和实例分析</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#HTTP-请求和响应头的格式"><span class="post-toc-number">7.</span> <span class="post-toc-text">HTTP 请求和响应头的格式</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#通用头"><span class="post-toc-number">7.1.</span> <span class="post-toc-text">通用头</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#请求头"><span class="post-toc-number">7.2.</span> <span class="post-toc-text">请求头</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#响应头"><span class="post-toc-number">7.3.</span> <span class="post-toc-text">响应头</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#实体信息"><span class="post-toc-number">7.4.</span> <span class="post-toc-text">实体信息</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#MVP-中对-Presenter-如何进行测试"><span class="post-toc-number">8.</span> <span class="post-toc-text">MVP 中对 Presenter 如何进行测试</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#各层单元测试选型"><span class="post-toc-number">8.1.</span> <span class="post-toc-text">各层单元测试选型</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#屏幕物理尺寸，像素，dp，px，sp"><span class="post-toc-number">9.</span> <span class="post-toc-text">屏幕物理尺寸，像素，dp，px，sp</span></a></li></ol>
+        </nav>
+    </aside>
+
+
+<article id="post-interview-180709"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">面试知识整理 2018.07.09</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2018-07-09 18:00:17" datetime="2018-07-09T10:00:17.000Z"  itemprop="datePublished">2018-07-09</time>
+
+            
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <h2 id="HashMap-和-HashTable-区别"><a href="#HashMap-和-HashTable-区别" class="headerlink" title="HashMap 和 HashTable 区别"></a>HashMap 和 HashTable 区别</h2><p>相同点</p>
 <ul>
 <li>都是以 Key - Value 的形式存放键值对</li>
 </ul>
@@ -233,7 +225,13 @@
 <h3 id="引用计数器"><a href="#引用计数器" class="headerlink" title="引用计数器"></a>引用计数器</h3><p>每个对象拥有一个计数器，当它被引用时，计数器 +1，引用释放时，计数器 -1，当计数器为 0 时，表示可以回收。</p>
 <p>存在的问题是循环引用。为了解决这个问题，又引入了“可达性”（GC Roots Tracing）的概念，目前主流的 JVM 都采用了这种计数。简单说，就是从根部开始向下搜索，如果对象无法被触及，则认为是可以回收的，这种对象称为“不可达对象”。</p>
 <p>看一下 JVM 运行时的内存结构：</p>
-<p><img src="/img/180709_interview/jvm.png" alt="JVM"></p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="/img/180709_interview/jvm.png" alt="JVM" title="">
+                </div>
+                <div class="image-caption">JVM</div>
+            </figure>
 <p>GC Roots 包括</p>
 <ul>
 <li>虚拟机栈的栈帧中的引用对象（来自局部变量表）</li>
@@ -250,13 +248,25 @@
 <li>finalize() 方法是对象逃脱死亡命运的最后一次机会（因为一个对象的finalize() 方法最多只会被系统自动调用一次）, 稍后GC将对F-Queue中的对象进行第二次小规模的标记，如果要在finalize（）方法中成功拯救自己，只要在finalize() 方法中让该对象重引用链上的任何一个对象建立关联即可。而如果对象这时还没有关联到任何链上的引用，那它就会被回收掉</li>
 </ul>
 <h3 id="垃圾收集算法"><a href="#垃圾收集算法" class="headerlink" title="垃圾收集算法"></a>垃圾收集算法</h3><h4 id="标记-清除-算法"><a href="#标记-清除-算法" class="headerlink" title="标记-清除 算法"></a>标记-清除 算法</h4><p>分为“标记”和“清除”两部，首先标记出需要回收的对象，然后在第二步清除它们。是最基础的回收算法，后续算法都是基于它的基础上进行改进。</p>
-<p><img src="/img/180709_interview/标记清除.png" alt="标记-清除"></p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="/img/180709_interview/标记清除.png" alt="标记-清除" title="">
+                </div>
+                <div class="image-caption">标记-清除</div>
+            </figure>
 <ul>
 <li>效率问题：需要两次扫描</li>
 <li>空间问题：产生大量内存碎片</li>
 </ul>
 <h4 id="复制-算法"><a href="#复制-算法" class="headerlink" title="复制 算法"></a>复制 算法</h4><p>将可用内存平均分为2块，每次只使用其中的一块。当一块内存使用完成后，将存活对象复制到另一块内存中，然后清空。</p>
-<p><img src="/img/180709_interview/复制.png" alt="复制"></p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="/img/180709_interview/复制.png" alt="复制" title="">
+                </div>
+                <div class="image-caption">复制</div>
+            </figure>
 <p>优点</p>
 <ul>
 <li>每次只操作一块内存，分配时无需要考虑内存碎片情况，只移动指针即可，实现简单，运行高效</li>
@@ -267,7 +277,13 @@
 <li>效率问题：老生代对象由于存活率高，频繁复制</li>
 </ul>
 <h4 id="标记-压缩-算法"><a href="#标记-压缩-算法" class="headerlink" title="标记-压缩 算法"></a>标记-压缩 算法</h4><p>标记后，将所有存活对象向一端移动</p>
-<p><img src="/img/180709_interview/标记压缩.png" alt="标记-压缩"></p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="/img/180709_interview/标记压缩.png" alt="标记-压缩" title="">
+                </div>
+                <div class="image-caption">标记-压缩</div>
+            </figure>
 <p>优点</p>
 <ul>
 <li>对于老年代，会逐渐移动到头部</li>
@@ -277,7 +293,13 @@
 <li>新生代对象多的话，会频繁移动</li>
 </ul>
 <h4 id="分代收集-算法"><a href="#分代收集-算法" class="headerlink" title="分代收集 算法"></a>分代收集 算法</h4><p>对新生代采用复制算法（Minor GC），老年代采用标记压缩算法（Major GC），全部回收称为 Full GC。</p>
-<p><img src="/img/180709_interview/分代收集.png" alt="分代收集"></p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="/img/180709_interview/分代收集.png" alt="分代收集" title="">
+                </div>
+                <div class="image-caption">分代收集</div>
+            </figure>
 <ul>
 <li>年轻代: 是所有新对象产生的地方.年轻代被分为3个部分(Enden区和两个Survivor区,也叫From和To),当Eden区被对象填满时,就会执行Minor GC,并把所有存活下来的对象转移到其中一个survivor区(Form),Minor GC同样会检查存活下来的对象,并把它们转移到另一个survivor区(To),这样在一段时间内,总会有一个空的survivor区,经过多次GC周期后，仍然存活下来的对象会被转移到年老代内存空间,常这是在年轻代有资格提升到年老代前通过设定年龄阈值来完成的,需要注意，Survivor的两个区是对称的,没先后关系,from和to是相对的.</li>
 <li>老年代: 在年轻代中经历了N次回收后仍然没有被清除的对象,就会被放到年老代中,都是生命周期较长的对象.对于年老代,则会执行Major GC,来清理.在某些情况下,则会触发Full GC,来清理整个堆内存</li>
@@ -327,13 +349,25 @@
 </ul>
 <h3 id="动画"><a href="#动画" class="headerlink" title="动画"></a>动画</h3><p>Item 变化的时候，RecyclerView 使用 animator 来改变外观，animator 继承自 RecyclerView.ItemAnimator。</p>
 <h3 id="List-Item-Selection"><a href="#List-Item-Selection" class="headerlink" title="List-Item Selection"></a>List-Item Selection</h3><p>这部分略，日后写 Demo 补充</p>
-<h3 id="RecyclerView-几大重要成员"><a href="#RecyclerView-几大重要成员" class="headerlink" title="RecyclerView 几大重要成员"></a>RecyclerView 几大重要成员</h3><p><img src="/img/180709_interview/recyclerview_components.jpeg" alt="RecyclerView Components"></p>
+<h3 id="RecyclerView-几大重要成员"><a href="#RecyclerView-几大重要成员" class="headerlink" title="RecyclerView 几大重要成员"></a>RecyclerView 几大重要成员</h3><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="/img/180709_interview/recyclerview_components.jpeg" alt="RecyclerView Components" title="">
+                </div>
+                <div class="image-caption">RecyclerView Components</div>
+            </figure>
 <h3 id="RecyclerView-缓存"><a href="#RecyclerView-缓存" class="headerlink" title="RecyclerView 缓存"></a>RecyclerView 缓存</h3><ul>
 <li>内部两级缓存</li>
 <li>划出界面的 ViewHolder 会被放入 Cache（一级缓存），容量为2。Cache 中的对象都是同种 ViewType。</li>
 <li>从 Cache 中被清除的对象，会被放入 RecycledViewPool，容量为5。RecycledViewPool 中的对象按照 ViewType 分类。</li>
 </ul>
-<p><img src="/img/180709_interview/recyclerview_cache.webp" alt="RecyclerView Cache"></p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="/img/180709_interview/recyclerview_cache.webp" alt="RecyclerView Cache" title="">
+                </div>
+                <div class="image-caption">RecyclerView Cache</div>
+            </figure>
 <h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><ul>
 <li><a href="https://developer.android.com/guide/topics/ui/layout/recyclerview" target="_blank" rel="noopener">RecycyerView - Developers</a></li>
 <li><a href="https://mp.weixin.qq.com/s?src=3&amp;timestamp=1531269425&amp;ver=1&amp;signature=FWpjJw5RhmTc*7UKCIha2t9LR*Hpr*knccH5aD2iiD7suxuKZgREroUCYpvcJxeOaz3lJbk4Ht4MmjXZAHcp-x1Ui7EAekMj8i1-hWpBwyd1YhGg7wx15pshQwnTTm7Dvan5LJDoOJvNoPatOjSrFePotNTHk1ON6c*6K1OZm40=" target="_blank" rel="noopener">深入浅出 RecyclerView</a></li>
@@ -378,7 +412,13 @@
 </ul>
 <h3 id="实体信息"><a href="#实体信息" class="headerlink" title="实体信息"></a>实体信息</h3><p>请求消息和响应消息都可以包含实体信息，实体信息一般由实体头域和实体组成。实体头域包含关于实体的原信息，实体头包括Allow、Content-Base、Content-Encoding、Content-Language、 Content-Length、Content-Location、Content-MD5、Content-Range、Content-Type、 Etag、Expires、Last-Modified、extension-header。</p>
 <h2 id="MVP-中对-Presenter-如何进行测试"><a href="#MVP-中对-Presenter-如何进行测试" class="headerlink" title="MVP 中对 Presenter 如何进行测试"></a>MVP 中对 Presenter 如何进行测试</h2><h3 id="各层单元测试选型"><a href="#各层单元测试选型" class="headerlink" title="各层单元测试选型"></a>各层单元测试选型</h3><p>各层由于特性不同，所采用的测试工具也不一样</p>
-<p><img src="/img/180709_interview/mvp_ut.png" alt="JVM"></p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="/img/180709_interview/mvp_ut.png" alt="JVM" title="">
+                </div>
+                <div class="image-caption">JVM</div>
+            </figure>
 <ul>
 <li>Model层：涉及数据库操作，依赖 Android 环境，使用 AndroidJUnitRunner 测试</li>
 <li>View层：涉及 UI，使用 Espresso 进行测试</li>
@@ -400,14 +440,32 @@
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">populateTask_callsRepoAndUpdatesView</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    Task testTask = <span class="keyword">new</span> Task(<span class="string">"TITLE"</span>, <span class="string">"DESCRIPTION"</span>);</span><br><span class="line">    <span class="comment">// Get a reference to the class under test</span></span><br><span class="line">    mAddEditTaskPresenter = <span class="keyword">new</span> AddEditTaskPresenter(testTask.getId(),</span><br><span class="line">            mTasksRepository, mAddEditTaskView, <span class="keyword">true</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// When the presenter is asked to populate an existing task</span></span><br><span class="line">    mAddEditTaskPresenter.populateTask(); <span class="comment">// 这里会调用 Repository 里面的 getTask 方法</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// Then the task repository is queried and the view updated</span></span><br><span class="line">    <span class="comment">// 验证调用到了 getTask 方法，并且将回调赋给 mGetTaskCallbackCaptor，后面可以对 captor 自由触发回调</span></span><br><span class="line">    verify(mTasksRepository).getTask(eq(testTask.getId()), mGetTaskCallbackCaptor.capture());</span><br><span class="line">    assertThat(mAddEditTaskPresenter.isDataMissing(), is(<span class="keyword">true</span>)); <span class="comment">// 这时候还没有加载成功 task</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// Simulate callback</span></span><br><span class="line">    mGetTaskCallbackCaptor.getValue().onTaskLoaded(testTask);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 验证 View 里面相应方法得到调用</span></span><br><span class="line">    verify(mAddEditTaskView).setTitle(testTask.getTitle());</span><br><span class="line">    verify(mAddEditTaskView).setDescription(testTask.getDescription());</span><br><span class="line">    assertThat(mAddEditTaskPresenter.isDataMissing(), is(<span class="keyword">false</span>)); <span class="comment">// 此时加载成功</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>综上，可以理解对 Presenter 进行单元测试的验证流程就是“调用 Presenter 里面的某个方法 -&gt; 将回调暂存 -&gt; 验证 View 里面相应的方法被执行 -&gt; 给回调赋值，验证回调”</p>
 <h2 id="屏幕物理尺寸，像素，dp，px，sp"><a href="#屏幕物理尺寸，像素，dp，px，sp" class="headerlink" title="屏幕物理尺寸，像素，dp，px，sp"></a>屏幕物理尺寸，像素，dp，px，sp</h2><p>物理尺寸：这个很好理解，就是屏幕长多少mm，宽多少mm。但通常不会直接说长宽，而是用“xx英寸”表示，比如我的小米5x就是5.5英寸，这里的5.5英寸指的是对角线长度，1英寸 ≈ 2.54cm，5.5英寸 ≈ 13.97cm ≈ 14cm，市面上如今 90% 以上的手机都是 16:9 的，所以可以列出方程 (16x)^2 + (9x)^2 = 14^2，解方程得到 x = 0.76cm，得出小米5x屏幕物理尺寸为长 12.16cm，宽 6.84cm。</p>
-<p><img src="/img/180709_interview/5x_screen_size.jpg" alt="5x屏幕尺寸"></p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="/img/180709_interview/5x_screen_size.jpg" alt="5x屏幕尺寸" title="">
+                </div>
+                <div class="image-caption">5x屏幕尺寸</div>
+            </figure>
 <p>分辨率/像素：从上图里看到，5x宽高为 1080px * 1920px，对于这样的手机通常称其分辨率为 1080p。像素的概念比较容易理解，一个像素就是液晶屏的一个最小发光单元，8-bit 游戏常被称为像素游戏，因为像素颗粒通常比较大，图像有方块感。</p>
 <p>物理尺寸与分辨率没有必然的关系。</p>
 <p>像素密度：Pixels Per Inch，PPI，也称为 Dots Per Inch（DPI）。每英寸上排列的像素个数，这个“每英寸”是长还是宽呢？都不是，是指对角线。通过勾股定理计算，1080*1920 分辨率的屏幕，其对角线像素数为 2203p，那么小米5x的 PPI 就是 2203/5.5 = 400。像素密度越高，锯齿感越低，显示越精细。</p>
 <p>倍率和逻辑像素：iPhone 3gs 和 4s，物理尺寸都是 3.5 英寸，3gs 的分辨率是 320x480，4s 的分辨率则是 640x960，4s 的像素密度是 3gs 的两倍，单个像素尺寸是 3gs 的一半。但是在显示中，这两个设备的显示效果却是一样的，原因在于 4s 用 2x2 个像素合并成 1 个像素，如下图。这使得同样的图片在 4s 上显示更加清晰。然而这对图片源文件有要求，必须使用带有“@2x”后缀的图片，系统会自动将其用于 4s 设备上。</p>
-<p><img src="/img/180709_interview/ip_3gs_4s.png" alt="3gs 4s"></p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="/img/180709_interview/ip_3gs_4s.png" alt="3gs 4s" title="">
+                </div>
+                <div class="image-caption">3gs 4s</div>
+            </figure>
 <p>上面讲的是苹果的处理方法，对于 Android 这并不太适用，因为 Android 设备的分辨率实在太多了。因此划分为多种尺寸，如下。</p>
-<p><img src="/img/180709_interview/Android_dpi.png" alt="Android DPI"></p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="/img/180709_interview/Android_dpi.png" alt="Android DPI" title="">
+                </div>
+                <div class="image-caption">Android DPI</div>
+            </figure>
 <p>以 160DPI（mdpi） 为基准，倍率为一倍，其它密度以此计算。在 160DPI的情况下，1px = 1dp。</p>
 <ul>
 <li>ldpi [0.75倍]</li>
@@ -422,198 +480,264 @@
 <p>dp：device independent pixels, 设备独立像素，安卓专用长度单位，以160ppi屏幕为标准，则 1dp=1px。dp*ppi/160=px</p>
 <p>sp：scaled pixels,放大像素，安卓专用字体单位，以160ppi屏幕为标准，字体大小为100%时，则1dp=1px</p>
 <p>Android 一般以 360x640 的逻辑尺寸来设计 UI</p>
-<p><img src="/img/180709_interview/Android_Screen_Size.png" alt="Android常见屏幕尺寸与DPI"></p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="/img/180709_interview/Android_Screen_Size.png" alt="Android常见屏幕尺寸与DPI" title="">
+                </div>
+                <div class="image-caption">Android常见屏幕尺寸与DPI</div>
+            </figure>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    
+    <div class="content">
+        
+<span class="post-time">
+    Last updated: <time datetime="2018-08-06T06:09:28.648Z" itemprop="dateUpdated">2018-08-06 14:09:28</time>
+</span><br>
+
+
+        
+        这里可以写作者留言，标签和 hexo 中所有变量及辅助函数等均可调用，示例：<a href="/2018/07/09/interview-180709/" target="_blank" rel="external">https://lilei.pro/2018/07/09/interview-180709/</a>
+        
+    </div>
+    
+    <footer>
+        <a href="https://lilei.pro">
+            <img src="/img/avatar.jpeg" alt="Li Lei">
+            Li Lei
+        </a>
+    </footer>
+</blockquote>
+
+        
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Android/">Android</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/面试/">面试</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://lilei.pro/2018/07/09/interview-180709/&title=《面试知识整理 2018.07.09》 — 柘个角落&pic=https://lilei.pro/img/avatar.jpeg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://lilei.pro/2018/07/09/interview-180709/&title=《面试知识整理 2018.07.09》 — 柘个角落&source=技术与生活上的点滴积累" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://lilei.pro/2018/07/09/interview-180709/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《面试知识整理 2018.07.09》 — 柘个角落&url=https://lilei.pro/2018/07/09/interview-180709/&via=https://lilei.pro" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://lilei.pro/2018/07/09/interview-180709/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
 
     
-  </div>
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/2018/07/21/dianping-meituan-mobile-share-0721/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">美团技术沙龙第39期：新思路打造移动端高效研发体系 小记</h4>
+      </a>
+    </div>
+  
 
   
-      <div class="git"></div>
+    <div class="waves-block waves-effect next">
+      <a href="/2018/07/06/okhttp/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">OkHttp 源码学习</h4>
+      </a>
+    </div>
   
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 </article>
 
 
-   
-
-   
-  <div class="box-prev-next clearfix">
-    <a class="show pull-left" href="/2018/07/06/okhttp/">
-        <i class="icon icon-angle-left"></i>
-    </a>
-    <a class="show pull-right" href="/2018/07/21/dianping-meituan-mobile-share-0721/">
-        <i class="icon icon-angle-right"></i>
-    </a>
-  </div>
-
-
-
 
 </div>
 
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        站点总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        站点总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
 
-  <a id="backTop" class="back-top">
-    <i class="icon-angle-up"></i>
-  </a>
 
-
-
-
-  <div class="modal" id="modal">
-  <span id="cover" class="cover hide"></span>
-  <div id="modal-dialog" class="modal-dialog hide-dialog">
-    <div class="modal-header">
-      <span id="close" class="btn-close">关闭</span>
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>This blog is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.</span>
+        </p>
     </div>
-    <hr>
-    <div class="modal-body">
-      <ul class="list-toolbox">
-        
-          <li class="item-toolbox">
-            <a
-              class="CIRCLE"
-              href="/archives/"
-              rel="noopener noreferrer"
-              target="_self"
-              >
-              博客
-            </a>
-          </li>
-        
-          <li class="item-toolbox">
-            <a
-              class="CIRCLE"
-              href="/category/"
-              rel="noopener noreferrer"
-              target="_self"
-              >
-              分类
-            </a>
-          </li>
-        
-          <li class="item-toolbox">
-            <a
-              class="CIRCLE"
-              href="/tag/"
-              rel="noopener noreferrer"
-              target="_self"
-              >
-              标签
-            </a>
-          </li>
-        
-          <li class="item-toolbox">
-            <a
-              class="CIRCLE"
-              href="/link/"
-              rel="noopener noreferrer"
-              target="_self"
-              >
-              友链
-            </a>
-          </li>
-        
-          <li class="item-toolbox">
-            <a
-              class="CIRCLE"
-              href="/about/"
-              rel="noopener noreferrer"
-              target="_self"
-              >
-              关于
-            </a>
-          </li>
-        
-          <li class="item-toolbox">
-            <a
-              class="CIRCLE"
-              href="/search/"
-              rel="noopener noreferrer"
-              target="_self"
-              >
-              搜索
-            </a>
-          </li>
-        
-      </ul>
-
+    <div class="bottom">
+        <p><span>Li Lei &copy; 2015 - 2019</span>
+            <span>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
     </div>
-  </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://lilei.pro/2018/07/09/interview-180709/&title=《面试知识整理 2018.07.09》 — 柘个角落&pic=https://lilei.pro/img/avatar.jpeg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://lilei.pro/2018/07/09/interview-180709/&title=《面试知识整理 2018.07.09》 — 柘个角落&source=技术与生活上的点滴积累" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://lilei.pro/2018/07/09/interview-180709/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《面试知识整理 2018.07.09》 — 柘个角落&url=https://lilei.pro/2018/07/09/interview-180709/&via=https://lilei.pro" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://lilei.pro/2018/07/09/interview-180709/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACMElEQVR42u3aQW7DMAwF0dz/0u62QGBnPqW0EDlaFa4b6XXBkCJfL7yut/X7+d2b78+fP+3uM7ctGTJkHMu4Htfz4Wq7kN352WTIkDGHcbcxCawczMMxP5sMGTJkpCSeCPInMmTIkFELuBzAE8F/+N6QIUPGUQxSTJL3a2lfbS8ZMmTMYfDLsr//+Sv9DRkyZBzFuMJFWpIkceRP0KlkyJDRmsEDXC0hW08Tg/PIkCGjKYOPOJAN0mBdGylDG8uQIaMRgzcO+RU/TyJ5colOJUOGjKYM3gDg4XVXCCbJqAwZMqYx+JAED6brl2uoRSFDhozWDB5YSZDlJW5aoKLLPhkyZDRl1IauakUpH/zijVLUiZUhQ8bhjLRhwK/102K4lpLKkCFjAiMOYV8YmOCtiA/TIjJkyBjDSC/reVOBNyx5A1WGDBkTGCQUBhllWKzWkPHUmwwZMg5npOUoKVbT9G5Dm0GGDBmtGfwKnmzPD82v+UirQIYMGTJWRsfSMnjDiIYMGTKaMtKUbuUJH7NIS18ZMmTMZPArtvWAyy/m4oArQ4aMpow0RdvVNqidQYYMGb0ZV7j49dxKwzJuFciQIaM1g69iugYCa1r0pl8VMmTI6MFI2wDP75AyNf2XoXRWhgwZAxi1grN26b+ODH4hQ4aMwYzawMTKmMWHQCxDhgwZW6npEckImgwZMiYwSBFbazSu/y1qZ8qQIaM1o1Y6kit7cojaoNhSf0OGDBknMX4A26xBzyb65SMAAAAASUVORK5CYII=" alt="微信分享二维码">
 </div>
 
 
 
-  
-      <div class="fexo-comments comments-post">
-    
 
-    
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: false };
 
-    
-    
 
-    
-
-    
-    
-
-    <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
-    <script src="//unpkg.com/valine@latest/dist/Valine.min.js"></script>
-    <div id="comment" class="vcomment" ></div>
-    <script>
-        var notify = 'false' == true ? true : false;
-        var verify = 'false' == true ? true : false;
-        var GUEST_INFO = ['nick','mail','link'];
-        var guest_info = 'nick,mail,link'.split(',').filter(function(item){
-            return GUEST_INFO.indexOf(item) > -1
-        });
-        guest_info = guest_info.length == 0 ? GUEST_INFO :guest_info;
-        window.valine = new Valine({
-            el: '.vcomment',
-            notify: notify,
-            verify: verify,
-            appId: "khG3rBt0nWda7lxDUHpS3Sq0-gzGzoHsz",
-            appKey: "btFkQfcBgJeCRm55mYmUgA5d",
-            avatar:'mm',
-            placeholder: "畅所欲言...",
-            guest_info:guest_info,
-            pageSize:'10'
-        });
-    </script>
-  
-  </div>
-
-  
-
-  <script type="text/javascript">
-  function loadScript(url, callback) {
-    var script = document.createElement('script')
-    script.type = 'text/javascript';
-
-    if (script.readyState) { //IE
-      script.onreadystatechange = function() {
-        if (script.readyState == 'loaded' ||
-          script.readyState == 'complete') {
-          script.onreadystatechange = null;
-          callback();
-        }
-      };
-    } else { //Others
-      script.onload = function() {
-        callback();
-      };
-    }
-
-    script.src = url;
-    document.getElementsByTagName('head')[0].appendChild(script);
-  }
-
-  window.onload = function() {
-    loadScript('/js/bundle.js?235683', function() {
-      // load success
-    });
-  }
 </script>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/main.min.js"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/search.min.js" async></script>
+
+
+
+
+
+
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
 
 </body>
 </html>

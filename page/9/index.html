@@ -1,215 +1,721 @@
 <!DOCTYPE html>
-
-
-  <html class="light page-home">
-
-
+<html>
 <head>
-  <meta charset="utf-8">
-  
-  <title>One Step, One Punch</title>
+    
 
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
 
-  
-    <meta name="keywords" content="李磊,lilei,Android,Java,iOS,Hexo" />
-  
+    
 
-  <meta property="og:type" content="website">
-<meta property="og:title" content="One Step, One Punch">
-<meta property="og:url" content="http://lilei.work/page/9/index.html">
-<meta property="og:site_name" content="One Step, One Punch">
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    
+    <title>柘个角落 | IF YOU WANT SOMETHING, GO GET IT. PERIOD.</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="undefined">
+    <meta name="description" content="技术与生活上的点滴积累">
+<meta property="og:type" content="website">
+<meta property="og:title" content="柘个角落">
+<meta property="og:url" content="https://lilei.pro/page/9/index.html">
+<meta property="og:site_name" content="柘个角落">
+<meta property="og:description" content="技术与生活上的点滴积累">
 <meta property="og:locale" content="default">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="One Step, One Punch">
+<meta name="twitter:title" content="柘个角落">
+<meta name="twitter:description" content="技术与生活上的点滴积累">
+    
+        <link rel="alternate" type="application/atom+xml" title="柘个角落" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/img/favicon.ico">
+    <link rel="stylesheet" href="//unpkg.com/hexo-theme-material-indigo@latest/css/style.css">
+    <script>window.lazyScripts=[]</script>
 
-  
+    <!-- custom head -->
+    
 
-  
-    <link rel="icon" href="/favicon.ico">
-  
-
-  <link href="/css/styles.css?v=c114cbe6" rel="stylesheet">
-
-
-  
-    <link rel="stylesheet" href="/css/personal-style.css">
-  
-
-  
-
-  
-
-  
-
-
-  
-    <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
-  
-
-  
-    <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.3.0/css/font-awesome.min.css">
-  
 </head>
 
 <body>
+    <div id="loading" class="active"></div>
 
-
-  
-
-  
-  <div class="content-home text-center">
-  <a class="avatar" href="/">
-    <img src="/images/avatar.jpeg" alt="" />
-  </a>
-  <h1 class="name" style="font-family: calligraffittiregular">
-    李磊&#39;s blog
-  </h1>
-  <div class="slogan">
-    One Step, One Punch
-  </div>
-
-  <hr>
-
-  <ul class="text-center nav">
-    
-      <li class="item">
-        
-          <a href="/archives">Blog</a>
-        
-        <span>|</span>
-      </li>
-    
-      <li class="item">
-        
-          <a href="https://github.com/BeQuietLee" rel="noopener noreferrer" target="_blank">Github</a>
-        
-        <span>|</span>
-      </li>
-    
-  </ul>
-
-</div>
-
-
-
-
-
-  <div class="modal" id="modal">
-  <span id="cover" class="cover hide"></span>
-  <div id="modal-dialog" class="modal-dialog hide-dialog">
-    <div class="modal-header">
-      <span id="close" class="btn-close">关闭</span>
+    <aside id="menu"  >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/avatar.jpeg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">Li Lei</h5>
+          <a href="mailto:bequietlee#gmail.com" title="bequietlee#gmail.com" class="mail">bequietlee#gmail.com</a>
+        </hgroup>
+      </div>
     </div>
-    <hr>
-    <div class="modal-body">
-      <ul class="list-toolbox">
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
         
-          <li class="item-toolbox">
-            <a
-              class="CIRCLE"
-              href="/archives/"
-              rel="noopener noreferrer"
-              target="_self"
-              >
-              博客
-            </a>
-          </li>
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                主页
+              </a>
+            </li>
         
-          <li class="item-toolbox">
-            <a
-              class="CIRCLE"
-              href="/category/"
-              rel="noopener noreferrer"
-              target="_self"
-              >
-              分类
-            </a>
-          </li>
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                文章
+              </a>
+            </li>
         
-          <li class="item-toolbox">
-            <a
-              class="CIRCLE"
-              href="/tag/"
-              rel="noopener noreferrer"
-              target="_self"
-              >
-              标签
-            </a>
-          </li>
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+                标签
+              </a>
+            </li>
         
-          <li class="item-toolbox">
-            <a
-              class="CIRCLE"
-              href="/link/"
-              rel="noopener noreferrer"
-              target="_self"
-              >
-              友链
-            </a>
-          </li>
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/bequietlee" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
         
-          <li class="item-toolbox">
-            <a
-              class="CIRCLE"
-              href="/about/"
-              rel="noopener noreferrer"
-              target="_self"
-              >
-              关于
-            </a>
-          </li>
-        
-          <li class="item-toolbox">
-            <a
-              class="CIRCLE"
-              href="/search/"
-              rel="noopener noreferrer"
-              target="_self"
-              >
-              搜索
-            </a>
-          </li>
+            <li class="waves-block waves-effect">
+              <a href="/2019/03/10/links"  >
+                <i class="icon icon-lg icon-link"></i>
+                友情链接
+              </a>
+            </li>
         
       </ul>
-
     </div>
   </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">柘个角落</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="Search">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header index-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">柘个角落</h1>
+        <h5 class="subtitle">
+            
+                IF YOU WANT SOMETHING, GO GET IT. PERIOD.
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+<div class="container body-wrap">
+
+    <ul class="post-list">
+    
+        <li class="post-list-item fade">
+            <article id="post-Android-Performance-Patterns-序言"
+  class="article-card article-type-post" itemprop="blogPost">
+
+    <div class="post-meta">
+        <time class="post-time" title="2016-02-18 20:33:29" datetime="2016-02-18T12:33:29.000Z"  itemprop="datePublished">2016-02-18</time>
+
+        
+
+
+    </div>
+
+    
+
+
+  
+    <h3 class="post-title" itemprop="name">
+      <a class="post-title-link" href="/2016/02/18/Android-Performance-Patterns-序言/">Android Performance Patterns - 序言</a>
+    </h3>
+  
+
+
+
+
+    <div class="post-content" id="post-content" itemprop="postContent">
+
+    
+        
+Android Performance Patterns 是 Android Developers 在youtube上发布的一系列Android性能优化小视频，每一部都不超过5分钟，目前为止发布到了Season 5，共73部。
+
+播放列表地址：link（视频下方有字幕开关，你也可以点击键盘上的C键来操作字幕）
+    
+
+        <a href="/2016/02/18/Android-Performance-Patterns-序言/" class="post-more waves-effect waves-button">
+            Continue reading...
+        </a>
+    </div>
+    
+    <div class="post-footer">
+        
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Android-Performance-Patterns/">Android Performance Patterns</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/技术流/">技术流</a></li></ul>
+
+    </div>
+    
+</article>
+
+        </li>
+    
+        <li class="post-list-item fade">
+            <article id="post-ProGit读书笔记Chapter3"
+  class="article-card article-type-post" itemprop="blogPost">
+
+    <div class="post-meta">
+        <time class="post-time" title="2016-02-17 21:23:42" datetime="2016-02-17T13:23:42.000Z"  itemprop="datePublished">2016-02-17</time>
+
+        
+
+
+    </div>
+
+    
+
+
+  
+    <h3 class="post-title" itemprop="name">
+      <a class="post-title-link" href="/2016/02/17/ProGit读书笔记Chapter3/">ProGit读书笔记（Chapter3）</a>
+    </h3>
+  
+
+
+
+
+    <div class="post-content" id="post-content" itemprop="postContent">
+
+    
+        
+Chapter 3. Git Branching本章讲解Git分支功能实现的基本原理、merge操作、rebase操作等等
+    
+
+        <a href="/2016/02/17/ProGit读书笔记Chapter3/" class="post-more waves-effect waves-button">
+            Continue reading...
+        </a>
+    </div>
+    
+    <div class="post-footer">
+        
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/技术流/">技术流</a></li></ul>
+
+    </div>
+    
+</article>
+
+        </li>
+    
+        <li class="post-list-item fade">
+            <article id="post-ProGit读书笔记Chapter2"
+  class="article-card article-type-post" itemprop="blogPost">
+
+    <div class="post-meta">
+        <time class="post-time" title="2016-02-14 19:21:22" datetime="2016-02-14T11:21:22.000Z"  itemprop="datePublished">2016-02-14</time>
+
+        
+
+
+    </div>
+
+    
+
+
+  
+    <h3 class="post-title" itemprop="name">
+      <a class="post-title-link" href="/2016/02/14/ProGit读书笔记Chapter2/">ProGit读书笔记（Chapter2）</a>
+    </h3>
+  
+
+
+
+
+    <div class="post-content" id="post-content" itemprop="postContent">
+
+    
+        
+2016年春节前大概一周时间，忘了什么契机，忽然觉得自己用了Git这么久，一直处于一知半解的状态，而Git作为一个出色的VCS，自问世以来长盛不衰，一定有其道理。本着“不但要知其然，还要知其所以然”的态度，决定认真读一读《Pro Git》。说来惭愧，组内最开始从Subversion迁移到Git时，一新就向大家推荐过这本书，当时自己简单翻了翻，由于有其他事情就耽搁下，一直没有再打开过。
+
+    
+
+        <a href="/2016/02/14/ProGit读书笔记Chapter2/" class="post-more waves-effect waves-button">
+            Continue reading...
+        </a>
+    </div>
+    
+    <div class="post-footer">
+        
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/技术流/">技术流</a></li></ul>
+
+    </div>
+    
+</article>
+
+        </li>
+    
+        <li class="post-list-item fade">
+            <article id="post-Nova-Automation-Practice"
+  class="article-card article-type-post" itemprop="blogPost">
+
+    <div class="post-meta">
+        <time class="post-time" title="2016-01-28 11:27:49" datetime="2016-01-28T03:27:49.000Z"  itemprop="datePublished">2016-01-28</time>
+
+        
+
+
+    </div>
+
+    
+
+
+  
+    <h3 class="post-title" itemprop="name">
+      <a class="post-title-link" href="/2016/01/28/Nova-Automation-Practice/">nova自动化测试探索与实践</a>
+    </h3>
+  
+
+
+
+
+    <div class="post-content" id="post-content" itemprop="postContent">
+
+    
+        
+自动化测试可行性分析针对android-nova项目，每个新版本发布之前，RD 都需要进行主流程回归，这是一项重复且耗时的工作，“重复”是指每2～3周发版时就要进行一次，“耗时”则因为平均一条业务线要用一个小时时间——这还只是单android平台。实现自动化后，可以大大减轻 RD 负担，并且可在迭代过程中建立 daily build 机制，及早发现问题，提高提测质量。
+    
+
+        <a href="/2016/01/28/Nova-Automation-Practice/" class="post-more waves-effect waves-button">
+            Continue reading...
+        </a>
+    </div>
+    
+    <div class="post-footer">
+        
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/技术流/">技术流</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/自动化测试/">自动化测试</a></li></ul>
+
+    </div>
+    
+</article>
+
+        </li>
+    
+        <li class="post-list-item fade">
+            <article id="post-携程动态加载实践DynamicAPK项目学习"
+  class="article-card article-type-post" itemprop="blogPost">
+
+    <div class="post-meta">
+        <time class="post-time" title="2016-01-18 22:40:33" datetime="2016-01-18T14:40:33.000Z"  itemprop="datePublished">2016-01-18</time>
+
+        
+
+
+    </div>
+
+    
+
+
+  
+    <h3 class="post-title" itemprop="name">
+      <a class="post-title-link" href="/2016/01/18/携程动态加载实践DynamicAPK项目学习/">携程动态加载实践DynamicAPK项目学习</a>
+    </h3>
+  
+
+
+
+
+    <div class="post-content" id="post-content" itemprop="postContent">
+
+    
+        
+术语宿主：Host Apk，打包运行的总项目，用于集成各个子工程，相当于android-nova壳，只有一个
+插件：Plugin，子工程，由各个业务线独立开发，可以依赖宿主提供的资源，一个宿主能够拥有多个插件
+
+    
+
+        <a href="/2016/01/18/携程动态加载实践DynamicAPK项目学习/" class="post-more waves-effect waves-button">
+            Continue reading...
+        </a>
+    </div>
+    
+    <div class="post-footer">
+        
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/技术流/">技术流</a></li></ul>
+
+    </div>
+    
+</article>
+
+        </li>
+    
+        <li class="post-list-item fade">
+            <article id="post-项目交接那点事儿"
+  class="article-card article-type-post" itemprop="blogPost">
+
+    <div class="post-meta">
+        <time class="post-time" title="2016-01-15 17:01:24" datetime="2016-01-15T09:01:24.000Z"  itemprop="datePublished">2016-01-15</time>
+
+        
+
+
+    </div>
+
+    
+
+
+  
+    <h3 class="post-title" itemprop="name">
+      <a class="post-title-link" href="/2016/01/15/项目交接那点事儿/">项目交接那点事儿</a>
+    </h3>
+  
+
+
+
+
+    <div class="post-content" id="post-content" itemprop="postContent">
+
+    
+        
+源文档链接 by 李全民(BigFootprint)
+
+2015年末，我去北京美团总部进行B端Android排号APP交接，历时2个礼拜。这是我第一次单独承接一整个客户端项目的交接，加上这还是毕业3年以来首次出差，过程中犯了一些错误，也走了很多弯路。同时，上海的小伙伴们在与美团同事进行美团app的交接。交接结束后，大家总结了本次遇到的一些问题，同时详细列出了一次成功的交接应该完成哪些任务。
+
+
+    
+
+        <a href="/2016/01/15/项目交接那点事儿/" class="post-more waves-effect waves-button">
+            Continue reading...
+        </a>
+    </div>
+    
+    <div class="post-footer">
+        
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/技术流/">技术流</a></li></ul>
+
+    </div>
+    
+</article>
+
+        </li>
+    
+        <li class="post-list-item fade">
+            <article id="post-博客工具"
+  class="article-card article-type-post" itemprop="blogPost">
+
+    <div class="post-meta">
+        <time class="post-time" title="2016-01-14 21:00:29" datetime="2016-01-14T13:00:29.000Z"  itemprop="datePublished">2016-01-14</time>
+
+        
+
+
+    </div>
+
+    
+
+
+  
+    <h3 class="post-title" itemprop="name">
+      <a class="post-title-link" href="/2016/01/14/博客工具/">博客工具</a>
+    </h3>
+  
+
+
+
+
+    <div class="post-content" id="post-content" itemprop="postContent">
+
+    
+        
+一些提高网站与博客编辑、浏览效率的工具
+
+
+    
+
+        <a href="/2016/01/14/博客工具/" class="post-more waves-effect waves-button">
+            Continue reading...
+        </a>
+    </div>
+    
+    <div class="post-footer">
+        
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/工作效率/">工作效率</a></li></ul>
+
+    </div>
+    
+</article>
+
+        </li>
+    
+        <li class="post-list-item fade">
+            <article id="post-半年来我吃过的那些蛋白粉"
+  class="article-card article-type-post" itemprop="blogPost">
+
+    <div class="post-meta">
+        <time class="post-time" title="2016-01-14 20:49:23" datetime="2016-01-14T12:49:23.000Z"  itemprop="datePublished">2016-01-14</time>
+
+        
+
+
+    </div>
+
+    
+
+
+  
+    <h3 class="post-title" itemprop="name">
+      <a class="post-title-link" href="/2016/01/14/半年来我吃过的那些蛋白粉/">半年来我吃过的那些蛋白粉</a>
+    </h3>
+  
+
+
+
+
+    <div class="post-content" id="post-content" itemprop="postContent">
+
+    
+        练身体的人大多会经历以下几个阶段：
+
+初次办卡，没请过教练，自己在健身房里漫无目的地乱玩
+有目的有计划地进行独立训练
+注重日常饮食中蛋白质的补充，一般会从水煮蛋开始，进阶的会选择鸡胸肉
+接触并使用蛋白粉
+进一步接触肌酸、氮泵、BCAAs（支链氨酸）、谷氨酰胺乃至促睾等
+已经超出了笔者目前认知阶段
+
+由于自己从使用补剂以来，陆续尝试过了市面上几种常见的品牌和口味，这里整理出来，方便自己以后对比选择，也希望为尚未接触补剂的朋友提供一些初级的知识。
+
+    
+
+        <a href="/2016/01/14/半年来我吃过的那些蛋白粉/" class="post-more waves-effect waves-button">
+            Continue reading...
+        </a>
+    </div>
+    
+    <div class="post-footer">
+        
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/大保健/">大保健</a></li></ul>
+
+    </div>
+    
+</article>
+
+        </li>
+    
+        <li class="post-list-item fade">
+            <article id="post-hello-world"
+  class="article-card article-type-post" itemprop="blogPost">
+
+    <div class="post-meta">
+        <time class="post-time" title="2016-01-10 21:00:29" datetime="2016-01-10T13:00:29.000Z"  itemprop="datePublished">2016-01-10</time>
+
+        
+
+
+    </div>
+
+    
+
+
+  
+    <h3 class="post-title" itemprop="name">
+      <a class="post-title-link" href="/2016/01/10/hello-world/">Hello World</a>
+    </h3>
+  
+
+
+
+
+    <div class="post-content" id="post-content" itemprop="postContent">
+
+    
+        Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub.
+
+    
+
+        <a href="/2016/01/10/hello-world/" class="post-more waves-effect waves-button">
+            Continue reading...
+        </a>
+    </div>
+    
+    <div class="post-footer">
+        
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/工作效率/">工作效率</a></li></ul>
+
+    </div>
+    
+</article>
+
+        </li>
+    
+    </ul>
+
+    
+<nav id="page-nav">
+    <div class="inner">
+    <a class="extend prev" rel="prev" href="/page/8/">上一页</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/7/">7</a><a class="page-number" href="/page/8/">8</a><span class="page-number current">9</span>
+    </div>
+</nav>
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        站点总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        站点总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>This blog is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.</span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>Li Lei &copy; 2015 - 2019</span>
+            <span>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://lilei.pro/page/9/&title=柘个角落&pic=https://lilei.pro/img/avatar.jpeg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://lilei.pro/page/9/&title=柘个角落&source=技术与生活上的点滴积累" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://lilei.pro/page/9/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=柘个角落&url=https://lilei.pro/page/9/&via=https://lilei.pro" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://lilei.pro/page/9/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAJYAAACWCAAAAAAZai4+AAABVElEQVR42u3aQQ6DMAwFUe5/abqtVCXMj8mi8WSFCiRPlTC2w3XhcYMxv/LaMWTJOoiVLvb9y+/xaH6+lixZnVlkuhGRXM/XkiVLFlmGn52HFVmyZL0bIPiLXJYsWXMWSZorpezGXF6WrCNYvKtTP97S35Il689ZdzjemudhFVmymrH4A8xfxighns4vS1Y3Fr9hx17kMDWXJasZi2xGzqNLvVh9+GtkyWrDmifH/MGe35uuK0tWHxZv8aSJctqQirNsWbIOYvHHvtISWtwElSVLFi5T6+FgMWmWJetoFilWKyFgMZeXJasNKy07K41glIjLktWGVfngIG0nBWdlyWrGShtApLjlBepaK0qWrFNZ6WZk+gEQ37yRJUtW2gaKG0P1XF6WLFn4FbsYDuoBQpaslixedvJiWJYsWfyjAZJYVwpjWbJ6suoJLtkK3TJkyTqB9QHkaJykrYpWrwAAAABJRU5ErkJggg==" alt="微信分享二维码">
 </div>
 
 
 
-  
 
-  <script type="text/javascript">
-  function loadScript(url, callback) {
-    var script = document.createElement('script')
-    script.type = 'text/javascript';
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: false };
 
-    if (script.readyState) { //IE
-      script.onreadystatechange = function() {
-        if (script.readyState == 'loaded' ||
-          script.readyState == 'complete') {
-          script.onreadystatechange = null;
-          callback();
-        }
-      };
-    } else { //Others
-      script.onload = function() {
-        callback();
-      };
-    }
 
-    script.src = url;
-    document.getElementsByTagName('head')[0].appendChild(script);
-  }
-
-  window.onload = function() {
-    loadScript('/js/bundle.js?235683', function() {
-      // load success
-    });
-  }
 </script>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/main.min.js"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/search.min.js" async></script>
+
+
+
+
+
+
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
 
 </body>
 </html>

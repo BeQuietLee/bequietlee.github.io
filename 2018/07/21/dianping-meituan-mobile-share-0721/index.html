@@ -1,203 +1,195 @@
 <!DOCTYPE html>
-
-
-  <html class="light page-post">
-
-
+<html>
 <head>
-  <meta charset="utf-8">
-  
-  <title>美团技术沙龙第39期：新思路打造移动端高效研发体系 小记 | One Step, One Punch</title>
+    
 
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
 
-  
-    <meta name="keywords" content="Android,点评," />
-  
+    
 
-  <meta name="description" content="偶然在美团技术团队公众号里看到有这个分享，主讲人是周辉、虞惠文、蒋国宝等人，内容基本上是移动研发专场，遂过来凑个热闹。时间是7月21日13:30~17:30，地点田林路200号华鑫天地  时间表   内容 主讲人     Picasso在大众点评首页的应用 虞惠文@美团Android开发工程师   移动前后端开发解耦 林晨@美团后端技术专家   打造稳定、灵活、高效的运营配置平台 蒋国宝@美团后">
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    
+    <title>美团技术沙龙第39期：新思路打造移动端高效研发体系 小记 | 柘个角落 | IF YOU WANT SOMETHING, GO GET IT. PERIOD.</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="Android,点评">
+    <meta name="description" content="偶然在美团技术团队公众号里看到有这个分享，主讲人是周辉、虞惠文、蒋国宝等人，内容基本上是移动研发专场，遂过来凑个热闹。时间是7月21日13:30~17:30，地点田林路200号华鑫天地  时间表   内容 主讲人     Picasso在大众点评首页的应用 虞惠文@美团Android开发工程师   移动前后端开发解耦 林晨@美团后端技术专家   打造稳定、灵活、高效的运营配置平台 蒋国宝@美团后">
 <meta name="keywords" content="Android,点评">
 <meta property="og:type" content="article">
 <meta property="og:title" content="美团技术沙龙第39期：新思路打造移动端高效研发体系 小记">
-<meta property="og:url" content="http://lilei.work/2018/07/21/dianping-meituan-mobile-share-0721/index.html">
-<meta property="og:site_name" content="One Step, One Punch">
+<meta property="og:url" content="https://lilei.pro/2018/07/21/dianping-meituan-mobile-share-0721/index.html">
+<meta property="og:site_name" content="柘个角落">
 <meta property="og:description" content="偶然在美团技术团队公众号里看到有这个分享，主讲人是周辉、虞惠文、蒋国宝等人，内容基本上是移动研发专场，遂过来凑个热闹。时间是7月21日13:30~17:30，地点田林路200号华鑫天地  时间表   内容 主讲人     Picasso在大众点评首页的应用 虞惠文@美团Android开发工程师   移动前后端开发解耦 林晨@美团后端技术专家   打造稳定、灵活、高效的运营配置平台 蒋国宝@美团后">
 <meta property="og:locale" content="default">
-<meta property="og:image" content="http://lilei.work/img/180721_dp_mobile/DP_Picasso.png">
-<meta property="og:image" content="http://lilei.work/img/180721_dp_mobile/DP_Picasso_PreCalc.png">
-<meta property="og:image" content="http://lilei.work/img/180721_dp_mobile/DP_Picasso_Cache.png">
-<meta property="og:image" content="http://lilei.work/img/180721_dp_mobile/DP_自动生成接口代码.png">
-<meta property="og:image" content="http://lilei.work/img/180721_dp_mobile/DP_APPMOCK.png">
-<meta property="og:image" content="http://lilei.work/img/180721_dp_mobile/DP_AppMock对比.png">
+<meta property="og:image" content="https://lilei.pro/img/180721_dp_mobile/DP_Picasso.png">
+<meta property="og:image" content="https://lilei.pro/img/180721_dp_mobile/DP_Picasso_PreCalc.png">
+<meta property="og:image" content="https://lilei.pro/img/180721_dp_mobile/DP_Picasso_Cache.png">
+<meta property="og:image" content="https://lilei.pro/img/180721_dp_mobile/DP_自动生成接口代码.png">
+<meta property="og:image" content="https://lilei.pro/img/180721_dp_mobile/DP_APPMOCK.png">
+<meta property="og:image" content="https://lilei.pro/img/180721_dp_mobile/DP_AppMock对比.png">
 <meta property="og:updated_time" content="2018-07-25T09:34:57.937Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="美团技术沙龙第39期：新思路打造移动端高效研发体系 小记">
 <meta name="twitter:description" content="偶然在美团技术团队公众号里看到有这个分享，主讲人是周辉、虞惠文、蒋国宝等人，内容基本上是移动研发专场，遂过来凑个热闹。时间是7月21日13:30~17:30，地点田林路200号华鑫天地  时间表   内容 主讲人     Picasso在大众点评首页的应用 虞惠文@美团Android开发工程师   移动前后端开发解耦 林晨@美团后端技术专家   打造稳定、灵活、高效的运营配置平台 蒋国宝@美团后">
-<meta name="twitter:image" content="http://lilei.work/img/180721_dp_mobile/DP_Picasso.png">
+<meta name="twitter:image" content="https://lilei.pro/img/180721_dp_mobile/DP_Picasso.png">
+    
+        <link rel="alternate" type="application/atom+xml" title="柘个角落" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/img/favicon.ico">
+    <link rel="stylesheet" href="//unpkg.com/hexo-theme-material-indigo@latest/css/style.css">
+    <script>window.lazyScripts=[]</script>
 
-  
+    <!-- custom head -->
+    
 
-  
-    <link rel="icon" href="/favicon.ico">
-  
-
-  <link href="/css/styles.css?v=c114cbe6" rel="stylesheet">
-
-
-  
-    <link rel="stylesheet" href="/css/personal-style.css">
-  
-
-  
-
-  
-
-  
-
-
-  
-    <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
-  
-
-  
-    <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.3.0/css/font-awesome.min.css">
-  
 </head>
 
 <body>
+    <div id="loading" class="active"></div>
 
-
-  
-    <span id="toolbox-mobile" class="toolbox-mobile">导航</span>
-  
-
-  <div class="post-header CENTER">
-   
-  <div class="toolbox">
-    <a class="toolbox-entry" href="/">
-      <span class="toolbox-entry-text">导航</span>
-      <i class="icon-angle-down"></i>
-      <i class="icon-home"></i>
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
     </a>
-    <ul class="list-toolbox">
-      
-        <li class="item-toolbox">
-          <a
-            class="CIRCLE"
-            href="/archives/"
-            rel="noopener noreferrer"
-            target="_self"
-            >
-            博客
-          </a>
-        </li>
-      
-        <li class="item-toolbox">
-          <a
-            class="CIRCLE"
-            href="/category/"
-            rel="noopener noreferrer"
-            target="_self"
-            >
-            分类
-          </a>
-        </li>
-      
-        <li class="item-toolbox">
-          <a
-            class="CIRCLE"
-            href="/tag/"
-            rel="noopener noreferrer"
-            target="_self"
-            >
-            标签
-          </a>
-        </li>
-      
-        <li class="item-toolbox">
-          <a
-            class="CIRCLE"
-            href="/link/"
-            rel="noopener noreferrer"
-            target="_self"
-            >
-            友链
-          </a>
-        </li>
-      
-        <li class="item-toolbox">
-          <a
-            class="CIRCLE"
-            href="/about/"
-            rel="noopener noreferrer"
-            target="_self"
-            >
-            关于
-          </a>
-        </li>
-      
-        <li class="item-toolbox">
-          <a
-            class="CIRCLE"
-            href="/search/"
-            rel="noopener noreferrer"
-            target="_self"
-            >
-            搜索
-          </a>
-        </li>
-      
-    </ul>
-  </div>
-
-
-</div>
-
-
-  <div id="toc" class="toc-article">
-    <strong class="toc-title">文章目录</strong>
-    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#时间表"><span class="toc-text">时间表</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#前言"><span class="toc-text">前言</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#周校长开场词"><span class="toc-text">周校长开场词</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Picasso-在大众点评首页的应用"><span class="toc-text">Picasso 在大众点评首页的应用</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#痛点"><span class="toc-text">痛点</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#技术需求"><span class="toc-text">技术需求</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#实践"><span class="toc-text">实践</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#移动开发前后端解耦实践"><span class="toc-text">移动开发前后端解耦实践</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#痛点-1"><span class="toc-text">痛点</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#接口管理困难"><span class="toc-text">接口管理困难</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#前后端交互黑盒"><span class="toc-text">前后端交互黑盒</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#前后端接口和数据依赖"><span class="toc-text">前后端接口和数据依赖</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#测试工作量"><span class="toc-text">测试工作量</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#打造稳定、灵活、高效的运营配置平台"><span class="toc-text">打造稳定、灵活、高效的运营配置平台</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#移动持续集成实践"><span class="toc-text">移动持续集成实践</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#感受"><span class="toc-text">感受</span></a></li></ol>
-  </div>
-
-
-
-<div class="content content-post CENTER">
-   <article id="post-dianping-meituan-mobile-share-0721" class="article article-type-post" itemprop="blogPost">
-  <header class="article-header">
-    <h1 class="post-title">美团技术沙龙第39期：新思路打造移动端高效研发体系 小记</h1>
-
-    <div class="article-meta">
-      <span>
-        <i class="icon-calendar"></i>
-        <span>2018.07.21</span>
-      </span>
-
-      
-        <span class="article-author">
-          <i class="icon-user"></i>
-          <span>Li Lei</span>
-        </span>
-      
-
-      
-
-
-      
-
-      
-      <i class="fa fa-eye"></i> 
-        <span id="busuanzi_container_page_pv">
-           &nbsp热度 <span id="busuanzi_value_page_pv">
-           <i class="fa fa-spinner fa-spin"></i></span>℃
-        </span>
-      
-      
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/avatar.jpeg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">Li Lei</h5>
+          <a href="mailto:bequietlee#gmail.com" title="bequietlee#gmail.com" class="mail">bequietlee#gmail.com</a>
+        </hgroup>
+      </div>
     </div>
-  </header>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                文章
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+                标签
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/bequietlee" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/2019/03/10/links"  >
+                <i class="icon icon-lg icon-link"></i>
+                友情链接
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
 
-  <div class="article-content">
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">美团技术沙龙第39期：新思路打造移动端高效研发体系 小记</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="Search">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">美团技术沙龙第39期：新思路打造移动端高效研发体系 小记</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2018-07-21T05:37:13.000Z" itemprop="datePublished" class="page-time">
+  2018-07-21
+</time>
+
+
+            
+        </h5>
+    </div>
+
     
-      <blockquote>
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#时间表"><span class="post-toc-number">1.</span> <span class="post-toc-text">时间表</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#前言"><span class="post-toc-number">2.</span> <span class="post-toc-text">前言</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#周校长开场词"><span class="post-toc-number">3.</span> <span class="post-toc-text">周校长开场词</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#Picasso-在大众点评首页的应用"><span class="post-toc-number">4.</span> <span class="post-toc-text">Picasso 在大众点评首页的应用</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#痛点"><span class="post-toc-number">4.1.</span> <span class="post-toc-text">痛点</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#技术需求"><span class="post-toc-number">4.2.</span> <span class="post-toc-text">技术需求</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#实践"><span class="post-toc-number">4.3.</span> <span class="post-toc-text">实践</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#移动开发前后端解耦实践"><span class="post-toc-number">5.</span> <span class="post-toc-text">移动开发前后端解耦实践</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#痛点-1"><span class="post-toc-number">5.1.</span> <span class="post-toc-text">痛点</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#接口管理困难"><span class="post-toc-number">5.2.</span> <span class="post-toc-text">接口管理困难</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#前后端交互黑盒"><span class="post-toc-number">5.3.</span> <span class="post-toc-text">前后端交互黑盒</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#前后端接口和数据依赖"><span class="post-toc-number">5.4.</span> <span class="post-toc-text">前后端接口和数据依赖</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#测试工作量"><span class="post-toc-number">6.</span> <span class="post-toc-text">测试工作量</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#打造稳定、灵活、高效的运营配置平台"><span class="post-toc-number">7.</span> <span class="post-toc-text">打造稳定、灵活、高效的运营配置平台</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#移动持续集成实践"><span class="post-toc-number">8.</span> <span class="post-toc-text">移动持续集成实践</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#感受"><span class="post-toc-number">9.</span> <span class="post-toc-text">感受</span></a></li></ol>
+        </nav>
+    </aside>
+
+
+<article id="post-dianping-meituan-mobile-share-0721"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">美团技术沙龙第39期：新思路打造移动端高效研发体系 小记</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2018-07-21 13:37:13" datetime="2018-07-21T05:37:13.000Z"  itemprop="datePublished">2018-07-21</time>
+
+            
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <blockquote>
 <p>偶然在美团技术团队公众号里看到有这个分享，主讲人是周辉、虞惠文、蒋国宝等人，内容基本上是移动研发专场，遂过来凑个热闹。时间是7月21日13:30~17:30，地点田林路200号华鑫天地</p>
 </blockquote>
 <h1 id="时间表"><a href="#时间表" class="headerlink" title="时间表"></a>时间表</h1><table>
@@ -240,12 +232,30 @@
 <li>双端不对齐，某些特性只支持单端</li>
 </ol>
 <p>所采取的设计思路是“服务端下发数据（data）和视图规则（layout）”，data 和 layout 会被计算成 PModel，其中包含了该视图被渲染至屏幕上的全部信息。</p>
-<p><img src="/img/180721_dp_mobile/DP_Picasso.png" alt="Picasso构思"></p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="/img/180721_dp_mobile/DP_Picasso.png" alt="Picasso构思" title="">
+                </div>
+                <div class="image-caption">Picasso构思</div>
+            </figure>
 <p>同时采用预计算&amp;缓存，降低绘制时的开销，提高绘制速度。</p>
 <p>预计算是指 PModel 包含了该视图所有尺寸信息，在随后渲染过程中的 measure 和 layout 这两步直接取用这些信息，而不需要再次计算。</p>
-<p><img src="/img/180721_dp_mobile/DP_Picasso_PreCalc.png" alt="预计算"></p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="/img/180721_dp_mobile/DP_Picasso_PreCalc.png" alt="预计算" title="">
+                </div>
+                <div class="image-caption">预计算</div>
+            </figure>
 <p>缓存是指缓存了 PModel，而非 Data（需要再次计算 PModel）</p>
-<p><img src="/img/180721_dp_mobile/DP_Picasso_Cache.png" alt="缓存"></p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="/img/180721_dp_mobile/DP_Picasso_Cache.png" alt="缓存" title="">
+                </div>
+                <div class="image-caption">缓存</div>
+            </figure>
 <h1 id="移动开发前后端解耦实践"><a href="#移动开发前后端解耦实践" class="headerlink" title="移动开发前后端解耦实践"></a>移动开发前后端解耦实践</h1><blockquote>
 <p>主要介绍了点评内部在前后端开发联调测试过程中使用的几个工具，主要是 AppMock（前身是 wendong.dp）、移动之家。的确有了这些工具，对于移动端开发的同学来说是极大的福音，离开点评之后深感如此。</p>
 </blockquote>
@@ -261,209 +271,287 @@
 <li>接口多维度管理</li>
 </ul>
 <p>通过“移动之家（mobile.dp）”进行接口注册，注册过程中需要明确标明接口数据结构和类型，注册完成之后，会有代码自动生成工具生成对应平台（Web、App、Server）的代码。</p>
-<p><img src="/img/180721_dp_mobile/DP_自动生成接口代码.png" alt="自动生成接口代码"></p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="/img/180721_dp_mobile/DP_自动生成接口代码.png" alt="自动生成接口代码" title="">
+                </div>
+                <div class="image-caption">自动生成接口代码</div>
+            </figure>
 <h2 id="前后端交互黑盒"><a href="#前后端交互黑盒" class="headerlink" title="前后端交互黑盒"></a>前后端交互黑盒</h2><p>由于网络环境复杂（3G、4G、WIFI），加上数据通常有加密序列化，想要实时查看接口数据信息通常要大费周章。这里介绍了 AppMock 的主要功能和原理，是在 APP 的网络层对请求进行重定向。</p>
-<p><img src="/img/180721_dp_mobile/DP_APPMOCK.png" alt="AppMock"></p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="/img/180721_dp_mobile/DP_APPMOCK.png" alt="AppMock" title="">
+                </div>
+                <div class="image-caption">AppMock</div>
+            </figure>
 <h2 id="前后端接口和数据依赖"><a href="#前后端接口和数据依赖" class="headerlink" title="前后端接口和数据依赖"></a>前后端接口和数据依赖</h2><p>后端同学测试接口：提供 APIReader 工具，可以在网页中组合参数，模拟客户端发送请求，测试后端接口<br>前端同学测试应用：AppMock 自动 mock response</p>
 <h1 id="测试工作量"><a href="#测试工作量" class="headerlink" title="测试工作量"></a>测试工作量</h1><p>自动化测试(Appium) + 自动化Mock，Mock 工具可以存储用例，这部分不细讲。</p>
 <p>最后是 AppMock 和业内类似工具的对比</p>
-<p><img src="/img/180721_dp_mobile/DP_AppMock对比.png" alt="对比"></p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="/img/180721_dp_mobile/DP_AppMock对比.png" alt="对比" title="">
+                </div>
+                <div class="image-caption">对比</div>
+            </figure>
 <h1 id="打造稳定、灵活、高效的运营配置平台"><a href="#打造稳定、灵活、高效的运营配置平台" class="headerlink" title="打造稳定、灵活、高效的运营配置平台"></a>打造稳定、灵活、高效的运营配置平台</h1><p>简单的说就是设计一个“可以设计显示规则”的平台，同时讨论了如何满足测试场景（建立测试用户名单）、如何降低中央节点负载（SDK方案）。</p>
 <h1 id="移动持续集成实践"><a href="#移动持续集成实践" class="headerlink" title="移动持续集成实践"></a>移动持续集成实践</h1><p>这部分没听，直接跑路去找卫鹏和小凡吃小龙虾去了。</p>
 <h1 id="感受"><a href="#感受" class="headerlink" title="感受"></a>感受</h1><p>有高兴也有惋惜，高兴的是，自己从2012年加入大众点评，当年那么生涩的自己得到了不少老同事的包容和宽宥，有些人虽然再未见到过，但他们所开发出来的优秀工具却造福了很多同事，能与这些人共事，是我一生的荣幸；同时，分享现场这么多年轻朝气的面孔，表明点评团队依然充满了吸引力和号召力。惋惜的是自己没有在点评的5年里，全力汲取他人的养分，白白辜负了这么好的土壤。</p>
 <p>点评只是我毕业后的第一所大学，而社会是第二所。</p>
 <p>望各自安好，一别两宽。</p>
 
+        </div>
+
+        <blockquote class="post-copyright">
     
-  </div>
+    <div class="content">
+        
+<span class="post-time">
+    Last updated: <time datetime="2018-07-25T09:34:57.937Z" itemprop="dateUpdated">2018-07-25 17:34:57</time>
+</span><br>
+
+
+        
+        这里可以写作者留言，标签和 hexo 中所有变量及辅助函数等均可调用，示例：<a href="/2018/07/21/dianping-meituan-mobile-share-0721/" target="_blank" rel="external">https://lilei.pro/2018/07/21/dianping-meituan-mobile-share-0721/</a>
+        
+    </div>
+    
+    <footer>
+        <a href="https://lilei.pro">
+            <img src="/img/avatar.jpeg" alt="Li Lei">
+            Li Lei
+        </a>
+    </footer>
+</blockquote>
+
+        
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Android/">Android</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/点评/">点评</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://lilei.pro/2018/07/21/dianping-meituan-mobile-share-0721/&title=《美团技术沙龙第39期：新思路打造移动端高效研发体系 小记》 — 柘个角落&pic=https://lilei.pro/img/avatar.jpeg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://lilei.pro/2018/07/21/dianping-meituan-mobile-share-0721/&title=《美团技术沙龙第39期：新思路打造移动端高效研发体系 小记》 — 柘个角落&source=技术与生活上的点滴积累" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://lilei.pro/2018/07/21/dianping-meituan-mobile-share-0721/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《美团技术沙龙第39期：新思路打造移动端高效研发体系 小记》 — 柘个角落&url=https://lilei.pro/2018/07/21/dianping-meituan-mobile-share-0721/&via=https://lilei.pro" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://lilei.pro/2018/07/21/dianping-meituan-mobile-share-0721/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/2018/07/26/interview-180726/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">面试知识整理 2018.07.26</h4>
+      </a>
+    </div>
+  
 
   
-      <div class="git"></div>
+    <div class="waves-block waves-effect next">
+      <a href="/2018/07/09/interview-180709/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">面试知识整理 2018.07.09</h4>
+      </a>
+    </div>
   
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 </article>
 
 
-   
-
-   
-  <div class="box-prev-next clearfix">
-    <a class="show pull-left" href="/2018/07/09/interview-180709/">
-        <i class="icon icon-angle-left"></i>
-    </a>
-    <a class="show pull-right" href="/2018/07/26/interview-180726/">
-        <i class="icon icon-angle-right"></i>
-    </a>
-  </div>
-
-
-
 
 </div>
 
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        站点总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        站点总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
 
-  <a id="backTop" class="back-top">
-    <i class="icon-angle-up"></i>
-  </a>
 
-
-
-
-  <div class="modal" id="modal">
-  <span id="cover" class="cover hide"></span>
-  <div id="modal-dialog" class="modal-dialog hide-dialog">
-    <div class="modal-header">
-      <span id="close" class="btn-close">关闭</span>
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>This blog is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.</span>
+        </p>
     </div>
-    <hr>
-    <div class="modal-body">
-      <ul class="list-toolbox">
-        
-          <li class="item-toolbox">
-            <a
-              class="CIRCLE"
-              href="/archives/"
-              rel="noopener noreferrer"
-              target="_self"
-              >
-              博客
-            </a>
-          </li>
-        
-          <li class="item-toolbox">
-            <a
-              class="CIRCLE"
-              href="/category/"
-              rel="noopener noreferrer"
-              target="_self"
-              >
-              分类
-            </a>
-          </li>
-        
-          <li class="item-toolbox">
-            <a
-              class="CIRCLE"
-              href="/tag/"
-              rel="noopener noreferrer"
-              target="_self"
-              >
-              标签
-            </a>
-          </li>
-        
-          <li class="item-toolbox">
-            <a
-              class="CIRCLE"
-              href="/link/"
-              rel="noopener noreferrer"
-              target="_self"
-              >
-              友链
-            </a>
-          </li>
-        
-          <li class="item-toolbox">
-            <a
-              class="CIRCLE"
-              href="/about/"
-              rel="noopener noreferrer"
-              target="_self"
-              >
-              关于
-            </a>
-          </li>
-        
-          <li class="item-toolbox">
-            <a
-              class="CIRCLE"
-              href="/search/"
-              rel="noopener noreferrer"
-              target="_self"
-              >
-              搜索
-            </a>
-          </li>
-        
-      </ul>
-
+    <div class="bottom">
+        <p><span>Li Lei &copy; 2015 - 2019</span>
+            <span>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
     </div>
-  </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://lilei.pro/2018/07/21/dianping-meituan-mobile-share-0721/&title=《美团技术沙龙第39期：新思路打造移动端高效研发体系 小记》 — 柘个角落&pic=https://lilei.pro/img/avatar.jpeg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://lilei.pro/2018/07/21/dianping-meituan-mobile-share-0721/&title=《美团技术沙龙第39期：新思路打造移动端高效研发体系 小记》 — 柘个角落&source=技术与生活上的点滴积累" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://lilei.pro/2018/07/21/dianping-meituan-mobile-share-0721/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《美团技术沙龙第39期：新思路打造移动端高效研发体系 小记》 — 柘个角落&url=https://lilei.pro/2018/07/21/dianping-meituan-mobile-share-0721/&via=https://lilei.pro" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://lilei.pro/2018/07/21/dianping-meituan-mobile-share-0721/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAN4AAADeCAAAAAB3DOFrAAACw0lEQVR42u3aQW7jMBAEQP//0wmw10ByN0cTB4vSyUhoiaUDOW7O6xVfX/+ufOTVlYy8v+dr48LDw8M7mvr9w5JJ5K/m/g4/n3v1OXpBeHh4eGu85DH3E80X9/tv5X+JNjA8PDy8j/LaAvd+Wsl08fDw8P4/XhI3tAFEOx88PDy8T/GSMCIZny/9k5B3JWvBw8PDi3ltFPsXPi+e7+Hh4eENTtXzQ/02qH0qCH4zWzw8PLwFXjKtvY6m9rttZIyHh4e3wWtD1cnxf96GlccTb34A4OHh4S3w2lA13x7aI7SzQKS4Jx4eHt4yLz+wn6fIyaTzFx1tDHh4eHhjXh5D5AvxfUHctgjU+cr9IDw8PLwB76yN6azgbmPZvHC//C8eHh7eGq+NEtp4t416279fjsHDw8Nb4LXL8aQcP3sRkyM6PDw8vD3es0dT8yX+rOHgTT6Nh4eH9ygvWb6TKbYHV2cbwGHTFR4eHt6j7apt6dwe3rdtWJONJ0qp8fDw8Ma8ZEF/9sFnzVt5ewEeHh7ep3h5zNpuCXmgcBYi4+Hh4e3x2qF5q0F7AJYU5XlIgYeHh7fHO5voWfCa37ltX7gciYeHh7fMmx9Ttd+dF9Bv7oCHh4f3i7xJ21NeECfTbYOM06wCDw8PL+W1x0tPtRoUh1hleR1lLXh4eHgDXv74yUaST709GKtLajw8PLxHeXk4e1b+PlvWR+0LeHh4eAu8SZl71qEwabHKmwyKt4iHh4dX8r7K69lItw0d8ji43vfw8PDwYt7Z4pvvNveTa4OMJIA421rw8PDwWl7eGpUs05OXks+hiEjw8PDw1nj5j/z8kWetA6PiOHnHeHh4eL/Im4e885dbByJ4eHh4f4aXlMWTe541EFyGEXh4eHgLvEkYkYSweTGdj4m2Bzw8PLwF3uQALI9Tk5HJ9jNv0sLDw8Mb8L4BsSbFOjJvRJcAAAAASUVORK5CYII=" alt="微信分享二维码">
 </div>
 
 
 
-  
-      <div class="fexo-comments comments-post">
-    
 
-    
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: false };
 
-    
-    
 
-    
-
-    
-    
-
-    <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
-    <script src="//unpkg.com/valine@latest/dist/Valine.min.js"></script>
-    <div id="comment" class="vcomment" ></div>
-    <script>
-        var notify = 'false' == true ? true : false;
-        var verify = 'false' == true ? true : false;
-        var GUEST_INFO = ['nick','mail','link'];
-        var guest_info = 'nick,mail,link'.split(',').filter(function(item){
-            return GUEST_INFO.indexOf(item) > -1
-        });
-        guest_info = guest_info.length == 0 ? GUEST_INFO :guest_info;
-        window.valine = new Valine({
-            el: '.vcomment',
-            notify: notify,
-            verify: verify,
-            appId: "khG3rBt0nWda7lxDUHpS3Sq0-gzGzoHsz",
-            appKey: "btFkQfcBgJeCRm55mYmUgA5d",
-            avatar:'mm',
-            placeholder: "畅所欲言...",
-            guest_info:guest_info,
-            pageSize:'10'
-        });
-    </script>
-  
-  </div>
-
-  
-
-  <script type="text/javascript">
-  function loadScript(url, callback) {
-    var script = document.createElement('script')
-    script.type = 'text/javascript';
-
-    if (script.readyState) { //IE
-      script.onreadystatechange = function() {
-        if (script.readyState == 'loaded' ||
-          script.readyState == 'complete') {
-          script.onreadystatechange = null;
-          callback();
-        }
-      };
-    } else { //Others
-      script.onload = function() {
-        callback();
-      };
-    }
-
-    script.src = url;
-    document.getElementsByTagName('head')[0].appendChild(script);
-  }
-
-  window.onload = function() {
-    loadScript('/js/bundle.js?235683', function() {
-      // load success
-    });
-  }
 </script>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/main.min.js"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/search.min.js" async></script>
+
+
+
+
+
+
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
 
 </body>
 </html>

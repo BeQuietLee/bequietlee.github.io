@@ -1,201 +1,193 @@
 <!DOCTYPE html>
-
-
-  <html class="light page-post">
-
-
+<html>
 <head>
-  <meta charset="utf-8">
-  
-  <title>Android Performance Patterns - s5ep8 Threading And Loaders | One Step, One Punch</title>
+    
 
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
 
-  
-    <meta name="keywords" content="技术流,Android Performance Patterns," />
-  
+    
 
-  <meta name="description" content="Let’s say you’ve got some 20 bitmaps being decoded on a worker thread. Well, what happens if your activity is destroyed before that work completes?相比于本期的大叔，笔者更喜欢之前的光头哥Video Link">
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    
+    <title>Android Performance Patterns - s5ep8 Threading And Loaders | 柘个角落 | IF YOU WANT SOMETHING, GO GET IT. PERIOD.</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="技术流,Android Performance Patterns">
+    <meta name="description" content="Let’s say you’ve got some 20 bitmaps being decoded on a worker thread. Well, what happens if your activity is destroyed before that work completes?相比于本期的大叔，笔者更喜欢之前的光头哥Video Link">
 <meta name="keywords" content="技术流,Android Performance Patterns">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Android Performance Patterns - s5ep8 Threading And Loaders">
-<meta property="og:url" content="http://lilei.work/2016/02/25/Android-Performance-Patterns-s5ep8-Threading-And-Loaders/index.html">
-<meta property="og:site_name" content="One Step, One Punch">
+<meta property="og:url" content="https://lilei.pro/2016/02/25/Android-Performance-Patterns-s5ep8-Threading-And-Loaders/index.html">
+<meta property="og:site_name" content="柘个角落">
 <meta property="og:description" content="Let’s say you’ve got some 20 bitmaps being decoded on a worker thread. Well, what happens if your activity is destroyed before that work completes?相比于本期的大叔，笔者更喜欢之前的光头哥Video Link">
 <meta property="og:locale" content="default">
-<meta property="og:image" content="http://lilei.work/img/160225_app_s5ep8/activity_destroy.png">
-<meta property="og:image" content="http://lilei.work/img/160225_app_s5ep8/use_activity_2.png">
-<meta property="og:image" content="http://lilei.work/img/160225_app_s5ep8/cache_result.png">
-<meta property="og:image" content="http://lilei.work/img/160225_app_s5ep8/report_stop.png">
+<meta property="og:image" content="https://lilei.pro/img/160225_app_s5ep8/activity_destroy.png">
+<meta property="og:image" content="https://lilei.pro/img/160225_app_s5ep8/use_activity_2.png">
+<meta property="og:image" content="https://lilei.pro/img/160225_app_s5ep8/cache_result.png">
+<meta property="og:image" content="https://lilei.pro/img/160225_app_s5ep8/report_stop.png">
 <meta property="og:updated_time" content="2016-06-29T06:23:40.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Android Performance Patterns - s5ep8 Threading And Loaders">
 <meta name="twitter:description" content="Let’s say you’ve got some 20 bitmaps being decoded on a worker thread. Well, what happens if your activity is destroyed before that work completes?相比于本期的大叔，笔者更喜欢之前的光头哥Video Link">
-<meta name="twitter:image" content="http://lilei.work/img/160225_app_s5ep8/activity_destroy.png">
+<meta name="twitter:image" content="https://lilei.pro/img/160225_app_s5ep8/activity_destroy.png">
+    
+        <link rel="alternate" type="application/atom+xml" title="柘个角落" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/img/favicon.ico">
+    <link rel="stylesheet" href="//unpkg.com/hexo-theme-material-indigo@latest/css/style.css">
+    <script>window.lazyScripts=[]</script>
 
-  
+    <!-- custom head -->
+    
 
-  
-    <link rel="icon" href="/favicon.ico">
-  
-
-  <link href="/css/styles.css?v=c114cbe6" rel="stylesheet">
-
-
-  
-    <link rel="stylesheet" href="/css/personal-style.css">
-  
-
-  
-
-  
-
-  
-
-
-  
-    <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
-  
-
-  
-    <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.3.0/css/font-awesome.min.css">
-  
 </head>
 
 <body>
+    <div id="loading" class="active"></div>
 
-
-  
-    <span id="toolbox-mobile" class="toolbox-mobile">导航</span>
-  
-
-  <div class="post-header CENTER">
-   
-  <div class="toolbox">
-    <a class="toolbox-entry" href="/">
-      <span class="toolbox-entry-text">导航</span>
-      <i class="icon-angle-down"></i>
-      <i class="icon-home"></i>
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
     </a>
-    <ul class="list-toolbox">
-      
-        <li class="item-toolbox">
-          <a
-            class="CIRCLE"
-            href="/archives/"
-            rel="noopener noreferrer"
-            target="_self"
-            >
-            博客
-          </a>
-        </li>
-      
-        <li class="item-toolbox">
-          <a
-            class="CIRCLE"
-            href="/category/"
-            rel="noopener noreferrer"
-            target="_self"
-            >
-            分类
-          </a>
-        </li>
-      
-        <li class="item-toolbox">
-          <a
-            class="CIRCLE"
-            href="/tag/"
-            rel="noopener noreferrer"
-            target="_self"
-            >
-            标签
-          </a>
-        </li>
-      
-        <li class="item-toolbox">
-          <a
-            class="CIRCLE"
-            href="/link/"
-            rel="noopener noreferrer"
-            target="_self"
-            >
-            友链
-          </a>
-        </li>
-      
-        <li class="item-toolbox">
-          <a
-            class="CIRCLE"
-            href="/about/"
-            rel="noopener noreferrer"
-            target="_self"
-            >
-            关于
-          </a>
-        </li>
-      
-        <li class="item-toolbox">
-          <a
-            class="CIRCLE"
-            href="/search/"
-            rel="noopener noreferrer"
-            target="_self"
-            >
-            搜索
-          </a>
-        </li>
-      
-    </ul>
-  </div>
-
-
-</div>
-
-
-  <div id="toc" class="toc-article">
-    <strong class="toc-title">文章目录</strong>
-    <ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#No-One-Writes-to-the-Colonel"><span class="toc-text">No One Writes to the Colonel</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#You-Should-Use-Loaders"><span class="toc-text">You Should Use Loaders</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#The-Downside-of-Loaders"><span class="toc-text">The Downside of Loaders</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Ending"><span class="toc-text">===Ending===</span></a>
-  </div>
-
-
-
-<div class="content content-post CENTER">
-   <article id="post-Android-Performance-Patterns-s5ep8-Threading-And-Loaders" class="article article-type-post" itemprop="blogPost">
-  <header class="article-header">
-    <h1 class="post-title">Android Performance Patterns - s5ep8 Threading And Loaders</h1>
-
-    <div class="article-meta">
-      <span>
-        <i class="icon-calendar"></i>
-        <span>2016.02.25</span>
-      </span>
-
-      
-        <span class="article-author">
-          <i class="icon-user"></i>
-          <span>Li Lei</span>
-        </span>
-      
-
-      
-
-
-      
-
-      
-      <i class="fa fa-eye"></i> 
-        <span id="busuanzi_container_page_pv">
-           &nbsp热度 <span id="busuanzi_value_page_pv">
-           <i class="fa fa-spinner fa-spin"></i></span>℃
-        </span>
-      
-      
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/avatar.jpeg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">Li Lei</h5>
+          <a href="mailto:bequietlee#gmail.com" title="bequietlee#gmail.com" class="mail">bequietlee#gmail.com</a>
+        </hgroup>
+      </div>
     </div>
-  </header>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                文章
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+                标签
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/bequietlee" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/2019/03/10/links"  >
+                <i class="icon icon-lg icon-link"></i>
+                友情链接
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
 
-  <div class="article-content">
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">Android Performance Patterns - s5ep8 Threading And Loaders</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="Search">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">Android Performance Patterns - s5ep8 Threading And Loaders</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2016-02-25T01:25:53.000Z" itemprop="datePublished" class="page-time">
+  2016-02-25
+</time>
+
+
+            
+        </h5>
+    </div>
+
     
-      <blockquote>
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#No-One-Writes-to-the-Colonel"><span class="post-toc-number">1.</span> <span class="post-toc-text">No One Writes to the Colonel</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#You-Should-Use-Loaders"><span class="post-toc-number">2.</span> <span class="post-toc-text">You Should Use Loaders</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#The-Downside-of-Loaders"><span class="post-toc-number">3.</span> <span class="post-toc-text">The Downside of Loaders</span></a></li></ol></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#Ending"><span class="post-toc-number"></span> <span class="post-toc-text">===Ending===</span></a>
+        </nav>
+    </aside>
+
+
+<article id="post-Android-Performance-Patterns-s5ep8-Threading-And-Loaders"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">Android Performance Patterns - s5ep8 Threading And Loaders</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2016-02-25 09:25:53" datetime="2016-02-25T01:25:53.000Z"  itemprop="datePublished">2016-02-25</time>
+
+            
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <blockquote>
 <p>Let’s say you’ve got some 20 bitmaps being decoded on a worker thread. Well, what happens if your activity is destroyed before that work completes?<br>相比于本期的大叔，笔者更喜欢之前的光头哥<br><a href="https://www.youtube.com/watch?v=s4eAtMHU5gI&amp;index=8&amp;list=PLWz5rJ2EKKc9CBxr3BVjPTPoDPLdPIFCE" target="_blank" rel="noopener">Video Link</a></p>
 </blockquote>
 <iframe width="560" height="315" src="https://www.youtube.com/embed/s4eAtMHU5gI?list=PLWz5rJ2EKKc9CBxr3BVjPTPoDPLdPIFCE" frameborder="0" allowfullscreen></iframe>
@@ -223,196 +215,258 @@
 <hr>
 <h3 id="Ending"><a href="#Ending" class="headerlink" title="===Ending==="></a><em>===Ending===</em></h3><hr>
 
+        </div>
+
+        <blockquote class="post-copyright">
     
-  </div>
+    <div class="content">
+        
+<span class="post-time">
+    Last updated: <time datetime="2016-06-29T06:23:40.000Z" itemprop="dateUpdated">2016-06-29 14:23:40</time>
+</span><br>
+
+
+        
+        这里可以写作者留言，标签和 hexo 中所有变量及辅助函数等均可调用，示例：<a href="/2016/02/25/Android-Performance-Patterns-s5ep8-Threading-And-Loaders/" target="_blank" rel="external">https://lilei.pro/2016/02/25/Android-Performance-Patterns-s5ep8-Threading-And-Loaders/</a>
+        
+    </div>
+    
+    <footer>
+        <a href="https://lilei.pro">
+            <img src="/img/avatar.jpeg" alt="Li Lei">
+            Li Lei
+        </a>
+    </footer>
+</blockquote>
+
+        
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Android-Performance-Patterns/">Android Performance Patterns</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/技术流/">技术流</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://lilei.pro/2016/02/25/Android-Performance-Patterns-s5ep8-Threading-And-Loaders/&title=《Android Performance Patterns - s5ep8 Threading And Loaders》 — 柘个角落&pic=https://lilei.pro/img/avatar.jpeg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://lilei.pro/2016/02/25/Android-Performance-Patterns-s5ep8-Threading-And-Loaders/&title=《Android Performance Patterns - s5ep8 Threading And Loaders》 — 柘个角落&source=
+Let’s say you’ve got some 20 bitmaps being decoded on a worker thread. Well,..." data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://lilei.pro/2016/02/25/Android-Performance-Patterns-s5ep8-Threading-And-Loaders/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《Android Performance Patterns - s5ep8 Threading And Loaders》 — 柘个角落&url=https://lilei.pro/2016/02/25/Android-Performance-Patterns-s5ep8-Threading-And-Loaders/&via=https://lilei.pro" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://lilei.pro/2016/02/25/Android-Performance-Patterns-s5ep8-Threading-And-Loaders/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/2016/02/25/Android-Performance-Patterns-s5ep9-The-Importance-Of-Thread-Priority/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">Android Performance Patterns - s5ep9 The Importance Of Thread Priority</h4>
+      </a>
+    </div>
+  
 
   
-      <div class="git"></div>
+    <div class="waves-block waves-effect next">
+      <a href="/2016/02/24/Android-Performance-Patterns-s5ep7-The-Zen-Of-IntentService/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">Android Performance Patterns - s5ep7 The Zen Of IntentService</h4>
+      </a>
+    </div>
   
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 </article>
 
 
-   
-
-   
-  <div class="box-prev-next clearfix">
-    <a class="show pull-left" href="/2016/02/24/Android-Performance-Patterns-s5ep7-The-Zen-Of-IntentService/">
-        <i class="icon icon-angle-left"></i>
-    </a>
-    <a class="show pull-right" href="/2016/02/25/Android-Performance-Patterns-s5ep9-The-Importance-Of-Thread-Priority/">
-        <i class="icon icon-angle-right"></i>
-    </a>
-  </div>
-
-
-
 
 </div>
 
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        站点总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        站点总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
 
-  <a id="backTop" class="back-top">
-    <i class="icon-angle-up"></i>
-  </a>
 
-
-
-
-  <div class="modal" id="modal">
-  <span id="cover" class="cover hide"></span>
-  <div id="modal-dialog" class="modal-dialog hide-dialog">
-    <div class="modal-header">
-      <span id="close" class="btn-close">关闭</span>
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>This blog is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.</span>
+        </p>
     </div>
-    <hr>
-    <div class="modal-body">
-      <ul class="list-toolbox">
-        
-          <li class="item-toolbox">
-            <a
-              class="CIRCLE"
-              href="/archives/"
-              rel="noopener noreferrer"
-              target="_self"
-              >
-              博客
-            </a>
-          </li>
-        
-          <li class="item-toolbox">
-            <a
-              class="CIRCLE"
-              href="/category/"
-              rel="noopener noreferrer"
-              target="_self"
-              >
-              分类
-            </a>
-          </li>
-        
-          <li class="item-toolbox">
-            <a
-              class="CIRCLE"
-              href="/tag/"
-              rel="noopener noreferrer"
-              target="_self"
-              >
-              标签
-            </a>
-          </li>
-        
-          <li class="item-toolbox">
-            <a
-              class="CIRCLE"
-              href="/link/"
-              rel="noopener noreferrer"
-              target="_self"
-              >
-              友链
-            </a>
-          </li>
-        
-          <li class="item-toolbox">
-            <a
-              class="CIRCLE"
-              href="/about/"
-              rel="noopener noreferrer"
-              target="_self"
-              >
-              关于
-            </a>
-          </li>
-        
-          <li class="item-toolbox">
-            <a
-              class="CIRCLE"
-              href="/search/"
-              rel="noopener noreferrer"
-              target="_self"
-              >
-              搜索
-            </a>
-          </li>
-        
-      </ul>
-
+    <div class="bottom">
+        <p><span>Li Lei &copy; 2015 - 2019</span>
+            <span>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
     </div>
-  </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://lilei.pro/2016/02/25/Android-Performance-Patterns-s5ep8-Threading-And-Loaders/&title=《Android Performance Patterns - s5ep8 Threading And Loaders》 — 柘个角落&pic=https://lilei.pro/img/avatar.jpeg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://lilei.pro/2016/02/25/Android-Performance-Patterns-s5ep8-Threading-And-Loaders/&title=《Android Performance Patterns - s5ep8 Threading And Loaders》 — 柘个角落&source=
+Let’s say you’ve got some 20 bitmaps being decoded on a worker thread. Well,..." data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://lilei.pro/2016/02/25/Android-Performance-Patterns-s5ep8-Threading-And-Loaders/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《Android Performance Patterns - s5ep8 Threading And Loaders》 — 柘个角落&url=https://lilei.pro/2016/02/25/Android-Performance-Patterns-s5ep8-Threading-And-Loaders/&via=https://lilei.pro" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://lilei.pro/2016/02/25/Android-Performance-Patterns-s5ep8-Threading-And-Loaders/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAPYAAAD2CAAAAADAeSUUAAADKklEQVR42u3aQZLiQAwEwPn/p5krB7BLkokwIn3aYJamszkIqfrvL34eT8/zK+/+mr/+bp3j9x6vf9mDjY2N/SXsx+GTf0DCPl6/esT5wb3YOTY2NvY69jGjWpyqW8xfyY/vxIiNjY2NHW+3VwjzsoSNjY2NXWWf/MQvjn7yw01aIGxsbOxfZueF4XjpydCnunLe/GBjY2PvZuep6P3//ZF8GxsbG/vG7EfxqX7MPBKYFMK3K2BjY2MvYlcHN71N92Lg6nir+gVgY2Nj72Mnl3J613Gqce8kiihEC9jY2Ngr2JMYoMeblKK8NJ7sDRsbG3sduxoMFD7gonJVLWAna2JjY2MvYuf9Sn79pcrLi1Bv7BVdwcTGxsb+Wva1YWqv2aiWq4uDAWxsbOwvZ8/DgKtg+dHnI6RCK4KNjY29iD0ZEvVGQknZq46Kki8JGxsbewd7MtzpNS2Ta5e9SODFK9jY2NhL2T3qVWP9fOvVo4lmadjY2Ngr2L02IN9ic+jTKp8nRQ4bGxt7EbtXxqpDqOSZr5+3VdjY2Nhb2dVN9A6lB742wMDGxsbexM4j2OoP/fxdSUBbrTsnf8XGxsZex66O+/NxUjVCzsHVdV4EvdjY2Ngr2MkIPj+CyUFcNTaqljdsbGzsHexk3DMpadVAonqtpzlmwsbGxl7B7l3QuTYkrgbAebEcDZWwsbGxv4Tdu1KTj5Z6z1VBxfwiETY2Nvb92Xk0m4S1yWrJ4SbFstcylRNpbGxs7Nuzq2OgfHO9tqF6KPlBY2NjY/8aO497P9ecVA+92V1hY2NjL2Inr+T/cx7rVi8DldfExsbGXseuDtmTEjWJjXsHVxg5YWNjY69jJ6P26ih/Usbm7z1pcrCxsbFXsHuDnt4IKR9mJQOm3meVKzM2Njb27dmTCCGJWpO2JA8bqs3GR5ITbGxs7Fuyq9vtXaCZBL2TRuXtmtjY2Njr2Mc/33uF5xMXgCZHg42NjY09iWbnTcjki4luKmFjY2P/DHtyuSdvFaqXgcqNCjY2NvY6di/c/fRGq5+ehwfY2NjYm9jVoUxekHpHMyml1aAaGxsb+8vZ/6HDNmEpXjbDAAAAAElFTkSuQmCC" alt="微信分享二维码">
 </div>
 
 
 
-  
-      <div class="fexo-comments comments-post">
-    
 
-    
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: false };
 
-    
-    
 
-    
-
-    
-    
-
-    <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
-    <script src="//unpkg.com/valine@latest/dist/Valine.min.js"></script>
-    <div id="comment" class="vcomment" ></div>
-    <script>
-        var notify = 'false' == true ? true : false;
-        var verify = 'false' == true ? true : false;
-        var GUEST_INFO = ['nick','mail','link'];
-        var guest_info = 'nick,mail,link'.split(',').filter(function(item){
-            return GUEST_INFO.indexOf(item) > -1
-        });
-        guest_info = guest_info.length == 0 ? GUEST_INFO :guest_info;
-        window.valine = new Valine({
-            el: '.vcomment',
-            notify: notify,
-            verify: verify,
-            appId: "khG3rBt0nWda7lxDUHpS3Sq0-gzGzoHsz",
-            appKey: "btFkQfcBgJeCRm55mYmUgA5d",
-            avatar:'mm',
-            placeholder: "畅所欲言...",
-            guest_info:guest_info,
-            pageSize:'10'
-        });
-    </script>
-  
-  </div>
-
-  
-
-  <script type="text/javascript">
-  function loadScript(url, callback) {
-    var script = document.createElement('script')
-    script.type = 'text/javascript';
-
-    if (script.readyState) { //IE
-      script.onreadystatechange = function() {
-        if (script.readyState == 'loaded' ||
-          script.readyState == 'complete') {
-          script.onreadystatechange = null;
-          callback();
-        }
-      };
-    } else { //Others
-      script.onload = function() {
-        callback();
-      };
-    }
-
-    script.src = url;
-    document.getElementsByTagName('head')[0].appendChild(script);
-  }
-
-  window.onload = function() {
-    loadScript('/js/bundle.js?235683', function() {
-      // load success
-    });
-  }
 </script>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/main.min.js"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/search.min.js" async></script>
+
+
+
+
+
+
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
 
 </body>
 </html>
