@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    
+    <title>架构学习之 mvp | 柘个角落 | IF YOU WANT SOMETHING, GO GET IT. PERIOD.</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="架构">
+    <meta name="description" content="Life doesn’t give you what your want, it gives you what you DESERVE!  0x00 序言                                                                                             Android Architecture Blueprin">
+<meta name="keywords" content="架构">
+<meta property="og:type" content="article">
+<meta property="og:title" content="架构学习之 mvp">
+<meta property="og:url" content="https://lilei.pro/2019/08/21/architecture-todo-mvp/index.html">
+<meta property="og:site_name" content="柘个角落">
+<meta property="og:description" content="Life doesn’t give you what your want, it gives you what you DESERVE!  0x00 序言                                                                                             Android Architecture Blueprin">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://lilei.pro/img/190821_todo_mvp/aab-logov2.png">
+<meta property="og:image" content="https://lilei.pro/img/190821_todo_mvp/页面流程图.png">
+<meta property="og:image" content="https://lilei.pro/img/190821_todo_mvp/mvc.png">
+<meta property="og:image" content="https://lilei.pro/img/190821_todo_mvp/mvp.png">
+<meta property="og:image" content="https://lilei.pro/img/190821_todo_mvp/mvp类图.png">
+<meta property="og:updated_time" content="2019-08-20T16:17:44.226Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="架构学习之 mvp">
+<meta name="twitter:description" content="Life doesn’t give you what your want, it gives you what you DESERVE!  0x00 序言                                                                                             Android Architecture Blueprin">
+<meta name="twitter:image" content="https://lilei.pro/img/190821_todo_mvp/aab-logov2.png">
+    
+        <link rel="alternate" type="application/atom+xml" title="柘个角落" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/img/favicon.ico">
+    <link rel="stylesheet" href="//unpkg.com/hexo-theme-material-indigo@latest/css/style.css">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/avatar.jpeg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">Li Lei</h5>
+          <a href="mailto:bequietlee#gmail.com" title="bequietlee#gmail.com" class="mail">bequietlee#gmail.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                文章
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+                标签
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/bequietlee" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/2019/03/10/links"  >
+                <i class="icon icon-lg icon-link"></i>
+                友情链接
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">架构学习之 mvp</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">架构学习之 mvp</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2019-08-20T16:04:52.000Z" itemprop="datePublished" class="page-time">
+  2019-08-21
+</time>
+
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#0x00-序言"><span class="post-toc-number">1.</span> <span class="post-toc-text">0x00 序言</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#0x01-业务逻辑"><span class="post-toc-number">2.</span> <span class="post-toc-text">0x01 业务逻辑</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#0x02-todo-mvp"><span class="post-toc-number">3.</span> <span class="post-toc-text">0x02 todo-mvp</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#关于-MVP"><span class="post-toc-number">3.1.</span> <span class="post-toc-text">关于 MVP</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#MVC-为什么不适合-Android-开发"><span class="post-toc-number">3.1.1.</span> <span class="post-toc-text">MVC 为什么不适合 Android 开发</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#MVP-为什么适合-Android-开发"><span class="post-toc-number">3.1.2.</span> <span class="post-toc-text">MVP 为什么适合 Android 开发</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#如何抽象业务场景"><span class="post-toc-number">3.2.</span> <span class="post-toc-text">如何抽象业务场景</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#Model"><span class="post-toc-number">3.2.1.</span> <span class="post-toc-text">Model</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#基本的任务对象：Task"><span class="post-toc-number">3.2.1.1.</span> <span class="post-toc-text">基本的任务对象：Task</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#Model-层对外暴露的接口：TasksDataSource"><span class="post-toc-number">3.2.1.2.</span> <span class="post-toc-text">Model 层对外暴露的接口：TasksDataSource</span></a></li></ol></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#Fragment-即是-View"><span class="post-toc-number">3.2.2.</span> <span class="post-toc-text">Fragment 即是 View</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#Presenter-业务逻辑载体"><span class="post-toc-number">3.2.3.</span> <span class="post-toc-text">Presenter - 业务逻辑载体</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#Activity-将一切粘合到一起"><span class="post-toc-number">3.2.4.</span> <span class="post-toc-text">Activity - 将一切粘合到一起</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#任务列表功能实现"><span class="post-toc-number">3.3.</span> <span class="post-toc-text">任务列表功能实现</span></a></li></ol></li></ol>
+        </nav>
+    </aside>
+
+
+<article id="post-architecture-todo-mvp"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">架构学习之 mvp</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2019-08-21 00:04:52" datetime="2019-08-20T16:04:52.000Z"  itemprop="datePublished">2019-08-21</time>
+
+            
+
+
+            
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <blockquote>
+<p>Life doesn’t give you what your want, it gives you what you DESERVE!</p>
+</blockquote>
+<h1 id="0x00-序言"><a href="#0x00-序言" class="headerlink" title="0x00 序言"></a>0x00 序言</h1><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="/img/190821_todo_mvp/aab-logov2.png" alt="Android Architecture Blueprints" title="">
+                </div>
+                <div class="image-caption">Android Architecture Blueprints</div>
+            </figure>
+<p>Google 官方在 GitHub 推出的<a href="https://github.com/googlesamples/android-architecture" target="_blank" rel="noopener">Android 架构 Demo</a>项目非常值得学习，通过 TODO app 的例子，讲解各种应用架构模式如何在实现需求的基础上，达到可维护性、扩展性、可测试性的优秀设计。</p>
+<p>本系列博客文章聚焦于以下几点：</p>
+<ol>
+<li>简明扼要介绍各个架构的思想与基础模型</li>
+<li>在该架构模式下如何对 TODO App 的各个模块进行划分，以及划分的依据</li>
+<li>取一个页面为例，作出类图，解析代码</li>
+</ol>
+<p><strong>Talk is cheap, show me the code.</strong></p>
+<h1 id="0x01-业务逻辑"><a href="#0x01-业务逻辑" class="headerlink" title="0x01 业务逻辑"></a>0x01 业务逻辑</h1><p>建议 clone 代码后真机运行体验，用一张图概括如下。</p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="/img/190821_todo_mvp/页面流程图.png" alt="页面流程图" title="">
+                </div>
+                <div class="image-caption">页面流程图</div>
+            </figure>
+<p>Google 也给出了一个<a href="https://github.com/googlesamples/android-architecture/wiki/To-do-app-specification" target="_blank" rel="noopener">wiki 页面</a>说明 TODO app 的特性。至于为什么选择这样一个应用作为 demo，官方给出的解释如下：</p>
+<blockquote>
+<p>它必须足够简单，便于你很快地理解其功能；同时也要足够复杂，这样才能展现不同设计的决策以及提供测试场景。</p>
+</blockquote>
+<h1 id="0x02-todo-mvp"><a href="#0x02-todo-mvp" class="headerlink" title="0x02 todo-mvp"></a>0x02 todo-mvp</h1><h2 id="关于-MVP"><a href="#关于-MVP" class="headerlink" title="关于 MVP"></a>关于 MVP</h2><p>MVP 脱胎于大名鼎鼎的 MVC（Model-View-Controller）。</p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="/img/190821_todo_mvp/mvc.png" alt="mvc" title="">
+                </div>
+                <div class="image-caption">mvc</div>
+            </figure>
+<p>但凡做软件开发的人应该对 MVC 都不感到陌生，它的基本思想是将数据、视图、控制逻辑拆分。这三部分可以自由进行替换，比如在不改变数据接口的情况下，替换数据来源；或者是调整 UI 显示，而无需改动业务逻辑。</p>
+<p>MVC 是一个具有历史意义的架构模式，它对天马行空、一团乱麻的软件设计进行规约，使后续对程序的修改和扩展简化，并且使重用成为可能。但是，它并不是最适合 Android 开发的架构模式。</p>
+<h3 id="MVC-为什么不适合-Android-开发"><a href="#MVC-为什么不适合-Android-开发" class="headerlink" title="MVC 为什么不适合 Android 开发"></a>MVC 为什么不适合 Android 开发</h3><p>MVC 的核心思想是解耦，单一职责。在 Android 开发中，不使用 MVC 的主要原因是 Activity 的职责太重，往往要同时承担 View 和 Controller 的工作，这会造成 Activity 类非常庞大，UI 代码和逻辑代码交织，耦合严重。</p>
+<h3 id="MVP-为什么适合-Android-开发"><a href="#MVP-为什么适合-Android-开发" class="headerlink" title="MVP 为什么适合 Android 开发"></a>MVP 为什么适合 Android 开发</h3><p>MVP 的架构如下图。</p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="/img/190821_todo_mvp/mvp.png" alt="MVP" title="">
+                </div>
+                <div class="image-caption">MVP</div>
+            </figure>
+<p>它单独抽出了 Presenter 对象，实现了业务逻辑，用于控制 View 的显示变化，以及与 Model 进行数据交互。Presenter 和 View 互相持有，Model 仅被 Presenter 持有。</p>
+<p>在理想状态下，Presenter 和 Model 仅包含 Java 代码，不含 Android SDK 内容。MVP 架构解决了 MVC 中 Activity 职责过多的问题，将 UI 功能分配给 View 单独管理，View 的接口仅向 Presenter 开放，相比 MVC，更好地实现了职责单一、解耦的需求。</p>
+<h2 id="如何抽象业务场景"><a href="#如何抽象业务场景" class="headerlink" title="如何抽象业务场景"></a>如何抽象业务场景</h2><h3 id="Model"><a href="#Model" class="headerlink" title="Model"></a>Model</h3><p>设计从数据层开始，数据层要承担什么职责呢？其实就是<strong>CRUD</strong>：</p>
+<ul>
+<li>保存新建的任务</li>
+<li>查询已创建任务</li>
+<li>更新任务状态（未完成 -&gt; 已完成）</li>
+<li>删除任务</li>
+</ul>
+<p>数据的持久化方式，数据操作结果采用同步还是异步，这些问题也是设计过程中要考虑的。</p>
+<h4 id="基本的任务对象：Task"><a href="#基本的任务对象：Task" class="headerlink" title="基本的任务对象：Task"></a>基本的任务对象：Task</h4><p>首先设计一个<code>Task.java</code>类，表示任务对象，它是一个典型的 Java Bean。在这里我们将 Task 设计成一个不可变的对象。在一个任务从“未完成”变为“完成”状态时，并不是修改原对象，而是丢弃掉原对象，再以相同<code>id</code>重新创建一个完成状态的对象。这样做的好处是逻辑简单，不可变对象线程绝对安全。缺点是当对象创建、销毁成本高的时候，会产生性能损失。在实际业务中应当酌情选择重用或者舍弃。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">final</span> <span class="class"><span class="keyword">class</span> <span class="title">Task</span> </span>&#123;</span><br><span class="line">  <span class="keyword">private</span> <span class="keyword">final</span> String mId;</span><br><span class="line">  <span class="keyword">private</span> <span class="keyword">final</span> String mTitle;</span><br><span class="line">  <span class="keyword">private</span> <span class="keyword">final</span> String mDescription;</span><br><span class="line">  <span class="keyword">private</span> <span class="keyword">final</span> <span class="keyword">boolean</span> mCompleted;</span><br><span class="line">  ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="Model-层对外暴露的接口：TasksDataSource"><a href="#Model-层对外暴露的接口：TasksDataSource" class="headerlink" title="Model 层对外暴露的接口：TasksDataSource"></a>Model 层对外暴露的接口：TasksDataSource</h4><p>本着面向接口编程的原则，隐藏数据操作具体实现代码，暴露出管理任务的接口（包含回调）。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">TasksDataSource</span> </span>&#123;</span><br><span class="line">  <span class="class"><span class="keyword">interface</span> <span class="title">LoadTasksCallback</span> </span>&#123; <span class="comment">// 加载复数任务回调</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">onTasksLoaded</span><span class="params">(List&lt;Task&gt; tasks)</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">onDataNotAvailable</span><span class="params">()</span></span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="class"><span class="keyword">interface</span> <span class="title">GetTaskCallback</span> </span>&#123; <span class="comment">// 加载单条任务回调</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">onTaskLoaded</span><span class="params">(Task task)</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">onDataNotAvailable</span><span class="params">()</span></span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="function"><span class="keyword">void</span> <span class="title">getTasks</span><span class="params">(@NonNull LoadTasksCallback callback)</span></span>;</span><br><span class="line">  <span class="function"><span class="keyword">void</span> <span class="title">getTask</span><span class="params">(@NonNull String taskId, @NonNull GetTaskCallback callback)</span></span>;</span><br><span class="line">  <span class="function"><span class="keyword">void</span> <span class="title">saveTask</span><span class="params">(@NonNull Task task)</span></span>;</span><br><span class="line">  <span class="function"><span class="keyword">void</span> <span class="title">completeTask</span><span class="params">(@NonNull Task task)</span></span>;</span><br><span class="line">  <span class="function"><span class="keyword">void</span> <span class="title">completeTask</span><span class="params">(@NonNull String taskId)</span></span>;</span><br><span class="line">  <span class="function"><span class="keyword">void</span> <span class="title">activateTask</span><span class="params">(@NonNull Task task)</span></span>;</span><br><span class="line">  <span class="function"><span class="keyword">void</span> <span class="title">activateTask</span><span class="params">(@NonNull String taskId)</span></span>;</span><br><span class="line">  <span class="function"><span class="keyword">void</span> <span class="title">clearCompletedTasks</span><span class="params">()</span></span>;</span><br><span class="line">  <span class="function"><span class="keyword">void</span> <span class="title">refreshTasks</span><span class="params">()</span></span>;</span><br><span class="line">  <span class="function"><span class="keyword">void</span> <span class="title">deleteAllTasks</span><span class="params">()</span></span>;</span><br><span class="line">  <span class="function"><span class="keyword">void</span> <span class="title">deleteTask</span><span class="params">(@NonNull String taskId)</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这个接口里有两处与我的编程思路有出入。首先是加载任务回调，我认为可以仅保留复数任务的接口，对于加载单条任务的需求，返回一个长度为 1 的列表就可以了。其次，在命名上，我习惯于将同步接口以<code>getXXX</code>，异步接口以<code>loadXXX</code>来声明。</p>
+<p>有了这个接口，就可以提供给任务详情、任务列表等页面使用。接下来创建一个接口实现类，这个类对外的职责是实现数据操作接口，对内的职责是隐藏两种具体的数据操作实现（内存缓存、数据库、网络）。</p>
+<p>数据源共有三级缓存：</p>
+<ul>
+<li>In-memory cache - Fast</li>
+<li>Disk (SQLiteDb) - Slow</li>
+<li>Network - Very slow</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TasksRepository</span> <span class="keyword">implements</span> <span class="title">TasksDataSource</span> </span>&#123;</span><br><span class="line">  <span class="keyword">private</span> <span class="keyword">final</span> TasksDatasource mTasksRemoteDataSource; <span class="comment">// 网络数据源</span></span><br><span class="line">  <span class="keyword">private</span> <span class="keyword">final</span> TasksDatasource mTasksLocalDataSource; <span class="comment">// 本地数据源</span></span><br><span class="line">  ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>读写数据策略可以概括为“依次读，全部写”，括号里是我补充的内容：</p>
+<ul>
+<li><p>In every <code>get</code>operation:</p>
+<ul>
+<li>Return cache if available, or</li>
+<li>return local copy if it exists (and update cache) , or</li>
+<li>return remote copy ( and update local copy &amp; cache)</li>
+</ul>
+</li>
+<li><p>Every <code>write</code>/<code>delete</code>operation will simply:</p>
+<ul>
+<li>Update cache</li>
+<li>Update local</li>
+<li>Update remote</li>
+</ul>
+</li>
+</ul>
+<p>具体的网络数据源、本地数据库设计为常见写法，不赘述。</p>
+<h3 id="Fragment-即是-View"><a href="#Fragment-即是-View" class="headerlink" title="Fragment 即是 View"></a>Fragment 即是 View</h3><p>处理所有 UI 变化事件，比如显示 loading、显示任务列表、显示任务详情、显示任务状态变更 SnackBar 等，值得注意的是页面跳转操作也属于 UI 变化，是在 Fragment 里面实现的。不妨思考一下为什么“跳转”不放在 Presenter 中进行？一个原因是 Presenter 与 Android SDK 无关，而跳转需要 Context 对象，违背了这一原则。比如从“任务列表”跳转到“任务详情”时：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// TasksFragment.java</span></span><br><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">showAddTask</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  Intent intent = <span class="keyword">new</span> Intent(getContext(), AddEditTaskActivity.class);</span><br><span class="line">  startActivityForResult(intent, AddEditTaskActivity.REQUEST_ADD_TASK);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>View 里面没有任何业务逻辑，主要处理以下事件：</p>
+<ul>
+<li>加载中、加载成功、失败页面展示</li>
+<li>展现 Toast、SnackBar 等提示</li>
+<li>处理按钮、菜单点击事件（通常是将其甩给 Presenter 处理）</li>
+<li>处理页面跳转</li>
+<li>声明 Adapter</li>
+<li>在<code>onResume</code>时调用 Presenter 的<code>start</code>方法，启动页面</li>
+<li>提供<code>isActive</code>方法，供 Presenter 在异步回调返回时判断页面是否存活</li>
+</ul>
+<p>最后一点是容易漏掉的，如果异步请求回调时页面被销毁，会导致各种难以预料的问题。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span> <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">isActive</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> isAdded();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="Presenter-业务逻辑载体"><a href="#Presenter-业务逻辑载体" class="headerlink" title="Presenter - 业务逻辑载体"></a>Presenter - 业务逻辑载体</h3><p>承担了业务逻辑实现的职责，有时业务逻辑过于复杂会导致 Presenter 类太大，此时要考虑拆分业务逻辑到单独的类中，就变成了<code>mvp-clean</code>架构，clean 架构中使用<code>Use Case（用例）</code>处理细分的业务逻辑。</p>
+<p>Presenter 由 Activity 构造，并且提供方法给 Activity 以及 View（Fragment）使用。</p>
+<h3 id="Activity-将一切粘合到一起"><a href="#Activity-将一切粘合到一起" class="headerlink" title="Activity - 将一切粘合到一起"></a>Activity - 将一切粘合到一起</h3><p>现在我们有了 Model、View、Presenter 各个部分，而 Android 应用的页面入口是 Activity 类，我们在 Activity 中创建 Fragment（View）及 Presenter，在这两者之间建立关联。同时还要处理一些必须放在 Activity 中进行的操作，比如<code>onSaveInstanceState</code>、<code>onOptionsItemSelected</code> 等等。</p>
+<h2 id="任务列表功能实现"><a href="#任务列表功能实现" class="headerlink" title="任务列表功能实现"></a>任务列表功能实现</h2><p>用类图来表示 MVP 模式下的任务列表功能相关类：</p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="/img/190821_todo_mvp/mvp类图.png" alt="mvp" title="">
+                </div>
+                <div class="image-caption">mvp</div>
+            </figure>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    
+    <div class="content">
+        
+<span class="post-time">
+    最后更新时间：<time datetime="2019-08-20T16:17:44.226Z" itemprop="dateUpdated">2019-08-21 00:17:44</time>
+</span><br>
+
+
+        
+        这里可以写作者留言，标签和 hexo 中所有变量及辅助函数等均可调用，示例：<a href="/2019/08/21/architecture-todo-mvp/" target="_blank" rel="external">https://lilei.pro/2019/08/21/architecture-todo-mvp/</a>
+        
+    </div>
+    
+    <footer>
+        <a href="https://lilei.pro">
+            <img src="/img/avatar.jpeg" alt="Li Lei">
+            Li Lei
+        </a>
+    </footer>
+</blockquote>
+
+        
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/架构/">架构</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://lilei.pro/2019/08/21/architecture-todo-mvp/&title=《架构学习之 mvp》 — 柘个角落&pic=https://lilei.pro/img/avatar.jpeg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://lilei.pro/2019/08/21/architecture-todo-mvp/&title=《架构学习之 mvp》 — 柘个角落&source=技术与生活上的点滴积累" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://lilei.pro/2019/08/21/architecture-todo-mvp/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《架构学习之 mvp》 — 柘个角落&url=https://lilei.pro/2019/08/21/architecture-todo-mvp/&via=https://lilei.pro" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://lilei.pro/2019/08/21/architecture-todo-mvp/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/2019/08/21/architecture-todo-mvp-clean/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">架构学习之 mvp-clean</h4>
+      </a>
+    </div>
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2019/07/14/ace-cpt-part-2/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">ACE-PTM 第 II 部分 领导和实施</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+    <!-- Valine Comments -->
+    <div class="comments vcomment" id="comments"></div>
+    <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+    <script src="//unpkg.com/valine@latest/dist/Valine.min.js"></script>
+    <!-- Valine Comments script -->
+    <script>
+        var GUEST_INFO = ['nick','mail','link'];
+        var guest_info = 'nick,mail,link'.split(',').filter(function(item){
+          return GUEST_INFO.indexOf(item) > -1
+        });
+        new Valine({
+            el: '#comments',
+            notify: 'false' == 'true',
+            verify: 'true' == 'true',
+            appId: "khG3rBt0nWda7lxDUHpS3Sq0-gzGzoHsz",
+            appKey: "btFkQfcBgJeCRm55mYmUgA5d",
+            avatar: "mm",
+            placeholder: "欢迎讨论",
+            guest_info: guest_info.length == 0 ? GUEST_INFO : guest_info,
+            pageSize: "10"
+        })
+    </script>
+    <!-- Valine Comments end -->
+
+
+
+
+
+
+
+</article>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>博客内容遵循 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">知识共享 署名 - 非商业性 - 相同方式共享 4.0 国际协议</a></span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>Li Lei &copy; 2015 - 2019</span>
+            <span>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://lilei.pro/2019/08/21/architecture-todo-mvp/&title=《架构学习之 mvp》 — 柘个角落&pic=https://lilei.pro/img/avatar.jpeg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://lilei.pro/2019/08/21/architecture-todo-mvp/&title=《架构学习之 mvp》 — 柘个角落&source=技术与生活上的点滴积累" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://lilei.pro/2019/08/21/architecture-todo-mvp/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《架构学习之 mvp》 — 柘个角落&url=https://lilei.pro/2019/08/21/architecture-todo-mvp/&via=https://lilei.pro" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://lilei.pro/2019/08/21/architecture-todo-mvp/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACKElEQVR42u3aQY7DIBAEwP3/p7PXlSI73UBWAhenyIkcikOLYfj5icfrbdx/+/c3V0/eP189WTYwMDC2Zbxux9VUriaU/CZfpmRuGBgYz2FcvToJwSRSV8Xx5XMMDAyMeDuYT3pm+TAwMDDuX3dPakM5D18MDAyMJChXFZx5EH+lFsfAwNiQkZ+6///nr/Q3MDAwtmKsLUSTgE4WqJ4VBgbG0Yw84JL25FhZmz//8H4MDIxDGavK0ZaRF7fR1TEMDIyjGW3YrYrIVU2Cy//FwMA4lNEe4ievbiO1LX0xMDCew2gvT4xd8yoOzoa2jxgYGKcyZrZoM5u5Nr6L2yIYGBjHMVaFZnsj4istBAwMjKMZ+TaxZYwt0AI8BgbG0Yz8CL5uKwbF8KprHBgYGOcxxtqKSTmav3nBZQsMDIxDGW0zsi0mW8AgBgMD4wGMtnDNJ5pEc17uTp3kYWBgbMtoR/tnefuzjd0pMAYGxuaMPBzzI7b8gsXYVhIDA+MJjLY9ObPVaxuiRfMAAwPjMYyxSSQxurbondqHYmBgbMto/z6J2vaCRVtCR41MDAyMzRmvciQNy7xwzWP9wxJgYGAczZhvCcyUvjN7vEEMBgbGtoz56xHLAjFuUg42BjAwMDZntMGXH+KPHfrXSAwMDIyJhmWyBZzZSmJgYGDkU2+P4ZLnRfsBAwPjAYz2sL6d3MyFjyiOMTAwjmaM7bvGStNkydqYxsDAOJrxCyfAiYdcUWFqAAAAAElFTkSuQmCC" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: false };
+
+
+</script>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/main.min.js"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/search.min.js" async></script>
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

@@ -151,6 +151,112 @@
     <ul class="post-list">
     
         <li class="post-list-item fade">
+            <article id="post-JVM-Note-03"
+  class="article-card article-type-post" itemprop="blogPost">
+
+    <div class="post-meta">
+        <time class="post-time" title="2018-08-15 17:26:32" datetime="2018-08-15T09:26:32.000Z"  itemprop="datePublished">2018-08-15</time>
+
+        
+
+
+    </div>
+
+    
+
+
+  
+    <h3 class="post-title" itemprop="name">
+      <a class="post-title-link" href="/2018/08/15/JVM-Note-03/">深入理解 Java 虚拟机（三）垃圾收集器与内存分配策略</a>
+    </h3>
+  
+
+
+
+
+    <div class="post-content" id="post-content" itemprop="postContent">
+
+    
+        
+本章介绍垃圾收集器的设计思路、算法以及常见实现，同时介绍为对象分配空间时采取的策略。
+
+垃圾收集（Garbage Collection）GC 的历史比 Java 久远，1960 年诞生于 MIT 的 Lisp 是第一门真正使用内存动态分配和垃圾回收技术的语言。不论是什么语言，在设计 GC 时都必须要解决以下三个问题：
+
+哪些内存需要回收（Who）
+什么时候回收（When）
+如何回收（How...
+    
+
+        <a href="/2018/08/15/JVM-Note-03/" class="post-more waves-effect waves-button">
+            阅读全文…
+        </a>
+    </div>
+    
+    <div class="post-footer">
+        
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JVM/">JVM</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/读书笔记/">读书笔记</a></li></ul>
+
+    </div>
+    
+</article>
+
+        </li>
+    
+        <li class="post-list-item fade">
+            <article id="post-JVM-Note-02"
+  class="article-card article-type-post" itemprop="blogPost">
+
+    <div class="post-meta">
+        <time class="post-time" title="2018-08-09 15:30:23" datetime="2018-08-09T07:30:23.000Z"  itemprop="datePublished">2018-08-09</time>
+
+        
+
+
+    </div>
+
+    
+
+
+  
+    <h3 class="post-title" itemprop="name">
+      <a class="post-title-link" href="/2018/08/09/JVM-Note-02/">深入理解 Java 虚拟机（二）JVM 内存区域与内存溢出异常</a>
+    </h3>
+  
+
+
+
+
+    <div class="post-content" id="post-content" itemprop="postContent">
+
+    
+        
+本章从概念上介绍 Java 虚拟机内存的各个区域，从作用、服务对象、可能产生的问题几个方面进行讲解。
+
+运行时数据区域根据《Java 虚拟机运行规范》的规定，Java 虚拟机所管理的内存将会包括以下几个运行时区域：
+
+                
+                    
+                    
+                
+           ...
+    
+
+        <a href="/2018/08/09/JVM-Note-02/" class="post-more waves-effect waves-button">
+            阅读全文…
+        </a>
+    </div>
+    
+    <div class="post-footer">
+        
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JVM/">JVM</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/读书笔记/">读书笔记</a></li></ul>
+
+    </div>
+    
+</article>
+
+        </li>
+    
+        <li class="post-list-item fade">
             <article id="post-JVM-Note-01"
   class="article-card article-type-post" itemprop="blogPost">
 
@@ -576,112 +682,6 @@ Picasso在大众点评首页的应用
     <div class="post-footer">
         
 	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Android/">Android</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/点评/">点评</a></li></ul>
-
-    </div>
-    
-</article>
-
-        </li>
-    
-        <li class="post-list-item fade">
-            <article id="post-interview-180709"
-  class="article-card article-type-post" itemprop="blogPost">
-
-    <div class="post-meta">
-        <time class="post-time" title="2018-07-09 18:00:17" datetime="2018-07-09T10:00:17.000Z"  itemprop="datePublished">2018-07-09</time>
-
-        
-
-
-    </div>
-
-    
-
-
-  
-    <h3 class="post-title" itemprop="name">
-      <a class="post-title-link" href="/2018/07/09/interview-180709/">面试知识整理 2018.07.09</a>
-    </h3>
-  
-
-
-
-
-    <div class="post-content" id="post-content" itemprop="postContent">
-
-    
-        HashMap 和 HashTable 区别相同点
-
-都是以 Key - Value 的形式存放键值对
-
-不同点
-
-null 支持：HashMap 允许 null key 和 null value，HashTable 不允许
-并发特性：HashMap 线程不安全，效率高，HashTable 线程安全，效率低
-默认长度和扩容方式：HashMap 默认长度 16，扩容 2n，HashTable ...
-    
-
-        <a href="/2018/07/09/interview-180709/" class="post-more waves-effect waves-button">
-            阅读全文…
-        </a>
-    </div>
-    
-    <div class="post-footer">
-        
-	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Android/">Android</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/面试/">面试</a></li></ul>
-
-    </div>
-    
-</article>
-
-        </li>
-    
-        <li class="post-list-item fade">
-            <article id="post-okhttp"
-  class="article-card article-type-post" itemprop="blogPost">
-
-    <div class="post-meta">
-        <time class="post-time" title="2018-07-06 15:36:57" datetime="2018-07-06T07:36:57.000Z"  itemprop="datePublished">2018-07-06</time>
-
-        
-
-
-    </div>
-
-    
-
-
-  
-    <h3 class="post-title" itemprop="name">
-      <a class="post-title-link" href="/2018/07/06/okhttp/">OkHttp 源码学习</a>
-    </h3>
-  
-
-
-
-
-    <div class="post-content" id="post-content" itemprop="postContent">
-
-    
-        
-OkHttp 是由 Square 发布的 HTTP Client，用于处理 HTTP 请求。用官网的描述就是，An HTTP &amp; HTTP/2 client for Android and Java applications.
-
-优点
-支持 HTTP/2，多个连接可以共用一个 Socket
-连接池可以减少延迟（非 HTTP/2）
-GZIP 压缩减少流量
-Response 缓存
-重定...
-    
-
-        <a href="/2018/07/06/okhttp/" class="post-more waves-effect waves-button">
-            阅读全文…
-        </a>
-    </div>
-    
-    <div class="post-footer">
-        
-	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Android/">Android</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/源码学习/">源码学习</a></li></ul>
 
     </div>
     

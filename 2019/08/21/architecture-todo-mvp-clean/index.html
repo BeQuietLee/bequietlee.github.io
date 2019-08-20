@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    
+    <title>架构学习之 mvp-clean | 柘个角落 | IF YOU WANT SOMETHING, GO GET IT. PERIOD.</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="架构">
+    <meta name="description" content="I am the STORM!!!  上一篇文章介绍了 MVP 模式，作为 Android 最朴实的架构，MVP 足以应对复杂度较低的业务场景，回想 2014~2015 年在 DP 做预订闪惠的日子，用的便是 MVP。 然而随着业务复杂度增加，Presenter 层的逻辑会随之变重，导致的结果便是 Presenter 类过大，动辄一两千行代码，实在是丑陋。在这种场景下，Clean 架构是一个很好">
+<meta name="keywords" content="架构">
+<meta property="og:type" content="article">
+<meta property="og:title" content="架构学习之 mvp-clean">
+<meta property="og:url" content="https://lilei.pro/2019/08/21/architecture-todo-mvp-clean/index.html">
+<meta property="og:site_name" content="柘个角落">
+<meta property="og:description" content="I am the STORM!!!  上一篇文章介绍了 MVP 模式，作为 Android 最朴实的架构，MVP 足以应对复杂度较低的业务场景，回想 2014~2015 年在 DP 做预订闪惠的日子，用的便是 MVP。 然而随着业务复杂度增加，Presenter 层的逻辑会随之变重，导致的结果便是 Presenter 类过大，动辄一两千行代码，实在是丑陋。在这种场景下，Clean 架构是一个很好">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://lilei.pro/img/190821_todo_mvp_clean/CleanArchitecture.jpg">
+<meta property="og:image" content="https://lilei.pro/img/190821_todo_mvp_clean/mvp-clean.png">
+<meta property="og:image" content="https://lilei.pro/img/190821_todo_mvp_clean/mvp-clean-%E7%B1%BB%E5%9B%BE.png">
+<meta property="og:updated_time" content="2019-08-20T16:17:18.801Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="架构学习之 mvp-clean">
+<meta name="twitter:description" content="I am the STORM!!!  上一篇文章介绍了 MVP 模式，作为 Android 最朴实的架构，MVP 足以应对复杂度较低的业务场景，回想 2014~2015 年在 DP 做预订闪惠的日子，用的便是 MVP。 然而随着业务复杂度增加，Presenter 层的逻辑会随之变重，导致的结果便是 Presenter 类过大，动辄一两千行代码，实在是丑陋。在这种场景下，Clean 架构是一个很好">
+<meta name="twitter:image" content="https://lilei.pro/img/190821_todo_mvp_clean/CleanArchitecture.jpg">
+    
+        <link rel="alternate" type="application/atom+xml" title="柘个角落" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/img/favicon.ico">
+    <link rel="stylesheet" href="//unpkg.com/hexo-theme-material-indigo@latest/css/style.css">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/avatar.jpeg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">Li Lei</h5>
+          <a href="mailto:bequietlee#gmail.com" title="bequietlee#gmail.com" class="mail">bequietlee#gmail.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                文章
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+                标签
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/bequietlee" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/2019/03/10/links"  >
+                <i class="icon icon-lg icon-link"></i>
+                友情链接
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">架构学习之 mvp-clean</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">架构学习之 mvp-clean</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2019-08-20T16:11:55.000Z" itemprop="datePublished" class="page-time">
+  2019-08-21
+</time>
+
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#关于-Clean"><span class="post-toc-number">1.</span> <span class="post-toc-text">关于 Clean</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#什么是-Clean"><span class="post-toc-number">1.1.</span> <span class="post-toc-text">什么是 Clean</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#Android-Clean"><span class="post-toc-number">1.2.</span> <span class="post-toc-text">Android Clean</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#Use-Cases-异步性"><span class="post-toc-number">1.2.1.</span> <span class="post-toc-text">Use Cases 异步性</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#不同-Layer-是否需要定义各自的-Model"><span class="post-toc-number">1.2.2.</span> <span class="post-toc-text">不同 Layer 是否需要定义各自的 Model</span></a></li></ol></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#如何抽象业务场景"><span class="post-toc-number">2.</span> <span class="post-toc-text">如何抽象业务场景</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#Use-Cases-amp-Domain-Layer"><span class="post-toc-number">2.1.</span> <span class="post-toc-text">Use Cases &amp; Domain Layer</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#Executor：任务执行机制"><span class="post-toc-number">2.2.</span> <span class="post-toc-text">Executor：任务执行机制</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#UseCaseHandler：任务执行机制包装"><span class="post-toc-number">2.3.</span> <span class="post-toc-text">UseCaseHandler：任务执行机制包装</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#Activity：穿针引线的组织者"><span class="post-toc-number">2.4.</span> <span class="post-toc-text">Activity：穿针引线的组织者</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#任务列表功能类图"><span class="post-toc-number">3.</span> <span class="post-toc-text">任务列表功能类图</span></a></li></ol>
+        </nav>
+    </aside>
+
+
+<article id="post-architecture-todo-mvp-clean"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">架构学习之 mvp-clean</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2019-08-21 00:11:55" datetime="2019-08-20T16:11:55.000Z"  itemprop="datePublished">2019-08-21</time>
+
+            
+
+
+            
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <blockquote>
+<p>I am the STORM!!!</p>
+</blockquote>
+<p>上一篇文章介绍了 MVP 模式，作为 Android 最朴实的架构，MVP 足以应对复杂度较低的业务场景，回想 2014~2015 年在 DP 做预订闪惠的日子，用的便是 MVP。</p>
+<p>然而随着业务复杂度增加，Presenter 层的逻辑会随之变重，导致的结果便是 Presenter 类过大，动辄一两千行代码，实在是丑陋。在这种场景下，Clean 架构是一个很好的选择。</p>
+<h2 id="关于-Clean"><a href="#关于-Clean" class="headerlink" title="关于 Clean"></a>关于 Clean</h2><h3 id="什么是-Clean"><a href="#什么是-Clean" class="headerlink" title="什么是 Clean"></a>什么是 Clean</h3><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="/img/190821_todo_mvp_clean/CleanArchitecture.jpg" alt="CleanArchitecture" title="">
+                </div>
+                <div class="image-caption">CleanArchitecture</div>
+            </figure>
+<p>Clean 架构最初并不是为了针对 Android 平台的问题而提出，而是作为<strong>软件系统</strong>的通用架构被设计出来，如上面的同心圆所示，它的核心思想是<strong>The Dependency Rule（单向依赖原则）</strong>，即只能从外层向内层依赖，内层对外层一无所知，外层的变动不应当影响到内层。</p>
+<p>另一个重要概念是<strong>Use Case（用例）</strong>，<strong>用例</strong>是业务逻辑的最小抽象单元，它调用数据模块的接口，向上（Presenter）提供业务逻辑操作入口。</p>
+<h3 id="Android-Clean"><a href="#Android-Clean" class="headerlink" title="Android Clean"></a>Android Clean</h3><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="/img/190821_todo_mvp_clean/mvp-clean.png" alt="mvp-clean" title="">
+                </div>
+                <div class="image-caption">mvp-clean</div>
+            </figure>
+<p>Android 平台在 Presenter 和 Model 之间定义了<strong>Domain Layer（域层）</strong>，用于承载<strong>Use Case</strong>，如上图所示，Use Case 的背后是业务逻辑。Domain Layer 脱胎于 MVP 的 Presenter，这样可以避免相同的业务逻辑代码出现在两个 Presenter 中的问题。</p>
+<h4 id="Use-Cases-异步性"><a href="#Use-Cases-异步性" class="headerlink" title="Use Cases 异步性"></a>Use Cases 异步性</h4><p>鉴于 Domain Layer 是 UI 无关的，这里可以统一将 Use Case 放入工作线程运行，通过异步回调进行通信。至于更底层的数据库/网络操作，出于简化的目的，可以直接使用同步接口。</p>
+<h4 id="不同-Layer-是否需要定义各自的-Model"><a href="#不同-Layer-是否需要定义各自的-Model" class="headerlink" title="不同 Layer 是否需要定义各自的 Model"></a>不同 Layer 是否需要定义各自的 Model</h4><p>标准的做法是在视图层（View Layer）、域层（Domain Layer）和数据层（Data/Model Layer）分别使用不同的对象，如 VO、BO、DO 等。这样带来的问题是重复性增加。如果对象是不可变的，在各层之间具有相同的属性和方法，则可以只定义一个对象，共通使用。</p>
+<p>如果视图层对象包含 Android 相关的方法或属性，则应当为其单独定义一个类，然后使用<code>Mapper</code>在不同层之间进行对象转换。</p>
+<h2 id="如何抽象业务场景"><a href="#如何抽象业务场景" class="headerlink" title="如何抽象业务场景"></a>如何抽象业务场景</h2><p>这里我们将 Clean 模式应用在 todo-app 上，想想还有点小激动。</p>
+<h3 id="Use-Cases-amp-Domain-Layer"><a href="#Use-Cases-amp-Domain-Layer" class="headerlink" title="Use Cases &amp; Domain Layer"></a>Use Cases &amp; Domain Layer</h3><p>把 Use Case 的声明和运行机制拆开，是不是跟 Runnable + Executor 的机制很像？没错，这就是设计模式中的<strong>命令模式</strong>。设计模式不是彼此孤立的，一个项目里可以整体采用 Clean 架构，不同的子模块，应用不同的设计模式。设计模式是死的，人是活的。</p>
+<p>抽象类<code>UseCase</code>即是<strong>命令</strong>，包含入参、出参、回调通知对象、运行的抽象过程（这里又出现了<strong>模版模式</strong>）。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">UseCase</span>&lt;<span class="title">Q</span> <span class="keyword">extends</span> <span class="title">UseCase</span>.<span class="title">RequestValues</span>, <span class="title">P</span> <span class="keyword">extends</span> <span class="title">UseCase</span>.<span class="title">ResponseValue</span>&gt; </span>&#123;</span><br><span class="line">  <span class="keyword">private</span> Q mRequestValues;</span><br><span class="line">  <span class="keyword">private</span> UseCaseCallback&lt;P&gt; mUseCaseCallback; <span class="comment">// 任务完成后（成功or失败）的回调</span></span><br><span class="line">  <span class="comment">// ...</span></span><br><span class="line">  <span class="comment">// set and get</span></span><br><span class="line">  <span class="comment">//..</span></span><br><span class="line">  <span class="function"><span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123; <span class="comment">// Executor 运行入口</span></span><br><span class="line">    executeUseCase(mRequestValues);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="function"><span class="keyword">protected</span> <span class="keyword">abstract</span> voi8d <span class="title">executeUseCase</span><span class="params">(Q requestValues)</span></span>; <span class="comment">// 子类必需实体化这个方法</span></span><br><span class="line"></span><br><span class="line">  <span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">RequestValues</span> </span>&#123;&#125;</span><br><span class="line">  <span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">ResponseValues</span> </span>&#123;&#125; <span class="comment">// 接口约束</span></span><br><span class="line"></span><br><span class="line">  <span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">UseCaseCallback</span>&lt;<span class="title">R</span>&gt; </span>&#123; <span class="comment">// 任务完成后的回调</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">onSuccess</span><span class="params">(R response)</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">onError</span><span class="params">()</span></span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>然后选取一个“加载全部任务”的场景为例，看它是如何实现抽象类的，以下是<code>GetTask.java</code>的部分代码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">GetTasks</span> <span class="keyword">extends</span> <span class="title">UseCase</span>&lt;<span class="title">GetTasks</span>.<span class="title">RequestValues</span>, <span class="title">GetTasks</span>.<span class="title">ResponseValues</span>&gt; </span>&#123;</span><br><span class="line">  <span class="keyword">private</span> <span class="keyword">final</span> TasksRepository mTasksRepository; <span class="comment">// 更底层的数据源对象</span></span><br><span class="line">  <span class="keyword">private</span> <span class="keyword">final</span> FilterFactory mFilterFactory; <span class="comment">// 过滤器工厂类</span></span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="title">GetTasks</span><span class="params">(@NonNull TaskRepository tasksRepository, @NonNull FilterFactory filterFactory)</span> </span>&#123; <span class="comment">// 构造时传入数据源对象和过滤器工厂</span></span><br><span class="line">    mTasksRepository = checkNotNull(tasksRepository, <span class="string">"tasksRepository cannot be null!"</span>);</span><br><span class="line">    mFilterFactory = checkNotNull(filterFactory, <span class="string">"filterFactory cannot be null!"</span>);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@Override</span></span><br><span class="line">  <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">executeUseCase</span><span class="params">(<span class="keyword">final</span> RequestValues values)</span> </span>&#123; <span class="comment">// 利用泛型约束，在不同UseCase实现类里使用不同参数</span></span><br><span class="line">    <span class="keyword">if</span> (values.isForceUpdate()) &#123;</span><br><span class="line">      mTasksRepository.refreshTasks();</span><br><span class="line">    &#125;</span><br><span class="line">    mTasksRepository.getTasks(<span class="keyword">new</span> TasksDataSource.LoadTasksCallback() &#123; <span class="comment">// 调用数据源异步方法</span></span><br><span class="line">      <span class="meta">@Override</span></span><br><span class="line">      <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onTasksLoaded</span><span class="params">(List&lt;Task&gt; tasks)</span> </span>&#123;</span><br><span class="line">        TasksFilterType currentFiltering = values.getCurrentFiltering();</span><br><span class="line">        TaskFilter taskfilter = mFilterFactory.create(currentFiltering);</span><br><span class="line"></span><br><span class="line">        List&lt;Task&gt; tasksFiltered = taskFilter.filter(tasks);</span><br><span class="line">        ResponseValue responseValue = <span class="keyword">new</span> ResponseValue(tasksFiltered);</span><br><span class="line">        getUseCaseCallback().onSuccess(responseValue);</span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">      <span class="meta">@Override</span></span><br><span class="line">      <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onDataNotAvailable</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        getUseCallback().onError();</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="class"><span class="keyword">class</span> <span class="title">RequestValues</span> <span class="keyword">implements</span> <span class="title">UseCase</span>.<span class="title">RequestValues</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> TasksFilterType mCurrentFiltering;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> <span class="keyword">boolean</span> mForceUpdate;</span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">    <span class="comment">// constructor, get and set</span></span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="class"><span class="keyword">class</span> <span class="title">ResponseValues</span> <span class="keyword">implements</span> <span class="title">UseCase</span>.<span class="title">ResponseValues</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> List&lt;Task&gt; mTasks;</span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>我在上述代码的注释里增加了一些说明，此外，有几处需要额外的注意：</p>
+<ol>
+<li>Use Case 构造函数里需要传入底层数据源对象，这意味着不可以在 Presenter 层直接构造 Use Case，因为 Presenter 不应当跨过 Domain Layer 直接访问数据源。—— 想想如何实现？IOC，DI，Bingo！</li>
+<li>在 Use Case 的类内部，以静态类的方式声明<code>RequestValues</code>和<code>ResponseValues</code>，代码集中，易于管理。<code>UseCase.java</code>基类中提供的空接口也利于不同的子类声明各自不同的参数类型。在模版方法<code>executeUseCase</code>里分别进行调用，化元归一。</li>
+</ol>
+<h3 id="Executor：任务执行机制"><a href="#Executor：任务执行机制" class="headerlink" title="Executor：任务执行机制"></a>Executor：任务执行机制</h3><p><strong>命令模式</strong>由命令与执行机制两部分组成，Java 中的<code>Executor</code>框架就是一种典型应用。虽然<code>Executor</code>只是一个简单的接口，但它却为灵活而强大的异步任务执行框架提供了基础，该框架能支持多种不同类型的任务执行策略。它提供了一种标准的方法将任务的提交过程和执行过程解耦开来。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Java 中的 Executor，不负责运行结果通知</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">Executor</span> </span>&#123;</span><br><span class="line">  <span class="function"><span class="keyword">void</span> <span class="title">execute</span><span class="params">(Runnable command)</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>项目里使用同样的机制作为<code>UseCase</code>的运行框架。</p>
+<p><code>UseCaseScheduler.java</code></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">UseCaseScheduler</span> </span>&#123;</span><br><span class="line">  <span class="comment">// todo-mvp-clean 中的 Executor</span></span><br><span class="line">  <span class="function"><span class="keyword">void</span> <span class="title">execute</span><span class="params">(Runnable runnable)</span></span>;</span><br><span class="line">  <span class="comment">// 增加结果通知回调</span></span><br><span class="line">  &lt;V extends UseCase.ResponseValue&gt; <span class="function"><span class="keyword">void</span> <span class="title">notifyResponse</span><span class="params">(<span class="keyword">final</span> V response, <span class="keyword">final</span> UseCase.UseCaseCallback&lt;V&gt; useCaseCallback)</span></span>;</span><br><span class="line">  &lt;V extends UseCase.ResponseValue&gt; <span class="function"><span class="keyword">void</span> <span class="title">onError</span><span class="params">(<span class="keyword">final</span> UseCase.UseCaseCallback&lt;V&gt; useCaseCallback)</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>它的实现类采用线程池方式实现：</p>
+<p><code>UseCaseThreadPoolScheduler.java</code></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">UseCaseThreadPoolScheduler</span> <span class="keyword">implements</span> <span class="title">UseCaseScheduler</span> </span>&#123;</span><br><span class="line">  <span class="keyword">private</span> <span class="keyword">final</span> Handler mHandler = <span class="keyword">new</span> Handler(); <span class="comment">// 将运算结果通知主线程</span></span><br><span class="line">  <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> POOL_SIZE = <span class="number">2</span>;</span><br><span class="line">  <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> MAX_POOL_SIZE = <span class="number">4</span>;</span><br><span class="line">  <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> TIMEOUT = <span class="number">30</span>;</span><br><span class="line">  ThreadPoolExecutor mThreadPoolExecutor; <span class="comment">// 使用线程池提供复用</span></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="title">UseCaseThreadPoolScheduler</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    mThreadPoolExecutor = <span class="keyword">new</span> ThreadPoolExecutor(POOL_SIZE, MAX_POOL_SIZE, TIMEOUT, TimeUnit.SECONDS, <span class="keyword">new</span> ArrayBlockingQueue&lt;Runnable&gt;(POOL_SIZE));</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@Override</span></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">execute</span><span class="params">(Runnable runnable)</span> </span>&#123;</span><br><span class="line">    mThreadPoolExecutor.execute(runnable); <span class="comment">// 任务提交给线程池处理</span></span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@Override</span></span><br><span class="line">  <span class="keyword">public</span> &lt;V extends UseCase.ResponseValue&gt; <span class="function"><span class="keyword">void</span> <span class="title">notifyResponse</span><span class="params">(<span class="keyword">final</span> V response, <span class="keyword">final</span> UseCase.UseCaseCallback&lt;V&gt; useCaseCallback)</span> </span>&#123;</span><br><span class="line">    mHandler.post(<span class="keyword">new</span> Runnable() &#123;</span><br><span class="line">      <span class="meta">@Override</span></span><br><span class="line">      <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        useCaseCallback.onSuccess(response); <span class="comment">// 主线程处理结果</span></span><br><span class="line">      &#125;</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@Override</span></span><br><span class="line">  <span class="keyword">public</span> &lt;V extends UseCase.ResponseValue&gt; <span class="function"><span class="keyword">void</span> <span class="title">onError</span><span class="params">(<span class="keyword">final</span> UseCase.UseCaseCallback&lt;V&gt; useCaseCallback)</span> </span>&#123;</span><br><span class="line">    mHandler.post(<span class="keyword">new</span> Runnable() &#123;</span><br><span class="line">      <span class="meta">@Override</span></span><br><span class="line">      <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        useCaseCallback.onError(); <span class="comment">// 主线程处理结果</span></span><br><span class="line">      &#125;</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="UseCaseHandler：任务执行机制包装"><a href="#UseCaseHandler：任务执行机制包装" class="headerlink" title="UseCaseHandler：任务执行机制包装"></a>UseCaseHandler：任务执行机制包装</h3><p>上文介绍了项目里采用<code>Executor</code>作为命令的运行框架，<code>Executor</code>接收的是<code>Runnable</code>类型的任务，我们还需要一层<strong>UseCase处理器</strong>，用于将<code>UseCase</code>封装成<code>Runnable</code>，并且处理任务的返回值。<code>UseCaseHandler</code>就是负责处理<code>UseCase</code>的组件。</p>
+<p><code>UseCaseHandler.java</code>，省略部分代码。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">UseCaseHandler</span> </span>&#123;</span><br><span class="line">  <span class="keyword">private</span> <span class="keyword">static</span> UseCaseHandler INSTANCE; <span class="comment">// 单例模式，饿汉</span></span><br><span class="line">  <span class="keyword">public</span> &lt;T extends UseCase.RequestValues, R extends UseCase.ResponseValue&gt; <span class="function"><span class="keyword">void</span> <span class="title">execute</span><span class="params">(<span class="keyword">final</span> UseCase&lt;T, R&gt; useCase, T values, UseCase.UseCaseCallback&lt;R&gt; callback)</span> </span>&#123;</span><br><span class="line">    useCase.setRequestValues(values);</span><br><span class="line">    useCase.setUseCaseCallback(<span class="keyword">new</span> UiCallbackWrapper(callback, <span class="keyword">this</span>));</span><br><span class="line">    mUseCaseScheduler.execute(<span class="keyword">new</span> Runnable() &#123;</span><br><span class="line">      <span class="meta">@Override</span></span><br><span class="line">      <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        useCase.run();</span><br><span class="line">      &#125;);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// UI回调包装器类，将成功/失败事件交给UI线程处理</span></span><br><span class="line">  <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="class"><span class="keyword">class</span> <span class="title">UiCallbackWrapper</span>&lt;<span class="title">V</span> <span class="keyword">extends</span> <span class="title">UseCase</span>.<span class="title">ResponseValue</span>&gt; <span class="keyword">implements</span> <span class="title">UseCase</span>.<span class="title">UseCaseCallback</span>&lt;<span class="title">V</span>&gt; </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> UseCase.UseCaseCallback&lt;V&gt; mCallback;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> UseCaseHandler mUseCaseHandler;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">UiCallbackWrapper</span><span class="params">(UseCase.UseCaseCallback&lt;V&gt; callback, UseCaseHandler useCaseHandler)</span> </span>&#123;</span><br><span class="line">      mCallback = callback;</span><br><span class="line">      mUseCaseHandler = useCaseHandler;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onSuccess</span><span class="params">(V response)</span> </span>&#123;</span><br><span class="line">      mUseCaseHandler.notifyResponse(response, mCallback);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onError</span><span class="params">()</span> </span>&#123;</span><br><span class="line">      mUseCaseHandler.notifyError(mCallback);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+<p><code>UseCaseHandler</code>隐藏了任务的执行机制，对外暴露出通过<code>UseCase</code>提交命令的接口，此时 Presenter 就可以借助<code>UseCaseHandler</code>来提交各项异步任务，并且获取回调。注意到回调是在 UI 线程发生的，意味着 Presenter 可以在回调中直接操作 UI 元素。</p>
+<h3 id="Activity：穿针引线的组织者"><a href="#Activity：穿针引线的组织者" class="headerlink" title="Activity：穿针引线的组织者"></a>Activity：穿针引线的组织者</h3><p>与 MVP 架构一样，在 MVP clean 架构中，Activity 同样担任初始化 Fragment、Presenter 的职责。Activity 类是十分简单的，80% 的逻辑都写在<code>onCreate</code>当中。</p>
+<p><code>TaskActivity.java</code></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onCreate</span><span class="params">(Bundle savedInstanceState)</span> </span>&#123;</span><br><span class="line">  <span class="keyword">super</span>.onCreate(savedInstanceState);</span><br><span class="line">  setContentView(R.layout.tasks_act);    <span class="comment">// Set up the toolbar.</span></span><br><span class="line">  <span class="comment">// 初始化 ActionBar</span></span><br><span class="line">  <span class="comment">// ...</span></span><br><span class="line">  <span class="comment">// 初始化 DrawerLayout</span></span><br><span class="line">  <span class="comment">// ...</span></span><br><span class="line">  <span class="comment">// FragmentManager与Activity是一一对应的，所以这里通过R.id.contentFrame获取Fragment，在Activity B中也可以用R.id.contentFrame获取B当中的Fragment，不用担心重复</span></span><br><span class="line">  TasksFragment tasksFragment = (TasksFragment) getSupportFragmentManager().findFragmentById(R.id.contentFrame);</span><br><span class="line">  <span class="keyword">if</span> (tasksFragment == <span class="keyword">null</span>) &#123;</span><br><span class="line">    <span class="comment">// Create the fragment</span></span><br><span class="line">    tasksFragment = TasksFragment.newInstance();</span><br><span class="line">    ActivityUtils.addFragmentToActivity(getSupportFragmentManager(), tasksFragment, R.id.contentFrame);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 将使用到的Task用作构造参数，创建Presenter</span></span><br><span class="line">  mTasksPresenter = <span class="keyword">new</span> TasksPresenter(</span><br><span class="line">    Injection.provideUseCaseHandler(),</span><br><span class="line">    tasksFragment,</span><br><span class="line">    Injection.provideGetTasks(getApplicationContext()),</span><br><span class="line">    Injection.provideCompleteTasks(getApplicationContext()),</span><br><span class="line">    Injection.provideActivateTask(getApplicationContext()),</span><br><span class="line">    Injection.provideClearCompleteTasks(getApplicationContext())</span><br><span class="line">  );</span><br><span class="line">  <span class="comment">// Load previously saved state, if available.</span></span><br><span class="line">  <span class="keyword">if</span> (savedInstanceState != <span class="keyword">null</span>) &#123;</span><br><span class="line">    TasksFilterType currentFiltering = (TasksFilterType) savedInstanceState.getSerializable(CURRENT_FILTERING_KEY);</span><br><span class="line">  mTasksPresenter.setFiltering(currentFiltering);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>随后在<code>View.onResume</code>中会调用<code>Presenter.start</code>来首次加载数据。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onResume</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  <span class="keyword">super</span>.onResume();</span><br><span class="line">  mPresenter.start();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>至此，MVP-clean 架构的设计思路就被我们分析透彻了，可以看出，相比于 MVP，clean 架构抽象出来 Domain 层，使具体的业务操作独立可复用，且减轻了 Presenter 类的负担。</p>
+<p>还有一个好处是每一个 Use Case 都是可测试的，单元测试粒度被细化，更容易定位问题，从而针对性解决。关于测试我讲的不多，可以直接参考<a href="https://github.com/googlesamples/android-architecture/tree/todo-mvp-clean" target="_blank" rel="noopener">源码</a>进行理解。</p>
+<h2 id="任务列表功能类图"><a href="#任务列表功能类图" class="headerlink" title="任务列表功能类图"></a>任务列表功能类图</h2><p>最后，我们将 todo app 的任务列表功能绘制成类图，加深理解。</p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="/img/190821_todo_mvp_clean/mvp-clean-%E7%B1%BB%E5%9B%BE.png" alt="mvp-clean-类图" title="">
+                </div>
+                <div class="image-caption">mvp-clean-类图</div>
+            </figure>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    
+    <div class="content">
+        
+<span class="post-time">
+    最后更新时间：<time datetime="2019-08-20T16:17:18.801Z" itemprop="dateUpdated">2019-08-21 00:17:18</time>
+</span><br>
+
+
+        
+        这里可以写作者留言，标签和 hexo 中所有变量及辅助函数等均可调用，示例：<a href="/2019/08/21/architecture-todo-mvp-clean/" target="_blank" rel="external">https://lilei.pro/2019/08/21/architecture-todo-mvp-clean/</a>
+        
+    </div>
+    
+    <footer>
+        <a href="https://lilei.pro">
+            <img src="/img/avatar.jpeg" alt="Li Lei">
+            Li Lei
+        </a>
+    </footer>
+</blockquote>
+
+        
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/架构/">架构</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://lilei.pro/2019/08/21/architecture-todo-mvp-clean/&title=《架构学习之 mvp-clean》 — 柘个角落&pic=https://lilei.pro/img/avatar.jpeg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://lilei.pro/2019/08/21/architecture-todo-mvp-clean/&title=《架构学习之 mvp-clean》 — 柘个角落&source=技术与生活上的点滴积累" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://lilei.pro/2019/08/21/architecture-todo-mvp-clean/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《架构学习之 mvp-clean》 — 柘个角落&url=https://lilei.pro/2019/08/21/architecture-todo-mvp-clean/&via=https://lilei.pro" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://lilei.pro/2019/08/21/architecture-todo-mvp-clean/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between flex-row-reverse">
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2019/08/21/architecture-todo-mvp/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">架构学习之 mvp</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+    <!-- Valine Comments -->
+    <div class="comments vcomment" id="comments"></div>
+    <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+    <script src="//unpkg.com/valine@latest/dist/Valine.min.js"></script>
+    <!-- Valine Comments script -->
+    <script>
+        var GUEST_INFO = ['nick','mail','link'];
+        var guest_info = 'nick,mail,link'.split(',').filter(function(item){
+          return GUEST_INFO.indexOf(item) > -1
+        });
+        new Valine({
+            el: '#comments',
+            notify: 'false' == 'true',
+            verify: 'true' == 'true',
+            appId: "khG3rBt0nWda7lxDUHpS3Sq0-gzGzoHsz",
+            appKey: "btFkQfcBgJeCRm55mYmUgA5d",
+            avatar: "mm",
+            placeholder: "欢迎讨论",
+            guest_info: guest_info.length == 0 ? GUEST_INFO : guest_info,
+            pageSize: "10"
+        })
+    </script>
+    <!-- Valine Comments end -->
+
+
+
+
+
+
+
+</article>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>博客内容遵循 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">知识共享 署名 - 非商业性 - 相同方式共享 4.0 国际协议</a></span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>Li Lei &copy; 2015 - 2019</span>
+            <span>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://lilei.pro/2019/08/21/architecture-todo-mvp-clean/&title=《架构学习之 mvp-clean》 — 柘个角落&pic=https://lilei.pro/img/avatar.jpeg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://lilei.pro/2019/08/21/architecture-todo-mvp-clean/&title=《架构学习之 mvp-clean》 — 柘个角落&source=技术与生活上的点滴积累" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://lilei.pro/2019/08/21/architecture-todo-mvp-clean/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《架构学习之 mvp-clean》 — 柘个角落&url=https://lilei.pro/2019/08/21/architecture-todo-mvp-clean/&via=https://lilei.pro" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://lilei.pro/2019/08/21/architecture-todo-mvp-clean/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACJ0lEQVR42u3aQW7DMAxE0dz/0i7QbWv5D2kjMPW9CpLG0fOC5Uj8fPB1/F7rd/5+enat77++c+uSIUPGaxnkJ8mC1t/tvEaPQ4YMGRswakWQgDvFnaxNhgwZMtJiul4EaRBlyJAho8/gJZKXY/KYZMiQIYOEWL4UHn2/kMVlyJDxQkYnWD79+sHzDRkyZLyEcZQufsxJoiz59GI9MmTIGM3gbR9p9XgQ5fcJtuFkyJAxlMHLaC1Appto6YadDBkydmDwg0ZyIz4QlhbWs+/KkCFjT0bnWPGJ9pEXcRkyZMxm1MYm0tKcLpQ/FBkyZMxmkDja39bnrSEp4sGJhAwZMkYwOKlWRvvNJflnIEOGjNmMuxq7WlitjXFczIzIkCFjHKPWtPFDTcIj4RYVbhkyZAxlpEWzA+63oRczIzJkyBjKKG5p4a26u+4TPAgZMmSMY9zVAqYtJh8gCwbCZMiQMZTBF10bm+AY/rsyZMjYjdE/gCQhs/9QgiwuQ4aMcQweKftDYGkr2SnxMmTImMTobP2nsZNcvEn95whThgwZQxk8dnY22jgsPUiQIUPGDowjvNJISd7nEfeULUOGjNGM/khE2hRyBv9dGTJk7MBIg2XaaaY7f7VQLUOGjB0YaQNXC8D9+Hr69zJkyJABwiov0J0dQRkyZMjgh5S1cYq0NN82JyJDhowRjDTE8sKajmsUI64MGTJGM2oHA7WN/rTQx1FWhgwZ0xg/feO3PQSuDHEAAAAASUVORK5CYII=" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: false };
+
+
+</script>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/main.min.js"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/search.min.js" async></script>
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>
