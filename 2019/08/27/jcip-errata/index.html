@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    
+    <title>《Java 并发编程实战》勘误表 2019-08-27 | 柘个角落 | IF YOU WANT SOMETHING, GO GET IT. PERIOD.</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="Java">
+    <meta name="description" content="Java Concurrency in Practice 是一本讲解 JVM 下并发编程知识的经典作品，建议有志于资深的 Java 工程师将其纳入自己的读书计划中，相信一定会大有裨益。 在阅读这本书的过程中，我发现中文版本有很多显而易见的错误，尤其是代码里条件判断有时根本是反着来的（本应是&amp;gt;=的条件，书里面却是&amp;lt;）。Google 搜索之后发现在 http://jcip.net/erra">
+<meta name="keywords" content="Java">
+<meta property="og:type" content="article">
+<meta property="og:title" content="《Java 并发编程实战》勘误表 2019-08-27">
+<meta property="og:url" content="https://lilei.pro/2019/08/27/jcip-errata/index.html">
+<meta property="og:site_name" content="柘个角落">
+<meta property="og:description" content="Java Concurrency in Practice 是一本讲解 JVM 下并发编程知识的经典作品，建议有志于资深的 Java 工程师将其纳入自己的读书计划中，相信一定会大有裨益。 在阅读这本书的过程中，我发现中文版本有很多显而易见的错误，尤其是代码里条件判断有时根本是反着来的（本应是&amp;gt;=的条件，书里面却是&amp;lt;）。Google 搜索之后发现在 http://jcip.net/erra">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-08-27T15:56:18.605Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="《Java 并发编程实战》勘误表 2019-08-27">
+<meta name="twitter:description" content="Java Concurrency in Practice 是一本讲解 JVM 下并发编程知识的经典作品，建议有志于资深的 Java 工程师将其纳入自己的读书计划中，相信一定会大有裨益。 在阅读这本书的过程中，我发现中文版本有很多显而易见的错误，尤其是代码里条件判断有时根本是反着来的（本应是&amp;gt;=的条件，书里面却是&amp;lt;）。Google 搜索之后发现在 http://jcip.net/erra">
+    
+        <link rel="alternate" type="application/atom+xml" title="柘个角落" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/img/favicon.ico">
+    <link rel="stylesheet" href="//unpkg.com/hexo-theme-material-indigo@latest/css/style.css">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/avatar.jpeg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">Li Lei</h5>
+          <a href="mailto:bequietlee#gmail.com" title="bequietlee#gmail.com" class="mail">bequietlee#gmail.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                文章
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+                标签
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/bequietlee" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/2019/03/10/links"  >
+                <i class="icon icon-lg icon-link"></i>
+                友情链接
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">《Java 并发编程实战》勘误表 2019-08-27</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">《Java 并发编程实战》勘误表 2019-08-27</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2019-08-27T15:53:23.000Z" itemprop="datePublished" class="page-time">
+  2019-08-27
+</time>
+
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#本文适用的中文版本"><span class="post-toc-number">1.</span> <span class="post-toc-text">本文适用的中文版本</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#勘误数据来源"><span class="post-toc-number">2.</span> <span class="post-toc-text">勘误数据来源</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#中文版勘误表"><span class="post-toc-number">3.</span> <span class="post-toc-text">中文版勘误表</span></a></li></ol>
+        </nav>
+    </aside>
+
+
+<article id="post-jcip-errata"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">《Java 并发编程实战》勘误表 2019-08-27</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2019-08-27 23:53:23" datetime="2019-08-27T15:53:23.000Z"  itemprop="datePublished">2019-08-27</time>
+
+            
+
+
+            
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <p>Java Concurrency in Practice 是一本讲解 JVM 下并发编程知识的经典作品，建议有志于资深的 Java 工程师将其纳入自己的读书计划中，相信一定会大有裨益。</p>
+<p>在阅读这本书的过程中，我发现中文版本有很多显而易见的错误，尤其是代码里条件判断有时根本是反着来的（本应是<code>&gt;=</code>的条件，书里面却是<code>&lt;</code>）。Google 搜索之后发现在 <a href="http://jcip.net/errata.html" target="_blank" rel="noopener">http://jcip.net/errata.html</a> 有英文原版的勘误表，由于中文版本没有勘误表，故翻译在此，希望可以有所帮助。</p>
+<p>使用之前请确认自己手中的书籍版本是否相符。</p>
+<h1 id="本文适用的中文版本"><a href="#本文适用的中文版本" class="headerlink" title="本文适用的中文版本"></a>本文适用的中文版本</h1><ul>
+<li>书名：《Java 并发编程实战》，Java Concurrency in Practice</li>
+<li>作者：Brain Goetz, Tim Peierls 等</li>
+<li>译者：童云兰 等</li>
+<li>ISBN：978-7-111-37004-8</li>
+<li>出版社：机械工业出版社</li>
+<li>出版时间：2012.2 第一版，2018.9 重印</li>
+<li>定价：69 元</li>
+<li>豆瓣链接：<a href="https://book.douban.com/subject/10484692/" target="_blank" rel="noopener">https://book.douban.com/subject/10484692/</a></li>
+</ul>
+<h1 id="勘误数据来源"><a href="#勘误数据来源" class="headerlink" title="勘误数据来源"></a>勘误数据来源</h1><p><a href="http://jcip.net/errata.html" target="_blank" rel="noopener">官方勘误表</a></p>
+<h1 id="中文版勘误表"><a href="#中文版勘误表" class="headerlink" title="中文版勘误表"></a>中文版勘误表</h1><table>
+<thead>
+<tr>
+<th>页码</th>
+<th>勘误</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>p.5</td>
+<td>程序清单 1-1 下面的第一段，<code>someVariable++</code>应为<code>value++</code></td>
+</tr>
+<tr>
+<td>p.6</td>
+<td>程序清单 1-2，<code>Value</code>应为<code>value</code></td>
+</tr>
+<tr>
+<td>p.53</td>
+<td>4.3 节上面的最后一段，<code>getLocation</code>应为<code>getLocations</code></td>
+</tr>
+<tr>
+<td>p.58</td>
+<td>程序清单 4-11，<code>SafePoint(int x, int y)</code>构造函数的函数体可以精简为<code>set(x, y)</code></td>
+</tr>
+<tr>
+<td>p.62</td>
+<td>程序清单 4-16，<code>if(contains)</code>应为<code>if(!contains)</code></td>
+</tr>
+<tr>
+<td>p.75</td>
+<td>5.3.1 第一段，<code>DiskCrawler</code>应为<code>FileCrawler</code></td>
+</tr>
+<tr>
+<td>p.100</td>
+<td>程序清单 6-7 下面第二段，<code>在 ExcutorService 关闭后提交的任务将由“拒绝执行处理器（Rejected Execution Handler）来处理</code>表述有误，<code>Rejected Execution Handler</code>是仅在<code>ThreadPoolExecutor</code>实现中提供的，并非所有的<code>ExecutorService</code>实现都具备此功能</td>
+</tr>
+<tr>
+<td>p.122</td>
+<td>第二行，<code>那么调用 close 或 wakeup 方法会使线程抛出 ClosedSelectorException</code>，只有<code>close</code>方法会抛出该异常，<code>wakeup</code>方法不会</td>
+</tr>
+<tr>
+<td>p.163</td>
+<td>程序清单 9-6，第一个<code>if(runningTask != null)</code>判断条件应为<code>(runningTask == null)</code></td>
+</tr>
+<tr>
+<td>p.214</td>
+<td>程序清单 12-9，<code>Executors.newFixedThreadPool(MAX_SIZE)</code>方法调用应该增加第二个参数<code>threadFactory</code></td>
+</tr>
+<tr>
+<td>p.229</td>
+<td>程序清单 13-3，代码倒数第三行<code>if (System.nanoTime() &lt; stopTime)</code>判断条件里的<code>&lt;</code>应为<code>&gt;=</code></td>
+</tr>
+</tbody>
+</table>
+<p>以上就是中文版《Java 并发编程实战》的勘误表，如有遗漏，欢迎通过文末留言联系我进行补充。</p>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    
+    <div class="content">
+        
+<span class="post-time">
+    最后更新时间：<time datetime="2019-08-27T15:56:18.605Z" itemprop="dateUpdated">2019-08-27 23:56:18</time>
+</span><br>
+
+
+        
+        本文系作者原创，如转载请注明出处。欢迎留言讨论，或通过邮件进行沟通～
+        
+    </div>
+    
+    <footer>
+        <a href="https://lilei.pro">
+            <img src="/img/avatar.jpeg" alt="Li Lei">
+            Li Lei
+        </a>
+    </footer>
+</blockquote>
+
+        
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Java/">Java</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://lilei.pro/2019/08/27/jcip-errata/&title=《《Java 并发编程实战》勘误表 2019-08-27》 — 柘个角落&pic=https://lilei.pro/img/avatar.jpeg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://lilei.pro/2019/08/27/jcip-errata/&title=《《Java 并发编程实战》勘误表 2019-08-27》 — 柘个角落&source=技术与生活上的点滴积累" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://lilei.pro/2019/08/27/jcip-errata/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《《Java 并发编程实战》勘误表 2019-08-27》 — 柘个角落&url=https://lilei.pro/2019/08/27/jcip-errata/&via=https://lilei.pro" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://lilei.pro/2019/08/27/jcip-errata/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between flex-row-reverse">
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2019/08/21/architecture-todo-mvp-clean/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">架构学习之 mvp-clean</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+    <!-- Valine Comments -->
+    <div class="comments vcomment" id="comments"></div>
+    <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+    <script src="//unpkg.com/valine@latest/dist/Valine.min.js"></script>
+    <!-- Valine Comments script -->
+    <script>
+        var GUEST_INFO = ['nick','mail','link'];
+        var guest_info = 'nick,mail,link'.split(',').filter(function(item){
+          return GUEST_INFO.indexOf(item) > -1
+        });
+        new Valine({
+            el: '#comments',
+            notify: 'false' == 'true',
+            verify: 'true' == 'true',
+            appId: "khG3rBt0nWda7lxDUHpS3Sq0-gzGzoHsz",
+            appKey: "btFkQfcBgJeCRm55mYmUgA5d",
+            avatar: "mm",
+            placeholder: "欢迎讨论",
+            guest_info: guest_info.length == 0 ? GUEST_INFO : guest_info,
+            pageSize: "10"
+        })
+    </script>
+    <!-- Valine Comments end -->
+
+
+
+
+
+
+
+</article>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>博客内容遵循 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">知识共享 署名 - 非商业性 - 相同方式共享 4.0 国际协议</a></span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>Li Lei &copy; 2015 - 2019</span>
+            <span>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://lilei.pro/2019/08/27/jcip-errata/&title=《《Java 并发编程实战》勘误表 2019-08-27》 — 柘个角落&pic=https://lilei.pro/img/avatar.jpeg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://lilei.pro/2019/08/27/jcip-errata/&title=《《Java 并发编程实战》勘误表 2019-08-27》 — 柘个角落&source=技术与生活上的点滴积累" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://lilei.pro/2019/08/27/jcip-errata/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《《Java 并发编程实战》勘误表 2019-08-27》 — 柘个角落&url=https://lilei.pro/2019/08/27/jcip-errata/&via=https://lilei.pro" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://lilei.pro/2019/08/27/jcip-errata/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAK4AAACuCAAAAACKZ2kyAAABxElEQVR42u3aSW7DMAwFUN//0ukBAiuf1BCneFoFqKA+eUFw0HXF63Wz3ve8/x6fdu1YuLi409zXcCV77qB3J4z/Ov4ouLi4J7l3ESPZM7NyAy4u7m9xZ9ImXFzc/8EdFz/j9ChJd3BxcZ/DraYg49Ilv/bGWg0XF3eCO5OOrPq9pb+Li4vb4vZaGEloy0Ne4b/j4uIe4eYBJSlgktKlGshwcXGfw81HrTml9zgj6uLg4uIu5a49tJrilE/GxcU9yK2mKfMN094lcXFxT3KTcNNrkVR3fjgHFxf3OLc6TF0VpJYVP7i4uNu4+ZC1+mij+rwjCmS4uLgbuPnIJG+n9nb29uPi4u7m5sVPHvJ6ATEKZLi4uF/i9p5ZJFctt0rzTbi4uIu4+XF5sdR7qhV9LFxc3IPcfIiSNETmH1vchjNcXNyvcqstj3yUMlM+4eLi7ub2glQemJJPULgYLi7uEW41uMyEqqTIKQ9ZcXFxt3F3PKTIz8xPwMXFPc+tDleSNKXXci3Uari4uI/n9h5qNCs2XFzcR3JnLlkd2S5IcXBxcVvcvFBJnmjMD2I/DFlxcXE3c2cGn9XUp9oenerv4uLidrh/fGbiMT0/gwAAAAAASUVORK5CYII=" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: false };
+
+
+</script>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/main.min.js"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/search.min.js" async></script>
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>
