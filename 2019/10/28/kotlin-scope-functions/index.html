@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    
+    <title>Kotlin域函数小结 | 柘个角落 | IF YOU WANT SOMETHING, GO GET IT. PERIOD.</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="Android,Kotlin">
+    <meta name="description" content="并非意志坚强就可以无所不能，人世不是那么单纯的。老实说，我甚至觉得每天坚持跑步同意志强弱并没有太大关联。我能够坚持跑二十年，恐怕还是因为合乎我的性情，至少“不觉得那么痛苦”。人生来如此，喜欢的事自然可以坚持下去，不喜欢的事怎么也坚持不了。 ——当我谈跑步时我谈些什么  想要掌握Kotlin，域函数是不得不迈过的一道坎。 所谓“域函数”一句话，域函数（scope functions）是为给定的对象">
+<meta name="keywords" content="Android,Kotlin">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Kotlin域函数小结">
+<meta property="og:url" content="https://lilei.pro/2019/10/28/kotlin-scope-functions/index.html">
+<meta property="og:site_name" content="柘个角落">
+<meta property="og:description" content="并非意志坚强就可以无所不能，人世不是那么单纯的。老实说，我甚至觉得每天坚持跑步同意志强弱并没有太大关联。我能够坚持跑二十年，恐怕还是因为合乎我的性情，至少“不觉得那么痛苦”。人生来如此，喜欢的事自然可以坚持下去，不喜欢的事怎么也坚持不了。 ——当我谈跑步时我谈些什么  想要掌握Kotlin，域函数是不得不迈过的一道坎。 所谓“域函数”一句话，域函数（scope functions）是为给定的对象">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-10-28T15:43:35.967Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Kotlin域函数小结">
+<meta name="twitter:description" content="并非意志坚强就可以无所不能，人世不是那么单纯的。老实说，我甚至觉得每天坚持跑步同意志强弱并没有太大关联。我能够坚持跑二十年，恐怕还是因为合乎我的性情，至少“不觉得那么痛苦”。人生来如此，喜欢的事自然可以坚持下去，不喜欢的事怎么也坚持不了。 ——当我谈跑步时我谈些什么  想要掌握Kotlin，域函数是不得不迈过的一道坎。 所谓“域函数”一句话，域函数（scope functions）是为给定的对象">
+    
+        <link rel="alternate" type="application/atom+xml" title="柘个角落" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/img/favicon.ico">
+    <link rel="stylesheet" href="//unpkg.com/hexo-theme-material-indigo@latest/css/style.css">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/avatar.jpeg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">Li Lei</h5>
+          <a href="mailto:bequietlee#gmail.com" title="bequietlee#gmail.com" class="mail">bequietlee#gmail.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                文章
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+                标签
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/bequietlee" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/2019/03/10/links"  >
+                <i class="icon icon-lg icon-link"></i>
+                友情链接
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">Kotlin域函数小结</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">Kotlin域函数小结</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2019-10-28T15:37:31.000Z" itemprop="datePublished" class="page-time">
+  2019-10-28
+</time>
+
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#所谓“域函数”"><span class="post-toc-number">1.</span> <span class="post-toc-text">所谓“域函数”</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#区别点：上下文对象"><span class="post-toc-number">2.</span> <span class="post-toc-text">区别点：上下文对象</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#this"><span class="post-toc-number">2.1.</span> <span class="post-toc-text">this</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#it"><span class="post-toc-number">2.2.</span> <span class="post-toc-text">it</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#区别点：返回值"><span class="post-toc-number">3.</span> <span class="post-toc-text">区别点：返回值</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Lambda表达式结果"><span class="post-toc-number">3.1.</span> <span class="post-toc-text">Lambda表达式结果</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#上下文对象"><span class="post-toc-number">3.2.</span> <span class="post-toc-text">上下文对象</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#逐个函数讲解"><span class="post-toc-number">4.</span> <span class="post-toc-text">逐个函数讲解</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#let"><span class="post-toc-number">4.1.</span> <span class="post-toc-text">let</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#with"><span class="post-toc-number">4.2.</span> <span class="post-toc-text">with</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#run"><span class="post-toc-number">4.3.</span> <span class="post-toc-text">run</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#apply"><span class="post-toc-number">4.4.</span> <span class="post-toc-text">apply</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#also"><span class="post-toc-number">4.5.</span> <span class="post-toc-text">also</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#总结"><span class="post-toc-number">5.</span> <span class="post-toc-text">总结</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#参考"><span class="post-toc-number">6.</span> <span class="post-toc-text">参考</span></a></li></ol>
+        </nav>
+    </aside>
+
+
+<article id="post-kotlin-scope-functions"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">Kotlin域函数小结</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2019-10-28 23:37:31" datetime="2019-10-28T15:37:31.000Z"  itemprop="datePublished">2019-10-28</time>
+
+            
+
+
+            
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <blockquote>
+<p>并非意志坚强就可以无所不能，人世不是那么单纯的。老实说，我甚至觉得每天坚持跑步同意志强弱并没有太大关联。我能够坚持跑二十年，恐怕还是因为合乎我的性情，至少“不觉得那么痛苦”。人生来如此，喜欢的事自然可以坚持下去，不喜欢的事怎么也坚持不了。 ——<strong>当我谈跑步时我谈些什么</strong></p>
+</blockquote>
+<p>想要掌握Kotlin，域函数是不得不迈过的一道坎。</p>
+<h1 id="所谓“域函数”"><a href="#所谓“域函数”" class="headerlink" title="所谓“域函数”"></a>所谓“域函数”</h1><p>一句话，域函数（scope functions）是为给定的对象创建一个临时的域，在这个域中执行一些操作。相比于传统的对象-函数调用写法，域函数在减少代码量的同时，还可以让编码在逻辑上看起来更加清晰，便于扩展和维护。</p>
+<p>对比一下域函数写法与普通写法。</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 域函数写法</span></span><br><span class="line">Person(<span class="string">"Alice"</span>, <span class="number">20</span>, <span class="string">"Amsterdam"</span>).let &#123;</span><br><span class="line">    println(it)</span><br><span class="line">    it.moveTo(<span class="string">"London"</span>)</span><br><span class="line">    it.incrementAge()</span><br><span class="line">    println(it)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 普通写法</span></span><br><span class="line"><span class="keyword">val</span> alice = Person(<span class="string">"Alice"</span>, <span class="number">20</span>, <span class="string">"Amsterdam"</span>)</span><br><span class="line">println(alice)</span><br><span class="line">alice.moveTo(<span class="string">"London"</span>)</span><br><span class="line">alice.incrementAge()</span><br><span class="line">println(alice)</span><br></pre></td></tr></table></figure>
+<p>域函数要结合lambda表达式使用。Kotlin中一共有五个域函数：<code>let</code>, <code>run</code>, <code>with</code>, <code>apply</code>, <code>also</code>。这些域函数有两个区别点。</p>
+<ul>
+<li>域函数中如何引用上下文对象</li>
+<li>域函数返回值</li>
+</ul>
+<h1 id="区别点：上下文对象"><a href="#区别点：上下文对象" class="headerlink" title="区别点：上下文对象"></a>区别点：上下文对象</h1><p>域函数中用<code>this</code>或者<code>it</code>指代上下文对象。</p>
+<h2 id="this"><a href="#this" class="headerlink" title="this"></a>this</h2><p><code>run</code>, <code>with</code>和<code>apply</code>在lambda表达式中用<code>this</code>指代上下文对象，就好像lambda表达式是在对象内部调用的一样，<code>this</code>是可以省略的。对于调用对象内部方法、属性的代码，应当选择使用<code>this</code>指代的域函数。如果在域内要调用其他对象的函数，不要选择<code>this</code>指代，因为容易弄混。</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">val</span> adam = Person(<span class="string">"Adam"</span>).apply &#123;</span><br><span class="line">  age = <span class="number">20</span> <span class="comment">// same as this.age = 20</span></span><br><span class="line">  city = <span class="string">"Hangzhou"</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="it"><a href="#it" class="headerlink" title="it"></a>it</h2><p><code>let</code>, <code>also</code>在lambda表达式中用<code>it</code>指代上下文对象，与<code>this</code>不同，在访问方法和对象时<code>it</code>是不能省略的。当上下文对象需要在域内充当函数参数时，就选用<code>it</code>类型的域函数。另一个便捷之处在于，可以为<code>it</code>指代别名。</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">fun</span> <span class="title">getRandomInt</span><span class="params">()</span></span>: <span class="built_in">Int</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> Random.nextInt(<span class="number">100</span>).also &#123;</span><br><span class="line">        writeToLog(<span class="string">"getRandomInt() generated value <span class="variable">$it</span>"</span>)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">val</span> i = getRandomInt()</span><br><span class="line"></span><br><span class="line"><span class="comment">// 为it指代别名</span></span><br><span class="line"><span class="function"><span class="keyword">fun</span> <span class="title">getRandomInt</span><span class="params">()</span></span>: <span class="built_in">Int</span> &#123; value -&gt;</span><br><span class="line">    <span class="keyword">return</span> Random.nextInt(<span class="number">100</span>).also &#123;</span><br><span class="line">        writeToLog(<span class="string">"getRandomInt() generated value <span class="variable">$value</span>"</span>)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="区别点：返回值"><a href="#区别点：返回值" class="headerlink" title="区别点：返回值"></a>区别点：返回值</h1><h2 id="Lambda表达式结果"><a href="#Lambda表达式结果" class="headerlink" title="Lambda表达式结果"></a>Lambda表达式结果</h2><p><code>let</code>, <code>run</code>和<code>with</code>返回lambda表达式的结果（最后一行），可以用这些域函数来进行赋值，也可以进行链式调用。</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 赋值</span></span><br><span class="line"><span class="keyword">val</span> numbers = mutableListOf(<span class="string">"one"</span>, <span class="string">"two"</span>, <span class="string">"three"</span>)</span><br><span class="line"><span class="keyword">val</span> countEndsWithE = numbers.run &#123; </span><br><span class="line">    add(<span class="string">"four"</span>)</span><br><span class="line">    add(<span class="string">"five"</span>)</span><br><span class="line">    count &#123; it.endsWith(<span class="string">"e"</span>) &#125; <span class="comment">// 返回count数</span></span><br><span class="line">&#125;</span><br><span class="line">println(<span class="string">"There are <span class="variable">$countEndsWithE</span> elements that end with e."</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 无视返回值，只是执行域函数内部操作</span></span><br><span class="line"><span class="keyword">val</span> numbers = mutableListOf(<span class="string">"one"</span>, <span class="string">"two"</span>, <span class="string">"three"</span>)</span><br><span class="line">with(numbers) &#123; <span class="comment">// with是this指代，可省略</span></span><br><span class="line">    <span class="keyword">val</span> firstItem = first()</span><br><span class="line">    <span class="keyword">val</span> lastItem = last()        </span><br><span class="line">    println(<span class="string">"First item: <span class="variable">$firstItem</span>, last item: <span class="variable">$lastItem</span>"</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="上下文对象"><a href="#上下文对象" class="headerlink" title="上下文对象"></a>上下文对象</h2><p><code>also</code>, <code>apply</code>返回上下文对象，可以继续对此进行链式调用，也可以直接返回上下文对象。</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 链式调用</span></span><br><span class="line"><span class="keyword">val</span> numberList = mutableListOf&lt;<span class="built_in">Double</span>&gt;()</span><br><span class="line">numberList.also &#123; println(<span class="string">"Populating the list"</span>) &#125;</span><br><span class="line">    .apply &#123; <span class="comment">// 注意apply使用this指代（省略掉）</span></span><br><span class="line">        add(<span class="number">2.71</span>)</span><br><span class="line">        add(<span class="number">3.14</span>)</span><br><span class="line">        add(<span class="number">1.0</span>)</span><br><span class="line">    &#125;</span><br><span class="line">    .also &#123; println(<span class="string">"Sorting the list"</span>) &#125;</span><br><span class="line">    .sort()</span><br><span class="line"></span><br><span class="line"><span class="comment">// 作为返回值</span></span><br><span class="line"><span class="function"><span class="keyword">fun</span> <span class="title">getRandomInt</span><span class="params">()</span></span>: <span class="built_in">Int</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> Random.nextInt(<span class="number">100</span>).also &#123;</span><br><span class="line">        writeToLog(<span class="string">"getRandomInt() generated value <span class="variable">$it</span>"</span>) <span class="comment">// it指代上下文对象</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">val</span> i = getRandomInt()</span><br></pre></td></tr></table></figure>
+<h1 id="逐个函数讲解"><a href="#逐个函数讲解" class="headerlink" title="逐个函数讲解"></a>逐个函数讲解</h1><h2 id="let"><a href="#let" class="headerlink" title="let"></a>let</h2><p><strong>上下文对象</strong>是<code>it</code>，<strong>返回值</strong>是lambda表达式计算结果（最后一行）。</p>
+<p><code>let</code>可以作为链式调用中的一环来使用。</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 链式调用</span></span><br><span class="line"><span class="keyword">val</span> numbers = mutableListOf(<span class="string">"one"</span>, <span class="string">"two"</span>, <span class="string">"three"</span>, <span class="string">"four"</span>, <span class="string">"five"</span>)</span><br><span class="line">numbers.map &#123; it.length &#125;.filter &#123; it &gt; <span class="number">3</span> &#125;.let &#123; </span><br><span class="line">    println(it)</span><br><span class="line">    <span class="comment">// and more function calls if needed</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 更加精简</span></span><br><span class="line">numbers.map &#123; it.length &#125;.filter &#123; it &gt; <span class="number">3</span> &#125;.let(::println)</span><br></pre></td></tr></table></figure>
+<p><code>let</code>经常用来在非空对象上执行一系列操作。</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">val</span> str: String? = <span class="string">"Hello"</span>   </span><br><span class="line"><span class="comment">//processNonNullString(str)       // compilation error: str can be null</span></span><br><span class="line"><span class="keyword">val</span> length = str?.let &#123; </span><br><span class="line">    println(<span class="string">"let() called on <span class="variable">$it</span>"</span>)        </span><br><span class="line">    processNonNullString(it)      <span class="comment">// OK: 'it' is not null inside '?.let &#123; &#125;'</span></span><br><span class="line">    it.length</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><code>let</code>另一个用法是为变量<code>it</code>创建别名，以增强代码可阅读性。借助于IDE，通常我们可以看到<code>it</code>指代的是什么对象，对这个用法的需求并非十分强烈。</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">val</span> numbers = listOf(<span class="string">"one"</span>, <span class="string">"two"</span>, <span class="string">"three"</span>, <span class="string">"four"</span>)</span><br><span class="line"><span class="keyword">val</span> modifiedFirstItem = numbers.first().let &#123; firstItem -&gt;</span><br><span class="line">    println(<span class="string">"The first item of the list is '<span class="variable">$firstItem</span>'"</span>)</span><br><span class="line">    <span class="keyword">if</span> (firstItem.length &gt;= <span class="number">5</span>) firstItem <span class="keyword">else</span> <span class="string">"!"</span> + firstItem + <span class="string">"!"</span></span><br><span class="line">&#125;.toUpperCase()</span><br><span class="line">println(<span class="string">"First item after modifications: '<span class="variable">$modifiedFirstItem</span>'"</span>)</span><br></pre></td></tr></table></figure>
+<h2 id="with"><a href="#with" class="headerlink" title="with"></a>with</h2><p><code>with</code>不是扩展函数，它接收<strong>上下文对象</strong>作为函数参数，在lambda表达式中用<code>this</code>指代，返回结果是lambda表达式的值。</p>
+<p>建议在使用<code>with</code>时不要处理它的返回结果，这样<code>with</code>就可以根据字面含义简单的理解成“在这个对象上进行如下操作”。</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">val</span> numbers = mutableListOf(<span class="string">"one"</span>, <span class="string">"two"</span>, <span class="string">"three"</span>)</span><br><span class="line">with(numbers) &#123;</span><br><span class="line">    println(<span class="string">"'with' is called with argument <span class="variable">$this</span>"</span>)</span><br><span class="line">    println(<span class="string">"It contains <span class="variable">$size</span> elements"</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>另一种用法是创建一个辅助对象，它的属性或者方法可以用来计算出某个值。</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">val</span> numbers = mutableListOf(<span class="string">"one"</span>, <span class="string">"two"</span>, <span class="string">"three"</span>)</span><br><span class="line"><span class="keyword">val</span> firstAndLast = with(numbers) &#123; <span class="comment">// 相当于声明了一个局部函数</span></span><br><span class="line">    <span class="string">"The first element is <span class="subst">$&#123;first()&#125;</span>,"</span> +</span><br><span class="line">    <span class="string">" the last element is <span class="subst">$&#123;last()&#125;</span>"</span></span><br><span class="line">&#125;</span><br><span class="line">println(firstAndLast)</span><br></pre></td></tr></table></figure>
+<h2 id="run"><a href="#run" class="headerlink" title="run"></a>run</h2><p>使用<code>this</code>指代上下文对象，返回结果是lambda表达式值。</p>
+<p><code>run</code>在含义上与<code>with</code>一致，在调用方式上与<code>let</code>一致。当需要进行对象初始化、并同时要返回一个计算结果时，应当使用<code>run</code>。</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">val</span> service = MultiportService(<span class="string">"https://example.kotlinlang.org"</span>, <span class="number">80</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">val</span> result = service.run &#123;</span><br><span class="line">    port = <span class="number">8080</span></span><br><span class="line">    query(prepareRequest() + <span class="string">" to port <span class="variable">$port</span>"</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// the same code written with let() function:</span></span><br><span class="line"><span class="keyword">val</span> letResult = service.let &#123;</span><br><span class="line">    it.port = <span class="number">8080</span></span><br><span class="line">    it.query(it.prepareRequest() + <span class="string">" to port <span class="subst">$&#123;it.port&#125;</span>"</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>除了在接收者对象上调用以外，<code>run</code>还可以让我们在需要一个表达式的地方传入一个代码块（这种用法略复杂）。</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">val</span> hexNumberRegex = run &#123;</span><br><span class="line">    <span class="keyword">val</span> digits = <span class="string">"0-9"</span></span><br><span class="line">    <span class="keyword">val</span> hexDigits = <span class="string">"A-Fa-f"</span></span><br><span class="line">    <span class="keyword">val</span> sign = <span class="string">"+-"</span></span><br><span class="line"></span><br><span class="line">    Regex(<span class="string">"[<span class="variable">$sign</span>]?[<span class="variable">$digits</span><span class="variable">$hexDigits</span>]+"</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> (match <span class="keyword">in</span> hexNumberRegex.findAll(<span class="string">"+1234 -FFFF not-a-number"</span>)) &#123; <span class="comment">// findAll正则匹配</span></span><br><span class="line">    println(match.value)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * output: </span></span><br><span class="line"><span class="comment"> * +1234</span></span><br><span class="line"><span class="comment"> * -FFFF</span></span><br><span class="line"><span class="comment"> * -a</span></span><br><span class="line"><span class="comment"> * be</span></span><br><span class="line"><span class="comment"> */</span></span><br></pre></td></tr></table></figure>
+<h2 id="apply"><a href="#apply" class="headerlink" title="apply"></a>apply</h2><p>使用<code>this</code>指代上下文对象，返回值是上下文对象本身。</p>
+<p><code>apply</code>适用的场景是不需要返回值，且主要是操作对象成员的过程。常见的就是对象配置，“在对象上进行如下操作”。</p>
+<p><code>apply</code>可以很容易地变成链式操作。</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">val</span> adam = Person(<span class="string">"Adam"</span>).apply &#123;</span><br><span class="line">    age = <span class="number">32</span></span><br><span class="line">    city = <span class="string">"London"</span>        </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="also"><a href="#also" class="headerlink" title="also"></a>also</h2><p>使用<code>it</code>指代上下文对象，返回值是上下文对象本身。</p>
+<p><code>also</code>的使用场景是将对象作为一系列操作的参数，在这些操作中<strong>不应该对参数产生副作用</strong>，因此你可以在一个链式调用中很方便地加上<code>also</code>，或者从链式调用中把<code>also</code>摘掉，且不影响原有逻辑。</p>
+<p>当你在代码中看到<code>also</code>时，可以将其理解为“还需要做这些事情”。</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">val</span> numbers = mutableListOf(<span class="string">"one"</span>, <span class="string">"two"</span>, <span class="string">"three"</span>)</span><br><span class="line">numbers</span><br><span class="line">    .also &#123; println(<span class="string">"The list elements before adding new one: <span class="variable">$it</span>"</span>) &#125;</span><br><span class="line">    .add(<span class="string">"four"</span>)</span><br></pre></td></tr></table></figure>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>用一张表格列出函数的对象引用与返回值。</p>
+<table>
+<thead>
+<tr>
+<th>Function</th>
+<th>Object reference</th>
+<th>Return value</th>
+<th>Is extension function</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>let</td>
+<td>it</td>
+<td>Lambda result</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>run</td>
+<td>it</td>
+<td>Lambda result</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>run</td>
+<td>-</td>
+<td>Lambda result</td>
+<td>No: called without the context object</td>
+</tr>
+<tr>
+<td>with</td>
+<td>this</td>
+<td>Lambda result</td>
+<td>No: takes the context object as an argument</td>
+</tr>
+<tr>
+<td>apply</td>
+<td>this</td>
+<td>Context object</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>also</td>
+<td>it</td>
+<td>Context object</td>
+<td>Yes</td>
+</tr>
+</tbody>
+</table>
+<p>一个简单的函数选用指南如下，它们的应用场景有重叠的部分，使用时应当具体情况具体分析。</p>
+<ul>
+<li>在非空对象上调用lambda表达式：<code>let</code></li>
+<li>在域内将表达式抽象成一个变量：<code>let</code></li>
+<li>对象配置：<code>apply</code></li>
+<li>对象配置并计算结果：<code>run</code></li>
+<li>执行一系列表达式，非扩展函数：<code>run</code></li>
+<li>附加效果：<code>also</code></li>
+<li>将对于某个对象的函数调用组合：<code>with</code></li>
+</ul>
+<p>尽管作用域函数功能强大，在使用时应当谨慎，避免出错，尤其是嵌套的情况应当越少越好；当你在写链式调用时，一定要小心分辨当前的上下文对象。</p>
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><ul>
+<li><a href="https://kotlinlang.org/docs/reference/scope-functions.html" target="_blank" rel="noopener">官方文档</a></li>
+</ul>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    
+    <div class="content">
+        
+<span class="post-time">
+    最后更新时间：<time datetime="2019-10-28T15:43:35.967Z" itemprop="dateUpdated">2019-10-28 23:43:35</time>
+</span><br>
+
+
+        
+        本文系作者原创，如转载请注明出处。欢迎留言讨论，或通过邮件进行沟通～
+        
+    </div>
+    
+    <footer>
+        <a href="https://lilei.pro">
+            <img src="/img/avatar.jpeg" alt="Li Lei">
+            Li Lei
+        </a>
+    </footer>
+</blockquote>
+
+        
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Android/">Android</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Kotlin/">Kotlin</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://lilei.pro/2019/10/28/kotlin-scope-functions/&title=《Kotlin域函数小结》 — 柘个角落&pic=https://lilei.pro/img/avatar.jpeg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://lilei.pro/2019/10/28/kotlin-scope-functions/&title=《Kotlin域函数小结》 — 柘个角落&source=技术与生活上的点滴积累" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://lilei.pro/2019/10/28/kotlin-scope-functions/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《Kotlin域函数小结》 — 柘个角落&url=https://lilei.pro/2019/10/28/kotlin-scope-functions/&via=https://lilei.pro" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://lilei.pro/2019/10/28/kotlin-scope-functions/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between flex-row-reverse">
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2019/10/12/unique-device-id/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">移动设备ID那些事</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+    <!-- Valine Comments -->
+    <div class="comments vcomment" id="comments"></div>
+    <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+    <script src="//unpkg.com/valine@latest/dist/Valine.min.js"></script>
+    <!-- Valine Comments script -->
+    <script>
+        var GUEST_INFO = ['nick','mail','link'];
+        var guest_info = 'nick,mail,link'.split(',').filter(function(item){
+          return GUEST_INFO.indexOf(item) > -1
+        });
+        new Valine({
+            el: '#comments',
+            notify: 'false' == 'true',
+            verify: 'true' == 'true',
+            appId: "khG3rBt0nWda7lxDUHpS3Sq0-gzGzoHsz",
+            appKey: "btFkQfcBgJeCRm55mYmUgA5d",
+            avatar: "mm",
+            placeholder: "欢迎讨论",
+            guest_info: guest_info.length == 0 ? GUEST_INFO : guest_info,
+            pageSize: "10"
+        })
+    </script>
+    <!-- Valine Comments end -->
+
+
+
+
+
+
+
+</article>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>博客内容遵循 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">知识共享 署名 - 非商业性 - 相同方式共享 4.0 国际协议</a></span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>Li Lei &copy; 2015 - 2019</span>
+            <span>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://lilei.pro/2019/10/28/kotlin-scope-functions/&title=《Kotlin域函数小结》 — 柘个角落&pic=https://lilei.pro/img/avatar.jpeg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://lilei.pro/2019/10/28/kotlin-scope-functions/&title=《Kotlin域函数小结》 — 柘个角落&source=技术与生活上的点滴积累" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://lilei.pro/2019/10/28/kotlin-scope-functions/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《Kotlin域函数小结》 — 柘个角落&url=https://lilei.pro/2019/10/28/kotlin-scope-functions/&via=https://lilei.pro" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://lilei.pro/2019/10/28/kotlin-scope-functions/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACG0lEQVR42u3a0WrDMAwF0P7/T3evg63hXjkt1D5+GiGJfVLQZEuPRzyev8b19es7/95zfefNAwMD42sZz8uRL679EAksWRsGBsY5jFcTJ8tNwHmATubFwMDASF6XT18ETQwMDIybGPkW9BrfBl8MDAyMZILrp67vnH2at+zFMTAwvpCRH5Z9/u+31DcwMDC+ivEsR05NksjZGv55JwYGxtaMPMDN0rK2nDBbDwYGxt6MWTtXe5SWt2jk97/8HTAwMLZjJIf1s71kcqUFR78JBgbGdoz84bZJYhaCh6EZAwPjSEaRkI1KoW9ss8DAwNiUcdcR2+xwbRayMTAwTmPM2rbyo7ck+SvCa7KJxcDA2IgxS+9WjthmxcsWj4GBsStjdkC/EkCL2kWeqmJgYGzNyCdLgm8eZG9rtsDAwDiAsRLy8qW3RdMag4GBsSljvdyYh878IK9+PwYGxjGMRzza0mbeTpEfvWFgYJzGSFK0duI8dK6UGTAwME5jtAncygY1SQeLz4qBgXEAY6VtK3m2LSfUYRcDA+MYRpvkteljXU3N58LAwNiU8SzHehhdSTSLjjYMDIyNGLfF7NlRfnBlNiMGBsZ+jDzI5ry2OaPd+tb/PTAwMLZgtIEy39x+aOuLgYGBcRNpVnLAwMDAWAm4eVNF8mnypb8sYWJgYGzNWG/8agN0uxnGwMA4mdFuHZOwuFLgzBNTDAyMAxg/+N4D8fsz0c0AAAAASUVORK5CYII=" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: false };
+
+
+</script>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/main.min.js"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/search.min.js" async></script>
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

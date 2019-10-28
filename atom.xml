@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://lilei.pro/"/>
-  <updated>2019-10-11T16:22:48.854Z</updated>
+  <updated>2019-10-28T15:43:35.967Z</updated>
   <id>https://lilei.pro/</id>
   
   <author>
@@ -15,6 +15,32 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Kotlin域函数小结</title>
+    <link href="https://lilei.pro/2019/10/28/kotlin-scope-functions/"/>
+    <id>https://lilei.pro/2019/10/28/kotlin-scope-functions/</id>
+    <published>2019-10-28T15:37:31.000Z</published>
+    <updated>2019-10-28T15:43:35.967Z</updated>
+    
+    <content type="html"><![CDATA[<blockquote><p>并非意志坚强就可以无所不能，人世不是那么单纯的。老实说，我甚至觉得每天坚持跑步同意志强弱并没有太大关联。我能够坚持跑二十年，恐怕还是因为合乎我的性情，至少“不觉得那么痛苦”。人生来如此，喜欢的事自然可以坚持下去，不喜欢的事怎么也坚持不了。 ——<strong>当我谈跑步时我谈些什么</strong></p></blockquote><p>想要掌握Kotlin，域函数是不得不迈过的一道坎。</p><h1 id="所谓“域函数”"><a href="#所谓“域函数”" class="headerlink" title="所谓“域函数”"></a>所谓“域函数”</h1><p>一句话，域函数（scope functions）是为给定的对象创建一个临时的域，在这个域中执行一些操作。相比于传统的对象-函数调用写法，域函数在减少代码量的同时，还可以让编码在逻辑上看起来更加清晰，便于扩展和维护。</p><p>对比一下域函数写法与普通写法。</p><figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 域函数写法</span></span><br><span class="line">Person(<span class="string">"Alice"</span>, <span class="number">20</span>, <span class="string">"Amsterdam"</span>).let &#123;</span><br><span class="line">    println(it)</span><br><span class="line">    it.moveTo(<span class="string">"London"</span>)</span><br><span class="line">    it.incrementAge()</span><br><span class="line">    println(it)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 普通写法</span></span><br><span class="line"><span class="keyword">val</span> alice = Person(<span class="string">"Alice"</span>, <span class="number">20</span>, <span class="string">"Amsterdam"</span>)</span><br><span class="line">println(alice)</span><br><span class="line">alice.moveTo(<span class="string">"London"</span>)</span><br><span class="line">alice.incrementAge()</span><br><span class="line">println(alice)</span><br></pre></td></tr></table></figure><p>域函数要结合lambda表达式使用。Kotlin中一共有五个域函数：<code>let</code>, <code>run</code>, <code>with</code>, <code>apply</code>, <code>also</code>。这些域函数有两个区别点。</p><ul><li>域函数中如何引用上下文对象</li><li>域函数返回值</li></ul><h1 id="区别点：上下文对象"><a href="#区别点：上下文对象" class="headerlink" title="区别点：上下文对象"></a>区别点：上下文对象</h1><p>域函数中用<code>this</code>或者<code>it</code>指代上下文对象。</p><h2 id="this"><a href="#this" class="headerlink" title="this"></a>this</h2><p><code>run</code>, <code>with</code>和<code>apply</code>在lambda表达式中用<code>this</code>指代上下文对象，就好像lambda表达式是在对象内部调用的一样，<code>this</code>是可以省略的。对于调用对象内部方法、属性的代码，应当选择使用<code>this</code>指代的域函数。如果在域内要调用其他对象的函数，不要选择<code>this</code>指代，因为容易弄混。</p><figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">val</span> adam = Person(<span class="string">"Adam"</span>).apply &#123;</span><br><span class="line">  age = <span class="number">20</span> <span class="comment">// same as this.age = 20</span></span><br><span class="line">  city = <span class="string">"Hangzhou"</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><h2 id="it"><a href="#it" class="headerlink" title="it"></a>it</h2><p><code>let</code>, <code>also</code>在lambda表达式中用<code>it</code>指代上下文对象，与<code>this</code>不同，在访问方法和对象时<code>it</code>是不能省略的。当上下文对象需要在域内充当函数参数时，就选用<code>it</code>类型的域函数。另一个便捷之处在于，可以为<code>it</code>指代别名。</p><figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">fun</span> <span class="title">getRandomInt</span><span class="params">()</span></span>: <span class="built_in">Int</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> Random.nextInt(<span class="number">100</span>).also &#123;</span><br><span class="line">        writeToLog(<span class="string">"getRandomInt() generated value <span class="variable">$it</span>"</span>)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">val</span> i = getRandomInt()</span><br><span class="line"></span><br><span class="line"><span class="comment">// 为it指代别名</span></span><br><span class="line"><span class="function"><span class="keyword">fun</span> <span class="title">getRandomInt</span><span class="params">()</span></span>: <span class="built_in">Int</span> &#123; value -&gt;</span><br><span class="line">    <span class="keyword">return</span> Random.nextInt(<span class="number">100</span>).also &#123;</span><br><span class="line">        writeToLog(<span class="string">"getRandomInt() generated value <span class="variable">$value</span>"</span>)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><h1 id="区别点：返回值"><a href="#区别点：返回值" class="headerlink" title="区别点：返回值"></a>区别点：返回值</h1><h2 id="Lambda表达式结果"><a href="#Lambda表达式结果" class="headerlink" title="Lambda表达式结果"></a>Lambda表达式结果</h2><p><code>let</code>, <code>run</code>和<code>with</code>返回lambda表达式的结果（最后一行），可以用这些域函数来进行赋值，也可以进行链式调用。</p><figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 赋值</span></span><br><span class="line"><span class="keyword">val</span> numbers = mutableListOf(<span class="string">"one"</span>, <span class="string">"two"</span>, <span class="string">"three"</span>)</span><br><span class="line"><span class="keyword">val</span> countEndsWithE = numbers.run &#123; </span><br><span class="line">    add(<span class="string">"four"</span>)</span><br><span class="line">    add(<span class="string">"five"</span>)</span><br><span class="line">    count &#123; it.endsWith(<span class="string">"e"</span>) &#125; <span class="comment">// 返回count数</span></span><br><span class="line">&#125;</span><br><span class="line">println(<span class="string">"There are <span class="variable">$countEndsWithE</span> elements that end with e."</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 无视返回值，只是执行域函数内部操作</span></span><br><span class="line"><span class="keyword">val</span> numbers = mutableListOf(<span class="string">"one"</span>, <span class="string">"two"</span>, <span class="string">"three"</span>)</span><br><span class="line">with(numbers) &#123; <span class="comment">// with是this指代，可省略</span></span><br><span class="line">    <span class="keyword">val</span> firstItem = first()</span><br><span class="line">    <span class="keyword">val</span> lastItem = last()        </span><br><span class="line">    println(<span class="string">"First item: <span class="variable">$firstItem</span>, last item: <span class="variable">$lastItem</span>"</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><h2 id="上下文对象"><a href="#上下文对象" class="headerlink" title="上下文对象"></a>上下文对象</h2><p><code>also</code>, <code>apply</code>返回上下文对象，可以继续对此进行链式调用，也可以直接返回上下文对象。</p><figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 链式调用</span></span><br><span class="line"><span class="keyword">val</span> numberList = mutableListOf&lt;<span class="built_in">Double</span>&gt;()</span><br><span class="line">numberList.also &#123; println(<span class="string">"Populating the list"</span>) &#125;</span><br><span class="line">    .apply &#123; <span class="comment">// 注意apply使用this指代（省略掉）</span></span><br><span class="line">        add(<span class="number">2.71</span>)</span><br><span class="line">        add(<span class="number">3.14</span>)</span><br><span class="line">        add(<span class="number">1.0</span>)</span><br><span class="line">    &#125;</span><br><span class="line">    .also &#123; println(<span class="string">"Sorting the list"</span>) &#125;</span><br><span class="line">    .sort()</span><br><span class="line"></span><br><span class="line"><span class="comment">// 作为返回值</span></span><br><span class="line"><span class="function"><span class="keyword">fun</span> <span class="title">getRandomInt</span><span class="params">()</span></span>: <span class="built_in">Int</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> Random.nextInt(<span class="number">100</span>).also &#123;</span><br><span class="line">        writeToLog(<span class="string">"getRandomInt() generated value <span class="variable">$it</span>"</span>) <span class="comment">// it指代上下文对象</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">val</span> i = getRandomInt()</span><br></pre></td></tr></table></figure><h1 id="逐个函数讲解"><a href="#逐个函数讲解" class="headerlink" title="逐个函数讲解"></a>逐个函数讲解</h1><h2 id="let"><a href="#let" class="headerlink" title="let"></a>let</h2><p><strong>上下文对象</strong>是<code>it</code>，<strong>返回值</strong>是lambda表达式计算结果（最后一行）。</p><p><code>let</code>可以作为链式调用中的一环来使用。</p><figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 链式调用</span></span><br><span class="line"><span class="keyword">val</span> numbers = mutableListOf(<span class="string">"one"</span>, <span class="string">"two"</span>, <span class="string">"three"</span>, <span class="string">"four"</span>, <span class="string">"five"</span>)</span><br><span class="line">numbers.map &#123; it.length &#125;.filter &#123; it &gt; <span class="number">3</span> &#125;.let &#123; </span><br><span class="line">    println(it)</span><br><span class="line">    <span class="comment">// and more function calls if needed</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 更加精简</span></span><br><span class="line">numbers.map &#123; it.length &#125;.filter &#123; it &gt; <span class="number">3</span> &#125;.let(::println)</span><br></pre></td></tr></table></figure><p><code>let</code>经常用来在非空对象上执行一系列操作。</p><figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">val</span> str: String? = <span class="string">"Hello"</span>   </span><br><span class="line"><span class="comment">//processNonNullString(str)       // compilation error: str can be null</span></span><br><span class="line"><span class="keyword">val</span> length = str?.let &#123; </span><br><span class="line">    println(<span class="string">"let() called on <span class="variable">$it</span>"</span>)        </span><br><span class="line">    processNonNullString(it)      <span class="comment">// OK: 'it' is not null inside '?.let &#123; &#125;'</span></span><br><span class="line">    it.length</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p><code>let</code>另一个用法是为变量<code>it</code>创建别名，以增强代码可阅读性。借助于IDE，通常我们可以看到<code>it</code>指代的是什么对象，对这个用法的需求并非十分强烈。</p><figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">val</span> numbers = listOf(<span class="string">"one"</span>, <span class="string">"two"</span>, <span class="string">"three"</span>, <span class="string">"four"</span>)</span><br><span class="line"><span class="keyword">val</span> modifiedFirstItem = numbers.first().let &#123; firstItem -&gt;</span><br><span class="line">    println(<span class="string">"The first item of the list is '<span class="variable">$firstItem</span>'"</span>)</span><br><span class="line">    <span class="keyword">if</span> (firstItem.length &gt;= <span class="number">5</span>) firstItem <span class="keyword">else</span> <span class="string">"!"</span> + firstItem + <span class="string">"!"</span></span><br><span class="line">&#125;.toUpperCase()</span><br><span class="line">println(<span class="string">"First item after modifications: '<span class="variable">$modifiedFirstItem</span>'"</span>)</span><br></pre></td></tr></table></figure><h2 id="with"><a href="#with" class="headerlink" title="with"></a>with</h2><p><code>with</code>不是扩展函数，它接收<strong>上下文对象</strong>作为函数参数，在lambda表达式中用<code>this</code>指代，返回结果是lambda表达式的值。</p><p>建议在使用<code>with</code>时不要处理它的返回结果，这样<code>with</code>就可以根据字面含义简单的理解成“在这个对象上进行如下操作”。</p><figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">val</span> numbers = mutableListOf(<span class="string">"one"</span>, <span class="string">"two"</span>, <span class="string">"three"</span>)</span><br><span class="line">with(numbers) &#123;</span><br><span class="line">    println(<span class="string">"'with' is called with argument <span class="variable">$this</span>"</span>)</span><br><span class="line">    println(<span class="string">"It contains <span class="variable">$size</span> elements"</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>另一种用法是创建一个辅助对象，它的属性或者方法可以用来计算出某个值。</p><figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">val</span> numbers = mutableListOf(<span class="string">"one"</span>, <span class="string">"two"</span>, <span class="string">"three"</span>)</span><br><span class="line"><span class="keyword">val</span> firstAndLast = with(numbers) &#123; <span class="comment">// 相当于声明了一个局部函数</span></span><br><span class="line">    <span class="string">"The first element is <span class="subst">$&#123;first()&#125;</span>,"</span> +</span><br><span class="line">    <span class="string">" the last element is <span class="subst">$&#123;last()&#125;</span>"</span></span><br><span class="line">&#125;</span><br><span class="line">println(firstAndLast)</span><br></pre></td></tr></table></figure><h2 id="run"><a href="#run" class="headerlink" title="run"></a>run</h2><p>使用<code>this</code>指代上下文对象，返回结果是lambda表达式值。</p><p><code>run</code>在含义上与<code>with</code>一致，在调用方式上与<code>let</code>一致。当需要进行对象初始化、并同时要返回一个计算结果时，应当使用<code>run</code>。</p><figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">val</span> service = MultiportService(<span class="string">"https://example.kotlinlang.org"</span>, <span class="number">80</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">val</span> result = service.run &#123;</span><br><span class="line">    port = <span class="number">8080</span></span><br><span class="line">    query(prepareRequest() + <span class="string">" to port <span class="variable">$port</span>"</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// the same code written with let() function:</span></span><br><span class="line"><span class="keyword">val</span> letResult = service.let &#123;</span><br><span class="line">    it.port = <span class="number">8080</span></span><br><span class="line">    it.query(it.prepareRequest() + <span class="string">" to port <span class="subst">$&#123;it.port&#125;</span>"</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>除了在接收者对象上调用以外，<code>run</code>还可以让我们在需要一个表达式的地方传入一个代码块（这种用法略复杂）。</p><figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">val</span> hexNumberRegex = run &#123;</span><br><span class="line">    <span class="keyword">val</span> digits = <span class="string">"0-9"</span></span><br><span class="line">    <span class="keyword">val</span> hexDigits = <span class="string">"A-Fa-f"</span></span><br><span class="line">    <span class="keyword">val</span> sign = <span class="string">"+-"</span></span><br><span class="line"></span><br><span class="line">    Regex(<span class="string">"[<span class="variable">$sign</span>]?[<span class="variable">$digits</span><span class="variable">$hexDigits</span>]+"</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> (match <span class="keyword">in</span> hexNumberRegex.findAll(<span class="string">"+1234 -FFFF not-a-number"</span>)) &#123; <span class="comment">// findAll正则匹配</span></span><br><span class="line">    println(match.value)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * output: </span></span><br><span class="line"><span class="comment"> * +1234</span></span><br><span class="line"><span class="comment"> * -FFFF</span></span><br><span class="line"><span class="comment"> * -a</span></span><br><span class="line"><span class="comment"> * be</span></span><br><span class="line"><span class="comment"> */</span></span><br></pre></td></tr></table></figure><h2 id="apply"><a href="#apply" class="headerlink" title="apply"></a>apply</h2><p>使用<code>this</code>指代上下文对象，返回值是上下文对象本身。</p><p><code>apply</code>适用的场景是不需要返回值，且主要是操作对象成员的过程。常见的就是对象配置，“在对象上进行如下操作”。</p><p><code>apply</code>可以很容易地变成链式操作。</p><figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">val</span> adam = Person(<span class="string">"Adam"</span>).apply &#123;</span><br><span class="line">    age = <span class="number">32</span></span><br><span class="line">    city = <span class="string">"London"</span>        </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><h2 id="also"><a href="#also" class="headerlink" title="also"></a>also</h2><p>使用<code>it</code>指代上下文对象，返回值是上下文对象本身。</p><p><code>also</code>的使用场景是将对象作为一系列操作的参数，在这些操作中<strong>不应该对参数产生副作用</strong>，因此你可以在一个链式调用中很方便地加上<code>also</code>，或者从链式调用中把<code>also</code>摘掉，且不影响原有逻辑。</p><p>当你在代码中看到<code>also</code>时，可以将其理解为“还需要做这些事情”。</p><figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">val</span> numbers = mutableListOf(<span class="string">"one"</span>, <span class="string">"two"</span>, <span class="string">"three"</span>)</span><br><span class="line">numbers</span><br><span class="line">    .also &#123; println(<span class="string">"The list elements before adding new one: <span class="variable">$it</span>"</span>) &#125;</span><br><span class="line">    .add(<span class="string">"four"</span>)</span><br></pre></td></tr></table></figure><h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>用一张表格列出函数的对象引用与返回值。</p><table><thead><tr><th>Function</th><th>Object reference</th><th>Return value</th><th>Is extension function</th></tr></thead><tbody><tr><td>let</td><td>it</td><td>Lambda result</td><td>Yes</td></tr><tr><td>run</td><td>it</td><td>Lambda result</td><td>Yes</td></tr><tr><td>run</td><td>-</td><td>Lambda result</td><td>No: called without the context object</td></tr><tr><td>with</td><td>this</td><td>Lambda result</td><td>No: takes the context object as an argument</td></tr><tr><td>apply</td><td>this</td><td>Context object</td><td>Yes</td></tr><tr><td>also</td><td>it</td><td>Context object</td><td>Yes</td></tr></tbody></table><p>一个简单的函数选用指南如下，它们的应用场景有重叠的部分，使用时应当具体情况具体分析。</p><ul><li>在非空对象上调用lambda表达式：<code>let</code></li><li>在域内将表达式抽象成一个变量：<code>let</code></li><li>对象配置：<code>apply</code></li><li>对象配置并计算结果：<code>run</code></li><li>执行一系列表达式，非扩展函数：<code>run</code></li><li>附加效果：<code>also</code></li><li>将对于某个对象的函数调用组合：<code>with</code></li></ul><p>尽管作用域函数功能强大，在使用时应当谨慎，避免出错，尤其是嵌套的情况应当越少越好；当你在写链式调用时，一定要小心分辨当前的上下文对象。</p><h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><ul><li><a href="https://kotlinlang.org/docs/reference/scope-functions.html" target="_blank" rel="noopener">官方文档</a></li></ul>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;blockquote&gt;
+&lt;p&gt;并非意志坚强就可以无所不能，人世不是那么单纯的。老实说，我甚至觉得每天坚持跑步同意志强弱并没有太大关联。我能够坚持跑二十年，恐怕还是因为合乎我的性情，至少“不觉得那么痛苦”。人生来如此，喜欢的事自然可以坚持下去，不喜欢的事怎么也坚持不了。 ——&lt;s
+      
+    
+    </summary>
+    
+    
+      <category term="Android" scheme="https://lilei.pro/tags/Android/"/>
+    
+      <category term="Kotlin" scheme="https://lilei.pro/tags/Kotlin/"/>
+    
+  </entry>
   
   <entry>
     <title>移动设备ID那些事</title>
@@ -94,7 +120,7 @@
     <link href="https://lilei.pro/2019/08/27/jcip-errata/"/>
     <id>https://lilei.pro/2019/08/27/jcip-errata/</id>
     <published>2019-08-27T15:53:23.000Z</published>
-    <updated>2019-08-27T15:56:18.605Z</updated>
+    <updated>2019-08-27T16:05:56.759Z</updated>
     
     <content type="html"><![CDATA[<p>Java Concurrency in Practice 是一本讲解 JVM 下并发编程知识的经典作品，建议有志于资深的 Java 工程师将其纳入自己的读书计划中，相信一定会大有裨益。</p><p>在阅读这本书的过程中，我发现中文版本有很多显而易见的错误，尤其是代码里条件判断有时根本是反着来的（本应是<code>&gt;=</code>的条件，书里面却是<code>&lt;</code>）。Google 搜索之后发现在 <a href="http://jcip.net/errata.html" target="_blank" rel="noopener">http://jcip.net/errata.html</a> 有英文原版的勘误表，由于中文版本没有勘误表，故翻译在此，希望可以有所帮助。</p><p>使用之前请确认自己手中的书籍版本是否相符。</p><h1 id="本文适用的中文版本"><a href="#本文适用的中文版本" class="headerlink" title="本文适用的中文版本"></a>本文适用的中文版本</h1><ul><li>书名：《Java 并发编程实战》，Java Concurrency in Practice</li><li>作者：Brain Goetz, Tim Peierls 等</li><li>译者：童云兰 等</li><li>ISBN：978-7-111-37004-8</li><li>出版社：机械工业出版社</li><li>出版时间：2012.2 第一版，2018.9 重印</li><li>定价：69 元</li><li>豆瓣链接：<a href="https://book.douban.com/subject/10484692/" target="_blank" rel="noopener">https://book.douban.com/subject/10484692/</a></li></ul><h1 id="勘误数据来源"><a href="#勘误数据来源" class="headerlink" title="勘误数据来源"></a>勘误数据来源</h1><p><a href="http://jcip.net/errata.html" target="_blank" rel="noopener">官方勘误表</a></p><h1 id="中文版勘误表"><a href="#中文版勘误表" class="headerlink" title="中文版勘误表"></a>中文版勘误表</h1><table><thead><tr><th>页码</th><th>勘误</th></tr></thead><tbody><tr><td>p.5</td><td>程序清单 1-1 下面的第一段，<code>someVariable++</code>应为<code>value++</code></td></tr><tr><td>p.6</td><td>程序清单 1-2，<code>Value</code>应为<code>value</code></td></tr><tr><td>p.53</td><td>4.3 节上面的最后一段，<code>getLocation</code>应为<code>getLocations</code></td></tr><tr><td>p.58</td><td>程序清单 4-11，<code>SafePoint(int x, int y)</code>构造函数的函数体可以精简为<code>set(x, y)</code></td></tr><tr><td>p.62</td><td>程序清单 4-16，<code>if(contains)</code>应为<code>if(!contains)</code></td></tr><tr><td>p.75</td><td>5.3.1 第一段，<code>DiskCrawler</code>应为<code>FileCrawler</code></td></tr><tr><td>p.100</td><td>程序清单 6-7 下面第二段，<code>在 ExcutorService 关闭后提交的任务将由“拒绝执行处理器（Rejected Execution Handler）来处理</code>表述有误，<code>Rejected Execution Handler</code>是仅在<code>ThreadPoolExecutor</code>实现中提供的，并非所有的<code>ExecutorService</code>实现都具备此功能</td></tr><tr><td>p.122</td><td>第二行，<code>那么调用 close 或 wakeup 方法会使线程抛出 ClosedSelectorException</code>，只有<code>close</code>方法会抛出该异常，<code>wakeup</code>方法不会</td></tr><tr><td>p.163</td><td>程序清单 9-6，第一个<code>if(runningTask != null)</code>判断条件应为<code>(runningTask == null)</code></td></tr><tr><td>p.214</td><td>程序清单 12-9，<code>Executors.newFixedThreadPool(MAX_SIZE)</code>方法调用应该增加第二个参数<code>threadFactory</code></td></tr><tr><td>p.229</td><td>程序清单 13-3，代码倒数第三行<code>if (System.nanoTime() &lt; stopTime)</code>判断条件里的<code>&lt;</code>应为<code>&gt;=</code></td></tr></tbody></table><p>以上就是中文版《Java 并发编程实战》的勘误表，如有遗漏，欢迎通过文末留言联系我进行补充。</p>]]></content>
     
@@ -243,78 +269,6 @@
   </entry>
   
   <entry>
-    <title>《高效能人士的七个习惯 第三部分 习惯五 知彼解己——移情沟通的原则</title>
-    <link href="https://lilei.pro/2019/04/07/Seven-Habbits-7/"/>
-    <id>https://lilei.pro/2019/04/07/Seven-Habbits-7/</id>
-    <published>2019-04-07T03:00:29.000Z</published>
-    <updated>2019-06-08T08:46:26.832Z</updated>
-    
-    <content type="html"><![CDATA[<h1 id="你真的听懂了吗"><a href="#你真的听懂了吗" class="headerlink" title="你真的听懂了吗"></a>你真的听懂了吗</h1><p>如果你要和我交往，想对我有影响力，你首先要了解我，而做到这一点不能只靠技巧。如果我觉察到你在使用某种技巧，就会有受骗和被操纵的感觉。我不知道你为什么这样做，有什么动机。</p><p>你的影响力在于你的榜样作用和引导能力，前者源于你的品德，是你的真我，别人的评论或者你希望别人如何看你都没有意义，我在同你的交往中已经清楚了解了你。</p><p>你的品德时刻发挥着影响力，并起着沟通的作用。久而久之，我就会本能地信任或者不信任你这个人以及你对我所做的事情。</p><h1 id="移情聆听"><a href="#移情聆听" class="headerlink" title="移情聆听"></a>移情聆听</h1><p>“知彼”是交往模式的一大转变，因为我们通常把让别人理解自己放在首位。大部分人在聆听时并不是想理解对方，而是为了做出回应。这种人要么说话，要么准备说话，不断地用自己的模式过滤一切，用自己的经历理解别人的生活。</p><p>事实上，大部分人都是这么自以为是。我们的聆听通常有层次之分。一是充耳不闻，压根就不听别人说话；二是装模作样，“是的！嗯！没错！”三是选择接受，只听一部分，通常学龄前儿童喋喋不休会让我们采取这种方式；四是聚精会神，努力听到每一个字，但是，很少有人会达到第五个层次，即最高层次——移情聆听。</p><p><strong>移情聆听</strong>是指以理解为目的的聆听，要求听者站在说话者的角度理解他们的思维模式和感受。</p><p>移情（Empathy）不是同情（Sympathy）。后者是一种认同和判断形式，更适合用来表达感情和做出回应，却容易养成对方的依赖性。移情聆听的本质不是你要赞同对方，而是要在情感和理智上充分而深入地理解对方。</p><p>据专家估计，人际沟通仅有10%通过语言来进行，30%取决于语调与声音，其余60%则得靠肢体语言。所以在移情聆听的过程中，不仅要耳到，还要眼到、心到；用眼睛去观察，用心灵去体会。</p><h1 id="心理空气"><a href="#心理空气" class="headerlink" title="心理空气"></a>心理空气</h1><p>除了物质，人类最大的生存需求源自心理，即被人理解、肯定、认可和欣赏。</p><p>移情聆听是有风险的。只有当你做好了被对方影响的准备，才能深入到移情聆听的阶段，而这是需要足够的安全感的，因为这时候的你会变得很脆弱。从某种意义上说，这很矛盾，因为在影响对方之前，你必须先被影响，即真正理解对方。</p><h1 id="先诊断后开方"><a href="#先诊断后开方" class="headerlink" title="先诊断后开方"></a>先诊断后开方</h1><p>平庸的业务员推销产品，杰出的业务员销售解决问题、满足需求之道。万一产品不符合客户需要，也要勇于承认。</p><h1 id="四种自传式回应"><a href="#四种自传式回应" class="headerlink" title="四种自传式回应"></a>四种自传式回应</h1><p>我们在听别人讲话时总是会联系我们自己的经理，因此自以为是的人往往会有四种“自传式回应”（Autobiographical Response）的倾向：</p><ul><li>价值判断——对旁人的意见只有接受或不接受。</li><li>追根究底——依自己的价值观探查别人的隐私。</li><li>好为人师——以自己的经验提供忠告。</li><li>自以为是——根据自己的行为与动机衡量别人的行为与动机。</li></ul><h1 id="表达也要讲技巧"><a href="#表达也要讲技巧" class="headerlink" title="表达也要讲技巧"></a>表达也要讲技巧</h1><p>古希腊人有一种很经典的哲学观点，即品德第一，感情第二，理性第三。我认为这三个词集中体现了让他人理解自己以及有效表达自己的精髓。</p><p>品德指的是你个人的可信度，是人们对你的诚信和能力的认可，是人们对你的信任，是你的情感账户。感情指的是你的移情能力，是感性的，说明你能通过交流迅速理解他人的情感。理性是你的逻辑能力，即合理表达自己的能力。</p><h1 id="一对一沟通"><a href="#一对一沟通" class="headerlink" title="一对一沟通"></a>一对一沟通</h1><p>你现在就可以练习习惯五。下次同别人交流的时候，你可以试着抛开自己的经验，尽力真正了解对方。你应该睿智、敏感而又头脑清楚。不论在办公室或者家中，敞开胸怀，凝神倾听。不要急功近利，即使短期内未获回馈也绝不气馁。</p><p>如果你真正爱一个人，那么花时间了解对方将有益于今后的坦诚相待，这样一来，很多困扰家庭和婚姻的问题都将被扼杀在萌芽状态，没有发展壮大的机会，即便有这样的机会，充足的情感账户储蓄也会让问题迎刃而解。</p><p>先理解别人。在问题出现之前，在评估和判断之前，在你表达个人观点之前，先理解别人，这是有效的相互依赖关系中最有用的习惯。</p><h1 id="付诸行动"><a href="#付诸行动" class="headerlink" title="付诸行动"></a>付诸行动</h1><ol><li>选择一个情感账户出现赤字的人际关系，试着从对方的角度理解并记下他的处境。下一次见面时，通过聆听来理解对方，将现在听到的和以前记下的做一个比较。看看你的想法是否准确？——你真的理解对方的立场和观点么？</li><li>与一个亲近的人分享移情这个概念，告诉他你想要做到真正的移情聆听，并让他在一个星期之后提供反馈意见。——你做的怎么样？那个人有什么感觉？</li><li>下次有机会旁观他人交流的时候，捂住自己的耳朵，只用眼睛观察。哪些情感不是用语言表达出来的？</li><li>下次发现你表现出不恰当的自传式回应的时候，立即承认错误，尽力扭转局面，将情感账户的支出变成存入。（“对不起，我刚才并不是真的努力去理解你，我们可以再来一次吗？”）</li><li>下次表达自己观点的时候，首先做到移情。要能够和对方的同伴一样（甚至更好地）描述对方的观点，然后站在对方的立场上，争取让自己的观点得到理解。</li></ol>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;h1 id=&quot;你真的听懂了吗&quot;&gt;&lt;a href=&quot;#你真的听懂了吗&quot; class=&quot;headerlink&quot; title=&quot;你真的听懂了吗&quot;&gt;&lt;/a&gt;你真的听懂了吗&lt;/h1&gt;&lt;p&gt;如果你要和我交往，想对我有影响力，你首先要了解我，而做到这一点不能只靠技巧。如果我觉察到你在使用某种
-      
-    
-    </summary>
-    
-    
-      <category term="高效能人士的七个习惯" scheme="https://lilei.pro/tags/%E9%AB%98%E6%95%88%E8%83%BD%E4%BA%BA%E5%A3%AB%E7%9A%84%E4%B8%83%E4%B8%AA%E4%B9%A0%E6%83%AF/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>《高效能人士的七个习惯》第三部分 习惯六 统合综效——创造性合作的原则</title>
-    <link href="https://lilei.pro/2019/04/07/Seven-Habbits-8/"/>
-    <id>https://lilei.pro/2019/04/07/Seven-Habbits-8/</id>
-    <published>2019-04-07T03:00:29.000Z</published>
-    <updated>2019-06-08T08:48:02.539Z</updated>
-    
-    <content type="html"><![CDATA[<p>统合综效的基本态度是如果以为具有相当聪明才智的人跟我意见不同，那么对方的主张必定有我尚未体会的奥妙，值得加以了解。</p><p>与人合作最重要的是，重视不同个体的不同心理、情绪与智能，以及个人眼中所见到的不同世界。假如两人意见相同，其中一人必属多余。与所见略同的人沟通，毫无益处，要有分歧才有收获。</p><p>统合综效的精髓是判断和尊重差异，取长补短。</p><h1 id="敞开胸怀，博采众议"><a href="#敞开胸怀，博采众议" class="headerlink" title="敞开胸怀，博采众议"></a>敞开胸怀，博采众议</h1><p>所谓统合综效的沟通，是指敞开胸怀、接纳一切奇怪的想法，同时也贡献自己的浅见。</p><p>凡是创新就得承担，不怕失败，不断尝试错误。只愿稳扎稳打的人，经不起此种煎熬。</p><h1 id="沟通三层次"><a href="#沟通三层次" class="headerlink" title="沟通三层次"></a>沟通三层次</h1><p>低层次的沟通源自低度信任，其特点是人与人之间互相提防，步步为营，经常借助法律说话，为情况恶化作打算，其结果只能是赢/输或者输/赢，而且毫无效率可言，即产出/产能不平衡，结果只能是让人们更有理由进行自我防御和保护。</p><p>中间一层是彼此尊重的交流方式，唯有相当成熟的人才办得到。但是为了避免冲突，双方都保持礼貌，却不一定为对方设想。在相互依赖的环境中，最常用的态度是<strong>妥协</strong>。</p><p>统合综效意味着1+1等于8或者16，甚至1600。源自高度信任沟通的层次。</p><h1 id="寻求第三条道路"><a href="#寻求第三条道路" class="headerlink" title="寻求第三条道路"></a>寻求第三条道路</h1><p>高余额的情感账户、双赢模式、先理解别人的原则，所有这些加在一起，就是实现创造性统合综效的理想环境。</p><h1 id="消极协作减效"><a href="#消极协作减效" class="headerlink" title="消极协作减效"></a>消极协作减效</h1><p>人际关系最可贵的地方就是能接触到不同的模式。相同不是统一，一致也不等于团结，统一和团结意味着互补，而不是相同。相同毫无创造性可言，而且沉闷乏味。统合综效的精髓就是尊重差异。</p><h1 id="尊重差异"><a href="#尊重差异" class="headerlink" title="尊重差异"></a>尊重差异</h1><p>自以为是的人总以为自己最可观，别人都有所偏颇，其实这才是画地为牢。反之，虚怀若谷的人承认自己有不足之处，而乐于在与人交往之中汲取丰富的知识见解，重视不同的意见，因而增广见闻。</p><h1 id="化阻力为动力"><a href="#化阻力为动力" class="headerlink" title="化阻力为动力"></a>化阻力为动力</h1><p>在互赖关系中，统合综效是对付阻挠成长与改变的最有力途径。</p><p>动力通常是积极、合理、自觉、符合经济效益的力量；相反地，阻力多半消极、负面、不合逻辑、情绪化、不自觉，具社会性与心理性因素。这两组作用力都是真实存在的，在应变时都要考虑周全。</p><p>不涉法削减阻力，只一味增加推力，就仿佛施力于弹簧上，终有一天引起反弹。</p><p>这并不意味着拒绝采取法律手段，有些时候法律手段时绝对必要的，但是我认为它只应该在最后关头发挥作用，而不是问题刚一出现的时候，过早使用只会让恐惧心理和法律模式制约了统合综效的可能性。</p><h1 id="自然界是统合综效的最佳典范"><a href="#自然界是统合综效的最佳典范" class="headerlink" title="自然界是统合综效的最佳典范"></a>自然界是统合综效的最佳典范</h1><p>你应该尊重自己善于分析的一面和富有创造力的一面，尊重它们的差异会催生你的创造力。</p><p>即使处于不利境地，也不应该放弃追求统合综效。不要在意别人的无礼行径，避开那些消极力量，发现并利用别人的优势，提高自己的认识，扩展自己的视野。你应该在相互依赖的环境中勇敢而坦率地表达自己的观点、情感和经历，借此鼓励他人同样地坦诚相待。</p><p>尊重人与人之间的差异，当有人不同意你的观点的时候，你应该说：“你跟我有不一样的看法，这很好。”</p><h1 id="付诸行动"><a href="#付诸行动" class="headerlink" title="付诸行动"></a>付诸行动</h1><ol><li>想一想谁总是跟你的看法不一样，用什么方法可以把这些差异变成通往第三条道路的阶梯。可以就当前的某个项目或者某个问题请教这个人的意见，珍惜这些不同的见解。</li><li>列一张名单，写上让你觉得不快的人的名字。如果你内心有更充足的安全感，能够做到尊重差异，你是否会觉得这些人代表了不同意见，而你可借此实现与他们的统合综效？</li><li>想一想在什么情况下你更需要统合综效？统合综效需要哪些条件来支持？怎样才能创造出这些条件？</li><li>下一次当你同某人意见相左或者发生冲突的时候，尽量理解他的立场和顾虑，以创造性的、互惠互利的方式解决问题。</li></ol>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;p&gt;统合综效的基本态度是如果以为具有相当聪明才智的人跟我意见不同，那么对方的主张必定有我尚未体会的奥妙，值得加以了解。&lt;/p&gt;
-&lt;p&gt;与人合作最重要的是，重视不同个体的不同心理、情绪与智能，以及个人眼中所见到的不同世界。假如两人意见相同，其中一人必属多余。与所见略同的人沟通，毫
-      
-    
-    </summary>
-    
-    
-      <category term="高效能人士的七个习惯" scheme="https://lilei.pro/tags/%E9%AB%98%E6%95%88%E8%83%BD%E4%BA%BA%E5%A3%AB%E7%9A%84%E4%B8%83%E4%B8%AA%E4%B9%A0%E6%83%AF/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>《高效能人士的七个习惯》第二部分 习惯三 要事第一</title>
-    <link href="https://lilei.pro/2019/04/07/Seven-Habbits-4/"/>
-    <id>https://lilei.pro/2019/04/07/Seven-Habbits-4/</id>
-    <published>2019-04-07T03:00:29.000Z</published>
-    <updated>2019-06-08T08:46:02.557Z</updated>
-    
-    <content type="html"><![CDATA[<h1 id="回答两个问题"><a href="#回答两个问题" class="headerlink" title="回答两个问题"></a>回答两个问题</h1><ul><li>在你目前的生活中，有哪些事情能够彻底改观你的个人生活，但是你一直没有去做？</li><li>在你目前的生活中，有哪些事情能够彻底改观你的工作局面，但是你一直没有去做？</li></ul><p>习惯三是习惯一、二的具体实践。习惯一告诉你，你是创造者，你掌控自己的人生，其基础是人类特有的四大天赋：想象力、良知、独立意志、自我意识。</p><p>习惯二是关于第一次的创造或者智力上的创造的习惯，其原则基础是<strong>想象力</strong>和<strong>良知</strong>这两大天赋。</p><p>习惯三是关于第二次的创造或者体力上的创造的习惯，是对前面两个习惯的实施、执行和自然表现。</p><p>左脑进行管理，右脑进行领导。</p><p>有效的管理指的就是要事第一，先做最重要的事情。领导者首先要决定的，就是哪些事情是重要的；而作为管理者，就是要将这些重要的事务优先安排。自我管理的实质就是自律和条理，是对计划的实施。</p><p>《成功的普遍共性》一文的作者格雷（E.M.Gray）说：“<strong>成功者能为失败者所不能为，纵使并非心甘情愿，但为了理想与目标，仍可以凭毅力克服心理障碍。</strong>”</p><h1 id="四代时间管理理论的演进"><a href="#四代时间管理理论的演进" class="headerlink" title="四代时间管理理论的演进"></a>四代时间管理理论的演进</h1><p>如何分辨轻重缓急与培养组织能力，是时间管理的精髓。</p><ol><li>第一代理论着重利用便条与备忘录，在忙碌中调配时间与精力</li><li>第二代理论强调行事历与日程表，反映出时间管理已经注意到规划未来的重要。</li><li>第三代是讲求优先顺序的概念，依据轻重缓急设定短中长期目标。</li><li>第四代理论从根本否定“时间管理”，主张关键在于“个人管理”，重心应当放在维持产出与产能平衡上。</li></ol><h1 id="别让琐务牵着鼻子走"><a href="#别让琐务牵着鼻子走" class="headerlink" title="别让琐务牵着鼻子走"></a>别让琐务牵着鼻子走</h1><p>第四代时间管理理论从重要性和紧急程度两个维度对事务进行划分。重要性与目标有关，凡有价值、有利于实现个人目标的就是要事。紧急程度与时间紧迫性有关，紧迫之事通常都显而易见，推诿不得。</p><h2 id="第一类事务，重要且紧急"><a href="#第一类事务，重要且紧急" class="headerlink" title="第一类事务，重要且紧急"></a>第一类事务，重要且紧急</h2><p>在矩阵中，第一类事务通常既紧迫又重要，需要立即处理，通常被称为“危机”或者“问题”。如果你过分注重第一类事务，它们的范围会变得越来越大，最终占据你全部的时间和精力。</p><p>大部分时间精力都用于处理危机的人（第一类事务）</p><ul><li>压力大</li><li>精疲力尽</li><li>被危机牵着鼻子走</li><li>忙于收拾残局</li></ul><h2 id="第三类事务，紧急不重要"><a href="#第三类事务，紧急不重要" class="headerlink" title="第三类事务，紧急不重要"></a>第三类事务，紧急不重要</h2><p>这些人将时间致力于紧急不重要的第三类事务，却自以为在处理第一类事务。殊不知紧迫之事往往是别人的优先，对别人很重要，对自己却不然。</p><ul><li>急功近利</li><li>被危机牵着鼻子走</li><li>被视为巧言令色</li><li>轻视目标和计划</li><li>认为自己是受害者，缺乏自制力</li><li>人际关系肤浅，甚至破裂</li></ul><h2 id="第四类事务，既不重要也不紧急"><a href="#第四类事务，既不重要也不紧急" class="headerlink" title="第四类事务，既不重要也不紧急"></a>第四类事务，既不重要也不紧急</h2><p>有些不负责任的人，将时间都花在第三和第四类事务上</p><ul><li>完全不负责任</li><li>被炒鱿鱼</li><li>基本生活都需要依赖他人或社会机构</li></ul><h2 id="第二类事务，重要不紧急"><a href="#第二类事务，重要不紧急" class="headerlink" title="第二类事务，重要不紧急"></a>第二类事务，重要不紧急</h2><p>包括建立人际关系、撰写使命宣言、规划长期目标、防患于未然等等。高效能人士避免陷入第三和第四类事务，通过花费更多时间在第二类事务来减少第一类事务的数量。</p><ul><li>愿景，远见</li><li>平衡</li><li>自律</li><li>自制</li><li>很少发生危机</li></ul><h1 id="勇敢说“不”"><a href="#勇敢说“不”" class="headerlink" title="勇敢说“不”"></a>勇敢说“不”</h1><p>若要集中精力于当急的要务，就得排除次要事务的牵绊，此时需要有说“不”的勇气。</p><blockquote><p>我曾聘用一位极有才华又独立自主的专员，有一天有件急事想拜托他。他说：“你要我做什么都可以，不过请先了解目前的状况。”他指着墙壁上的工作计划表，显示超过 20 个计划正在进行，这是我俩早已谈妥的。然后他说：“这件急事至少占去几天时间，你希望我放下或取消哪个计划来空出时间？”</p></blockquote><p>很多人坦陈自己“缺乏自制力”，实际上，这是“确认目标”的功夫还不到家，而且不能由衷接收“事有轻重缓急”的观念，自然容易半途而废。</p><h1 id="集大成的时间管理理论"><a href="#集大成的时间管理理论" class="headerlink" title="集大成的时间管理理论"></a>集大成的时间管理理论</h1><p>第一代的时间管理理论丝毫没有“优先”的概念。固然做完备忘录上的一件事，会带给人成就感，可是这种成就不一定符合人生大目标。因此，所完成的只是必要而非重要的事。</p><p>然而好此道者不在少数，因为阻力最小，痛苦与压力也最少。</p><p>更何况，根据外在要求与规律行事，容易推卸责任。这类人缺乏效率，缺乏自制力与自尊。</p><p>第四代理论强调以原则为重心，配合个人对使命的认知，兼顾重要性与急迫性；强调产出与产能齐头并进，着重第二类事务的完成。</p><h1 id="管理方法六标准"><a href="#管理方法六标准" class="headerlink" title="管理方法六标准"></a>管理方法六标准</h1><ol><li>和谐一致。</li><li>平衡功能。</li><li>围绕中心理想的管理方法。</li><li>以人为本。</li><li>灵活变通。</li><li>便于携带的管理工具。</li></ol><h1 id="个人管理四步骤"><a href="#个人管理四步骤" class="headerlink" title="个人管理四步骤"></a>个人管理四步骤</h1><h2 id="第一步-确认角色"><a href="#第一步-确认角色" class="headerlink" title="第一步 确认角色"></a>第一步 确认角色</h2><p>写出你自己的关键角色，在家庭中、工作中乃至教会和社区事务中的角色。列举自己想要持续投入时间和精力去做的一些事情。</p><h2 id="第二步-选定周目标"><a href="#第二步-选定周目标" class="headerlink" title="第二步 选定周目标"></a>第二步 选定周目标</h2><p>思考下一个周计划中每一个任务栏下你最想做的一两件要事，作为你选定的目标。这些目标中一定要有几个<strong>第二类事务</strong>，根据自己的感觉判断每个角色中哪些事情是比较重要的，并为每个角色确立一个或两个目标。</p><h2 id="第三步-安排进度"><a href="#第三步-安排进度" class="headerlink" title="第三步 安排进度"></a>第三步 安排进度</h2><p>为每一项目标安排具体的实施时间。有些目标需要在工作日完成，有些目标需要在周末完成。确保自己有充分的自由和灵活性以应付突发事件，让你享受到自发的乐趣。你会感觉很踏实，因为你知道自己已经安排好了一周的要务，照顾到了工作生活中的每一个重要领域。</p><h2 id="第四部-每日调整"><a href="#第四部-每日调整" class="headerlink" title="第四部 每日调整"></a>第四部 每日调整</h2><p>根据突发事件、人际关系的意外发展及崭新机会对每天的要务安排进行适当调整。</p><p>在每天早晨审视自己一天的日程安排。</p><h1 id="付诸实践"><a href="#付诸实践" class="headerlink" title="付诸实践"></a>付诸实践</h1><p>诚心正意，对人不可讲效率，效率是对事而言的，对人应当讲<strong>效用</strong>。第四代个人管理理论的特点在于承认人比事更重要。</p><h1 id="第四代时间管理方法的优点"><a href="#第四代时间管理方法的优点" class="headerlink" title="第四代时间管理方法的优点"></a>第四代时间管理方法的优点</h1><p>第四代时间管理方法比前三代更加先进，这种先进体现在五个方面</p><ol><li>以原则为基础，切实地创造出一个核心模式，让你能够在一个更大的范围内分配自己的时间，看清楚什么是真正重要和有效的。</li><li>接受你内心良知的指导，让你有机会更好地安排自己的生活，并且最大限度地同你的价值观保持一致。同时给你自由和变通，让你在牺牲既定日程安排，服从更重要的价值观的时候心平气和，毫不内疚。</li><li>这种方法确认了你的个人使命，包括价值观和长期目标。</li><li>这种方法帮助你明确自己的角色，平衡自己生活中的各个方面。每个星期为每个关键角色确立要达到的目标，并作出具体的日程安排。</li><li>以一个星期为单位计划生活，不必局限于短暂的一天时间。通过审视自己的主要角色而让自己保持清醒，经常想到自己内心深处的价值观。</li></ol><p>有一条主线贯穿这五个方面，那就是将人际关系和效果放在第一位，将时间放在第二位。</p><h1 id="高效能的秘诀——授权"><a href="#高效能的秘诀——授权" class="headerlink" title="高效能的秘诀——授权"></a>高效能的秘诀——授权</h1><p>把责任分配给其他成熟老练的员工，才有余力从事更高层次的活动。授权是事必躬亲与管理之间的最大分野，事必躬亲者凡事不假外求。反之，管理者注重建立制度，然后汇集群力共同完成工作。</p><p>授权可以划分为两种类型：<strong>指令型授权</strong>和<strong>责任型授权</strong>。</p><h2 id="指令型授权"><a href="#指令型授权" class="headerlink" title="指令型授权"></a>指令型授权</h2><p>指令型授权关注重点是<strong>方法</strong>，管理者自己为最后的结果负责。</p><h2 id="责任型授权"><a href="#责任型授权" class="headerlink" title="责任型授权"></a>责任型授权</h2><p>责任型授权的关注重点是<strong>最终结果</strong>，它给人们自由，允许自行选择做事的具体方法，并为最终的结果负责。起初，这种授权方式费时费力，但却十分值得。通过责任型授权，可以将杠杆的支点向右移动，提高杠杆的作用。</p><p>责任型授权要求双方就以下<strong>五个方面</strong>达成清晰、坦诚的共识，并作出承诺。</p><ol><li>预期结果。双方都要明确并且完全理解最终想要的结果。要以“结果”而不是以“方法”为中心。要有具体的日程，明确截止期限。</li><li>指导方针。确认适用的评估标准，避免成为指令型授权。但是一定要有明确的限制性规定。</li><li>可用资源。告诉他们可以使用哪些人力、财务、技术或者组织资源来取得缩预期的成果。</li><li>责任归属。制定业绩标准，并用这些标准来评估他们的成果。制定具体的时间表，说明何时提交业绩报告，何时进行评估。</li><li>明确奖惩。明确地告诉他们评估可能导致的结果，好的和不好的后果都要告诉他们。</li></ol><p>信任是促使人进步的最大动力，因为信任能够让人表现出自己最好的一面。</p><p>授权的大原则不变，权限却因人而异。对不够成熟的人，目标不必订得太高，指示要详尽，并且充分提供资源；监督考核则较频繁，奖惩也更直接。对成熟的人，可分配挑战性高的任务，精简指示，减少监督考核的次数，考评标准则较为抽象。</p><h1 id="付诸行动"><a href="#付诸行动" class="headerlink" title="付诸行动"></a>付诸行动</h1><ol><li>找出一项平时被你忽略的第二类事务。</li><li>画出一个时间管理矩阵，按照百分比将你的时间分配给每一类事务。然后以十五分钟为计时单位连续记录自己三天的活动状况。对照一下自己的计划，看是否有很大的出入。</li><li>将你认为可以授权给他人作的事情列在一张纸上，然后列出你认为可以做这些工作的人选或者通过培训可以胜任的工作人选。思考一下应该如何开始授权程序或者开展培训工作。</li><li>计划你的下周活动，你的计划应当能够体现你的人生目标和主导价值观。并在星期结束的时候进行总结。</li><li>承诺以后每周都制定一个周计划，并规定一个具体的时间专门做这件事情。</li><li>将目前使用的时间管理工具升级为第四代时间管理工具。</li><li>阅读附录二——高效能人士的一天。</li></ol>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;h1 id=&quot;回答两个问题&quot;&gt;&lt;a href=&quot;#回答两个问题&quot; class=&quot;headerlink&quot; title=&quot;回答两个问题&quot;&gt;&lt;/a&gt;回答两个问题&lt;/h1&gt;&lt;ul&gt;
-&lt;li&gt;在你目前的生活中，有哪些事情能够彻底改观你的个人生活，但是你一直没有去做？&lt;/li&gt;
-&lt;li&gt;在
-      
-    
-    </summary>
-    
-    
-      <category term="高效能人士的七个习惯" scheme="https://lilei.pro/tags/%E9%AB%98%E6%95%88%E8%83%BD%E4%BA%BA%E5%A3%AB%E7%9A%84%E4%B8%83%E4%B8%AA%E4%B9%A0%E6%83%AF/"/>
-    
-  </entry>
-  
-  <entry>
     <title>《高效能人士的七个习惯》第四部分 自我提升和完善</title>
     <link href="https://lilei.pro/2019/04/07/Seven-Habbits-9/"/>
     <id>https://lilei.pro/2019/04/07/Seven-Habbits-9/</id>
@@ -364,34 +318,6 @@
   </entry>
   
   <entry>
-    <title>《高效能人士的七个习惯》第三部分 公众领域的成功</title>
-    <link href="https://lilei.pro/2019/04/07/Seven-Habbits-5/"/>
-    <id>https://lilei.pro/2019/04/07/Seven-Habbits-5/</id>
-    <published>2019-04-07T03:00:29.000Z</published>
-    <updated>2019-06-08T08:41:53.526Z</updated>
-    
-    <content type="html"><![CDATA[<ul><li>习惯一：积极主动</li><li>习惯二：以终为始</li><li>习惯三：要事第一</li></ul>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;ul&gt;
-&lt;li&gt;习惯一：积极主动&lt;/li&gt;
-&lt;li&gt;习惯二：以终为始&lt;/li&gt;
-&lt;li&gt;习惯三：要事第一&lt;/li&gt;
-&lt;/ul&gt;
-
-      
-    
-    </summary>
-    
-    
-      <category term="高效能人士的七个习惯" scheme="https://lilei.pro/tags/%E9%AB%98%E6%95%88%E8%83%BD%E4%BA%BA%E5%A3%AB%E7%9A%84%E4%B8%83%E4%B8%AA%E4%B9%A0%E6%83%AF/"/>
-    
-  </entry>
-  
-  <entry>
     <title>《高效能人士的七个习惯》第三部分 习惯四 双赢思维——人际领导的原则</title>
     <link href="https://lilei.pro/2019/04/07/Seven-Habbits-6/"/>
     <id>https://lilei.pro/2019/04/07/Seven-Habbits-6/</id>
@@ -418,6 +344,53 @@
   </entry>
   
   <entry>
+    <title>《高效能人士的七个习惯》第三部分 习惯六 统合综效——创造性合作的原则</title>
+    <link href="https://lilei.pro/2019/04/07/Seven-Habbits-8/"/>
+    <id>https://lilei.pro/2019/04/07/Seven-Habbits-8/</id>
+    <published>2019-04-07T03:00:29.000Z</published>
+    <updated>2019-06-08T08:48:02.539Z</updated>
+    
+    <content type="html"><![CDATA[<p>统合综效的基本态度是如果以为具有相当聪明才智的人跟我意见不同，那么对方的主张必定有我尚未体会的奥妙，值得加以了解。</p><p>与人合作最重要的是，重视不同个体的不同心理、情绪与智能，以及个人眼中所见到的不同世界。假如两人意见相同，其中一人必属多余。与所见略同的人沟通，毫无益处，要有分歧才有收获。</p><p>统合综效的精髓是判断和尊重差异，取长补短。</p><h1 id="敞开胸怀，博采众议"><a href="#敞开胸怀，博采众议" class="headerlink" title="敞开胸怀，博采众议"></a>敞开胸怀，博采众议</h1><p>所谓统合综效的沟通，是指敞开胸怀、接纳一切奇怪的想法，同时也贡献自己的浅见。</p><p>凡是创新就得承担，不怕失败，不断尝试错误。只愿稳扎稳打的人，经不起此种煎熬。</p><h1 id="沟通三层次"><a href="#沟通三层次" class="headerlink" title="沟通三层次"></a>沟通三层次</h1><p>低层次的沟通源自低度信任，其特点是人与人之间互相提防，步步为营，经常借助法律说话，为情况恶化作打算，其结果只能是赢/输或者输/赢，而且毫无效率可言，即产出/产能不平衡，结果只能是让人们更有理由进行自我防御和保护。</p><p>中间一层是彼此尊重的交流方式，唯有相当成熟的人才办得到。但是为了避免冲突，双方都保持礼貌，却不一定为对方设想。在相互依赖的环境中，最常用的态度是<strong>妥协</strong>。</p><p>统合综效意味着1+1等于8或者16，甚至1600。源自高度信任沟通的层次。</p><h1 id="寻求第三条道路"><a href="#寻求第三条道路" class="headerlink" title="寻求第三条道路"></a>寻求第三条道路</h1><p>高余额的情感账户、双赢模式、先理解别人的原则，所有这些加在一起，就是实现创造性统合综效的理想环境。</p><h1 id="消极协作减效"><a href="#消极协作减效" class="headerlink" title="消极协作减效"></a>消极协作减效</h1><p>人际关系最可贵的地方就是能接触到不同的模式。相同不是统一，一致也不等于团结，统一和团结意味着互补，而不是相同。相同毫无创造性可言，而且沉闷乏味。统合综效的精髓就是尊重差异。</p><h1 id="尊重差异"><a href="#尊重差异" class="headerlink" title="尊重差异"></a>尊重差异</h1><p>自以为是的人总以为自己最可观，别人都有所偏颇，其实这才是画地为牢。反之，虚怀若谷的人承认自己有不足之处，而乐于在与人交往之中汲取丰富的知识见解，重视不同的意见，因而增广见闻。</p><h1 id="化阻力为动力"><a href="#化阻力为动力" class="headerlink" title="化阻力为动力"></a>化阻力为动力</h1><p>在互赖关系中，统合综效是对付阻挠成长与改变的最有力途径。</p><p>动力通常是积极、合理、自觉、符合经济效益的力量；相反地，阻力多半消极、负面、不合逻辑、情绪化、不自觉，具社会性与心理性因素。这两组作用力都是真实存在的，在应变时都要考虑周全。</p><p>不涉法削减阻力，只一味增加推力，就仿佛施力于弹簧上，终有一天引起反弹。</p><p>这并不意味着拒绝采取法律手段，有些时候法律手段时绝对必要的，但是我认为它只应该在最后关头发挥作用，而不是问题刚一出现的时候，过早使用只会让恐惧心理和法律模式制约了统合综效的可能性。</p><h1 id="自然界是统合综效的最佳典范"><a href="#自然界是统合综效的最佳典范" class="headerlink" title="自然界是统合综效的最佳典范"></a>自然界是统合综效的最佳典范</h1><p>你应该尊重自己善于分析的一面和富有创造力的一面，尊重它们的差异会催生你的创造力。</p><p>即使处于不利境地，也不应该放弃追求统合综效。不要在意别人的无礼行径，避开那些消极力量，发现并利用别人的优势，提高自己的认识，扩展自己的视野。你应该在相互依赖的环境中勇敢而坦率地表达自己的观点、情感和经历，借此鼓励他人同样地坦诚相待。</p><p>尊重人与人之间的差异，当有人不同意你的观点的时候，你应该说：“你跟我有不一样的看法，这很好。”</p><h1 id="付诸行动"><a href="#付诸行动" class="headerlink" title="付诸行动"></a>付诸行动</h1><ol><li>想一想谁总是跟你的看法不一样，用什么方法可以把这些差异变成通往第三条道路的阶梯。可以就当前的某个项目或者某个问题请教这个人的意见，珍惜这些不同的见解。</li><li>列一张名单，写上让你觉得不快的人的名字。如果你内心有更充足的安全感，能够做到尊重差异，你是否会觉得这些人代表了不同意见，而你可借此实现与他们的统合综效？</li><li>想一想在什么情况下你更需要统合综效？统合综效需要哪些条件来支持？怎样才能创造出这些条件？</li><li>下一次当你同某人意见相左或者发生冲突的时候，尽量理解他的立场和顾虑，以创造性的、互惠互利的方式解决问题。</li></ol>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;统合综效的基本态度是如果以为具有相当聪明才智的人跟我意见不同，那么对方的主张必定有我尚未体会的奥妙，值得加以了解。&lt;/p&gt;
+&lt;p&gt;与人合作最重要的是，重视不同个体的不同心理、情绪与智能，以及个人眼中所见到的不同世界。假如两人意见相同，其中一人必属多余。与所见略同的人沟通，毫
+      
+    
+    </summary>
+    
+    
+      <category term="高效能人士的七个习惯" scheme="https://lilei.pro/tags/%E9%AB%98%E6%95%88%E8%83%BD%E4%BA%BA%E5%A3%AB%E7%9A%84%E4%B8%83%E4%B8%AA%E4%B9%A0%E6%83%AF/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>《高效能人士的七个习惯 第三部分 习惯五 知彼解己——移情沟通的原则</title>
+    <link href="https://lilei.pro/2019/04/07/Seven-Habbits-7/"/>
+    <id>https://lilei.pro/2019/04/07/Seven-Habbits-7/</id>
+    <published>2019-04-07T03:00:29.000Z</published>
+    <updated>2019-06-08T08:46:26.832Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="你真的听懂了吗"><a href="#你真的听懂了吗" class="headerlink" title="你真的听懂了吗"></a>你真的听懂了吗</h1><p>如果你要和我交往，想对我有影响力，你首先要了解我，而做到这一点不能只靠技巧。如果我觉察到你在使用某种技巧，就会有受骗和被操纵的感觉。我不知道你为什么这样做，有什么动机。</p><p>你的影响力在于你的榜样作用和引导能力，前者源于你的品德，是你的真我，别人的评论或者你希望别人如何看你都没有意义，我在同你的交往中已经清楚了解了你。</p><p>你的品德时刻发挥着影响力，并起着沟通的作用。久而久之，我就会本能地信任或者不信任你这个人以及你对我所做的事情。</p><h1 id="移情聆听"><a href="#移情聆听" class="headerlink" title="移情聆听"></a>移情聆听</h1><p>“知彼”是交往模式的一大转变，因为我们通常把让别人理解自己放在首位。大部分人在聆听时并不是想理解对方，而是为了做出回应。这种人要么说话，要么准备说话，不断地用自己的模式过滤一切，用自己的经历理解别人的生活。</p><p>事实上，大部分人都是这么自以为是。我们的聆听通常有层次之分。一是充耳不闻，压根就不听别人说话；二是装模作样，“是的！嗯！没错！”三是选择接受，只听一部分，通常学龄前儿童喋喋不休会让我们采取这种方式；四是聚精会神，努力听到每一个字，但是，很少有人会达到第五个层次，即最高层次——移情聆听。</p><p><strong>移情聆听</strong>是指以理解为目的的聆听，要求听者站在说话者的角度理解他们的思维模式和感受。</p><p>移情（Empathy）不是同情（Sympathy）。后者是一种认同和判断形式，更适合用来表达感情和做出回应，却容易养成对方的依赖性。移情聆听的本质不是你要赞同对方，而是要在情感和理智上充分而深入地理解对方。</p><p>据专家估计，人际沟通仅有10%通过语言来进行，30%取决于语调与声音，其余60%则得靠肢体语言。所以在移情聆听的过程中，不仅要耳到，还要眼到、心到；用眼睛去观察，用心灵去体会。</p><h1 id="心理空气"><a href="#心理空气" class="headerlink" title="心理空气"></a>心理空气</h1><p>除了物质，人类最大的生存需求源自心理，即被人理解、肯定、认可和欣赏。</p><p>移情聆听是有风险的。只有当你做好了被对方影响的准备，才能深入到移情聆听的阶段，而这是需要足够的安全感的，因为这时候的你会变得很脆弱。从某种意义上说，这很矛盾，因为在影响对方之前，你必须先被影响，即真正理解对方。</p><h1 id="先诊断后开方"><a href="#先诊断后开方" class="headerlink" title="先诊断后开方"></a>先诊断后开方</h1><p>平庸的业务员推销产品，杰出的业务员销售解决问题、满足需求之道。万一产品不符合客户需要，也要勇于承认。</p><h1 id="四种自传式回应"><a href="#四种自传式回应" class="headerlink" title="四种自传式回应"></a>四种自传式回应</h1><p>我们在听别人讲话时总是会联系我们自己的经理，因此自以为是的人往往会有四种“自传式回应”（Autobiographical Response）的倾向：</p><ul><li>价值判断——对旁人的意见只有接受或不接受。</li><li>追根究底——依自己的价值观探查别人的隐私。</li><li>好为人师——以自己的经验提供忠告。</li><li>自以为是——根据自己的行为与动机衡量别人的行为与动机。</li></ul><h1 id="表达也要讲技巧"><a href="#表达也要讲技巧" class="headerlink" title="表达也要讲技巧"></a>表达也要讲技巧</h1><p>古希腊人有一种很经典的哲学观点，即品德第一，感情第二，理性第三。我认为这三个词集中体现了让他人理解自己以及有效表达自己的精髓。</p><p>品德指的是你个人的可信度，是人们对你的诚信和能力的认可，是人们对你的信任，是你的情感账户。感情指的是你的移情能力，是感性的，说明你能通过交流迅速理解他人的情感。理性是你的逻辑能力，即合理表达自己的能力。</p><h1 id="一对一沟通"><a href="#一对一沟通" class="headerlink" title="一对一沟通"></a>一对一沟通</h1><p>你现在就可以练习习惯五。下次同别人交流的时候，你可以试着抛开自己的经验，尽力真正了解对方。你应该睿智、敏感而又头脑清楚。不论在办公室或者家中，敞开胸怀，凝神倾听。不要急功近利，即使短期内未获回馈也绝不气馁。</p><p>如果你真正爱一个人，那么花时间了解对方将有益于今后的坦诚相待，这样一来，很多困扰家庭和婚姻的问题都将被扼杀在萌芽状态，没有发展壮大的机会，即便有这样的机会，充足的情感账户储蓄也会让问题迎刃而解。</p><p>先理解别人。在问题出现之前，在评估和判断之前，在你表达个人观点之前，先理解别人，这是有效的相互依赖关系中最有用的习惯。</p><h1 id="付诸行动"><a href="#付诸行动" class="headerlink" title="付诸行动"></a>付诸行动</h1><ol><li>选择一个情感账户出现赤字的人际关系，试着从对方的角度理解并记下他的处境。下一次见面时，通过聆听来理解对方，将现在听到的和以前记下的做一个比较。看看你的想法是否准确？——你真的理解对方的立场和观点么？</li><li>与一个亲近的人分享移情这个概念，告诉他你想要做到真正的移情聆听，并让他在一个星期之后提供反馈意见。——你做的怎么样？那个人有什么感觉？</li><li>下次有机会旁观他人交流的时候，捂住自己的耳朵，只用眼睛观察。哪些情感不是用语言表达出来的？</li><li>下次发现你表现出不恰当的自传式回应的时候，立即承认错误，尽力扭转局面，将情感账户的支出变成存入。（“对不起，我刚才并不是真的努力去理解你，我们可以再来一次吗？”）</li><li>下次表达自己观点的时候，首先做到移情。要能够和对方的同伴一样（甚至更好地）描述对方的观点，然后站在对方的立场上，争取让自己的观点得到理解。</li></ol>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h1 id=&quot;你真的听懂了吗&quot;&gt;&lt;a href=&quot;#你真的听懂了吗&quot; class=&quot;headerlink&quot; title=&quot;你真的听懂了吗&quot;&gt;&lt;/a&gt;你真的听懂了吗&lt;/h1&gt;&lt;p&gt;如果你要和我交往，想对我有影响力，你首先要了解我，而做到这一点不能只靠技巧。如果我觉察到你在使用某种
+      
+    
+    </summary>
+    
+    
+      <category term="高效能人士的七个习惯" scheme="https://lilei.pro/tags/%E9%AB%98%E6%95%88%E8%83%BD%E4%BA%BA%E5%A3%AB%E7%9A%84%E4%B8%83%E4%B8%AA%E4%B9%A0%E6%83%AF/"/>
+    
+  </entry>
+  
+  <entry>
     <title>《高效能人士的七个习惯》第四部分 习惯七 不断更新——平衡的自我更新的原则</title>
     <link href="https://lilei.pro/2019/04/07/Seven-Habbits-10/"/>
     <id>https://lilei.pro/2019/04/07/Seven-Habbits-10/</id>
@@ -433,6 +406,59 @@
         &lt;p&gt;人生最值得的投资就是锻炼自己，因为生活与服务人群都得靠自己，这是最真贵的工具。&lt;/p&gt;
 &lt;p&gt;工作本身并不能带来经济上的安全感，具备良好的思考、学习、创造与适应能力，才能立于不败之地。拥有财富，并不代表经济独立，拥有创造财富的能力才真正可靠。&lt;/p&gt;
 &lt;h1 id=&quot;自我提
+      
+    
+    </summary>
+    
+    
+      <category term="高效能人士的七个习惯" scheme="https://lilei.pro/tags/%E9%AB%98%E6%95%88%E8%83%BD%E4%BA%BA%E5%A3%AB%E7%9A%84%E4%B8%83%E4%B8%AA%E4%B9%A0%E6%83%AF/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>《高效能人士的七个习惯》第二部分 习惯三 要事第一</title>
+    <link href="https://lilei.pro/2019/04/07/Seven-Habbits-4/"/>
+    <id>https://lilei.pro/2019/04/07/Seven-Habbits-4/</id>
+    <published>2019-04-07T03:00:29.000Z</published>
+    <updated>2019-06-08T08:46:02.557Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="回答两个问题"><a href="#回答两个问题" class="headerlink" title="回答两个问题"></a>回答两个问题</h1><ul><li>在你目前的生活中，有哪些事情能够彻底改观你的个人生活，但是你一直没有去做？</li><li>在你目前的生活中，有哪些事情能够彻底改观你的工作局面，但是你一直没有去做？</li></ul><p>习惯三是习惯一、二的具体实践。习惯一告诉你，你是创造者，你掌控自己的人生，其基础是人类特有的四大天赋：想象力、良知、独立意志、自我意识。</p><p>习惯二是关于第一次的创造或者智力上的创造的习惯，其原则基础是<strong>想象力</strong>和<strong>良知</strong>这两大天赋。</p><p>习惯三是关于第二次的创造或者体力上的创造的习惯，是对前面两个习惯的实施、执行和自然表现。</p><p>左脑进行管理，右脑进行领导。</p><p>有效的管理指的就是要事第一，先做最重要的事情。领导者首先要决定的，就是哪些事情是重要的；而作为管理者，就是要将这些重要的事务优先安排。自我管理的实质就是自律和条理，是对计划的实施。</p><p>《成功的普遍共性》一文的作者格雷（E.M.Gray）说：“<strong>成功者能为失败者所不能为，纵使并非心甘情愿，但为了理想与目标，仍可以凭毅力克服心理障碍。</strong>”</p><h1 id="四代时间管理理论的演进"><a href="#四代时间管理理论的演进" class="headerlink" title="四代时间管理理论的演进"></a>四代时间管理理论的演进</h1><p>如何分辨轻重缓急与培养组织能力，是时间管理的精髓。</p><ol><li>第一代理论着重利用便条与备忘录，在忙碌中调配时间与精力</li><li>第二代理论强调行事历与日程表，反映出时间管理已经注意到规划未来的重要。</li><li>第三代是讲求优先顺序的概念，依据轻重缓急设定短中长期目标。</li><li>第四代理论从根本否定“时间管理”，主张关键在于“个人管理”，重心应当放在维持产出与产能平衡上。</li></ol><h1 id="别让琐务牵着鼻子走"><a href="#别让琐务牵着鼻子走" class="headerlink" title="别让琐务牵着鼻子走"></a>别让琐务牵着鼻子走</h1><p>第四代时间管理理论从重要性和紧急程度两个维度对事务进行划分。重要性与目标有关，凡有价值、有利于实现个人目标的就是要事。紧急程度与时间紧迫性有关，紧迫之事通常都显而易见，推诿不得。</p><h2 id="第一类事务，重要且紧急"><a href="#第一类事务，重要且紧急" class="headerlink" title="第一类事务，重要且紧急"></a>第一类事务，重要且紧急</h2><p>在矩阵中，第一类事务通常既紧迫又重要，需要立即处理，通常被称为“危机”或者“问题”。如果你过分注重第一类事务，它们的范围会变得越来越大，最终占据你全部的时间和精力。</p><p>大部分时间精力都用于处理危机的人（第一类事务）</p><ul><li>压力大</li><li>精疲力尽</li><li>被危机牵着鼻子走</li><li>忙于收拾残局</li></ul><h2 id="第三类事务，紧急不重要"><a href="#第三类事务，紧急不重要" class="headerlink" title="第三类事务，紧急不重要"></a>第三类事务，紧急不重要</h2><p>这些人将时间致力于紧急不重要的第三类事务，却自以为在处理第一类事务。殊不知紧迫之事往往是别人的优先，对别人很重要，对自己却不然。</p><ul><li>急功近利</li><li>被危机牵着鼻子走</li><li>被视为巧言令色</li><li>轻视目标和计划</li><li>认为自己是受害者，缺乏自制力</li><li>人际关系肤浅，甚至破裂</li></ul><h2 id="第四类事务，既不重要也不紧急"><a href="#第四类事务，既不重要也不紧急" class="headerlink" title="第四类事务，既不重要也不紧急"></a>第四类事务，既不重要也不紧急</h2><p>有些不负责任的人，将时间都花在第三和第四类事务上</p><ul><li>完全不负责任</li><li>被炒鱿鱼</li><li>基本生活都需要依赖他人或社会机构</li></ul><h2 id="第二类事务，重要不紧急"><a href="#第二类事务，重要不紧急" class="headerlink" title="第二类事务，重要不紧急"></a>第二类事务，重要不紧急</h2><p>包括建立人际关系、撰写使命宣言、规划长期目标、防患于未然等等。高效能人士避免陷入第三和第四类事务，通过花费更多时间在第二类事务来减少第一类事务的数量。</p><ul><li>愿景，远见</li><li>平衡</li><li>自律</li><li>自制</li><li>很少发生危机</li></ul><h1 id="勇敢说“不”"><a href="#勇敢说“不”" class="headerlink" title="勇敢说“不”"></a>勇敢说“不”</h1><p>若要集中精力于当急的要务，就得排除次要事务的牵绊，此时需要有说“不”的勇气。</p><blockquote><p>我曾聘用一位极有才华又独立自主的专员，有一天有件急事想拜托他。他说：“你要我做什么都可以，不过请先了解目前的状况。”他指着墙壁上的工作计划表，显示超过 20 个计划正在进行，这是我俩早已谈妥的。然后他说：“这件急事至少占去几天时间，你希望我放下或取消哪个计划来空出时间？”</p></blockquote><p>很多人坦陈自己“缺乏自制力”，实际上，这是“确认目标”的功夫还不到家，而且不能由衷接收“事有轻重缓急”的观念，自然容易半途而废。</p><h1 id="集大成的时间管理理论"><a href="#集大成的时间管理理论" class="headerlink" title="集大成的时间管理理论"></a>集大成的时间管理理论</h1><p>第一代的时间管理理论丝毫没有“优先”的概念。固然做完备忘录上的一件事，会带给人成就感，可是这种成就不一定符合人生大目标。因此，所完成的只是必要而非重要的事。</p><p>然而好此道者不在少数，因为阻力最小，痛苦与压力也最少。</p><p>更何况，根据外在要求与规律行事，容易推卸责任。这类人缺乏效率，缺乏自制力与自尊。</p><p>第四代理论强调以原则为重心，配合个人对使命的认知，兼顾重要性与急迫性；强调产出与产能齐头并进，着重第二类事务的完成。</p><h1 id="管理方法六标准"><a href="#管理方法六标准" class="headerlink" title="管理方法六标准"></a>管理方法六标准</h1><ol><li>和谐一致。</li><li>平衡功能。</li><li>围绕中心理想的管理方法。</li><li>以人为本。</li><li>灵活变通。</li><li>便于携带的管理工具。</li></ol><h1 id="个人管理四步骤"><a href="#个人管理四步骤" class="headerlink" title="个人管理四步骤"></a>个人管理四步骤</h1><h2 id="第一步-确认角色"><a href="#第一步-确认角色" class="headerlink" title="第一步 确认角色"></a>第一步 确认角色</h2><p>写出你自己的关键角色，在家庭中、工作中乃至教会和社区事务中的角色。列举自己想要持续投入时间和精力去做的一些事情。</p><h2 id="第二步-选定周目标"><a href="#第二步-选定周目标" class="headerlink" title="第二步 选定周目标"></a>第二步 选定周目标</h2><p>思考下一个周计划中每一个任务栏下你最想做的一两件要事，作为你选定的目标。这些目标中一定要有几个<strong>第二类事务</strong>，根据自己的感觉判断每个角色中哪些事情是比较重要的，并为每个角色确立一个或两个目标。</p><h2 id="第三步-安排进度"><a href="#第三步-安排进度" class="headerlink" title="第三步 安排进度"></a>第三步 安排进度</h2><p>为每一项目标安排具体的实施时间。有些目标需要在工作日完成，有些目标需要在周末完成。确保自己有充分的自由和灵活性以应付突发事件，让你享受到自发的乐趣。你会感觉很踏实，因为你知道自己已经安排好了一周的要务，照顾到了工作生活中的每一个重要领域。</p><h2 id="第四部-每日调整"><a href="#第四部-每日调整" class="headerlink" title="第四部 每日调整"></a>第四部 每日调整</h2><p>根据突发事件、人际关系的意外发展及崭新机会对每天的要务安排进行适当调整。</p><p>在每天早晨审视自己一天的日程安排。</p><h1 id="付诸实践"><a href="#付诸实践" class="headerlink" title="付诸实践"></a>付诸实践</h1><p>诚心正意，对人不可讲效率，效率是对事而言的，对人应当讲<strong>效用</strong>。第四代个人管理理论的特点在于承认人比事更重要。</p><h1 id="第四代时间管理方法的优点"><a href="#第四代时间管理方法的优点" class="headerlink" title="第四代时间管理方法的优点"></a>第四代时间管理方法的优点</h1><p>第四代时间管理方法比前三代更加先进，这种先进体现在五个方面</p><ol><li>以原则为基础，切实地创造出一个核心模式，让你能够在一个更大的范围内分配自己的时间，看清楚什么是真正重要和有效的。</li><li>接受你内心良知的指导，让你有机会更好地安排自己的生活，并且最大限度地同你的价值观保持一致。同时给你自由和变通，让你在牺牲既定日程安排，服从更重要的价值观的时候心平气和，毫不内疚。</li><li>这种方法确认了你的个人使命，包括价值观和长期目标。</li><li>这种方法帮助你明确自己的角色，平衡自己生活中的各个方面。每个星期为每个关键角色确立要达到的目标，并作出具体的日程安排。</li><li>以一个星期为单位计划生活，不必局限于短暂的一天时间。通过审视自己的主要角色而让自己保持清醒，经常想到自己内心深处的价值观。</li></ol><p>有一条主线贯穿这五个方面，那就是将人际关系和效果放在第一位，将时间放在第二位。</p><h1 id="高效能的秘诀——授权"><a href="#高效能的秘诀——授权" class="headerlink" title="高效能的秘诀——授权"></a>高效能的秘诀——授权</h1><p>把责任分配给其他成熟老练的员工，才有余力从事更高层次的活动。授权是事必躬亲与管理之间的最大分野，事必躬亲者凡事不假外求。反之，管理者注重建立制度，然后汇集群力共同完成工作。</p><p>授权可以划分为两种类型：<strong>指令型授权</strong>和<strong>责任型授权</strong>。</p><h2 id="指令型授权"><a href="#指令型授权" class="headerlink" title="指令型授权"></a>指令型授权</h2><p>指令型授权关注重点是<strong>方法</strong>，管理者自己为最后的结果负责。</p><h2 id="责任型授权"><a href="#责任型授权" class="headerlink" title="责任型授权"></a>责任型授权</h2><p>责任型授权的关注重点是<strong>最终结果</strong>，它给人们自由，允许自行选择做事的具体方法，并为最终的结果负责。起初，这种授权方式费时费力，但却十分值得。通过责任型授权，可以将杠杆的支点向右移动，提高杠杆的作用。</p><p>责任型授权要求双方就以下<strong>五个方面</strong>达成清晰、坦诚的共识，并作出承诺。</p><ol><li>预期结果。双方都要明确并且完全理解最终想要的结果。要以“结果”而不是以“方法”为中心。要有具体的日程，明确截止期限。</li><li>指导方针。确认适用的评估标准，避免成为指令型授权。但是一定要有明确的限制性规定。</li><li>可用资源。告诉他们可以使用哪些人力、财务、技术或者组织资源来取得缩预期的成果。</li><li>责任归属。制定业绩标准，并用这些标准来评估他们的成果。制定具体的时间表，说明何时提交业绩报告，何时进行评估。</li><li>明确奖惩。明确地告诉他们评估可能导致的结果，好的和不好的后果都要告诉他们。</li></ol><p>信任是促使人进步的最大动力，因为信任能够让人表现出自己最好的一面。</p><p>授权的大原则不变，权限却因人而异。对不够成熟的人，目标不必订得太高，指示要详尽，并且充分提供资源；监督考核则较频繁，奖惩也更直接。对成熟的人，可分配挑战性高的任务，精简指示，减少监督考核的次数，考评标准则较为抽象。</p><h1 id="付诸行动"><a href="#付诸行动" class="headerlink" title="付诸行动"></a>付诸行动</h1><ol><li>找出一项平时被你忽略的第二类事务。</li><li>画出一个时间管理矩阵，按照百分比将你的时间分配给每一类事务。然后以十五分钟为计时单位连续记录自己三天的活动状况。对照一下自己的计划，看是否有很大的出入。</li><li>将你认为可以授权给他人作的事情列在一张纸上，然后列出你认为可以做这些工作的人选或者通过培训可以胜任的工作人选。思考一下应该如何开始授权程序或者开展培训工作。</li><li>计划你的下周活动，你的计划应当能够体现你的人生目标和主导价值观。并在星期结束的时候进行总结。</li><li>承诺以后每周都制定一个周计划，并规定一个具体的时间专门做这件事情。</li><li>将目前使用的时间管理工具升级为第四代时间管理工具。</li><li>阅读附录二——高效能人士的一天。</li></ol>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h1 id=&quot;回答两个问题&quot;&gt;&lt;a href=&quot;#回答两个问题&quot; class=&quot;headerlink&quot; title=&quot;回答两个问题&quot;&gt;&lt;/a&gt;回答两个问题&lt;/h1&gt;&lt;ul&gt;
+&lt;li&gt;在你目前的生活中，有哪些事情能够彻底改观你的个人生活，但是你一直没有去做？&lt;/li&gt;
+&lt;li&gt;在
+      
+    
+    </summary>
+    
+    
+      <category term="高效能人士的七个习惯" scheme="https://lilei.pro/tags/%E9%AB%98%E6%95%88%E8%83%BD%E4%BA%BA%E5%A3%AB%E7%9A%84%E4%B8%83%E4%B8%AA%E4%B9%A0%E6%83%AF/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>《高效能人士的七个习惯》第三部分 公众领域的成功</title>
+    <link href="https://lilei.pro/2019/04/07/Seven-Habbits-5/"/>
+    <id>https://lilei.pro/2019/04/07/Seven-Habbits-5/</id>
+    <published>2019-04-07T03:00:29.000Z</published>
+    <updated>2019-06-08T08:41:53.526Z</updated>
+    
+    <content type="html"><![CDATA[<ul><li>习惯一：积极主动</li><li>习惯二：以终为始</li><li>习惯三：要事第一</li></ul>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;ul&gt;
+&lt;li&gt;习惯一：积极主动&lt;/li&gt;
+&lt;li&gt;习惯二：以终为始&lt;/li&gt;
+&lt;li&gt;习惯三：要事第一&lt;/li&gt;
+&lt;/ul&gt;
+
       
     
     </summary>
@@ -479,29 +505,6 @@
       
       
         &lt;h1 id=&quot;第三章-习惯一-积极主动——个人愿景的原则&quot;&gt;&lt;a href=&quot;#第三章-习惯一-积极主动——个人愿景的原则&quot; class=&quot;headerlink&quot; title=&quot;第三章 习惯一 积极主动——个人愿景的原则&quot;&gt;&lt;/a&gt;第三章 习惯一 积极主动——个人愿景的原则&lt;/
-      
-    
-    </summary>
-    
-    
-      <category term="高效能人士的七个习惯" scheme="https://lilei.pro/tags/%E9%AB%98%E6%95%88%E8%83%BD%E4%BA%BA%E5%A3%AB%E7%9A%84%E4%B8%83%E4%B8%AA%E4%B9%A0%E6%83%AF/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>《高效能人士的七个习惯》第一部分 重新探索自我</title>
-    <link href="https://lilei.pro/2019/04/07/Seven-Habbits-1/"/>
-    <id>https://lilei.pro/2019/04/07/Seven-Habbits-1/</id>
-    <published>2019-04-07T02:54:17.000Z</published>
-    <updated>2019-04-07T02:55:43.372Z</updated>
-    
-    <content type="html"><![CDATA[<h1 id="第一章-由内而外全面造就自己"><a href="#第一章-由内而外全面造就自己" class="headerlink" title="第一章 由内而外全面造就自己"></a>第一章 由内而外全面造就自己</h1><h2 id="本书要阐述的内容"><a href="#本书要阐述的内容" class="headerlink" title="本书要阐述的内容"></a>本书要阐述的内容</h2><p>以原则为中心，以品德为基础，要求“由内而外”地实现个人效能和人际效能。</p><p>由内而外的观点认为个人领域的成功必需先于公众领域的成功；只有先信守对自己的承诺，才能信守对他人的承诺。由内而外是一个持续的更新过程，以主宰人类成长和进步的自然法则为基础，是螺旋向上的，它让我们不断进步，直到实现独立自强与有效的互赖。</p><h1 id="第二章-七个习惯概论"><a href="#第二章-七个习惯概论" class="headerlink" title="第二章 七个习惯概论"></a>第二章 七个习惯概论</h1><h2 id="习惯的引力"><a href="#习惯的引力" class="headerlink" title="习惯的引力"></a>习惯的引力</h2><p>宇宙飞船必须先摆脱强大的地球引力，为此在刚发射的几分钟，即刚升空时的几公里消耗的能量比之后几天几十万公里旅程消耗的能量还要多。习惯也一样有极大的引力，只是许多人不加注意或不肯承认罢了。要根除根深蒂固的不良习惯，仅有一点点毅力，只作一点点改变是不够的。</p><h2 id="习惯的定义"><a href="#习惯的定义" class="headerlink" title="习惯的定义"></a>习惯的定义</h2><p>习惯是知识、技巧、意愿相互交织的结果。</p><ul><li>知识：理论范畴，指点“做什么”及“为何做”</li><li>技巧：告诉“如何做”</li><li>意愿：促使“想要做”</li></ul><h2 id="成熟模式图"><a href="#成熟模式图" class="headerlink" title="成熟模式图"></a>成熟模式图</h2><ul><li>依赖：以“你”为核心</li><li>独立：以“我”为核心</li><li>互赖：以“我们”为核心</li></ul><p>只重独立并不适于互赖的现实生活。只知独立却不懂互赖的人只能称为独个的“生产标兵”，却与“优秀领导”或“最佳合作者”之类的称呼无缘，也不会拥有美满的家庭、婚姻或集体生活。</p><p>互赖是一个更为成熟和高级的概念。生理上互赖的人，可以自力更生，但也明白合作会比单干更有成效；情感上互赖的人，能充分认识自己的价值，但也知道爱心、关怀以及付出的必要性；智力上互赖的人懂得取人之长，补己之短。</p><h2 id="七个习惯"><a href="#七个习惯" class="headerlink" title="七个习惯"></a>七个习惯</h2><h3 id="依赖-gt-独立，个人领域的成功"><a href="#依赖-gt-独立，个人领域的成功" class="headerlink" title="依赖 -&gt; 独立，个人领域的成功"></a>依赖 -&gt; 独立，个人领域的成功</h3><ul><li>积极主动</li><li>以终为始</li><li>要事第一</li></ul><h3 id="独立-gt-互赖，公众领域的成功"><a href="#独立-gt-互赖，公众领域的成功" class="headerlink" title="独立 -&gt; 互赖，公众领域的成功"></a>独立 -&gt; 互赖，公众领域的成功</h3><ul><li>双赢思维</li><li>知彼解己</li><li>统合综效</li></ul><h3 id="螺旋上升"><a href="#螺旋上升" class="headerlink" title="螺旋上升"></a>螺旋上升</h3><ul><li>不断更新</li></ul><h2 id="什么是高效能"><a href="#什么是高效能" class="headerlink" title="什么是高效能"></a>什么是高效能</h2><p><strong>产出与产能平衡的原则是效能的精髓</strong>，放之四海而皆准，不管你是否遵从，它都会存在。它是指导人生的灯塔，是效能的定义和模式，是本书中七个习惯的基础。</p>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;h1 id=&quot;第一章-由内而外全面造就自己&quot;&gt;&lt;a href=&quot;#第一章-由内而外全面造就自己&quot; class=&quot;headerlink&quot; title=&quot;第一章 由内而外全面造就自己&quot;&gt;&lt;/a&gt;第一章 由内而外全面造就自己&lt;/h1&gt;&lt;h2 id=&quot;本书要阐述的内容&quot;&gt;&lt;a href
       
     
     </summary>
