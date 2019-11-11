@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    
+    <title>【转】Android Studio Debug 的 9 个小技巧 | 柘个角落 | IF YOU WANT SOMETHING, GO GET IT. PERIOD.</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="Android,Android Studio">
+    <meta name="description" content="Pain is inevitable. Suffering is optional. 痛楚难以避免，而磨难可以选择。  这是一篇转载的文章。  作者：wanbo 链接：https://juejin.im/post/5dbf8036f265da4d4b5fe7c2 来源：掘金">
+<meta name="keywords" content="Android,Android Studio">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【转】Android Studio Debug 的 9 个小技巧">
+<meta property="og:url" content="https://lilei.pro/2019/11/11/android-studio-debug-skills/index.html">
+<meta property="og:site_name" content="柘个角落">
+<meta property="og:description" content="Pain is inevitable. Suffering is optional. 痛楚难以避免，而磨难可以选择。  这是一篇转载的文章。  作者：wanbo 链接：https://juejin.im/post/5dbf8036f265da4d4b5fe7c2 来源：掘金">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://user-gold-cdn.xitu.io/2019/11/4/16e341e885399f72?imageView2/0/w/1280/h/960/format/webp/ignore-error/1">
+<meta property="og:image" content="https://user-gold-cdn.xitu.io/2019/11/4/16e340eb5ba58d76?imageView2/0/w/1280/h/960/format/webp/ignore-error/1">
+<meta property="og:image" content="https://user-gold-cdn.xitu.io/2019/11/4/16e340f30d9baa58?imageView2/0/w/1280/h/960/format/webp/ignore-error/1">
+<meta property="og:image" content="https://user-gold-cdn.xitu.io/2019/11/4/16e340fff5e9a0dc?imageView2/0/w/1280/h/960/format/webp/ignore-error/1">
+<meta property="og:image" content="https://user-gold-cdn.xitu.io/2019/11/4/16e3411493b0f1f4?imageView2/0/w/1280/h/960/format/webp/ignore-error/1">
+<meta property="og:image" content="https://user-gold-cdn.xitu.io/2019/11/4/16e3411d751ba410?imageView2/0/w/1280/h/960/format/webp/ignore-error/1">
+<meta property="og:image" content="https://user-gold-cdn.xitu.io/2019/11/4/16e3412709faf61e?imageView2/0/w/1280/h/960/format/webp/ignore-error/1">
+<meta property="og:image" content="https://user-gold-cdn.xitu.io/2019/11/4/16e3413745054354?imageView2/0/w/1280/h/960/format/webp/ignore-error/1">
+<meta property="og:image" content="https://user-gold-cdn.xitu.io/2019/11/4/16e3413e54157e9e?imageView2/0/w/1280/h/960/format/webp/ignore-error/1">
+<meta property="og:image" content="https://user-gold-cdn.xitu.io/2019/11/4/16e34140ceb6c58e?imageView2/0/w/1280/h/960/format/webp/ignore-error/1">
+<meta property="og:image" content="https://user-gold-cdn.xitu.io/2019/11/4/16e34143d35416f1?imageView2/0/w/1280/h/960/format/webp/ignore-error/1">
+<meta property="og:image" content="https://user-gold-cdn.xitu.io/2019/11/4/16e34157736705f8?imageView2/0/w/1280/h/960/format/webp/ignore-error/1">
+<meta property="og:image" content="https://user-gold-cdn.xitu.io/2019/11/4/16e34160f795395a?imageView2/0/w/1280/h/960/format/webp/ignore-error/1">
+<meta property="og:image" content="https://user-gold-cdn.xitu.io/2019/11/4/16e3416a300a8c71?imageView2/0/w/1280/h/960/format/webp/ignore-error/1">
+<meta property="og:image" content="https://user-gold-cdn.xitu.io/2019/11/4/16e3418787a95e8d?imageView2/0/w/1280/h/960/format/webp/ignore-error/1">
+<meta property="og:image" content="https://user-gold-cdn.xitu.io/2019/11/4/16e341970565ae3a?imageView2/0/w/1280/h/960/format/webp/ignore-error/1">
+<meta property="og:image" content="https://user-gold-cdn.xitu.io/2019/11/4/16e3419c98a17f31?imageView2/0/w/1280/h/960/format/webp/ignore-error/1">
+<meta property="og:image" content="https://user-gold-cdn.xitu.io/2019/11/4/16e341a3ee396cd4?imageView2/0/w/1280/h/960/format/webp/ignore-error/1">
+<meta property="og:image" content="https://user-gold-cdn.xitu.io/2019/11/4/16e341b086604305?imageView2/0/w/1280/h/960/format/webp/ignore-error/1">
+<meta property="og:image" content="https://user-gold-cdn.xitu.io/2019/11/4/16e341b3fc92465b?imageView2/0/w/1280/h/960/format/webp/ignore-error/1">
+<meta property="og:image" content="https://user-gold-cdn.xitu.io/2019/11/4/16e341b874ac9beb?imageView2/0/w/1280/h/960/format/webp/ignore-error/1">
+<meta property="og:image" content="https://user-gold-cdn.xitu.io/2019/11/4/16e341c7ed481af8?imageView2/0/w/1280/h/960/format/webp/ignore-error/1">
+<meta property="og:image" content="https://user-gold-cdn.xitu.io/2019/11/4/16e341cd3ca4d1a9?imageView2/0/w/1280/h/960/format/webp/ignore-error/1">
+<meta property="og:image" content="https://user-gold-cdn.xitu.io/2019/11/4/16e341d9f9622c62?imageView2/0/w/1280/h/960/format/webp/ignore-error/1">
+<meta property="og:updated_time" content="2019-11-11T16:49:46.898Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="【转】Android Studio Debug 的 9 个小技巧">
+<meta name="twitter:description" content="Pain is inevitable. Suffering is optional. 痛楚难以避免，而磨难可以选择。  这是一篇转载的文章。  作者：wanbo 链接：https://juejin.im/post/5dbf8036f265da4d4b5fe7c2 来源：掘金">
+<meta name="twitter:image" content="https://user-gold-cdn.xitu.io/2019/11/4/16e341e885399f72?imageView2/0/w/1280/h/960/format/webp/ignore-error/1">
+    
+        <link rel="alternate" type="application/atom+xml" title="柘个角落" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/img/favicon.ico">
+    <link rel="stylesheet" href="//unpkg.com/hexo-theme-material-indigo@latest/css/style.css">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/avatar.jpeg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">Li Lei</h5>
+          <a href="mailto:bequietlee#gmail.com" title="bequietlee#gmail.com" class="mail">bequietlee#gmail.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                文章
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+                标签
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/bequietlee" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/2019/03/10/links"  >
+                <i class="icon icon-lg icon-link"></i>
+                友情链接
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">【转】Android Studio Debug 的 9 个小技巧</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">【转】Android Studio Debug 的 9 个小技巧</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2019-11-11T15:46:08.000Z" itemprop="datePublished" class="page-time">
+  2019-11-11
+</time>
+
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#1-Log-过滤和折叠"><span class="post-toc-number">1.</span> <span class="post-toc-text">1. Log 过滤和折叠</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#2-自定义断点执行条件"><span class="post-toc-number">2.</span> <span class="post-toc-text">2. 自定义断点执行条件</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#3-挂起线程"><span class="post-toc-number">3.</span> <span class="post-toc-text">3. 挂起线程</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#4-动态打印"><span class="post-toc-number">4.</span> <span class="post-toc-text">4. 动态打印</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#5-断点分组"><span class="post-toc-number">5.</span> <span class="post-toc-text">5. 断点分组</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#6-断点上一步"><span class="post-toc-number">6.</span> <span class="post-toc-text">6. 断点上一步</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#7-观察对象"><span class="post-toc-number">7.</span> <span class="post-toc-text">7. 观察对象</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#8-增量更新"><span class="post-toc-number">8.</span> <span class="post-toc-text">8. 增量更新</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#9-错误栈分析"><span class="post-toc-number">9.</span> <span class="post-toc-text">9. 错误栈分析</span></a></li></ol>
+        </nav>
+    </aside>
+
+
+<article id="post-android-studio-debug-skills"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">【转】Android Studio Debug 的 9 个小技巧</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2019-11-11 23:46:08" datetime="2019-11-11T15:46:08.000Z"  itemprop="datePublished">2019-11-11</time>
+
+            
+
+
+            
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <blockquote>
+<p>Pain is inevitable. Suffering is optional. 痛楚难以避免，而磨难可以选择。</p>
+</blockquote>
+<p>这是一篇转载的文章。</p>
+<ul>
+<li>作者：wanbo</li>
+<li>链接：<a href="https://juejin.im/post/5dbf8036f265da4d4b5fe7c2" target="_blank" rel="noopener">https://juejin.im/post/5dbf8036f265da4d4b5fe7c2</a></li>
+<li>来源：掘金</li>
+</ul>
+<hr>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://user-gold-cdn.xitu.io/2019/11/4/16e341e885399f72?imageView2/0/w/1280/h/960/format/webp/ignore-error/1" alt="" title="">
+                </div>
+                <div class="image-caption"></div>
+            </figure>
+<p>周末看 Android Dev Summit ‘19 的视频的时候，看到一章关于 Android Studio Debug 的介绍，有很多日常非常有用的小技巧，学习了这些小技巧能很大程度的降低我们 Debug 的成本，快速定位问题的本质，今天就向大家介绍一下 Android Studio Debug 的 9 个小技巧。</p>
+<p>没关注的小伙伴记得关注订阅😝，如果觉得这些文章有点意思，记得分享转发评论点赞😝！</p>
+<h2 id="1-Log-过滤和折叠"><a href="#1-Log-过滤和折叠" class="headerlink" title="1. Log 过滤和折叠"></a>1. Log 过滤和折叠</h2><p>有时候 Logcat 中 log 的信息很长，同时还有些我们不需要的信息也打印出来，例如下图中的【时间+线程 ID】。</p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://user-gold-cdn.xitu.io/2019/11/4/16e340eb5ba58d76?imageView2/0/w/1280/h/960/format/webp/ignore-error/1" alt="" title="">
+                </div>
+                <div class="image-caption"></div>
+            </figure>
+<p>这个时候我们可以点击 Logcat 窗口上的【设置】按钮，设置一条 Log 需要显示哪些关键信息，可设置的项有：时间、线程ID、包名、Tag name。我们可以根据自己的需要控制显示，并且下面还会有一条 Sample Log 提供设置后的预览效果，就像下图中这样。</p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://user-gold-cdn.xitu.io/2019/11/4/16e340f30d9baa58?imageView2/0/w/1280/h/960/format/webp/ignore-error/1" alt="" title="">
+                </div>
+                <div class="image-caption"></div>
+            </figure>
+<p>日常开发的时候我们还会遇到另一种情况，比如根据当前 UI 的渲染情况，我们需要时刻打印 UI 的某个值，来帮助我们观察 UI，同时当到达某种条件的时候，输入一条我们得到的【结果 log】。也就是说在获得我们的【结果 log】之前会有很多没用但是又必须打印的 log，这样当我们需要查找【结果 log】的时候就会非常麻烦。</p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://user-gold-cdn.xitu.io/2019/11/4/16e340fff5e9a0dc?imageView2/0/w/1280/h/960/format/webp/ignore-error/1" alt="" title="">
+                </div>
+                <div class="image-caption"></div>
+            </figure>
+<p>就像上图中这样，我们的【结果 log】被上下【循环打印 log】包围了，很难一下子找出来，这时候我们可以选关键字【右键】，选择【Fold Lines Like This】，如下图所示。</p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://user-gold-cdn.xitu.io/2019/11/4/16e3411493b0f1f4?imageView2/0/w/1280/h/960/format/webp/ignore-error/1" alt="" title="">
+                </div>
+                <div class="image-caption"></div>
+            </figure>
+<p>这样我们相同关键字的 log 就会被折叠，当然也可以展开查看详细 log。</p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://user-gold-cdn.xitu.io/2019/11/4/16e3411d751ba410?imageView2/0/w/1280/h/960/format/webp/ignore-error/1" alt="" title="">
+                </div>
+                <div class="image-caption"></div>
+            </figure>
+<h2 id="2-自定义断点执行条件"><a href="#2-自定义断点执行条件" class="headerlink" title="2. 自定义断点执行条件"></a>2. 自定义断点执行条件</h2><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://user-gold-cdn.xitu.io/2019/11/4/16e3412709faf61e?imageView2/0/w/1280/h/960/format/webp/ignore-error/1" alt="" title="">
+                </div>
+                <div class="image-caption"></div>
+            </figure>
+<p>我们来看上面这段代码，通过字面意思我们可以得知：这是一个点击事件执行的方法，点击发生后通过 NavController 从当前 HomeFragment 跳转到 EmailFragment。然后我们在第一行打了一个断点，我们已经得知当 email 的 subject 包含 【Bonjour】关键字的时候，这段代码会发生崩溃，反之不包含则不会发生崩溃，所以我们不需要每次断点都生效。</p>
+<p>这里我们可以右键断点，在 Condition 里输入我们的条件判断语句，当条件允许的时候，断点才生效。条件语句的代码支持 Kotlin 和 Java 两种语言的写法，如下图所示。</p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://user-gold-cdn.xitu.io/2019/11/4/16e3413745054354?imageView2/0/w/1280/h/960/format/webp/ignore-error/1" alt="" title="">
+                </div>
+                <div class="image-caption"></div>
+            </figure>
+<p>然后如果我们想在跳转到 EmailFragment 之后进一步去追踪问题，于是我在 EmailFragment 的 onCreate 方法打了一个断点（如下图所示），然后这里还会遇到我们之前说的问题：不符合条件的时候断点也会生效，这时候我们该怎么办呢？</p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://user-gold-cdn.xitu.io/2019/11/4/16e3413e54157e9e?imageView2/0/w/1280/h/960/format/webp/ignore-error/1" alt="" title="">
+                </div>
+                <div class="image-caption"></div>
+            </figure>
+<p>我们可以在这个断点上面，右键、点击更多。</p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://user-gold-cdn.xitu.io/2019/11/4/16e34140ceb6c58e?imageView2/0/w/1280/h/960/format/webp/ignore-error/1" alt="" title="">
+                </div>
+                <div class="image-caption"></div>
+            </figure>
+<p>左边选择当前断点之后，在右边点击【Disable until breakpoint hit】，选择我们之前有条件判断的断点，那么这个新的断点会在它所跟随的断点生效之后才会生效。</p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://user-gold-cdn.xitu.io/2019/11/4/16e34143d35416f1?imageView2/0/w/1280/h/960/format/webp/ignore-error/1" alt="" title="">
+                </div>
+                <div class="image-caption"></div>
+            </figure>
+<h2 id="3-挂起线程"><a href="#3-挂起线程" class="headerlink" title="3. 挂起线程"></a>3. 挂起线程</h2><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://user-gold-cdn.xitu.io/2019/11/4/16e34157736705f8?imageView2/0/w/1280/h/960/format/webp/ignore-error/1" alt="" title="">
+                </div>
+                <div class="image-caption"></div>
+            </figure>
+<p>当我们右键任意一个断点的时候，会有一个 Suspend 选项【All、Thread】，All 也就意味着当我们在一个多线程的应用中 debug 问题的时候，一旦这个断点生效，所有的线程都会被挂起，Thread 表示只挂起当前线程。所以当我们在某个后台线程中 debug 问题的时候就可以选择 Thread，这样就不会在 debug 的时候阻塞主线程的正常功能。</p>
+<p>还有一个打开关闭断点的快捷键也分享一下：Windows 用户 Alt + Click ，Mac Option + Click 。</p>
+<h2 id="4-动态打印"><a href="#4-动态打印" class="headerlink" title="4. 动态打印"></a>4. 动态打印</h2><p>详细很多人包括我之前在 debug 的时候，都会在需要 debug 的地方增加 print 输出一下信息供自己排查错误，这里提供一种快捷方便的方法，可以既不污染我们的代码，又可以随时输出任意信息。</p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://user-gold-cdn.xitu.io/2019/11/4/16e34160f795395a?imageView2/0/w/1280/h/960/format/webp/ignore-error/1" alt="" title="">
+                </div>
+                <div class="image-caption"></div>
+            </figure>
+<p>如上图所示，在需要打印的地方增加断点，然后取消所有线程的挂起，选择【Evaluate and log】，属于我们需要打印的语句，当代码执行到断点的时候，不会暂停，而会根据我们设置的打印信息输出 log，是不是很方便？</p>
+<h2 id="5-断点分组"><a href="#5-断点分组" class="headerlink" title="5. 断点分组"></a>5. 断点分组</h2><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://user-gold-cdn.xitu.io/2019/11/4/16e3416a300a8c71?imageView2/0/w/1280/h/960/format/webp/ignore-error/1" alt="" title="">
+                </div>
+                <div class="image-caption"></div>
+            </figure>
+<p>通常遇到一个问题的时候，我们需要增加很多断点去追踪问题的原因，当问题解决之后，往往会忘记取消这些断点，导致在某次调试的时候，设备会被之前的断点所暂停，会让我们很无语。这里我们可以 debug 的时候在某个断点上：右键、更多，然后选择这个问题所有相关的断点，将它们分到同一个 Group 里面，那么这一个组的断点就可以统一开关、统一删除。</p>
+<h2 id="6-断点上一步"><a href="#6-断点上一步" class="headerlink" title="6. 断点上一步"></a>6. 断点上一步</h2><p>说到这个真的很痛心，常常因为自己在 debug 的时候，由于下一步点击的太快了而错过了问题关键行，只能重新运行一次代码，重新 debug 然后自己一次次点击下一步。</p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://user-gold-cdn.xitu.io/2019/11/4/16e3418787a95e8d?imageView2/0/w/1280/h/960/format/webp/ignore-error/1" alt="" title="">
+                </div>
+                <div class="image-caption"></div>
+            </figure>
+<p>在运行 Android 10 的设备上，debug 界面中提供了一个叫【Drop frame】的按钮，可以供我们跳出当前方法栈，返回上一步，这样就会避免我们因为错过断点而不得不重新运行代码。</p>
+<h2 id="7-观察对象"><a href="#7-观察对象" class="headerlink" title="7. 观察对象"></a>7. 观察对象</h2><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://user-gold-cdn.xitu.io/2019/11/4/16e341970565ae3a?imageView2/0/w/1280/h/960/format/webp/ignore-error/1" alt="" title="">
+                </div>
+                <div class="image-caption"></div>
+            </figure>
+<p>当我们 debug 的时候，可以从 debug 窗口中观察当前作用域中的对象以及对象的属性，有时候我们会观察在不同页面是否是同一个对象，之前我的做法很粗暴…就是找张纸，把这个对象的 ID 记下来，然后在另一个页面 debug 看 ID 是否一致😂</p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://user-gold-cdn.xitu.io/2019/11/4/16e3419c98a17f31?imageView2/0/w/1280/h/960/format/webp/ignore-error/1" alt="" title="">
+                </div>
+                <div class="image-caption"></div>
+            </figure>
+<p>这里我们可以在对象上右键、选择【Mark Object】之后会让你自定义一个 Label，然后在整个 debug 期间，相同的对象会以你设置的 Label 为 name 出现，帮助我们方便的分析是否是统一对象。</p>
+<p>顺便提一下，在任意一段代码上，点击行号，可以从当前断点快速执行到目标行并暂停，这个我真是第一次知道，感觉之前 Android Studio 都白用了😭</p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://user-gold-cdn.xitu.io/2019/11/4/16e341a3ee396cd4?imageView2/0/w/1280/h/960/format/webp/ignore-error/1" alt="" title="">
+                </div>
+                <div class="image-caption"></div>
+            </figure>
+<p>而且在 debug 的时候我们可以选择 debug 窗口中的【Evaluate expression】按钮来动态观察对象，点击之后会弹出一个计算框，我们可以输入任意当前作用域中的对象以及属性观察。</p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://user-gold-cdn.xitu.io/2019/11/4/16e341b086604305?imageView2/0/w/1280/h/960/format/webp/ignore-error/1" alt="" title="">
+                </div>
+                <div class="image-caption"></div>
+            </figure>
+<p>不得不说这个真的很方便，以前遇到这种情况我只有一种方法就是：print 😂，当然这里不仅仅是观察对象，我们可以写任意代码观察我们想要的值，就像下图这样。</p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://user-gold-cdn.xitu.io/2019/11/4/16e341b3fc92465b?imageView2/0/w/1280/h/960/format/webp/ignore-error/1" alt="" title="">
+                </div>
+                <div class="image-caption"></div>
+            </figure>
+<h2 id="8-增量更新"><a href="#8-增量更新" class="headerlink" title="8. 增量更新"></a>8. 增量更新</h2><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://user-gold-cdn.xitu.io/2019/11/4/16e341b874ac9beb?imageView2/0/w/1280/h/960/format/webp/ignore-error/1" alt="" title="">
+                </div>
+                <div class="image-caption"></div>
+            </figure>
+<p>我试了一下，这两个按钮是真的很好用啊，比重新全量运行应用真是快了不少，非常方便。</p>
+<h2 id="9-错误栈分析"><a href="#9-错误栈分析" class="headerlink" title="9. 错误栈分析"></a>9. 错误栈分析</h2><p>通常我们 App 中会继承一下线上 bug 反馈的 SDK 比如 bugly，在 bugly 我们会得到崩溃的异常栈信息，类似下图这样。</p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://user-gold-cdn.xitu.io/2019/11/4/16e341c7ed481af8?imageView2/0/w/1280/h/960/format/webp/ignore-error/1" alt="" title="">
+                </div>
+                <div class="image-caption"></div>
+            </figure>
+<p>我们可以全选复制，打开我们的 Android Studio，选择 Analyze → Analyze Stack Trace or Thread Dump，然后把异常栈信息粘贴进去，点击确定。</p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://user-gold-cdn.xitu.io/2019/11/4/16e341cd3ca4d1a9?imageView2/0/w/1280/h/960/format/webp/ignore-error/1" alt="" title="">
+                </div>
+                <div class="image-caption"></div>
+            </figure>
+<p>Android Studio 会在控制台显示这段异常栈信息，并且与现有代码 Link 在一起，我们可以点击跳转到问题所在行。</p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://user-gold-cdn.xitu.io/2019/11/4/16e341d9f9622c62?imageView2/0/w/1280/h/960/format/webp/ignore-error/1" alt="" title="">
+                </div>
+                <div class="image-caption"></div>
+            </figure>
+<p>好了这就是今天要分享的全部内容，关于更多详细的内容，大家可以点击【阅读原文】在油管上查看，真希望有大佬可以出一个【Android Studio 使用全攻略】，感觉自己对 AS 真的只是会用，但还有很多东西需要去学习和探索。😂</p>
+<p>我是 wanbo 大家加油！</p>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    
+    <div class="content">
+        
+<span class="post-time">
+    最后更新时间：<time datetime="2019-11-11T16:49:46.898Z" itemprop="dateUpdated">2019-11-12 00:49:46</time>
+</span><br>
+
+
+        
+        本文系作者原创，如转载请注明出处。欢迎留言讨论，或通过邮件进行沟通～
+        
+    </div>
+    
+    <footer>
+        <a href="https://lilei.pro">
+            <img src="/img/avatar.jpeg" alt="Li Lei">
+            Li Lei
+        </a>
+    </footer>
+</blockquote>
+
+        
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Android/">Android</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Android-Studio/">Android Studio</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://lilei.pro/2019/11/11/android-studio-debug-skills/&title=《【转】Android Studio Debug 的 9 个小技巧》 — 柘个角落&pic=https://lilei.pro/img/avatar.jpeg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://lilei.pro/2019/11/11/android-studio-debug-skills/&title=《【转】Android Studio Debug 的 9 个小技巧》 — 柘个角落&source=技术与生活上的点滴积累" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://lilei.pro/2019/11/11/android-studio-debug-skills/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《【转】Android Studio Debug 的 9 个小技巧》 — 柘个角落&url=https://lilei.pro/2019/11/11/android-studio-debug-skills/&via=https://lilei.pro" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://lilei.pro/2019/11/11/android-studio-debug-skills/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between flex-row-reverse">
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2019/10/28/kotlin-scope-functions/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">Kotlin域函数小结</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+    <!-- Valine Comments -->
+    <div class="comments vcomment" id="comments"></div>
+    <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+    <script src="//unpkg.com/valine@latest/dist/Valine.min.js"></script>
+    <!-- Valine Comments script -->
+    <script>
+        var GUEST_INFO = ['nick','mail','link'];
+        var guest_info = 'nick,mail,link'.split(',').filter(function(item){
+          return GUEST_INFO.indexOf(item) > -1
+        });
+        new Valine({
+            el: '#comments',
+            notify: 'false' == 'true',
+            verify: 'true' == 'true',
+            appId: "khG3rBt0nWda7lxDUHpS3Sq0-gzGzoHsz",
+            appKey: "btFkQfcBgJeCRm55mYmUgA5d",
+            avatar: "mm",
+            placeholder: "欢迎讨论",
+            guest_info: guest_info.length == 0 ? GUEST_INFO : guest_info,
+            pageSize: "10"
+        })
+    </script>
+    <!-- Valine Comments end -->
+
+
+
+
+
+
+
+</article>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>博客内容遵循 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">知识共享 署名 - 非商业性 - 相同方式共享 4.0 国际协议</a></span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>Li Lei &copy; 2015 - 2019</span>
+            <span>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://lilei.pro/2019/11/11/android-studio-debug-skills/&title=《【转】Android Studio Debug 的 9 个小技巧》 — 柘个角落&pic=https://lilei.pro/img/avatar.jpeg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://lilei.pro/2019/11/11/android-studio-debug-skills/&title=《【转】Android Studio Debug 的 9 个小技巧》 — 柘个角落&source=技术与生活上的点滴积累" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://lilei.pro/2019/11/11/android-studio-debug-skills/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《【转】Android Studio Debug 的 9 个小技巧》 — 柘个角落&url=https://lilei.pro/2019/11/11/android-studio-debug-skills/&via=https://lilei.pro" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://lilei.pro/2019/11/11/android-studio-debug-skills/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACIUlEQVR42u3aQXLDIAwF0Nz/0uk2G9MvycmM4XnloS7meaEIpNcrvt4fVzLyOf751/X91chtFwYGxmMZ7+XVeyYBrNeQvxcDA+McxtXUV/fJyHop+f+u14aBgYGxTuB6y70MmhgYGBi3MqKpb9oYY2BgYOQb1OpGNJ/np3txDAyMBzLy4Pj7+6/UNzAwMB7FeBevSWCtHsYVVoWBgbE1o7pBrTZMrGcubFCD9WBgYOzNqGZZvbaJHLBu14ioGBgY2zGSY6/qwX3yaeZFgsvfDQwMjK0Z1YP+5GBuPdJ7V7kSi4GB8XBGktjNmy2qiWYOxsDAOIGxTrnykPdt/D/PY2BgbMqYBMFeylj9HYg+MQYGxtaMvPWhkF0WE827gjsGBsaujOQgLHlxng72nixsXzEwMA5gTJon8kRz3mxR/jYYGBiPZVSTubsaxfL2i+oIBgbGOYzeeXsvgPbmjyqxGBgYGzHyl+Xsu7a75cIABgbGMYy8PDnZmuatFdF6MDAwDmBUCwDV11dTz2q5AgMD4wTG/KqSes9jYGBg9I7Jqo0UvcLkKMPFwMB4LGMeUntpXy9ARwdtGBgY2zF6wW5+oJY/s156GYOBgfFYRh5kk+nyRLOZyV59DgwMjAMYk/LkPEBXka/qUjAwMDCWgXg9Pk83MTAwMPImjLyckMxTLl1gYGAcwPhGMSAPnXnTBgYGxpmMXt51V1I4aRTDwMA4gPEHNYuJh7NU7/MAAAAASUVORK5CYII=" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: false };
+
+
+</script>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/main.min.js"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/search.min.js" async></script>
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>
