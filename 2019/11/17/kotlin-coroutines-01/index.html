@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    
+    <title>Kotlin 协程基础课 01.协程的基本概念与用法 | 柘个角落 | IF YOU WANT SOMETHING, GO GET IT. PERIOD.</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="Kotlin">
+    <meta name="description" content="这是《Kotlin 协程基础课》的第1篇文章。   正因为她觉得一切都无所谓，所以生活给她什么，她便接受什么。少年时代，她觉得选择为时过早，而现在已是青年，她又觉得改变为时过晚。  系列基础课前言对于Kotlin学习而言，要想从“入门”走到“精通”，协程（Coroutines）是必须迈过去的一道坎。接下来一周时间，我会在之前零散学习的基础上，总结成一系列基础课文章，作为对协程的阶段性学习小结。文">
+<meta name="keywords" content="Kotlin">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Kotlin 协程基础课 01.协程的基本概念与用法">
+<meta property="og:url" content="https://lilei.pro/2019/11/17/kotlin-coroutines-01/index.html">
+<meta property="og:site_name" content="柘个角落">
+<meta property="og:description" content="这是《Kotlin 协程基础课》的第1篇文章。   正因为她觉得一切都无所谓，所以生活给她什么，她便接受什么。少年时代，她觉得选择为时过早，而现在已是青年，她又觉得改变为时过晚。  系列基础课前言对于Kotlin学习而言，要想从“入门”走到“精通”，协程（Coroutines）是必须迈过去的一道坎。接下来一周时间，我会在之前零散学习的基础上，总结成一系列基础课文章，作为对协程的阶段性学习小结。文">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-12-03T14:27:46.210Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Kotlin 协程基础课 01.协程的基本概念与用法">
+<meta name="twitter:description" content="这是《Kotlin 协程基础课》的第1篇文章。   正因为她觉得一切都无所谓，所以生活给她什么，她便接受什么。少年时代，她觉得选择为时过早，而现在已是青年，她又觉得改变为时过晚。  系列基础课前言对于Kotlin学习而言，要想从“入门”走到“精通”，协程（Coroutines）是必须迈过去的一道坎。接下来一周时间，我会在之前零散学习的基础上，总结成一系列基础课文章，作为对协程的阶段性学习小结。文">
+    
+        <link rel="alternate" type="application/atom+xml" title="柘个角落" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/img/favicon.ico">
+    <link rel="stylesheet" href="//unpkg.com/hexo-theme-material-indigo@latest/css/style.css">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/avatar.jpeg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">Li Lei</h5>
+          <a href="mailto:bequietlee#gmail.com" title="bequietlee#gmail.com" class="mail">bequietlee#gmail.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                文章
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+                标签
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/bequietlee" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/2019/03/10/links"  >
+                <i class="icon icon-lg icon-link"></i>
+                友情链接
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">Kotlin 协程基础课 01.协程的基本概念与用法</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">Kotlin 协程基础课 01.协程的基本概念与用法</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2019-11-17T00:57:40.000Z" itemprop="datePublished" class="page-time">
+  2019-11-17
+</time>
+
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#系列基础课前言"><span class="post-toc-number">1.</span> <span class="post-toc-text">系列基础课前言</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#什么是协程"><span class="post-toc-number">2.</span> <span class="post-toc-text">什么是协程</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#没有协程的日子里"><span class="post-toc-number">3.</span> <span class="post-toc-text">没有协程的日子里</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#第一个协程Demo"><span class="post-toc-number">4.</span> <span class="post-toc-text">第一个协程Demo</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#用Thread-sleep模拟耗时操作"><span class="post-toc-number">4.1.</span> <span class="post-toc-text">用Thread.sleep模拟耗时操作</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#用delay模拟耗时操作"><span class="post-toc-number">4.2.</span> <span class="post-toc-text">用delay模拟耗时操作</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#为runBlocking指定运行线程"><span class="post-toc-number">4.3.</span> <span class="post-toc-text">为runBlocking指定运行线程</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#如何利用协程打印出132"><span class="post-toc-number">4.4.</span> <span class="post-toc-text">如何利用协程打印出132</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#全局后台线程：GlobalScope-launch"><span class="post-toc-number">4.4.1.</span> <span class="post-toc-text">全局后台线程：GlobalScope.launch</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#等待任务完成"><span class="post-toc-number">4.4.2.</span> <span class="post-toc-text">等待任务完成</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#自定义Dispatcher"><span class="post-toc-number">4.5.</span> <span class="post-toc-text">自定义Dispatcher</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#有返回值的suspend函数"><span class="post-toc-number">4.6.</span> <span class="post-toc-text">有返回值的suspend函数</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#并发进行耗时操作"><span class="post-toc-number">4.6.1.</span> <span class="post-toc-text">并发进行耗时操作</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#使用withContext的简化写法"><span class="post-toc-number">4.6.2.</span> <span class="post-toc-text">使用withContext的简化写法</span></a></li></ol></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#小结"><span class="post-toc-number">5.</span> <span class="post-toc-text">小结</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#参考资料"><span class="post-toc-number">6.</span> <span class="post-toc-text">参考资料</span></a></li></ol>
+        </nav>
+    </aside>
+
+
+<article id="post-kotlin-coroutines-01"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">Kotlin 协程基础课 01.协程的基本概念与用法</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2019-11-17 08:57:40" datetime="2019-11-17T00:57:40.000Z"  itemprop="datePublished">2019-11-17</time>
+
+            
+
+
+            
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <blockquote>
+<p>这是《Kotlin 协程基础课》的第1篇文章。</p>
+</blockquote>
+<blockquote>
+<p>正因为她觉得一切都无所谓，所以生活给她什么，她便接受什么。少年时代，她觉得选择为时过早，而现在已是青年，她又觉得改变为时过晚。</p>
+</blockquote>
+<h1 id="系列基础课前言"><a href="#系列基础课前言" class="headerlink" title="系列基础课前言"></a>系列基础课前言</h1><p>对于Kotlin学习而言，要想从“入门”走到“精通”，协程（Coroutines）是必须迈过去的一道坎。接下来一周时间，我会在之前零散学习的基础上，总结成一系列基础课文章，作为对协程的阶段性学习小结。文章目录如下：</p>
+<ul>
+<li>01.协程的基本概念与用法</li>
+<li>02.非阻塞式挂起（suspend）函数</li>
+<li>03.理解协程的域（Scope）和调度器（Dispatcher）</li>
+<li>04.用AAC&amp;协程优化Android架构设计</li>
+</ul>
+<h1 id="什么是协程"><a href="#什么是协程" class="headerlink" title="什么是协程"></a>什么是协程</h1><p>但凡学一门新知识，总是离不开5w1h。说起“协程”，很多人第一反应是2号线北新泾那家做旅游的互联网公司，不过，此“协程”非彼“携程”，协程（Coroutines）并不是一个新的概念，它的年纪要比Kotlin语言大得多。“协程 Coroutines”源自 Simula 和 Modula-2 语言，这个术语早在 1958 年就被 Melvin Edward Conway 发明并用于构建汇编程序，说明协程是一种编程思想，并不局限于特定的语言。目前很多现代语言都有协程的实现，比如Go、JavaScript、C#等。</p>
+<p>协程作为一种编程思想，目的是简化并行代码编写，可以让我们以同步的方式写异步逻辑。对于Kotlin而言，“协程”一词是指实现了协程思想的一系列API的总称。Kotlin协程的底层实现是线程。</p>
+<h1 id="没有协程的日子里"><a href="#没有协程的日子里" class="headerlink" title="没有协程的日子里"></a>没有协程的日子里</h1><p>由于Android是单一UI线程的框架，势必要进行很多UI线程以外的耗时操作，在协程之前，我们通常用这些技术来实现诸如网络请求、数据库读写等功能：</p>
+<ul>
+<li>AsyncTask：是Android原生的异步任务写法，写过的人就知道它有多难用，业务逻辑被分散在前中后三个方法里，冗长的boilerplate代码。更有甚者，一旦发生嵌套，光是一层层回调就能把人搞疯掉。</li>
+<li>Thread：直接开线程并不是一种好的设计，只有新手才这么干。</li>
+<li>ThreadPool or ExecutorService：这比<code>new Thread</code>好一些，但同样要处理UI、工作线程切换的问题，以及无法避免的回调。</li>
+<li>Handler：一个工作线程的Handler用来处理耗时任务，处理完成后丢给主线程Handler，简单、直接、朴实无华。</li>
+</ul>
+<p>这时协程（Coroutines）来了，为我们推翻回调地狱、样板代码、内存泄漏、线程切换几座大山，Android开发者终于翻身农奴把歌唱，敢叫日月换新天。</p>
+<h1 id="第一个协程Demo"><a href="#第一个协程Demo" class="headerlink" title="第一个协程Demo"></a>第一个协程Demo</h1><h2 id="用Thread-sleep模拟耗时操作"><a href="#用Thread-sleep模拟耗时操作" class="headerlink" title="用Thread.sleep模拟耗时操作"></a>用Thread.sleep模拟耗时操作</h2><p>在本文我们暂且不谈Android环境，在更通用的环境下展现协程的用法。首先我们模拟一个耗时操作与非耗时操作混合的场景，看下面一段代码，它在<code>main</code>函数里依次打印<code>one two three</code>。</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">fun</span> <span class="title">main</span><span class="params">(args: <span class="type">Array</span>&lt;<span class="type">String</span>&gt;)</span></span> &#123;</span><br><span class="line">    println(<span class="string">"one"</span>)</span><br><span class="line">    println(<span class="string">"two"</span>)</span><br><span class="line">    println(<span class="string">"three"</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>同时有另一个函数，它会耗时3s后，打印出参数在控制台。我们用直白的<code>Thread.sleep</code>来进行延时模拟。</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">fun</span> <span class="title">printDelayed</span><span class="params">(msg: <span class="type">String</span>)</span></span> &#123;</span><br><span class="line">    Thread.sleep(<span class="number">3000</span>)</span><br><span class="line">    println(msg)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>然后将主程序的<code>print(two)</code>改为耗时任务。</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">fun</span> <span class="title">main</span><span class="params">(args: <span class="type">Array</span>&lt;<span class="type">String</span>&gt;)</span></span> &#123;</span><br><span class="line">    println(<span class="string">"one"</span>)</span><br><span class="line">    printDelayed(<span class="string">"two"</span>)</span><br><span class="line">    println(<span class="string">"three"</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>运行后，输出如下，非常符合预期。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">one</span><br><span class="line">three</span><br><span class="line">// 这里等待3s</span><br><span class="line">two</span><br></pre></td></tr></table></figure>
+<h2 id="用delay模拟耗时操作"><a href="#用delay模拟耗时操作" class="headerlink" title="用delay模拟耗时操作"></a>用delay模拟耗时操作</h2><p>Kotlin的协程库提供了另一种延时的API，<code>delay</code>，我们把原来的<code>Thread.sleep</code>替换为<code>delay</code>：</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">fun</span> <span class="title">printDelayed</span><span class="params">(msg: <span class="type">String</span>)</span></span> &#123;</span><br><span class="line">    delay(<span class="number">3000</span>L)</span><br><span class="line">    println(msg)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>此时Android Studio会在<code>delay</code>处提示错误：<em>suspend function delay should be called only from a coroutine or another suspend function</em>。翻译过来就是“delay是一个挂起函数，它只能在协程中、或者另一个挂起函数里面被调用”。我们把程序整体改写一下。</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">suspend <span class="function"><span class="keyword">fun</span> <span class="title">printDelayed</span><span class="params">(msg: <span class="type">String</span>)</span></span> &#123;</span><br><span class="line">    delay(<span class="number">3000</span>L)</span><br><span class="line">    println(msg)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">fun</span> <span class="title">print123Blocking</span><span class="params">()</span></span> = runBlocking &#123;</span><br><span class="line">    println(<span class="string">"one"</span>)</span><br><span class="line">    printDelayed(<span class="string">"two"</span>)</span><br><span class="line">    println(<span class="string">"three"</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">fun</span> <span class="title">main</span><span class="params">(args: <span class="type">Array</span>&lt;<span class="type">String</span>&gt;)</span></span> &#123;</span><br><span class="line">    print123Blocking()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>运行后发现程序的输出为：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">one</span><br><span class="line">// 等待3s</span><br><span class="line">two</span><br><span class="line">three</span><br></pre></td></tr></table></figure>
+<p>为什么不是132而是123呢，要从<code>runBlocking</code>的定义说起。它会“新起一个协程运行后续代码，并且在该协程的运行过程中阻塞原线程（在demo中是主线程），直至协程运行结束”。而在协程运行时是按照代码顺序逐行运行的。所以打印出来的是123而非132。</p>
+<h2 id="为runBlocking指定运行线程"><a href="#为runBlocking指定运行线程" class="headerlink" title="为runBlocking指定运行线程"></a>为runBlocking指定运行线程</h2><p>我们在<code>print123blocking</code>方法里打印出当前线程名。</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">fun</span> <span class="title">print123Blocking</span><span class="params">()</span></span> = runBlocking &#123;</span><br><span class="line">    println(<span class="string">"one - in thread: <span class="subst">$&#123;Thread.currentThread().name&#125;</span>"</span>)</span><br><span class="line">    printDelayed(<span class="string">"two - in thread: <span class="subst">$&#123;Thread.currentThread().name&#125;</span>"</span>)</span><br><span class="line">    println(<span class="string">"three - in thread: <span class="subst">$&#123;Thread.currentThread().name&#125;</span>"</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>控制台输出如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">one - in thread: main @coroutine#1</span><br><span class="line">two - in thread: main @coroutine#1</span><br><span class="line">three - in thread: main @coroutine#1</span><br></pre></td></tr></table></figure>
+<p>可见这个方法是在当前（main）线程里运行的，并且同属于<code>@coroutine#1</code>。</p>
+<p>我们可以为<code>runBlocking</code>指定运行的线程，在协程的语言里，使用<code>Dispatcher</code>来表明这一概念。我们改写一下<code>print123Blocking</code>方法，使用<code>Dispatcher.Default</code>打印1和2。样例代码与系统输出如下，可见我们为其指定了Dispatcher的代码段运行在另一个线程里，且打印顺序仍然为123，这就是<strong>Blocking</strong>的厉害之处。</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">fun</span> <span class="title">print123Blocking</span><span class="params">()</span></span> &#123;</span><br><span class="line">    runBlocking(Dispatchers.Default) &#123;</span><br><span class="line">        println(<span class="string">"one - in thread: <span class="subst">$&#123;Thread.currentThread().name&#125;</span>"</span>)</span><br><span class="line">        printDelayed(<span class="string">"two - in thread: <span class="subst">$&#123;Thread.currentThread().name&#125;</span>"</span>)</span><br><span class="line">    &#125;</span><br><span class="line">    println(<span class="string">"three - in thread: <span class="subst">$&#123;Thread.currentThread().name&#125;</span>"</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>控制台输出：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">one - in thread: DefaultDispatcher-worker-1 @coroutine#1</span><br><span class="line">two - in thread: DefaultDispatcher-worker-1 @coroutine#1</span><br><span class="line">// 此处等待3s</span><br><span class="line">three - in thread: main</span><br></pre></td></tr></table></figure>
+<h2 id="如何利用协程打印出132"><a href="#如何利用协程打印出132" class="headerlink" title="如何利用协程打印出132"></a>如何利用协程打印出132</h2><h3 id="全局后台线程：GlobalScope-launch"><a href="#全局后台线程：GlobalScope-launch" class="headerlink" title="全局后台线程：GlobalScope.launch"></a>全局后台线程：GlobalScope.launch</h3><p>可以在blocking域中使用<code>GlobalScope.launch{ ... }</code>来指定后台线程运行任务，我们基于此将原有代码改造一下。</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">fun</span> <span class="title">print123Blocking</span><span class="params">()</span></span> = runBlocking &#123;</span><br><span class="line">    GlobalScope.launch &#123;</span><br><span class="line">        println(<span class="string">"one - in thread: <span class="subst">$&#123;Thread.currentThread().name&#125;</span>"</span>)</span><br><span class="line">        printDelayed(<span class="string">"two - in thread: <span class="subst">$&#123;Thread.currentThread().name&#125;</span>"</span>)</span><br><span class="line">    &#125;</span><br><span class="line">    println(<span class="string">"three - in thread: <span class="subst">$&#123;Thread.currentThread().name&#125;</span>"</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这段代码的输出是不可知的，有可能是以下两种情况，只打印3或者打印31，这是什么原因呢？因为我们是在后台全局线程中启动的“打印12任务”，后台线程是不会阻止主线程运行结束的，所以2是肯定打不出来，而1能否打印出来就看运行时线程调度情况了。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">// case 1</span><br><span class="line">three - in thread: main @coroutine#1</span><br><span class="line">one - in thread: DefaultDispatcher-worker-1 @coroutine#2</span><br><span class="line">// case 2</span><br><span class="line">three - in thread: main @coroutine#1</span><br></pre></td></tr></table></figure>
+<h3 id="等待任务完成"><a href="#等待任务完成" class="headerlink" title="等待任务完成"></a>等待任务完成</h3><p>我们可以简单粗暴地使用<code>delay</code>来等待后台任务完成。</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">fun</span> <span class="title">print123Blocking</span><span class="params">()</span></span> = runBlocking &#123;</span><br><span class="line">    GlobalScope.launch &#123;</span><br><span class="line">        println(<span class="string">"one - in thread: <span class="subst">$&#123;Thread.currentThread().name&#125;</span>"</span>)</span><br><span class="line">        printDelayed(<span class="string">"two - in thread: <span class="subst">$&#123;Thread.currentThread().name&#125;</span>"</span>)</span><br><span class="line">    &#125;</span><br><span class="line">    println(<span class="string">"three - in thread: <span class="subst">$&#123;Thread.currentThread().name&#125;</span>"</span>)</span><br><span class="line">    delay(<span class="number">4000</span>L) <span class="comment">// 因为我们知道printDelayed会延迟3秒，故这里等待4秒</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>控制台输出为：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">three - in thread: main @coroutine#1</span><br><span class="line">one - in thread: DefaultDispatcher-worker-1 @coroutine#2</span><br><span class="line">two - in thread: DefaultDispatcher-worker-1 @coroutine#2</span><br></pre></td></tr></table></figure>
+<p>但是这种处理方法非常丑陋，而且这个<code>delay</code>的时长很难设置，设置长了吧，会导致无用的等待浪费时间；设置短了吧，有可能在后台线程输出之前就结束任务，有没有更优雅的写法呢？答案是有的，<code>job.join()</code>为我们提供了等待任务完成的功能，代码如下所示。</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">fun</span> <span class="title">print123Blocking</span><span class="params">()</span></span> = runBlocking &#123;</span><br><span class="line">    <span class="keyword">val</span> job = GlobalScope.launch &#123;</span><br><span class="line">        println(<span class="string">"one - in thread: <span class="subst">$&#123;Thread.currentThread().name&#125;</span>"</span>)</span><br><span class="line">        printDelayed(<span class="string">"two - in thread: <span class="subst">$&#123;Thread.currentThread().name&#125;</span>"</span>)</span><br><span class="line">    &#125;</span><br><span class="line">    println(<span class="string">"three - in thread: <span class="subst">$&#123;Thread.currentThread().name&#125;</span>"</span>)</span><br><span class="line">    job.join()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="自定义Dispatcher"><a href="#自定义Dispatcher" class="headerlink" title="自定义Dispatcher"></a>自定义Dispatcher</h2><p>Dispatcher为协程的运行指定了线程，常见Dispatchers如下：</p>
+<ul>
+<li>Dispatcher.IO：进行IO密集型操作，如数据库读写、文件读写、网络交互</li>
+<li>Dispatcher.Default：进行CPU密集型操作，如列表排序、JSON解析、DiffUtils</li>
+<li>Dispatcher.Main：仅存在于Android框架，调用<code>suspend</code>方法、进行UI操作、更新LiveData</li>
+</ul>
+<p>看到这里你可能已经理解了，Dispatcher其实就是线程的另一种表现形式，我们甚至可以自定义一个Dispatcher：</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">fun</span> <span class="title">print123Blocking</span><span class="params">()</span></span> = runBlocking &#123;</span><br><span class="line">    println(<span class="string">"one - in thread: <span class="subst">$&#123;Thread.currentThread().name&#125;</span>"</span>)</span><br><span class="line">    <span class="keyword">val</span> customDispatcher = Executors.newFixedThreadPool(<span class="number">2</span>).asCoroutineDispatcher()</span><br><span class="line">    launch(customDispatcher) &#123;</span><br><span class="line">        printDelayed(<span class="string">"two - in thread: <span class="subst">$&#123;Thread.currentThread().name&#125;</span>"</span>)</span><br><span class="line">    &#125;</span><br><span class="line">    println(<span class="string">"three - in thread: <span class="subst">$&#123;Thread.currentThread().name&#125;</span>"</span>)</span><br><span class="line">    (customDispatcher.executor <span class="keyword">as</span> ExecutorService).shutdown() <span class="comment">// ！主动停止，否则线程会一直运行下去</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>运行结果如下（在play.kotlin上面总是超时不知道为啥），意味着我们完全可以高度定制Dispatcher的实现，虽然大部分时间使用默认的Dispatcher就已足够。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">one - from thread main</span><br><span class="line">three - from thread main</span><br><span class="line">two - from thread pool-1-thread-1</span><br></pre></td></tr></table></figure>
+<h2 id="有返回值的suspend函数"><a href="#有返回值的suspend函数" class="headerlink" title="有返回值的suspend函数"></a>有返回值的suspend函数</h2><p>最后一部分内容是跟Android开发密切相关的，大部分时间我们需要通过网络、数据库进行一些读取数据耗时操作，函数会有返回值，我们模拟一个网络操作，它读取一个<code>startNum</code>参数，等待1s延时后，返回<code>startNum * 10</code>。通过 <code>async { ... }.await()</code> 可以获取耗时函数的返回值，代码如下：</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 模拟1s延时网络操作</span></span><br><span class="line">suspend <span class="function"><span class="keyword">fun</span> <span class="title">calculateHardThings</span><span class="params">(startNum: <span class="type">Int</span>)</span></span>: <span class="built_in">Int</span> &#123;</span><br><span class="line">  delay(<span class="number">1000</span>)</span><br><span class="line">  println(<span class="string">"result: <span class="subst">$&#123;result&#125;</span>, in thread: <span class="subst">$&#123;Thread.currentThread().name&#125;</span>"</span>)</span><br><span class="line">  <span class="keyword">return</span> startNum * <span class="number">10</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 调用延时操作，分别await，耗时共3s</span></span><br><span class="line"><span class="function"><span class="keyword">fun</span> <span class="title">exampleAsyncAwait</span><span class="params">()</span></span> = runBlocking &#123;</span><br><span class="line">  <span class="keyword">val</span> startTime = System.currentTimeMillis()</span><br><span class="line">  <span class="keyword">val</span> deferred1 = async &#123; calculateHardThings(<span class="number">10</span>) &#125;.await()</span><br><span class="line">  <span class="keyword">val</span> deferred2 = async &#123; calculateHardThings(<span class="number">20</span>) &#125;.await()</span><br><span class="line">  <span class="keyword">val</span> deferred3 = async &#123; calculateHardThings(<span class="number">30</span>) &#125;.await()</span><br><span class="line">  <span class="keyword">val</span> sum = deferred1 + deferred2 + deferred3</span><br><span class="line">  <span class="keyword">val</span> endTime = System.currentTimeMillis()</span><br><span class="line">  println(<span class="string">"sum = <span class="variable">$sum</span>, time = <span class="subst">$&#123;endTime - startTime&#125;</span>"</span>) <span class="comment">// sum = 600, time = 3030</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="并发进行耗时操作"><a href="#并发进行耗时操作" class="headerlink" title="并发进行耗时操作"></a>并发进行耗时操作</h3><p>因为是3个耗时1s操作并发，我们自然而然希望它们同时运行，总耗时1s而不是3s，要如何实现呢？把所有的<code>await()</code>调用写入同一个语句，编译器会优化它们，使其同时运行。</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 调用延时操作，同时await，耗时共1s</span></span><br><span class="line"><span class="function"><span class="keyword">fun</span> <span class="title">exampleAsyncAwait</span><span class="params">()</span></span> = runBlocking &#123;</span><br><span class="line">  <span class="keyword">val</span> startTime = System.currentTimeMillis()</span><br><span class="line">  <span class="keyword">val</span> deferred1 = async &#123; calculateHardThings(<span class="number">10</span>) &#125;</span><br><span class="line">  <span class="keyword">val</span> deferred2 = async &#123; calculateHardThings(<span class="number">20</span>) &#125;</span><br><span class="line">  <span class="keyword">val</span> deferred3 = async &#123; calculateHardThings(<span class="number">30</span>) &#125;</span><br><span class="line">  <span class="keyword">val</span> sum = deferred1.await() + deferred2.await() + deferred3.await()</span><br><span class="line">  <span class="keyword">val</span> endTime = System.currentTimeMillis()</span><br><span class="line">  println(<span class="string">"sum = <span class="variable">$sum</span>, time = <span class="subst">$&#123;endTime - startTime&#125;</span>"</span>) <span class="comment">// sum = 600, time = 1065</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="使用withContext的简化写法"><a href="#使用withContext的简化写法" class="headerlink" title="使用withContext的简化写法"></a>使用withContext的简化写法</h3><p>async/await 会运行在当前线程中，对于网络操作一般的做饭是让其在IO线程运行，对于计算密集型操作则是在CPU（Default）线程运行，使用<code>withContext</code>可以同时完成<code>async/await</code>的操作，但缺点是这三个操作只能相继运行，无法同时运行。</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 调用延时操作</span></span><br><span class="line"><span class="function"><span class="keyword">fun</span> <span class="title">exampleWithContext</span><span class="params">()</span></span> = runBlocking &#123;</span><br><span class="line">  <span class="keyword">val</span> startTime = System.currentTimeMillis()</span><br><span class="line">  <span class="keyword">val</span> deferred1 = withContext(Dispatchers.Default) &#123; calculateHardThings(<span class="number">10</span>) &#125;</span><br><span class="line">  <span class="keyword">val</span> deferred2 = withContext(Dispatchers.Default) &#123; calculateHardThings(<span class="number">20</span>) &#125;</span><br><span class="line">  <span class="keyword">val</span> deferred3 = withContext(Dispatchers.Default) &#123; calculateHardThings(<span class="number">30</span>) &#125;</span><br><span class="line">  <span class="keyword">val</span> sum = deferred1 + deferred2 + deferred3</span><br><span class="line">  <span class="keyword">val</span> endTime = System.currentTimeMillis()</span><br><span class="line">  println(<span class="string">"sum = <span class="variable">$sum</span>, time = <span class="subst">$&#123;endTime - startTime&#125;</span>"</span>) <span class="comment">// sum = 600, time = 3029</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h1><p>本文介绍了协程的基本用法，在阅读完本文后，你应当掌握以下知识点：</p>
+<ul>
+<li>声明耗时函数，以及在协程代码块里调用耗时函数</li>
+<li>切换运行环境</li>
+<li>等待任务完成</li>
+<li>并行进行耗时操作，获取操作结果</li>
+</ul>
+<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><ul>
+<li><a href="https://www.youtube.com/watch?v=jYuK1qzFrJg" target="_blank" rel="noopener">https://www.youtube.com/watch?v=jYuK1qzFrJg</a></li>
+</ul>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    
+    <div class="content">
+        
+<span class="post-time">
+    最后更新时间：<time datetime="2019-12-03T14:27:46.210Z" itemprop="dateUpdated">2019-12-03 22:27:46</time>
+</span><br>
+
+
+        
+        本文系作者原创，如转载请注明出处。欢迎留言讨论，或通过邮件进行沟通～
+        
+    </div>
+    
+    <footer>
+        <a href="https://lilei.pro">
+            <img src="/img/avatar.jpeg" alt="Li Lei">
+            Li Lei
+        </a>
+    </footer>
+</blockquote>
+
+        
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Kotlin/">Kotlin</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://lilei.pro/2019/11/17/kotlin-coroutines-01/&title=《Kotlin 协程基础课 01.协程的基本概念与用法》 — 柘个角落&pic=https://lilei.pro/img/avatar.jpeg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://lilei.pro/2019/11/17/kotlin-coroutines-01/&title=《Kotlin 协程基础课 01.协程的基本概念与用法》 — 柘个角落&source=技术与生活上的点滴积累" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://lilei.pro/2019/11/17/kotlin-coroutines-01/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《Kotlin 协程基础课 01.协程的基本概念与用法》 — 柘个角落&url=https://lilei.pro/2019/11/17/kotlin-coroutines-01/&via=https://lilei.pro" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://lilei.pro/2019/11/17/kotlin-coroutines-01/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between flex-row-reverse">
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2019/11/11/android-studio-debug-skills/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">【转】Android Studio Debug 的 9 个小技巧</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+    <!-- Valine Comments -->
+    <div class="comments vcomment" id="comments"></div>
+    <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+    <script src="//unpkg.com/valine@latest/dist/Valine.min.js"></script>
+    <!-- Valine Comments script -->
+    <script>
+        var GUEST_INFO = ['nick','mail','link'];
+        var guest_info = 'nick,mail,link'.split(',').filter(function(item){
+          return GUEST_INFO.indexOf(item) > -1
+        });
+        new Valine({
+            el: '#comments',
+            notify: 'false' == 'true',
+            verify: 'true' == 'true',
+            appId: "khG3rBt0nWda7lxDUHpS3Sq0-gzGzoHsz",
+            appKey: "btFkQfcBgJeCRm55mYmUgA5d",
+            avatar: "mm",
+            placeholder: "欢迎讨论",
+            guest_info: guest_info.length == 0 ? GUEST_INFO : guest_info,
+            pageSize: "10"
+        })
+    </script>
+    <!-- Valine Comments end -->
+
+
+
+
+
+
+
+</article>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>博客内容遵循 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">知识共享 署名 - 非商业性 - 相同方式共享 4.0 国际协议</a></span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>Li Lei &copy; 2015 - 2019</span>
+            <span>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://lilei.pro/2019/11/17/kotlin-coroutines-01/&title=《Kotlin 协程基础课 01.协程的基本概念与用法》 — 柘个角落&pic=https://lilei.pro/img/avatar.jpeg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://lilei.pro/2019/11/17/kotlin-coroutines-01/&title=《Kotlin 协程基础课 01.协程的基本概念与用法》 — 柘个角落&source=技术与生活上的点滴积累" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://lilei.pro/2019/11/17/kotlin-coroutines-01/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《Kotlin 协程基础课 01.协程的基本概念与用法》 — 柘个角落&url=https://lilei.pro/2019/11/17/kotlin-coroutines-01/&via=https://lilei.pro" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://lilei.pro/2019/11/17/kotlin-coroutines-01/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACJ0lEQVR42u3aMRLbMAwEQP//006bRvIdqGRG5LLyaGyJqwIGCHw+8fr+te6v33/z/vPVlccWBgbGaxnf25VvbvYirvaQ7w0DA+McxtWtZ+Ey2e4sHF9ex8DAwLgNvldXkmCaPxcDAwNjndGG47wkxsDAwMiL2OR2s7QvD9YP1OIYGBgvZOSHZf//8z/pb2BgYLyK8S1XXqDOQvl3tDAwMPZm5AEuLztnaWLbFsXAwDiT8ewYRBKIZw3O6LgNAwNjI0ae5M0amc8mf5d3xsDAOIaRP3J2DNeWu0VoxsDAOICRNwVX0se2JVmklRgYGAcw8hGu9nCt3VbOxsDAwMgPvFYan3kT9McfAAYGxgGMNrHLYW3jYZaMYmBgnMDIs6xZs7MtidvXhIGBsTdjVjrmbcv1Xy3NjGBgYGzKaANrkjKuF6vFcBgGBsZ2jHYAYuWILU/7PsEqhi0wMDBezlhpQLabfqoh+uOJGBgYBzBmo115GG233t4BAwNjV8bKj9vic9ZsiEI8BgbGMYx2IGzliC0/7IueiIGBcQCjPbjPy9E2ECeF9OXkCAYGxnaM2XF/O07RDl60bQYMDIy9GW1wvA/E+XfySZD2txgYGLsyZmMTSbK43gwo3jcGBsYBjLbInCWF6wXwjzwXAwMDIwYszX3MmqYYGBgYccMyPzLLBy+SV4OBgXECIx93aI/V8kSwLX0xMDDOYcwGI1aoK6SlpiYGBsb7GH8ATCLwLiVb8LIAAAAASUVORK5CYII=" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: false };
+
+
+</script>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/main.min.js"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/search.min.js" async></script>
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>
