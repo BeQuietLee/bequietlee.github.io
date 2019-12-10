@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    
+    <title>Kotlin 协程基础课 02.suspend函数 | 柘个角落 | IF YOU WANT SOMETHING, GO GET IT. PERIOD.</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="Kotlin">
+    <meta name="description" content="这是《Kotlin 协程基础课》的第2篇文章。   Everyone must choose one of two pains: The pain of discipline or the pain of regret. Choose WISELY.  在上篇文章里我们学习了如何通过协程简化耗时操作的写法，其中有一个关键字suspend，用于在定义函数时进行声明。本篇文章将对suspend进行进">
+<meta name="keywords" content="Kotlin">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Kotlin 协程基础课 02.suspend函数">
+<meta property="og:url" content="https://lilei.pro/2019/12/10/kotlin-coroutines-02/index.html">
+<meta property="og:site_name" content="柘个角落">
+<meta property="og:description" content="这是《Kotlin 协程基础课》的第2篇文章。   Everyone must choose one of two pains: The pain of discipline or the pain of regret. Choose WISELY.  在上篇文章里我们学习了如何通过协程简化耗时操作的写法，其中有一个关键字suspend，用于在定义函数时进行声明。本篇文章将对suspend进行进">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-12-10T14:42:46.058Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Kotlin 协程基础课 02.suspend函数">
+<meta name="twitter:description" content="这是《Kotlin 协程基础课》的第2篇文章。   Everyone must choose one of two pains: The pain of discipline or the pain of regret. Choose WISELY.  在上篇文章里我们学习了如何通过协程简化耗时操作的写法，其中有一个关键字suspend，用于在定义函数时进行声明。本篇文章将对suspend进行进">
+    
+        <link rel="alternate" type="application/atom+xml" title="柘个角落" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/img/favicon.ico">
+    <link rel="stylesheet" href="//unpkg.com/hexo-theme-material-indigo@latest/css/style.css">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/avatar.jpeg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">Li Lei</h5>
+          <a href="mailto:bequietlee#gmail.com" title="bequietlee#gmail.com" class="mail">bequietlee#gmail.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                文章
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+                标签
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/bequietlee" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/2019/03/10/links"  >
+                <i class="icon icon-lg icon-link"></i>
+                友情链接
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">Kotlin 协程基础课 02.suspend函数</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">Kotlin 协程基础课 02.suspend函数</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2019-12-10T14:41:39.000Z" itemprop="datePublished" class="page-time">
+  2019-12-10
+</time>
+
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#suspend限定词的含义"><span class="post-toc-number">1.</span> <span class="post-toc-text">suspend限定词的含义</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#suspend做了什么事"><span class="post-toc-number">2.</span> <span class="post-toc-text">suspend做了什么事</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#线程的行为"><span class="post-toc-number">2.1.</span> <span class="post-toc-text">线程的行为</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#协程的行为"><span class="post-toc-number">2.2.</span> <span class="post-toc-text">协程的行为</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#suspend-不会真正操作挂起"><span class="post-toc-number">2.3.</span> <span class="post-toc-text">suspend 不会真正操作挂起</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#如何写一个suspend函数"><span class="post-toc-number">3.</span> <span class="post-toc-text">如何写一个suspend函数</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#小结"><span class="post-toc-number">4.</span> <span class="post-toc-text">小结</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#参考"><span class="post-toc-number">5.</span> <span class="post-toc-text">参考</span></a></li></ol>
+        </nav>
+    </aside>
+
+
+<article id="post-kotlin-coroutines-02"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">Kotlin 协程基础课 02.suspend函数</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2019-12-10 22:41:39" datetime="2019-12-10T14:41:39.000Z"  itemprop="datePublished">2019-12-10</time>
+
+            
+
+
+            
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <blockquote>
+<p>这是《Kotlin 协程基础课》的第2篇文章。</p>
+</blockquote>
+<blockquote>
+<p>Everyone must choose one of two pains: The pain of discipline or the pain of regret. Choose WISELY.</p>
+</blockquote>
+<p>在上篇文章里我们学习了如何通过协程简化耗时操作的写法，其中有一个关键字<code>suspend</code>，用于在定义函数时进行声明。本篇文章将对suspend进行进一步介绍，旨在学会它的含义和用法。</p>
+<h1 id="suspend限定词的含义"><a href="#suspend限定词的含义" class="headerlink" title="suspend限定词的含义"></a>suspend限定词的含义</h1><p><strong>suspend</strong>，翻译过来就是<strong>中断，挂起</strong>，跟<strong>public、static</strong>等关键字相同，用在函数声明前，表示这是一个“挂起函数”。</p>
+<p>挂起函数只能在协程或另一个挂起函数中被调用，如果你在非协程中使用到了挂起函数，会看到编译器有如下报错：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Error: Kotlin: Suspend functions are only allowed to be called from a coroutine or another suspend function</span><br></pre></td></tr></table></figure>
+<p>前面用到的<code>delay</code>就是一个挂起函数。<strong>suspend</strong>关键字表明函数内部进行了耗时操作，可以是计算密集型的CPU任务，也可以是网络、磁盘操作密集型的IO任务。基本上可以看做“但凡用callback实现的回调函数，都能用一个相对应的挂起函数实现”。</p>
+<p>所以我们使用<strong>suspend</strong>关键字的时机就非常明确了：当函数要进行耗时操作时，就把它声明为<code>suspend</code>。</p>
+<h1 id="suspend做了什么事"><a href="#suspend做了什么事" class="headerlink" title="suspend做了什么事"></a>suspend做了什么事</h1><p><em>方便起见，后续用“挂起”指代“suspend”。</em></p>
+<p>作为及物动词，“挂起”应当有一个宾语，这里“挂起”的对象是<strong>协程</strong>。接下来我们对挂起的过程中发生了什么一探究竟，记住下面这句话：</p>
+<p><strong>“挂起”是指协程从它当前线程脱离，切换到另一个线程运行。</strong>当线程运行到<code>suspend</code>函数时，会暂时挂起这个函数及后续代码的执行。这里涉及到两个角色：线程和协程。</p>
+<h2 id="线程的行为"><a href="#线程的行为" class="headerlink" title="线程的行为"></a>线程的行为</h2><p>当线程运行到“挂起”代码块时，会跳出当前的代码块，不再执行后续代码。接下来线程会做什么呢？</p>
+<p>如果它是一个后台线程：</p>
+<ul>
+<li>要么无事可做，被系统回收</li>
+<li>要么被调度执行别的后台任务</li>
+</ul>
+<p>跟Java线程池里的线程在工作结束之后的表现完全一样：<strong>回收或者再利用</strong>。</p>
+<p>如果它是Android主线程：</p>
+<ul>
+<li>继续UI刷新工作</li>
+</ul>
+<h2 id="协程的行为"><a href="#协程的行为" class="headerlink" title="协程的行为"></a>协程的行为</h2><p>上面讲到线程运行到挂起代码块时，会暂时退出当前代码块的执行。那么，剩余的协程代码在哪里得到执行呢？答案就在挂起函数的实现中——即我们为挂起函数指定的线程。</p>
+<p><code>withContext</code>函数可以指定协程代码的运行线程，常见的Dispatcher有Main、IO、Default。协程从挂起的地方开始，切换到这些线程之中的一个继续运行，当运行完毕时，会<strong>自动切换回原线程执行</strong>。</p>
+<p>在协程的源码里，“自动切换回来”是通过<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.coroutines.experimental/-continuation/resume.html" target="_blank" rel="noopener">resume</a>实现的。挂起函数之所以必须在协程中调用，就是因为协程框架会自动帮我们处理这个自动切换的过程。</p>
+<h2 id="suspend-不会真正操作挂起"><a href="#suspend-不会真正操作挂起" class="headerlink" title="suspend 不会真正操作挂起"></a>suspend 不会真正操作挂起</h2><p>并不是声明了<code>suspend</code>后，线程运行到该位置，就自动进行挂起切换的，参照下面一个例子，挂起函数仍然运行在主线程中。为什么没有切换线程？因为编译器根本不知道要往哪里切，需要我们在编码时明确告诉它，这个挂起函数要切换到哪一个线程继续运行。我们可以用<code>withContext</code>指明待切换的线程。在实现一个挂起函数时，仅仅加上<code>suspend</code>关键字是不够的，必须在函数内部直接或间接地调用协程框架自带的<code>suspend</code>函数。</p>
+<p><code>suspend</code>只是一个提醒，它只有一个效果，就是限制函数只能在协程里调用，如果在非协程里使用了<code>suspend</code>函数，则编译不通过。</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 仍然运行在Main</span></span><br><span class="line">suspend <span class="function"><span class="keyword">fun</span> <span class="title">suspendingPrint</span><span class="params">()</span></span> &#123;</span><br><span class="line">  println(<span class="string">"Thread: <span class="subst">$&#123;Thread.currentThread().name&#125;</span>"</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">I/System.<span class="keyword">out</span>: Thread: main</span><br><span class="line"></span><br><span class="line"><span class="comment">// 运行在IO</span></span><br><span class="line">suspend <span class="function"><span class="keyword">fun</span> <span class="title">suspendingPrint</span><span class="params">()</span></span> = withContext(Dispatchers.IO) &#123;</span><br><span class="line">  println(<span class="string">"Thread: <span class="subst">$&#123;Thread.currentThread().name&#125;</span>"</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="如何写一个suspend函数"><a href="#如何写一个suspend函数" class="headerlink" title="如何写一个suspend函数"></a>如何写一个suspend函数</h1><p>最简单的方式是：</p>
+<ol>
+<li>声明函数为<code>suspend</code></li>
+<li>使用<code>withContext</code>指定目标线程，或者在函数内部调用另一个<code>suspend</code>函数</li>
+</ol>
+<h1 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h1><p>本文介绍了协程中最常见的关键字<code>suspend</code>的含义和用法，阅读完本文后你应当掌握：</p>
+<ul>
+<li>挂起函数运行时的表现</li>
+<li>什么情况下使用挂起函数</li>
+<li>如何写一个简单的挂起函数</li>
+</ul>
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><ul>
+<li><a href="https://juejin.im/post/5da81352f265da5b774fc39d" target="_blank" rel="noopener">掘金-扔物线</a></li>
+</ul>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    
+    <div class="content">
+        
+<span class="post-time">
+    最后更新时间：<time datetime="2019-12-10T14:42:46.058Z" itemprop="dateUpdated">2019-12-10 22:42:46</time>
+</span><br>
+
+
+        
+        本文系作者原创，如转载请注明出处。欢迎留言讨论，或通过邮件进行沟通～
+        
+    </div>
+    
+    <footer>
+        <a href="https://lilei.pro">
+            <img src="/img/avatar.jpeg" alt="Li Lei">
+            Li Lei
+        </a>
+    </footer>
+</blockquote>
+
+        
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Kotlin/">Kotlin</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://lilei.pro/2019/12/10/kotlin-coroutines-02/&title=《Kotlin 协程基础课 02.suspend函数》 — 柘个角落&pic=https://lilei.pro/img/avatar.jpeg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://lilei.pro/2019/12/10/kotlin-coroutines-02/&title=《Kotlin 协程基础课 02.suspend函数》 — 柘个角落&source=技术与生活上的点滴积累" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://lilei.pro/2019/12/10/kotlin-coroutines-02/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《Kotlin 协程基础课 02.suspend函数》 — 柘个角落&url=https://lilei.pro/2019/12/10/kotlin-coroutines-02/&via=https://lilei.pro" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://lilei.pro/2019/12/10/kotlin-coroutines-02/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between flex-row-reverse">
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2019/11/17/kotlin-coroutines-01/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">Kotlin 协程基础课 01.协程的基本概念与用法</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+    <!-- Valine Comments -->
+    <div class="comments vcomment" id="comments"></div>
+    <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+    <script src="//unpkg.com/valine@latest/dist/Valine.min.js"></script>
+    <!-- Valine Comments script -->
+    <script>
+        var GUEST_INFO = ['nick','mail','link'];
+        var guest_info = 'nick,mail,link'.split(',').filter(function(item){
+          return GUEST_INFO.indexOf(item) > -1
+        });
+        new Valine({
+            el: '#comments',
+            notify: 'false' == 'true',
+            verify: 'true' == 'true',
+            appId: "khG3rBt0nWda7lxDUHpS3Sq0-gzGzoHsz",
+            appKey: "btFkQfcBgJeCRm55mYmUgA5d",
+            avatar: "mm",
+            placeholder: "欢迎讨论",
+            guest_info: guest_info.length == 0 ? GUEST_INFO : guest_info,
+            pageSize: "10"
+        })
+    </script>
+    <!-- Valine Comments end -->
+
+
+
+
+
+
+
+</article>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>博客内容遵循 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">知识共享 署名 - 非商业性 - 相同方式共享 4.0 国际协议</a></span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>Li Lei &copy; 2015 - 2019</span>
+            <span>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://lilei.pro/2019/12/10/kotlin-coroutines-02/&title=《Kotlin 协程基础课 02.suspend函数》 — 柘个角落&pic=https://lilei.pro/img/avatar.jpeg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://lilei.pro/2019/12/10/kotlin-coroutines-02/&title=《Kotlin 协程基础课 02.suspend函数》 — 柘个角落&source=技术与生活上的点滴积累" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://lilei.pro/2019/12/10/kotlin-coroutines-02/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《Kotlin 协程基础课 02.suspend函数》 — 柘个角落&url=https://lilei.pro/2019/12/10/kotlin-coroutines-02/&via=https://lilei.pro" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://lilei.pro/2019/12/10/kotlin-coroutines-02/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACNUlEQVR42u3aS26DQBAFwNz/0s42UgJ5r8dYYihWyHZgatPp39dXfL0Orp/f/v7l7yec3x998rYLAwPjtozX6XV0uPZlR7yjM+Rnw8DAeA7j6NHJfRJw3xWODz/HwMDAKB99HjRnz8HAwMCYHWtWoJ6HXQwMDIyVIjY/yizFTN71hlocAwPjhoy8Wfb5+0vmGxgYGLdivMqrTePWQ3l0KgwMjK0ZeYBrW2ZtmtguW2BgYDyHka9z5cVqHqxnA84/PsHAwNiacR4K28ZZvkw2S/4iDAYGxnaMpMmeJ3DrIbgdYWJgYDyB0R4978nPAu4sTcTAwNibkYSzdiWi6PPFC2fRtggGBsamjDYRbJO22eJXHvqjphsGBsbNGXnZmWDyv8rL0aIWx8DAeAAjT+xmK2JtqZy35DAwMJ7AyAeHs6HmdYsdGBgYz2HkL062sFZCdhugD1NDDAyMjRizIWX+snZRYzY6xcDA2JuRt7rqdC1o4a002v74v4GBgbEpI/lR0kprB58rgbheXcXAwNiCkYe2WUo3W7NoO2kYGBhPYLQt/nZpdZY4FiNSDAyMBzBmwbfu3o2GCtF7MTAwNmW8yms9jK4E9H+aaxgYGJsy2uB4XsReMWCYtfkwMDD2Y7RrrJ8cBixthWBgYGzHuCJQ5mG6XQjDwMDAyFO0tqBtB59FVouBgYFRvrItepMA/Q8SAwPjAYzZMCBv/c9iYx7EMTAw9mbMSsdZaZqXr5cMNTEwMO7H+Aai/LwqchMHYgAAAABJRU5ErkJggg==" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: false };
+
+
+</script>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/main.min.js"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/search.min.js" async></script>
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>
