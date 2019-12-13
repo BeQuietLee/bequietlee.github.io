@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    
+    <title>Kotlin 协程基础课 03.揭开协程上下文CoroutineContext的神秘面纱 | 柘个角落 | IF YOU WANT SOMETHING, GO GET IT. PERIOD.</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="Kotlin">
+    <meta name="description" content="限定目的，能使人生变得简洁。  协程上下文是个啥？CoroutineContext，译作“协程上下文”，在协程中是非常重要的概念。你可能会比较好奇，为什么之前都没有注意到它的存在呢？因为协程框架已经为我们包装得非常好了。让我们来看一下launch和async两个函数的签名： launch123456fun CoroutineScope.launch(    context: CoroutineC">
+<meta name="keywords" content="Kotlin">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Kotlin 协程基础课 03.揭开协程上下文CoroutineContext的神秘面纱">
+<meta property="og:url" content="https://lilei.pro/2019/12/13/kotlin-coroutines-03/index.html">
+<meta property="og:site_name" content="柘个角落">
+<meta property="og:description" content="限定目的，能使人生变得简洁。  协程上下文是个啥？CoroutineContext，译作“协程上下文”，在协程中是非常重要的概念。你可能会比较好奇，为什么之前都没有注意到它的存在呢？因为协程框架已经为我们包装得非常好了。让我们来看一下launch和async两个函数的签名： launch123456fun CoroutineScope.launch(    context: CoroutineC">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-12-13T14:41:37.280Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Kotlin 协程基础课 03.揭开协程上下文CoroutineContext的神秘面纱">
+<meta name="twitter:description" content="限定目的，能使人生变得简洁。  协程上下文是个啥？CoroutineContext，译作“协程上下文”，在协程中是非常重要的概念。你可能会比较好奇，为什么之前都没有注意到它的存在呢？因为协程框架已经为我们包装得非常好了。让我们来看一下launch和async两个函数的签名： launch123456fun CoroutineScope.launch(    context: CoroutineC">
+    
+        <link rel="alternate" type="application/atom+xml" title="柘个角落" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/img/favicon.ico">
+    <link rel="stylesheet" href="//unpkg.com/hexo-theme-material-indigo@latest/css/style.css">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/avatar.jpeg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">Li Lei</h5>
+          <a href="mailto:bequietlee#gmail.com" title="bequietlee#gmail.com" class="mail">bequietlee#gmail.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                文章
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+                标签
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/bequietlee" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/2019/03/10/links"  >
+                <i class="icon icon-lg icon-link"></i>
+                友情链接
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">Kotlin 协程基础课 03.揭开协程上下文CoroutineContext的神秘面纱</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">Kotlin 协程基础课 03.揭开协程上下文CoroutineContext的神秘面纱</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2019-12-13T14:40:28.000Z" itemprop="datePublished" class="page-time">
+  2019-12-13
+</time>
+
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#协程上下文是个啥？"><span class="post-toc-number">1.</span> <span class="post-toc-text">协程上下文是个啥？</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#launch"><span class="post-toc-number">1.1.</span> <span class="post-toc-text">launch</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#async"><span class="post-toc-number">1.2.</span> <span class="post-toc-text">async</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#协程上下文的结构"><span class="post-toc-number">2.</span> <span class="post-toc-text">协程上下文的结构</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#在CoroutineContext上可进行的操作"><span class="post-toc-number">3.</span> <span class="post-toc-text">在CoroutineContext上可进行的操作</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#“拼装”上下文对象"><span class="post-toc-number">3.1.</span> <span class="post-toc-text">“拼装”上下文对象</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Element即是CoroutineContext"><span class="post-toc-number">3.2.</span> <span class="post-toc-text">Element即是CoroutineContext</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#空对象"><span class="post-toc-number">3.3.</span> <span class="post-toc-text">空对象</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#认识一下那些Elements"><span class="post-toc-number">4.</span> <span class="post-toc-text">认识一下那些Elements</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#指定执行线程：ContinuationInterceptor"><span class="post-toc-number">4.1.</span> <span class="post-toc-text">指定执行线程：ContinuationInterceptor</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#层级关系管理：Job"><span class="post-toc-number">4.2.</span> <span class="post-toc-text">层级关系管理：Job</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#处理异常：CoroutineExceptionHandler"><span class="post-toc-number">4.3.</span> <span class="post-toc-text">处理异常：CoroutineExceptionHandler</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#名字：CoroutineName"><span class="post-toc-number">4.4.</span> <span class="post-toc-text">名字：CoroutineName</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#协程构建过程中的CoroutineContext"><span class="post-toc-number">5.</span> <span class="post-toc-text">协程构建过程中的CoroutineContext</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#Elements默认值"><span class="post-toc-number">6.</span> <span class="post-toc-text">Elements默认值</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#用例浅析"><span class="post-toc-number">7.</span> <span class="post-toc-text">用例浅析</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Global-Scope-Context"><span class="post-toc-number">7.1.</span> <span class="post-toc-text">Global Scope Context</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Fully-Qualified-Context"><span class="post-toc-number">7.2.</span> <span class="post-toc-text">Fully Qualified Context</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#CoroutineScope-Context"><span class="post-toc-number">7.3.</span> <span class="post-toc-text">CoroutineScope Context</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#临时指定参数"><span class="post-toc-number">7.4.</span> <span class="post-toc-text">临时指定参数</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#读取协程上下文参数"><span class="post-toc-number">7.5.</span> <span class="post-toc-text">读取协程上下文参数</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Nested-Context"><span class="post-toc-number">7.6.</span> <span class="post-toc-text">Nested Context</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#小结"><span class="post-toc-number">8.</span> <span class="post-toc-text">小结</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#参考"><span class="post-toc-number">9.</span> <span class="post-toc-text">参考</span></a></li></ol>
+        </nav>
+    </aside>
+
+
+<article id="post-kotlin-coroutines-03"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">Kotlin 协程基础课 03.揭开协程上下文CoroutineContext的神秘面纱</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2019-12-13 22:40:28" datetime="2019-12-13T14:40:28.000Z"  itemprop="datePublished">2019-12-13</time>
+
+            
+
+
+            
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <blockquote>
+<p>限定目的，能使人生变得简洁。</p>
+</blockquote>
+<h1 id="协程上下文是个啥？"><a href="#协程上下文是个啥？" class="headerlink" title="协程上下文是个啥？"></a>协程上下文是个啥？</h1><p>CoroutineContext，译作“协程上下文”，在协程中是非常重要的概念。你可能会比较好奇，为什么之前都没有注意到它的存在呢？因为协程框架已经为我们包装得非常好了。让我们来看一下<code>launch</code>和<code>async</code>两个函数的签名：</p>
+<h2 id="launch"><a href="#launch" class="headerlink" title="launch"></a>launch</h2><figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">fun</span> CoroutineScope.<span class="title">launch</span><span class="params">(</span></span></span><br><span class="line"><span class="function"><span class="params">    context: <span class="type">CoroutineContext</span> = EmptyCoroutineContext,</span></span></span><br><span class="line"><span class="function"><span class="params">    start: <span class="type">CoroutineStart</span> = CoroutineStart.DEFAULT,</span></span></span><br><span class="line"><span class="function"><span class="params">    onCompletion: <span class="type">CompletionHandler</span>? = <span class="literal">null</span>,</span></span></span><br><span class="line"><span class="function"><span class="params">    block: <span class="type">suspend</span> <span class="type">CoroutineScope</span>.()</span></span> -&gt; <span class="built_in">Unit</span></span><br><span class="line">): Job</span><br></pre></td></tr></table></figure>
+<h2 id="async"><a href="#async" class="headerlink" title="async"></a>async</h2><figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">fun</span> <span class="type">&lt;T&gt;</span> CoroutineScope.<span class="title">async</span><span class="params">(</span></span></span><br><span class="line"><span class="function"><span class="params">    context: <span class="type">CoroutineContext</span> = EmptyCoroutineContext,</span></span></span><br><span class="line"><span class="function"><span class="params">    start: <span class="type">CoroutineStart</span> = CoroutineStart.DEFAULT,</span></span></span><br><span class="line"><span class="function"><span class="params">    onCompletion: <span class="type">CompletionHandler</span>? = <span class="literal">null</span>,</span></span></span><br><span class="line"><span class="function"><span class="params">    block: <span class="type">suspend</span> <span class="type">CoroutineScope</span>.()</span></span> -&gt; T</span><br><span class="line">): Deferred&lt;T&gt;</span><br></pre></td></tr></table></figure>
+<p>可以看到这两个函数的第一个参数都是<code>CoroutineContext</code>类型的。所有协程构建函数（如<code>launch</code>和<code>async</code>）都是以<code>CoroutineScope</code>的扩展函数的形式被定义的，而<code>CoroutineScope</code>接口唯一的成员就是<code>CoroutineContext</code>类型。</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">CoroutineScope</span> </span>&#123;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * The context of this scope.</span></span><br><span class="line"><span class="comment">     * Context is encapsulated by the scope and used for implementation of coroutine builders that are extensions on the scope.</span></span><br><span class="line"><span class="comment">     * Accessing this property in general code is not recommended for any purposes except accessing the [Job] instance for advanced usages.</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * By convention, should contain an instance of a [job][Job] to enforce structured concurrency.</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">val</span> coroutineContext: CoroutineContext</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>协程上下文是协程必备的组成部分，它管理了协程的线程绑定、生命周期、异常处理和调试功能，接下来我们分析上下文具体的结构组成。</p>
+<h1 id="协程上下文的结构"><a href="#协程上下文的结构" class="headerlink" title="协程上下文的结构"></a>协程上下文的结构</h1><blockquote>
+<p>It is an indexed set of Element instances. An indexed set is a mix between a set and a map. Every element in this set has a unique Key. Keys are compared by reference.</p>
+</blockquote>
+<p>CoroutineContext接口跟Map很类似，具有如下特点：</p>
+<ul>
+<li>有序Map</li>
+<li>Key唯一</li>
+<li>类型安全</li>
+</ul>
+<p>##跟Map类似，为什么不直接用Map</p>
+<p>那么我们为什么不直接用Map来实现呢？参考下面一段代码，它用Map实现了类似CoroutineContext的功能</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">typealias CoroutineContext = Map&lt;CoroutineContext.Key&lt;*&gt;, CoroutineContext.Element&gt;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">fun</span> <span class="title">get</span><span class="params">(key: <span class="type">CoroutineContext</span>.<span class="type">Key</span>&lt;*&gt;)</span></span>: CoroutineContext.Element?</span><br></pre></td></tr></table></figure>
+<p>如果使用这种实现，我们每次调用<code>get</code>之后，必须用显式的类型转换，才能得到想要的<code>Element</code>类型。而CoroutineContext则通过泛型（CoroutineContext的Key即带有类型信息）为我们解决了类型转换的痛点：</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">fun</span> <span class="type">&lt;E : Element&gt;</span> <span class="title">get</span><span class="params">(key: <span class="type">Key</span>&lt;<span class="type">E</span>&gt;)</span></span>: E?</span><br></pre></td></tr></table></figure>
+<h1 id="在CoroutineContext上可进行的操作"><a href="#在CoroutineContext上可进行的操作" class="headerlink" title="在CoroutineContext上可进行的操作"></a>在CoroutineContext上可进行的操作</h1><p>CoroutineContext并未实现标准的集合接口，因此无法使用<code>iterator()</code>等集合标准操作。它有独特的一套操作。</p>
+<h2 id="“拼装”上下文对象"><a href="#“拼装”上下文对象" class="headerlink" title="“拼装”上下文对象"></a>“拼装”上下文对象</h2><p>对CoroutineContext来说，最重要的操作是<code>plus</code>，<code>plus</code>操作用于把两个CoroutineContext对象合并成一个。合并时有一个优先级规则：<code>plus</code>右侧对象的属性会覆盖左侧对象中的同名属性。</p>
+<blockquote>
+<p>[The plus operator] returns a context containing elements from this context and elements from other context. The elements from this context with the same key as in the other one are dropped.</p>
+</blockquote>
+<h2 id="Element即是CoroutineContext"><a href="#Element即是CoroutineContext" class="headerlink" title="Element即是CoroutineContext"></a>Element即是CoroutineContext</h2><p>我们知道CoroutineContext中的Value是Element，其实Element本身也是继承于CoroutineContext。这样做的好处是，当我们只有一个CoroutineContext.Element对象时，也可以把它作为一个CoroutineContext来使用，这种一般称之为<strong>singleton context</strong>。</p>
+<h2 id="空对象"><a href="#空对象" class="headerlink" title="空对象"></a>空对象</h2><p>除了<strong>singleton context</strong>，还有一种特殊的上下文对象，<code>EmptyCoroutineContext</code>。它不含有任何Element，因此，当使用<code>plus</code>连接符连接一个<code>EmptyCoroutineContext</code>和另一个上下文对象时，总是得到与另一个上下文对象相同的对象。</p>
+<h1 id="认识一下那些Elements"><a href="#认识一下那些Elements" class="headerlink" title="认识一下那些Elements"></a>认识一下那些Elements</h1><p>如果我们想要查看CoroutineContext里都可以包含哪些Elements，可以搜索CoroutineContext.Key接口的实现，因为CoroutineContext是一个保存类型确定元素的Map。经过搜索后，我们发现以下几个典型Element：</p>
+<h2 id="指定执行线程：ContinuationInterceptor"><a href="#指定执行线程：ContinuationInterceptor" class="headerlink" title="指定执行线程：ContinuationInterceptor"></a>指定执行线程：ContinuationInterceptor</h2><p>用于处理协程挂载在线程上的逻辑，抽象类<strong>CoroutineDispatcher</strong>实现了该接口，一般常用的Dispatcher都会继承于<strong>CoroutineDispatcher</strong>。</p>
+<h2 id="层级关系管理：Job"><a href="#层级关系管理：Job" class="headerlink" title="层级关系管理：Job"></a>层级关系管理：Job</h2><p>用于管理任务层级，处理任务父子关系。</p>
+<ul>
+<li>手动终止父Job时，其中的子Job也被终止</li>
+<li>当所有子Job运行结束时，父Job才可以运行结束</li>
+</ul>
+<h2 id="处理异常：CoroutineExceptionHandler"><a href="#处理异常：CoroutineExceptionHandler" class="headerlink" title="处理异常：CoroutineExceptionHandler"></a>处理异常：CoroutineExceptionHandler</h2><p>如果你在构建协程时使用了无法传递异常的构建器，如<code>launch</code>和<code>actor</code>，当异常发生时，需要有一个异常处理器来处理它。<code>CoroutineExceptionHandler</code>就是充当这样的异常处理器。</p>
+<h2 id="名字：CoroutineName"><a href="#名字：CoroutineName" class="headerlink" title="名字：CoroutineName"></a>名字：CoroutineName</h2><p>协程的别名，一般是用于调试，以区分多个协程。</p>
+<p>上述Element内部都以伴生对象的形式定义了相应的Key，可以通过<code>coroutineContext[element type name]</code>的形式方便地获取到Element对象。比如<code>coroutineContext[Job]</code>会返回Job或者null（如果没有Job）。</p>
+<h1 id="协程构建过程中的CoroutineContext"><a href="#协程构建过程中的CoroutineContext" class="headerlink" title="协程构建过程中的CoroutineContext"></a>协程构建过程中的CoroutineContext</h1><p>前面讲过<code>CoroutineScope</code>实际上是一个<code>CoroutineContext</code>的封装，当我们需要启动一个协程时，会在<code>CoroutineScope</code>的实例上调用构建函数，如<code>async</code>和<code>launch</code>。在构建函数中，一共出现了3个CoroutineContext：</p>
+<ul>
+<li><strong>inherited context</strong>：从<code>CoroutineScope</code>中继承得到的上下文对象</li>
+<li><strong>context argument</strong>：构建函数中传入的第一个参数，默认为<code>EmptyCoroutineContext</code></li>
+<li><strong>coroutine context</strong>：挂起代码块（lambda函数）运行时的上下文对象</li>
+</ul>
+<p>如果我们查看协程构建函数<code>async</code>和<code>launch</code>的源码，会发现它们第一行都是如下代码：</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">val</span> newContext = newCoroutineContext(context)</span><br></pre></td></tr></table></figure>
+<p>再进一步查看：</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// CoroutineContext.kt</span></span><br><span class="line"><span class="meta">@ExperimentalCoroutinesApi</span></span><br><span class="line"><span class="keyword">public</span> actual <span class="function"><span class="keyword">fun</span> CoroutineScope.<span class="title">newCoroutineContext</span><span class="params">(context: <span class="type">CoroutineContext</span>)</span></span>: CoroutineContext &#123;</span><br><span class="line">    <span class="keyword">val</span> combined = coroutineContext + context</span><br><span class="line">    <span class="keyword">val</span> debug = <span class="keyword">if</span> (DEBUG) combined + CoroutineId(COROUTINE_ID.incrementAndGet()) <span class="keyword">else</span> combined</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">if</span> (combined !== Dispatchers.Default &amp;&amp; combined[ContinuationInterceptor] == <span class="literal">null</span>)</span><br><span class="line">        debug + Dispatchers.Default <span class="keyword">else</span> debug</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这里就比较清晰了：构建器函数内部进行了一个CoroutineContext拼接操作，plus的左值是<code>CoroutineScope</code>内部的<code>CoroutineContext</code>，右值是作为构建函数参数的<code>CoroutineContext</code>。根据我们前面讲到的拼接操作，左值具有更高的优先级。</p>
+<p>此外，抽象类<code>AbstractCoroutineScope</code>实现了<code>CoroutineScope</code>和<code>Job</code>接口，大部分CoroutineScope的实现都继承自<code>AbstractCoroutineScope</code>，意味着他们同时也是一个<code>Job</code>。可以得到：<strong>coroutine context = parent context + coroutine job</strong>。</p>
+<h1 id="Elements默认值"><a href="#Elements默认值" class="headerlink" title="Elements默认值"></a>Elements默认值</h1><p>对于上述4个Elements，如果既没有显示指明，则会取相应的默认值：</p>
+<ul>
+<li>ContinuationInterceptor：默认值为<code>Dispatchers.Default</code>，基于线程池实现，线程数目=CPU数目，且最少为2支</li>
+<li>Job：默认值为null，在这种情况下，协程是孤儿（没有父协程，无法被父协程取消，例如<code>GlobalScope</code>）</li>
+<li>CoroutineExceptionHandler：它的情况比较复杂，当异常发生时，若没有指定<code>CoroutineExceptionHandler</code>，会使用全局的异常处理器，在全局异常处理器中调用当前线程的<code>uncaughtExceptionHandler</code>。代码如下：</li>
+</ul>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// CoroutineExceptionHandlerImpl.kt</span></span><br><span class="line"><span class="keyword">internal</span> actual <span class="function"><span class="keyword">fun</span> <span class="title">handleCoroutineExceptionImpl</span><span class="params">(context: <span class="type">CoroutineContext</span>, exception: <span class="type">Throwable</span>)</span></span> &#123;</span><br><span class="line">    <span class="comment">// use additional extension handlers</span></span><br><span class="line">    <span class="keyword">for</span> (handler <span class="keyword">in</span> handlers) &#123;</span><br><span class="line">        handler.handleException(context, exception)</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// use thread's handler</span></span><br><span class="line">    <span class="keyword">val</span> currentThread = Thread.currentThread()</span><br><span class="line">    currentThread.uncaughtExceptionHandler.uncaughtException(currentThread, exception)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>Name：默认为“coroutine”</li>
+</ul>
+<p>对于上述默认值，用代码实现起来也并不复杂：</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">val</span> defaultExceptionHandler = CoroutineExceptionHandler &#123; ctx, t -&gt;</span><br><span class="line">    ServiceLoader.load(</span><br><span class="line">        serviceClass, </span><br><span class="line">        serviceClass.classLoader</span><br><span class="line">    ).forEach&#123;</span><br><span class="line">        it.handleException(ctx, t)</span><br><span class="line">    &#125;</span><br><span class="line">    Thread.currentThread().let &#123; </span><br><span class="line">        it.uncaughtExceptionHandler.uncaughtException(it, exception)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">CoroutineContext</span></span>(</span><br><span class="line">        <span class="keyword">val</span> continuationInterceptor: ContinuationInterceptor = </span><br><span class="line">                Dispatchers.Default,</span><br><span class="line">        <span class="keyword">val</span> parentJob: Job? = </span><br><span class="line">                <span class="literal">null</span>,</span><br><span class="line">        <span class="keyword">val</span> coroutineExceptionHandler: CoroutineExceptionHandler = </span><br><span class="line">                defaultExceptionHandler,</span><br><span class="line">        <span class="keyword">val</span> name: CoroutineName = </span><br><span class="line">                CoroutineName(<span class="string">"coroutine"</span>)</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+<h1 id="用例浅析"><a href="#用例浅析" class="headerlink" title="用例浅析"></a>用例浅析</h1><p>上述4个Elements中，最重要的是Dispatcher和Job两个，我们来看一些例子。</p>
+<h2 id="Global-Scope-Context"><a href="#Global-Scope-Context" class="headerlink" title="Global Scope Context"></a>Global Scope Context</h2><figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">GlobalScope.launch &#123;</span><br><span class="line">    <span class="comment">/* ... */</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>全局Scope使用全默认的4个Elements，意味着它使用<code>Dispatchers.Default</code>和为空的<code>Job</code>（无法通过父Job取消）。</p>
+<h2 id="Fully-Qualified-Context"><a href="#Fully-Qualified-Context" class="headerlink" title="Fully Qualified Context"></a>Fully Qualified Context</h2><figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">launch(</span><br><span class="line">        Dispatchers.Main + </span><br><span class="line">                Job() + </span><br><span class="line">                CoroutineName(<span class="string">"HelloCoroutine"</span>) + </span><br><span class="line">                CoroutineExceptionHandler &#123; _, _ -&gt; <span class="comment">/* ... */</span> &#125;</span><br><span class="line">) &#123;</span><br><span class="line">    <span class="comment">/* ... */</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>全限定Context，即全部显式指定具体值的Elements。不论你用哪一个<code>CoroutineScope</code>构建该协程，它都具有一致的表现，不会受到<code>CoroutineScoipe</code>任何影响。</p>
+<h2 id="CoroutineScope-Context"><a href="#CoroutineScope-Context" class="headerlink" title="CoroutineScope Context"></a>CoroutineScope Context</h2><p>这里我们基于Activity生命周期实现一个CoroutineScope：</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">ScopedAppActivity</span>:<span class="type"></span></span></span><br><span class="line">        AppCompatActivity(),</span><br><span class="line">        CoroutineScope</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">protected</span> <span class="keyword">lateinit</span> <span class="keyword">var</span> job: Job</span><br><span class="line">    <span class="keyword">override</span> <span class="keyword">val</span> coroutineContext: CoroutineContext</span><br><span class="line">        <span class="keyword">get</span>() = job + Dispatchers.Main <span class="comment">// 注意这里使用+拼接CoroutineContext</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">onCreate</span><span class="params">(savedInstanceState: <span class="type">Bundle</span>?)</span></span> &#123;</span><br><span class="line">        <span class="keyword">super</span>.onCreate(savedInstanceState)</span><br><span class="line">        job = Job()</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">onDestroy</span><span class="params">()</span></span> &#123;</span><br><span class="line">        <span class="keyword">super</span>.onDestroy()</span><br><span class="line">        job.cancel()</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>Dispatcher：使用<code>Dispatcher.Main</code>，以在UI线程进行绘制</li>
+<li>Job：在<code>onCreate</code>时构建，在<code>onDestroy</code>时销毁，所有基于该CoroutineContext创建的协程，都会在Activity销毁时取消，从而避免Activity泄露的问题</li>
+</ul>
+<h2 id="临时指定参数"><a href="#临时指定参数" class="headerlink" title="临时指定参数"></a>临时指定参数</h2><p>前面数次提到过，CoroutineContext的参数主要有两个来源：从scope中继承+参数指定。我们可以用<code>withContext</code>便捷地指定某个参数启动子协程，例如我们想要在协程内部执行一个无法被取消的子协程：</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">withContext(NonCancellable) &#123;</span><br><span class="line">    <span class="comment">/* ... */</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="读取协程上下文参数"><a href="#读取协程上下文参数" class="headerlink" title="读取协程上下文参数"></a>读取协程上下文参数</h2><p>可以通过顶级挂起只读属性<code>coroutineContext</code>获取协程上下文参数，它位于 <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.coroutines/coroutine-context.html" target="_blank" rel="noopener">kotlin-stdlib / kotlin.coroutines / coroutineContext</a>：</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">println(<span class="string">"Running in <span class="subst">$&#123;coroutineContext[CoroutineName]&#125;</span>"</span>)</span><br></pre></td></tr></table></figure>
+<h2 id="Nested-Context"><a href="#Nested-Context" class="headerlink" title="Nested Context"></a>Nested Context</h2><p>内嵌上下文切换是指：在协程A内部构建协程B时，B会自动继承A的Dispatcher，如果没有注意这一点，很容易发生诸如“主线程执行耗时操作”的错误。</p>
+<p>我们可以在调用<code>async</code>时加入Dispatcher参数，以切换到工作线程。</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 错误的做法，在主线程中直接调用async，若耗时过长则阻塞UI</span></span><br><span class="line">GlobalScope.launch(Dispatchers.Main) &#123;</span><br><span class="line">    <span class="keyword">val</span> deferred = async &#123;</span><br><span class="line">        <span class="comment">/* ... */</span></span><br><span class="line">    &#125; </span><br><span class="line">    <span class="comment">/* ... */</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 正确的做法，在工作线程执行协程任务</span></span><br><span class="line">GlobalScope.launch(Dispatchers.Main) &#123;</span><br><span class="line">    <span class="keyword">val</span> deferred = async(Dispatchers.Default) &#123;</span><br><span class="line">        <span class="comment">/* ... */</span></span><br><span class="line">    &#125; </span><br><span class="line">    <span class="comment">/* ... */</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h1><ul>
+<li>协程上下文环境参数可以用加号<code>+</code>拼接，左值优先</li>
+<li>上下文环境可以继承</li>
+<li>上下文环境可以单独制定参数</li>
+</ul>
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><p>本文的70%都翻译总结自Medium上的这篇文章，写的非常棒，建议有英文阅读能力的同学直接阅读原文</p>
+<ul>
+<li><a href="https://proandroiddev.com/demystifying-coroutinecontext-1ce5b68407ad" target="_blank" rel="noopener">Demystifying CoroutineContext</a></li>
+</ul>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    
+    <div class="content">
+        
+<span class="post-time">
+    最后更新时间：<time datetime="2019-12-13T14:41:37.280Z" itemprop="dateUpdated">2019-12-13 22:41:37</time>
+</span><br>
+
+
+        
+        本文系作者原创，如转载请注明出处。欢迎留言讨论，或通过邮件进行沟通～
+        
+    </div>
+    
+    <footer>
+        <a href="https://lilei.pro">
+            <img src="/img/avatar.jpeg" alt="Li Lei">
+            Li Lei
+        </a>
+    </footer>
+</blockquote>
+
+        
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Kotlin/">Kotlin</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://lilei.pro/2019/12/13/kotlin-coroutines-03/&title=《Kotlin 协程基础课 03.揭开协程上下文CoroutineContext的神秘面纱》 — 柘个角落&pic=https://lilei.pro/img/avatar.jpeg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://lilei.pro/2019/12/13/kotlin-coroutines-03/&title=《Kotlin 协程基础课 03.揭开协程上下文CoroutineContext的神秘面纱》 — 柘个角落&source=技术与生活上的点滴积累" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://lilei.pro/2019/12/13/kotlin-coroutines-03/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《Kotlin 协程基础课 03.揭开协程上下文CoroutineContext的神秘面纱》 — 柘个角落&url=https://lilei.pro/2019/12/13/kotlin-coroutines-03/&via=https://lilei.pro" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://lilei.pro/2019/12/13/kotlin-coroutines-03/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between flex-row-reverse">
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2019/12/10/kotlin-coroutines-02/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">Kotlin 协程基础课 02.suspend函数</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+    <!-- Valine Comments -->
+    <div class="comments vcomment" id="comments"></div>
+    <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+    <script src="//unpkg.com/valine@latest/dist/Valine.min.js"></script>
+    <!-- Valine Comments script -->
+    <script>
+        var GUEST_INFO = ['nick','mail','link'];
+        var guest_info = 'nick,mail,link'.split(',').filter(function(item){
+          return GUEST_INFO.indexOf(item) > -1
+        });
+        new Valine({
+            el: '#comments',
+            notify: 'false' == 'true',
+            verify: 'true' == 'true',
+            appId: "khG3rBt0nWda7lxDUHpS3Sq0-gzGzoHsz",
+            appKey: "btFkQfcBgJeCRm55mYmUgA5d",
+            avatar: "mm",
+            placeholder: "欢迎讨论",
+            guest_info: guest_info.length == 0 ? GUEST_INFO : guest_info,
+            pageSize: "10"
+        })
+    </script>
+    <!-- Valine Comments end -->
+
+
+
+
+
+
+
+</article>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>博客内容遵循 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">知识共享 署名 - 非商业性 - 相同方式共享 4.0 国际协议</a></span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>Li Lei &copy; 2015 - 2019</span>
+            <span>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://lilei.pro/2019/12/13/kotlin-coroutines-03/&title=《Kotlin 协程基础课 03.揭开协程上下文CoroutineContext的神秘面纱》 — 柘个角落&pic=https://lilei.pro/img/avatar.jpeg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://lilei.pro/2019/12/13/kotlin-coroutines-03/&title=《Kotlin 协程基础课 03.揭开协程上下文CoroutineContext的神秘面纱》 — 柘个角落&source=技术与生活上的点滴积累" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://lilei.pro/2019/12/13/kotlin-coroutines-03/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《Kotlin 协程基础课 03.揭开协程上下文CoroutineContext的神秘面纱》 — 柘个角落&url=https://lilei.pro/2019/12/13/kotlin-coroutines-03/&via=https://lilei.pro" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://lilei.pro/2019/12/13/kotlin-coroutines-03/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACHElEQVR42u3awW6lMAwF0P7/T9PtSCPovTGt9JKTFUKvkMPCtR1/fcXr+mf9f7/95d313Z3XFgYGxscyrsf1/Jv5h7h7fr43DAyMcxh3j767Tl68Frifw/HtfQwMDIzgxTl78l4MDAyMNgjmofOZlHwODAwMjCThey5QW1h+/XItjoGB8YGMvFn299e/cr6BgYHxUYyrXMnh5SSUX0sLAwNjb0Ye4PKyM6cWBWqyHwwMjK0Zk9b8WsE5OeAs0kcMDIztGHlDPz+kfDf5izAYGBgHMHJAPhyWh+D2CBMDA+NkRh5ek01M0sc6t8XAwNiUkSeFbXOt3VbOxsDAOI3RjjusFbTzAjj6cBgYGNsx3ipQk7hXl6N5EYuBgXEwIyl0i4i+lEpGb8fAwNiakTfdJg24PAS/NjOCgYGxKSMvO9sW/7xYHQ1bYGBgbMdoX7y2uTzUtscMGBgY+zEmQxJty2wtQEdnlBgYGFsz2tb8vChtt148AQMD4xhG3vRv07h2zCJv6mFgYJzJyEPeW2MZ+XOifiEGBsamjLWgOVntM3/4x4CBgbEp4ypXu8X5oEZExcDA2Jqxtq3JQWY78tX+LQYGxq6MvIycF73tYUDxvTEwMA5gTBr6bVo5ST1/yHMxMDAwyrJzLQQnySgGBgbGW8VnW6DmWy/ONzAwMDZirI075OF1LTYmIxoYGBgnMEal4y8cJOThGAMD4wDGNwTbslBCCZZSAAAAAElFTkSuQmCC" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: false };
+
+
+</script>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/main.min.js"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/search.min.js" async></script>
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>
