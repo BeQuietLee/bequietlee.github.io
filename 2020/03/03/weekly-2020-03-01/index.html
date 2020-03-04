@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    
+    <title>本周知识积累[2020/03] ViewPager使用指南；Kotlin单例写法；MediaPlayer状态机 | 柘个角落 | IF YOU WANT SOMETHING, GO GET IT. PERIOD.</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="Android,每周积累">
+    <meta name="description" content="我们一路奋斗，不是为了改变世界，而是为了不被世界改变。  ViewPager使用指南ViewPager 是Android SDK提供的用于实现左右滑动切换页面效果的控件，接入非常简单，可以实现如下图的效果。                                                                                              Vi">
+<meta name="keywords" content="Android,每周积累">
+<meta property="og:type" content="article">
+<meta property="og:title" content="本周知识积累[2020&#x2F;03] ViewPager使用指南；Kotlin单例写法；MediaPlayer状态机">
+<meta property="og:url" content="https://lilei.pro/2020/03/03/weekly-2020-03-01/index.html">
+<meta property="og:site_name" content="柘个角落">
+<meta property="og:description" content="我们一路奋斗，不是为了改变世界，而是为了不被世界改变。  ViewPager使用指南ViewPager 是Android SDK提供的用于实现左右滑动切换页面效果的控件，接入非常简单，可以实现如下图的效果。                                                                                              Vi">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://lilei.pro/img/20200303_weekly/ViewPager-In-Android.gif">
+<meta property="og:image" content="https://lilei.pro/img/20200303_weekly/mediaplayer_state_diagram.gif">
+<meta property="og:updated_time" content="2020-03-04T12:03:01.482Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="本周知识积累[2020&#x2F;03] ViewPager使用指南；Kotlin单例写法；MediaPlayer状态机">
+<meta name="twitter:description" content="我们一路奋斗，不是为了改变世界，而是为了不被世界改变。  ViewPager使用指南ViewPager 是Android SDK提供的用于实现左右滑动切换页面效果的控件，接入非常简单，可以实现如下图的效果。                                                                                              Vi">
+<meta name="twitter:image" content="https://lilei.pro/img/20200303_weekly/ViewPager-In-Android.gif">
+    
+        <link rel="alternate" type="application/atom+xml" title="柘个角落" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/img/favicon.ico">
+    <link rel="stylesheet" href="//unpkg.com/hexo-theme-material-indigo@latest/css/style.css">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/avatar.jpeg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">Li Lei</h5>
+          <a href="mailto:bequietlee#gmail.com" title="bequietlee#gmail.com" class="mail">bequietlee#gmail.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                文章
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+                标签
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/bequietlee" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/2019/03/10/links"  >
+                <i class="icon icon-lg icon-link"></i>
+                友情链接
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">本周知识积累[2020/03] ViewPager使用指南；Kotlin单例写法；MediaPlayer状态机</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">本周知识积累[2020/03] ViewPager使用指南；Kotlin单例写法；MediaPlayer状态机</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2020-03-03T05:08:02.000Z" itemprop="datePublished" class="page-time">
+  2020-03-03
+</time>
+
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#ViewPager使用指南"><span class="post-toc-number">1.</span> <span class="post-toc-text">ViewPager使用指南</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#ViewPager"><span class="post-toc-number">1.1.</span> <span class="post-toc-text">ViewPager</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#Adapter"><span class="post-toc-number">1.2.</span> <span class="post-toc-text">Adapter</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Activity-传递大数据"><span class="post-toc-number">2.</span> <span class="post-toc-text">- Activity 传递大数据</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#单例"><span class="post-toc-number">2.1.</span> <span class="post-toc-text">单例</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#持久化"><span class="post-toc-number">2.2.</span> <span class="post-toc-text">持久化</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#使用EventBus"><span class="post-toc-number">2.3.</span> <span class="post-toc-text">使用EventBus</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Kotlin单例写法"><span class="post-toc-number">3.</span> <span class="post-toc-text">- Kotlin单例写法</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#无参数写法"><span class="post-toc-number">3.1.</span> <span class="post-toc-text">无参数写法</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#有参数写法"><span class="post-toc-number">3.2.</span> <span class="post-toc-text">有参数写法</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#有参数写法，Write-Once，Use-Many"><span class="post-toc-number">3.3.</span> <span class="post-toc-text">有参数写法，Write Once，Use Many</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Vimium的页面检索技巧"><span class="post-toc-number">4.</span> <span class="post-toc-text">Vimium的页面检索技巧</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#使用默认参数简化自定义View的构造函数"><span class="post-toc-number">5.</span> <span class="post-toc-text">使用默认参数简化自定义View的构造函数</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#MediaPlayer状态机"><span class="post-toc-number">6.</span> <span class="post-toc-text">MediaPlayer状态机</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#播放前"><span class="post-toc-number">6.1.</span> <span class="post-toc-text">播放前</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#播放中"><span class="post-toc-number">6.2.</span> <span class="post-toc-text">播放中</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#播放后"><span class="post-toc-number">6.3.</span> <span class="post-toc-text">播放后</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#播放器的权限要求"><span class="post-toc-number">6.4.</span> <span class="post-toc-text">播放器的权限要求</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#线程限制"><span class="post-toc-number">6.5.</span> <span class="post-toc-text">线程限制</span></a></li></ol></li></ol>
+        </nav>
+    </aside>
+
+
+<article id="post-weekly-2020-03-01"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">本周知识积累[2020/03] ViewPager使用指南；Kotlin单例写法；MediaPlayer状态机</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2020-03-03 13:08:02" datetime="2020-03-03T05:08:02.000Z"  itemprop="datePublished">2020-03-03</time>
+
+            
+
+
+            
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <blockquote>
+<p>我们一路奋斗，不是为了改变世界，而是为了不被世界改变。</p>
+</blockquote>
+<h2 id="ViewPager使用指南"><a href="#ViewPager使用指南" class="headerlink" title="ViewPager使用指南"></a>ViewPager使用指南</h2><p><a href="https://abhiandroid.com/materialdesign/viewpager" target="_blank" rel="noopener">ViewPager</a> 是Android SDK提供的用于实现左右滑动切换页面效果的控件，接入非常简单，可以实现如下图的效果。</p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="/img/20200303_weekly/ViewPager-In-Android.gif" alt="ViewPager" title="">
+                </div>
+                <div class="image-caption">ViewPager</div>
+            </figure>
+<p>自顶向下地看，一个完整的包含ViewPager的页面由以下几个对象构成。</p>
+<ul>
+<li>Host：容器页面，可以是Activity，或者Fragment</li>
+<li>ViewPager：关联到页面上的一个View，可以左右滑动切换子页面</li>
+<li>Adapter：ViewPager内部用以获取每个子页面的适配器，参考RecyclerView/ListView的Adapter</li>
+<li>SubFragment：ViewPager内嵌的子页面</li>
+</ul>
+<p>让我们逐个分析（Host就是一个普通页面，略过不提，SubFragment也一样，与常见写法没有区别，同样略过）</p>
+<h3 id="ViewPager"><a href="#ViewPager" class="headerlink" title="ViewPager"></a>ViewPager</h3><p>相当于一个ViewGroup容器，使用的时候，首先在xml布局里声明<code>android.support.v4.view.ViewPager</code>，接着在代码里通过<code>findViewById</code>获取到这个ViewPager，并为其设置Adapter。</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">mViewPager = findViewById(R.id.view_pager)</span><br><span class="line"><span class="comment">// 这里需要传入一个FragmentManager，可见ViewPager内部是以Fragment作为每个子页面呈现方式的</span></span><br><span class="line">mViewPager.adapter = YourAdapterClass(supportFragmentManager)</span><br></pre></td></tr></table></figure>
+<p>在使用ViewPager时，往往需要对当前选中页面的行为进行监听，比如当用户左右滑动切换页面时，对应地改变标题栏的文字，对应的是<code>addOnPageChangeListener</code>接口，注意这里是<code>add</code>并非<code>set</code>，意味着不要对同一个对象多次调用，否则会多次触发。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// ViewPager.java</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">addOnPageChangeListener</span><span class="params">(@NonNull OnPageChangeListener listener)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (mOnPageChangeListeners == <span class="keyword">null</span>) &#123;</span><br><span class="line">        mOnPageChangeListeners = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">    &#125;</span><br><span class="line">    mOnPageChangeListeners.add(listener);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">OnPageChangeListener</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 页面发生位移时调用，既包含用户手指拖动，也包含页面自身的动画移动。参数是位移的百分比和像素值，可以用来进行一些计算</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">onPageScrolled</span><span class="params">(<span class="keyword">int</span> position, <span class="keyword">float</span> positionOffset, <span class="keyword">int</span> positionOffsetPixels)</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 页面被选中时调用，动画也许并没有结束，参数是被选中页面的index</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">onPageSelected</span><span class="params">(<span class="keyword">int</span> position)</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 页面状态发生变化时调用，不特指哪一个页面，而是所有页面。</span></span><br><span class="line">    <span class="comment">// 有三种状态：IDLE（页面静止，无动作）、DRAGGING（用户拖动中）、SETTING（用户已放手，页面归位中）</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">onPageScrollStateChanged</span><span class="params">(<span class="keyword">int</span> state)</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>接口还是比较简单的，同时，如果我们只关注三个回调中的一个（往往是<code>onPageSelected</code>），可以用另一个内部类来创建监听对象，以减少样板代码，<code>SimpleOnPageChangeListener</code>同样位于<code>ViewPager.java</code>中。</p>
+<p>这是很好的一种编程思想，对于包含多个回调函数的监听接口，增加一个内部类，为每个回调函数创建一个空函数，在使用时只覆写业务需要的接口。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">SimpleOnPageChangeListener</span> <span class="keyword">implements</span> <span class="title">OnPageChangeListener</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onPageScrolled</span><span class="params">(<span class="keyword">int</span> position, <span class="keyword">float</span> positionOffset, <span class="keyword">int</span> positionOffsetPixels)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// This space for rent</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onPageSelected</span><span class="params">(<span class="keyword">int</span> position)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// This space for rent</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onPageScrollStateChanged</span><span class="params">(<span class="keyword">int</span> state)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// This space for rent</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>Hint</strong>：如果要在<code>onPageSelected</code>回调里获取相应的SubFragment，不要使用<code>Adapter.getItem</code>，它会返回一个新创建的Fragment。应当调用的方法是<code>Adapter.instantiateItem</code>，这会返回已创建的Fragment，参考Stack Overflow上面的<a href="https://stackoverflow.com/questions/17685787/access-a-method-of-a-fragment-from-the-viewpager-activity" target="_blank" rel="noopener">这个问题</a>。</p>
+<h3 id="Adapter"><a href="#Adapter" class="headerlink" title="Adapter"></a>Adapter</h3><p>有两种Adapter，FragmentPagerAdapter和FragmentStatePagerAdapter，简单地说，如果你的ViewPager只包含3到4个固定的页面，则使用FragmentPagerAdapter；如果有很多个页面，则使用FragmentStatePagerAdapter。</p>
+<p>这里以FragmentStatePagerAdapter为例，介绍Adapter的写法。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// FragmentStatePagerAdapter.java</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">FragmentStatePagerAdapter</span> <span class="keyword">extends</span> <span class="title">PagerAdapter</span> </span>&#123;</span><br><span class="line">    <span class="comment">// ...some code...</span></span><br><span class="line">    <span class="comment">// 这里创建Fragment并返回</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">abstract</span> Fragment <span class="title">getItem</span><span class="params">(<span class="keyword">int</span> position)</span></span>;</span><br><span class="line">    <span class="comment">// ...some code...</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// PagerAdapter.java</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">PagerAdapter</span> </span>&#123;</span><br><span class="line">    <span class="comment">// ...some code...</span></span><br><span class="line">    <span class="comment">// 返回Fragment总个数</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">int</span> <span class="title">getCount</span><span class="params">()</span></span>;</span><br><span class="line">    <span class="comment">// ...some code...</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>可见最简单的FragmentStatePagerAdapter只需要实现<code>getItem</code>和<code>getCount</code>两个方法。值得一提的是，如果需要在创建SubFragment时传递一些参数，用以下写法。</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 创建Fragment时传入Arg_0</span></span><br><span class="line"><span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">getItem</span><span class="params">(position: <span class="type">Int</span>)</span></span>: Fragment &#123;</span><br><span class="line">    <span class="keyword">val</span> frag = YourFragmentClass()</span><br><span class="line">    frag.arguments = Bundle().apply &#123;</span><br><span class="line">        putString(ARG_0, some_value)</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// ... some code ...</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 在Fragment的onViewCreated里读取参数</span></span><br><span class="line"><span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">onViewCreated</span><span class="params">(view: <span class="type">View</span>, savedInstanceState: <span class="type">Bundle</span>?)</span></span> &#123;</span><br><span class="line">    arguments?.takeIf &#123; it.containsKey(ARG_0) &#125;?.apply &#123;</span><br><span class="line">        <span class="keyword">val</span> someValue = getString(ARG_0)</span><br><span class="line">        <span class="comment">// ... some code ...</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="Activity-传递大数据"><a href="#Activity-传递大数据" class="headerlink" title="- Activity 传递大数据"></a>- Activity 传递大数据</h2><p>在使用Intent进行Activity之间的跳转时，系统提供了<code>putExtra</code>用于参数传递，如下例。</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// caller activity</span></span><br><span class="line"><span class="keyword">val</span> intent = Intent(<span class="keyword">this</span>, TheNextActivity::<span class="class"><span class="keyword">class</span>.<span class="title">java</span>)</span></span><br><span class="line">i.putExtra(ARG_0, <span class="number">100</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">// called activity</span></span><br><span class="line"><span class="keyword">val</span> param = intent.extras?.getInt(ARG_0)</span><br></pre></td></tr></table></figure>
+<p>如果传递的参数不是基础类型，而是列表，则使用<code>putExtra(String, Parcelable)</code>和<code>getParcelableExtra(String)</code>做相应的存取。</p>
+<p>然而，实际上很多人并不知道，通过Intent传递的参数，是有大小限制的。当我们传递占内存非常大的数据，如1000个元素的列表、Bitmap等等时，稍不注意，就会出现<code>TransactionTooLargeException</code>，从异常名就可以看出，这是由于参数过大引起的。究其原因，是因为ActivityManagerService内部使用了Binder通信机制，其事务缓冲区限制了传输数据的大小。Binder事务缓冲区的大小为1MB，而且，这1MB还不是独享的，意味着有时尽管传递的数据没有超出1MB，也会触发异常。</p>
+<p>那么，对于需要传递大量数据的场景，有哪些方案？</p>
+<h3 id="单例"><a href="#单例" class="headerlink" title="单例"></a>单例</h3><figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">object</span> Singleton &#123;</span><br><span class="line">    <span class="keyword">var</span> items: List&lt;Foo&gt;? = <span class="literal">null</span></span><br><span class="line">    <span class="keyword">var</span> largeImg: Bitmap? = <span class="literal">null</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>不需要过多解释，注意不要出现内存泄漏，以及单例无法在进程之间共享。</p>
+<h3 id="持久化"><a href="#持久化" class="headerlink" title="持久化"></a>持久化</h3><p>利用网络、数据库、文件、SharedPreference等方式，将数据持久化保存，随后在新页面读取。优点是保存后可以跨进程甚至跨应用、跨平台使用，缺点则是效率低下，读写时没有控制好事务会发生异常。</p>
+<h3 id="使用EventBus"><a href="#使用EventBus" class="headerlink" title="使用EventBus"></a>使用EventBus</h3><p>在《阿里巴巴Android开发手册》中写到：“Activity 间的数据通信，对于数据量比较大的，避免使用 Intent + Parcelable 的方式，可以考虑 EventBus 等替代方案，以免造成 TransactionTooLargeException。”</p>
+<p>由于EventBus滥用会导致代码结构混乱，因此个人不推荐。</p>
+<p><strong>参考资料</strong>：<a href="https://juejin.im/post/5d8de547e51d45781f73bacc" target="_blank" rel="noopener">https://juejin.im/post/5d8de547e51d45781f73bacc</a></p>
+<h2 id="Kotlin单例写法"><a href="#Kotlin单例写法" class="headerlink" title="- Kotlin单例写法"></a>- Kotlin单例写法</h2><p>单例模式是日常开发中最常使用到的设计模式，一个良好的单例模式实现应当兼顾代码性能与调用简便两个方面。在Java中我们通过“双锁”或者“静态内部类”来实现单例模式，相比之下我更喜欢静态内部类的写法，《Effective Java》一书的作者也是这样认为的。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 样例代码，来自 wiki：https://en.wikipedia.org/wiki/Initialization-on-demand_holder_idiom</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Something</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="title">Something</span><span class="params">()</span> </span>&#123;&#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">LazyHolder</span> </span>&#123;</span><br><span class="line">        <span class="keyword">static</span> <span class="keyword">final</span> Something INSTANCE = <span class="keyword">new</span> Something();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Something <span class="title">getInstance</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> LazyHolder.INSTANCE;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="无参数写法"><a href="#无参数写法" class="headerlink" title="无参数写法"></a>无参数写法</h3><p>今天主要讨论Kotlin的单例写法，在Kotlin中，单例被上升到了语言层面，关键字<code>object</code>可以用来声明一个不需要参数的单例对象。</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">object</span> SomeSingleton &#123;</span><br><span class="line">    init &#123;</span><br><span class="line">        <span class="comment">// 在这里添加初始化代码</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>借助于JVM加载类的过程，它编译后的等效Java代码也是线程安全的。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 上述Kotlin代码的Java等价版本</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">final</span> <span class="class"><span class="keyword">class</span> <span class="title">SomeSingleton</span> </span>&#123;</span><br><span class="line">   <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> SomeSingleton INSTANCE;</span><br><span class="line"></span><br><span class="line">   <span class="function"><span class="keyword">private</span> <span class="title">SomeSingleton</span><span class="params">()</span> </span>&#123;</span><br><span class="line">      INSTANCE = (SomeSingleton)<span class="keyword">this</span>;</span><br><span class="line">      System.out.println(<span class="string">"init complete"</span>);</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">   <span class="keyword">static</span> &#123;</span><br><span class="line">      <span class="keyword">new</span> SomeSingleton();</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="有参数写法"><a href="#有参数写法" class="headerlink" title="有参数写法"></a>有参数写法</h3><p>有时我们需要在单例初始化时传入一些参数，比如<code>Glide.with(Context)</code>，此时<code>object</code>关键字就捉襟见肘了。在<a href="https://stackoverflow.com/questions/40398072/singleton-with-parameter-in-kotlin" target="_blank" rel="noopener">Stack Overflow这个问题</a>下面可以学习到，借助伴生对象的“伪静态方法”，能达到传入初始化参数的目的。</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">UsersDatabase</span> : <span class="type">RoomDatabase</span></span>() &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">companion</span> <span class="keyword">object</span> &#123;</span><br><span class="line"></span><br><span class="line">        <span class="meta">@Volatile</span> <span class="keyword">private</span> <span class="keyword">var</span> INSTANCE: UsersDatabase? = <span class="literal">null</span></span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">fun</span> <span class="title">getInstance</span><span class="params">(context: <span class="type">Context</span>)</span></span>: UsersDatabase =</span><br><span class="line">            INSTANCE ?: synchronized(<span class="keyword">this</span>) &#123;</span><br><span class="line">                INSTANCE ?: buildDatabase(context).also &#123; INSTANCE = it &#125;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">private</span> <span class="function"><span class="keyword">fun</span> <span class="title">buildDatabase</span><span class="params">(context: <span class="type">Context</span>)</span></span> =</span><br><span class="line">            Room.databaseBuilder(context.applicationContext,</span><br><span class="line">                    UsersDatabase::<span class="class"><span class="keyword">class</span>.<span class="title">java</span>, <span class="type">"Sample.db")</span></span></span><br><span class="line">                    .build()</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>以上这种写法，需要关注以下几点。</p>
+<ol>
+<li>单例成员<code>INSTANCE</code>需要有<code>@Volatile</code>声明，以保证对象唯一</li>
+<li><code>synchronized</code>加锁防止重复初始化</li>
+<li>借助<code>also</code>返回原对象</li>
+</ol>
+<p>如果代码里只有一个单例类要实现，上面这种写法就足够了。但是，若有很多个单例类，这种写法产生的样板代码可不少。是不是可以把样板代码逻辑抽出，一次书写，多处调用？答案是肯定的。</p>
+<h3 id="有参数写法，Write-Once，Use-Many"><a href="#有参数写法，Write-Once，Use-Many" class="headerlink" title="有参数写法，Write Once，Use Many"></a>有参数写法，Write Once，Use Many</h3><p>首先区分上述实现方式里，可变的部分与不变的部分，思路是把不变的部分抽象成流程，把可变的部分提取作为参数。</p>
+<p>不变的部分是检查、维护、调用构建函数，将其抽出一个类，这个类一定是用于被继承，因此我们将其声明为<code>open</code>，通过lambda表达式参数<code>constructor</code>，开放出构建对象的能力</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// SingletonHolder.kt</span></span><br><span class="line"><span class="keyword">open</span> <span class="class"><span class="keyword">class</span> <span class="title">SingletonHolder</span>&lt;<span class="type">out T, in A</span>&gt;</span>(<span class="keyword">private</span> <span class="keyword">val</span> <span class="keyword">constructor</span>: (A) -&gt; T) &#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Volatile</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">var</span> instance: T? = <span class="literal">null</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">fun</span> <span class="title">getInstance</span><span class="params">(arg: <span class="type">A</span>)</span></span>: T &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">when</span> &#123;</span><br><span class="line">            instance != <span class="literal">null</span> -&gt; instance!!</span><br><span class="line">            <span class="keyword">else</span> -&gt; synchronized(<span class="keyword">this</span>) &#123;</span><br><span class="line">                <span class="keyword">if</span> (instance == <span class="literal">null</span>) instance = <span class="keyword">constructor</span>(arg)</span><br><span class="line">                instance!!</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>此时，有一个类需要增加单例实现，并且其构造函数需要一个<code>Context</code>类型的参数，我们只需要在其内部声明一个伴生对象，继承自<code>SingletonHolder&lt;MyManager, Context&gt;</code></p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// MyManager.kt</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyManager</span> <span class="keyword">private</span> <span class="keyword">constructor</span></span>(context: Context) &#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">fun</span> <span class="title">doSomething</span><span class="params">()</span></span> &#123;</span><br><span class="line">        <span class="comment">// ...</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">companion</span> <span class="keyword">object</span> : SingletonHolder&lt;MyManager, Context&gt;(::MyManager)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>对单例的调用者而言，写法与Java无异。</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">MyManager.getInstance(context).doSomething()</span><br></pre></td></tr></table></figure>
+<p>怎么样，是不是与Glide的<code>Glide.with(context).load(img_url)</code>完全一致？Bravo！</p>
+<p><strong>参考资料</strong></p>
+<ul>
+<li><a href="https://medium.com/@BladeCoder/kotlin-singletons-with-argument-194ef06edd9e" target="_blank" rel="noopener">https://medium.com/@BladeCoder/kotlin-singletons-with-argument-194ef06edd9e</a></li>
+<li><a href="https://stackoverflow.com/questions/40398072/singleton-with-parameter-in-kotlin" target="_blank" rel="noopener">https://stackoverflow.com/questions/40398072/singleton-with-parameter-in-kotlin</a></li>
+</ul>
+<h2 id="Vimium的页面检索技巧"><a href="#Vimium的页面检索技巧" class="headerlink" title="Vimium的页面检索技巧"></a>Vimium的页面检索技巧</h2><p>在使用浏览器时，有时我们会打开很多个页面，此时如果想要在打开的页面里找到特定页面，往往需要从头翻到尾，十分之麻烦。Vimium考虑到了这一点，并为我们提供快捷键<code>T</code>解决。这个功能属于<strong>Vomnibar</strong>功能集，是Vimium提供的一组页面新建、搜索快捷键，一共有5个。</p>
+<ul>
+<li><code>o</code>，在当前Tab打开URL、书签或浏览历史</li>
+<li><code>O</code>，新建Tab打开URL、书签或浏览历史</li>
+<li><code>b</code>，在当前Tab打开书签</li>
+<li><code>B</code>，新建Tab打开书签</li>
+<li><code>T</code>，也就是刚刚介绍过的，在已打开的Tab中进行搜索</li>
+</ul>
+<p>（顺带提一下，Sublime的copy line快捷键是<code>Ctrl+Shift+D</code>，在写着一段时用到的。）</p>
+<h2 id="使用默认参数简化自定义View的构造函数"><a href="#使用默认参数简化自定义View的构造函数" class="headerlink" title="使用默认参数简化自定义View的构造函数"></a>使用默认参数简化自定义View的构造函数</h2><p>在编写自定义View的类时，如果自定义View继承自<code>android.view.View</code>，通常需要覆写多个构造函数，以支持View的多种构建方式。这种处理不仅麻烦，还带来大量样板代码，稀释了我们的代码质量。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// View.java</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="title">View</span><span class="params">(Context context)</span> </span>&#123;</span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="title">View</span><span class="params">(Context context, @Nullable AttributeSet attrs)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">this</span>(context, attrs, <span class="number">0</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="title">View</span><span class="params">(Context context, @Nullable AttributeSet attrs, <span class="keyword">int</span> defStyleAttr)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">this</span>(context, attrs, defStyleAttr, <span class="number">0</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="title">View</span><span class="params">(Context context, @Nullable AttributeSet attrs, <span class="keyword">int</span> defStyleAttr, <span class="keyword">int</span> defStyleRes)</span> </span>&#123;</span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>联想到Kotlin函数的默认参数功能，是不是可以将其应用在这种场景中呢？答案当然是可以。结合<code>@JvmOverloads</code>注解和默认参数，写法如下。</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">CustomView</span> <span class="meta">@JvmOverloads</span> <span class="keyword">constructor</span></span>(</span><br><span class="line">    context: Context,</span><br><span class="line">    attrs: AttributSet? = <span class="literal">null</span>,</span><br><span class="line">    defStyle: <span class="built_in">Int</span> = <span class="number">0</span>,</span><br><span class="line">    defStyleRes: <span class="built_in">Int</span> = <span class="number">0</span></span><br><span class="line">    ) : View(context, attrs, defStyle, defStyleRes) &#123;</span><br><span class="line">        <span class="comment">// class body</span></span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>在此基础上，借助<code>init{ ... }</code>代码块，可以执行自定义的初始化代码。</p>
+<p><strong>参考</strong>：<a href="https://stackoverflow.com/questions/20670828/how-to-create-constructor-of-custom-view-with-kotlin" target="_blank" rel="noopener">https://stackoverflow.com/questions/20670828/how-to-create-constructor-of-custom-view-with-kotlin</a></p>
+<h2 id="MediaPlayer状态机"><a href="#MediaPlayer状态机" class="headerlink" title="MediaPlayer状态机"></a>MediaPlayer状态机</h2><p>MediaPlayer是Android SDK提供的音视频播放组件，尽管目前有更优秀的IJKPlayer、EXOPlayer等开源项目，MediaPlayer作为功能单一、接口清晰的播放器，有其值得学习的意义。一切故事，从一张状态机图片开始。</p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="/img/20200303_weekly/mediaplayer_state_diagram.gif" alt="状态机" title="">
+                </div>
+                <div class="image-caption">状态机</div>
+            </figure>
+<p><strong>图例说明</strong>：<code>单箭头</code>表示同步调用，<code>双箭头</code>表示异步调用，双层椭圆（仅End）表示终结态。</p>
+<p>这张图乍一看像是一团乱麻，其实可以按照播放前、播放中、播放后的阶段进行区分。</p>
+<h3 id="播放前"><a href="#播放前" class="headerlink" title="播放前"></a>播放前</h3><ul>
+<li>以<code>Prepared</code>为界，之前的状态都可以认为是“播放前”</li>
+<li>通过<code>new</code>创建一个播放器，或者对已有播放器调用<code>reset</code>，均可以得到一个处于<code>Idle</code>状态的播放器。不过这两种方式有一个显著区别，即对<code>Idle</code>态播放器调用<code>getCurrentPosition()</code>, <code>getDuration()</code>, <code>getVideoHeight()</code>, <code>getVideoWidth()</code>, <code>setAudioAttributes()</code>, <code>setLooping()</code>, <code>setVolume()</code>, <code>pause()</code>, <code>start()</code>, <code>stop()</code>, <code>seekTo()</code>, <code>prepare()</code>, <code>prepareAsync()</code>方法时，如果是新构建的播放器，不会抛出任何一场，而如果是通过<code>reset</code>得到的<code>Idle</code>播放器，则会进入<code>OnErrorListener.onError()</code>回调</li>
+<li>播放器在开始播放前，必须进入<code>Prepared</code>态。有两种方法，分别是同步的<code>prepare()</code>和异步的<code>prepareAsync()</code>。同步方法的返回是很快的，几乎是瞬间。对于异步调用，可以通过<code>setOnPreparedListener()</code>设置监听</li>
+<li>当播放器处于<code>Prepared</code>态时，可以设置音量、屏幕常亮、循环播放等属性</li>
+</ul>
+<h3 id="播放中"><a href="#播放中" class="headerlink" title="播放中"></a>播放中</h3><ul>
+<li>播放过程可能因为各种原因发生异常，诸如不支持的音视频格式、受损的文件、分辨率过高、解码超市等等原因，或者是对于播放器调用了不属于其状态的方法。在这些错误发生时，会走到<code>OnErrorListener.onError()</code>回调中，因此在播放前设置监听<code>setOnErrorListener()</code>是非常重要的</li>
+<li>设置<code>onError</code>监听并不能避免播放器进入<code>Error</code>态，只是在进入时发出程序可以观测到的监听事件</li>
+<li>如果在错误的状态调用<code>prepare()</code>, <code>prepareAsync()</code>, <code>setDatasource()</code>，会导致<code>IllegalStateException</code></li>
+<li>基于上一条，在调用<code>setDatasource</code>以及它的众多重载方法时，必须捕获<code>IllegalArgumentException</code>和<code>IOException</code></li>
+<li>通过<code>start()</code>启动播放，通过<code>isPlaying()</code>判断当前是否处于播放中，可以在<code>start()</code>后继续调用<code>start()</code>，但这不会产生任何影响</li>
+<li>在开始播放后，可以通过<code>setOnBufferingUpdateListener()</code>监听视频缓冲进度</li>
+<li>对于播放中的视频，调用<code>pause()</code>进入<code>Paused</code>态，这是一个略微有延迟（seconds）的调用，意味着<code>isPlaying()</code>可能不会立即反映当前状态，反之亦然</li>
+<li>对于<code>Started</code>, <code>Paused</code>, <code>Prepared</code>, <code>PlaybackCompleted</code>态的播放器调用<code>stop()</code>，使其进入<code>Stopped</code>态；对于<code>Stopped</code>态的播放器，必须使其再次进入<code>Prepared</code>态后，方可用于播放</li>
+<li>与<code>start()</code>一样，多次调用<code>stop()</code>不会产生任何影响</li>
+<li>用<code>seekTo()</code>设置播放进度，这是一个异步方法，<code>OnSeekComplete.onSeekComplete()</code>用于监听；可以在<code>Prepared</code>, <code>Paused</code>, <code>PlaybackCompleted</code>多个态调用，且调用<code>seekTo()</code>后播放器仍保持原状态，同时改变当前帧；相应的，<code>getCurrentPosition()</code>可以返回当前的播放进度</li>
+</ul>
+<h3 id="播放后"><a href="#播放后" class="headerlink" title="播放后"></a>播放后</h3><ul>
+<li>一旦播放器不再使用，建议立即调用<code>release()</code>释放资源，此后播放器进入<code>End</code>态，且再也无法通过任何方法使其恢复</li>
+<li>如果设置了Looping，播放完成后会保持<code>Started</code>态，否则会进入<code>OnCompletionListener</code>回调，并进入<code>PlaybackCompleted</code>态</li>
+</ul>
+<h3 id="播放器的权限要求"><a href="#播放器的权限要求" class="headerlink" title="播放器的权限要求"></a>播放器的权限要求</h3><p>视需求而定，可能需要<code>WAKE_LOCK</code>以及<code>Internet</code>权限。</p>
+<h3 id="线程限制"><a href="#线程限制" class="headerlink" title="线程限制"></a>线程限制</h3><p>必须在UI线程创建播放器，只有这样才能正常收到为播放器设置的各种回调。</p>
+<p><strong>参考</strong>：<a href="https://developer.android.com/reference/android/media/MediaPlayer" target="_blank" rel="noopener">https://developer.android.com/reference/android/media/MediaPlayer</a></p>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    
+    <div class="content">
+        
+<span class="post-time">
+    最后更新时间：<time datetime="2020-03-04T12:03:01.482Z" itemprop="dateUpdated">2020-03-04 20:03:01</time>
+</span><br>
+
+
+        
+        本文系作者原创，如转载请注明出处。欢迎留言讨论，或通过邮件进行沟通～
+        
+    </div>
+    
+    <footer>
+        <a href="https://lilei.pro">
+            <img src="/img/avatar.jpeg" alt="Li Lei">
+            Li Lei
+        </a>
+    </footer>
+</blockquote>
+
+        
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Android/">Android</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/每周积累/">每周积累</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://lilei.pro/2020/03/03/weekly-2020-03-01/&title=《本周知识积累[2020/03] ViewPager使用指南；Kotlin单例写法；MediaPlayer状态机》 — 柘个角落&pic=https://lilei.pro/img/avatar.jpeg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://lilei.pro/2020/03/03/weekly-2020-03-01/&title=《本周知识积累[2020/03] ViewPager使用指南；Kotlin单例写法；MediaPlayer状态机》 — 柘个角落&source=技术与生活上的点滴积累" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://lilei.pro/2020/03/03/weekly-2020-03-01/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《本周知识积累[2020/03] ViewPager使用指南；Kotlin单例写法；MediaPlayer状态机》 — 柘个角落&url=https://lilei.pro/2020/03/03/weekly-2020-03-01/&via=https://lilei.pro" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://lilei.pro/2020/03/03/weekly-2020-03-01/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between flex-row-reverse">
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2020/02/28/weekly-2020-02-01/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">本周知识积累[2020/02] RecyclerView布局预览；Uri对象常用操作；轻松创建MainDispatcher与Deferred</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+    <!-- Valine Comments -->
+    <div class="comments vcomment" id="comments"></div>
+    <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+    <script src="//unpkg.com/valine@latest/dist/Valine.min.js"></script>
+    <!-- Valine Comments script -->
+    <script>
+        var GUEST_INFO = ['nick','mail','link'];
+        var guest_info = 'nick,mail,link'.split(',').filter(function(item){
+          return GUEST_INFO.indexOf(item) > -1
+        });
+        new Valine({
+            el: '#comments',
+            notify: 'false' == 'true',
+            verify: 'true' == 'true',
+            appId: "khG3rBt0nWda7lxDUHpS3Sq0-gzGzoHsz",
+            appKey: "btFkQfcBgJeCRm55mYmUgA5d",
+            avatar: "mm",
+            placeholder: "欢迎讨论",
+            guest_info: guest_info.length == 0 ? GUEST_INFO : guest_info,
+            pageSize: "10"
+        })
+    </script>
+    <!-- Valine Comments end -->
+
+
+
+
+
+
+
+</article>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>博客内容遵循 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">知识共享 署名 - 非商业性 - 相同方式共享 4.0 国际协议</a></span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>Li Lei &copy; 2015 - 2020</span>
+            <span>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://lilei.pro/2020/03/03/weekly-2020-03-01/&title=《本周知识积累[2020/03] ViewPager使用指南；Kotlin单例写法；MediaPlayer状态机》 — 柘个角落&pic=https://lilei.pro/img/avatar.jpeg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://lilei.pro/2020/03/03/weekly-2020-03-01/&title=《本周知识积累[2020/03] ViewPager使用指南；Kotlin单例写法；MediaPlayer状态机》 — 柘个角落&source=技术与生活上的点滴积累" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://lilei.pro/2020/03/03/weekly-2020-03-01/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《本周知识积累[2020/03] ViewPager使用指南；Kotlin单例写法；MediaPlayer状态机》 — 柘个角落&url=https://lilei.pro/2020/03/03/weekly-2020-03-01/&via=https://lilei.pro" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://lilei.pro/2020/03/03/weekly-2020-03-01/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACN0lEQVR42u3aQW7DMAwFUd//0i7QVRaxM5+S04oarQzHjfVUgJFIHgce5+94vX69c/XM1fNX11d3pg0ZMmQsyzhvB3kZf762HPdzkyFDxj4MHmTJpMnU+f37ucmQIUNGLYDy6aaBW4YMGTJ4wCWnSBKC//h3Q4YMGUsx0lBIJjceZB85i8uQIWNBRq0w8J3rx+sbMmTI+PeMMxz3mzMSdskmMp6VDBkyWjPSdocUxo+vvMx5+RYZMmQ0ZcxaiVpirkZ9c0eGDBnbMPhhMg2sJJWWfn/wiyFDhozFGTy5Vmut4N/Jpx4UBmTIkNGCUSsNjhQ4awv0YfsoQ4aM1gxeE0w3bWkDR/op2ibKkCGjHeN+urPKAOMNHKjHTYYMGY0YPPnFt3S8bYKnzz7MSoYMGZsxePEy/dtaaRO9RYYMGa0ZIyWBA49it1ppSypDhowdGMXNWfgMacgYP0jLkCGjByPdAqaJtlqDV7wdlCFDRmvG+AEyDbLjZQP0n5EhQ0Y7Rq1tK03rj+xbgxqsDBky2jF4cTF9koNrBYaDK2XIkNGCkcLS0mYtxcZ/AGTIkNGbEaSxBooBtWMqebsMGTJ2YJzhSGG18gBP570pYcqQIaMdY6S1K90IPlFzlCFDxj4MEmSfLhhMaNeQIUPGBgwSZNN0W/FUHbaRyZAhQ0ZaaORJf96WgcAyZMiQUUq31Vor0kYxGTJk7MPgbRbjB1SyTHzhZMiQsQNjVmGglu7nSzkBI0OGjPUYPxja2xncA3l9AAAAAElFTkSuQmCC" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: false };
+
+
+</script>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/main.min.js"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/search.min.js" async></script>
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>
