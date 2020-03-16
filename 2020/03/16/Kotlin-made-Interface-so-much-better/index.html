@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    
+    <title>Kotlin让接口写法如此简单 | 柘个角落 | IF YOU WANT SOMETHING, GO GET IT. PERIOD.</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="Kotlin">
+    <meta name="description" content="这是对Medium上Kotlin made Interface so much better一文的翻译，内容偏基础。  在Java中，“接口”一开始是作为一项新的编程特性被提出的。它描述了一种“可以是”关系，而非“一定是”。这也使得它可以用于多重继承（例如，某物可以是许多特性的集合，但只能是某个事物。译者注：猫可以同时具有喵喵叫和会爬树两种属性，但猫只能是猫，不可能是狗）。 然而，正如我们所见到">
+<meta name="keywords" content="Kotlin">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Kotlin让接口写法如此简单">
+<meta property="og:url" content="https://lilei.pro/2020/03/16/Kotlin-made-Interface-so-much-better/index.html">
+<meta property="og:site_name" content="柘个角落">
+<meta property="og:description" content="这是对Medium上Kotlin made Interface so much better一文的翻译，内容偏基础。  在Java中，“接口”一开始是作为一项新的编程特性被提出的。它描述了一种“可以是”关系，而非“一定是”。这也使得它可以用于多重继承（例如，某物可以是许多特性的集合，但只能是某个事物。译者注：猫可以同时具有喵喵叫和会爬树两种属性，但猫只能是猫，不可能是狗）。 然而，正如我们所见到">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2020-03-16T14:40:06.628Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Kotlin让接口写法如此简单">
+<meta name="twitter:description" content="这是对Medium上Kotlin made Interface so much better一文的翻译，内容偏基础。  在Java中，“接口”一开始是作为一项新的编程特性被提出的。它描述了一种“可以是”关系，而非“一定是”。这也使得它可以用于多重继承（例如，某物可以是许多特性的集合，但只能是某个事物。译者注：猫可以同时具有喵喵叫和会爬树两种属性，但猫只能是猫，不可能是狗）。 然而，正如我们所见到">
+    
+        <link rel="alternate" type="application/atom+xml" title="柘个角落" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/img/favicon.ico">
+    <link rel="stylesheet" href="//unpkg.com/hexo-theme-material-indigo@latest/css/style.css">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/avatar.jpeg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">Li Lei</h5>
+          <a href="mailto:bequietlee#gmail.com" title="bequietlee#gmail.com" class="mail">bequietlee#gmail.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                文章
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+                标签
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/bequietlee" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/2019/03/10/links"  >
+                <i class="icon icon-lg icon-link"></i>
+                友情链接
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">Kotlin让接口写法如此简单</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">Kotlin让接口写法如此简单</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2020-03-16T14:38:49.000Z" itemprop="datePublished" class="page-time">
+  2020-03-16
+</time>
+
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#Kotlin扩展接口能力"><span class="post-toc-number">1.</span> <span class="post-toc-text">Kotlin扩展接口能力</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#在Java中"><span class="post-toc-number">1.1.</span> <span class="post-toc-text">在Java中</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#在Kotlin中"><span class="post-toc-number">1.2.</span> <span class="post-toc-text">在Kotlin中</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#Kotlin使接口真正地“可覆写”"><span class="post-toc-number">2.</span> <span class="post-toc-text">Kotlin使接口真正地“可覆写”</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#Kotlin使接口更像一个对象"><span class="post-toc-number">3.</span> <span class="post-toc-text">Kotlin使接口更像一个对象</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#在Kotlin中-1"><span class="post-toc-number">3.1.</span> <span class="post-toc-text">在Kotlin中</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#Kotlin使接口更好地为组合服务"><span class="post-toc-number">4.</span> <span class="post-toc-text">Kotlin使接口更好地为组合服务</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#也许我们可以利用类的继承关系？"><span class="post-toc-number">4.1.</span> <span class="post-toc-text">也许我们可以利用类的继承关系？</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#让我们用组合代替继承（传统写法）"><span class="post-toc-number">4.2.</span> <span class="post-toc-text">让我们用组合代替继承（传统写法）</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Kotlin的方式：使用By代理简化组合写法"><span class="post-toc-number">4.3.</span> <span class="post-toc-text">Kotlin的方式：使用By代理简化组合写法</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#Kotlin使接口更好地实现多重继承"><span class="post-toc-number">5.</span> <span class="post-toc-text">Kotlin使接口更好地实现多重继承</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#在Kotlin中-2"><span class="post-toc-number">5.1.</span> <span class="post-toc-text">在Kotlin中</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#译后感"><span class="post-toc-number">6.</span> <span class="post-toc-text">译后感</span></a></li></ol>
+        </nav>
+    </aside>
+
+
+<article id="post-Kotlin-made-Interface-so-much-better"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">Kotlin让接口写法如此简单</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2020-03-16 22:38:49" datetime="2020-03-16T14:38:49.000Z"  itemprop="datePublished">2020-03-16</time>
+
+            
+
+
+            
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <blockquote>
+<p>这是对Medium上<a href="https://proandroiddev.com/kotlin-made-interface-so-much-better-bbeaa59abdd7" target="_blank" rel="noopener">Kotlin made Interface so much better</a>一文的翻译，内容偏基础。</p>
+</blockquote>
+<p>在Java中，“接口”一开始是作为一项新的编程特性被提出的。它描述了一种“可以是”关系，而非“一定是”。这也使得它可以用于多重继承（例如，某物可以是许多特性的集合，但只能是某个事物。译者注：猫可以同时具有喵喵叫和会爬树两种属性，但猫只能是猫，不可能是狗）。</p>
+<p>然而，正如我们所见到的，直到Java7（Java7是Android工程师主要的开发语言。译者注：原文写于2018年10月），接口仍然有很多缺点，这些缺点使得接口变得很难用，以至于一些人宁愿用回抽象类。</p>
+<p>接着我们迎来了Kotlin，我将在本文为大家展示Kotlin在继承关系中的强大能力。</p>
+<h1 id="Kotlin扩展接口能力"><a href="#Kotlin扩展接口能力" class="headerlink" title="Kotlin扩展接口能力"></a>Kotlin扩展接口能力</h1><h2 id="在Java中"><a href="#在Java中" class="headerlink" title="在Java中"></a>在Java中</h2><p>在Java7中，接口自己不能包含方法实现，因此对于接口实现类而言，必须实现接口中的所有方法。</p>
+<p>这是一个麻烦，它削弱了接口的可扩展能力。</p>
+<p>假设我们有如下的<code>Movable</code>接口。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">interface</span> <span class="title">Movable</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">legsCount</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Horse</span> <span class="keyword">implements</span> <span class="title">Movable</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">legsCount</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">4</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>突然我们发现除了统计腿的数量，还需要统计翅膀的数量。所以我们增加了<code>wingsCount()</code>方法。</p>
+<p>对于所有实现了<code>Movable</code>接口的类，这是一个坏消息，因为它们必须修改代码以适配接口变更。例如，<code>Horse</code>必须修改如下。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">interface</span> <span class="title">Movable</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">legsCount</span><span class="params">()</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">wingsCount</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Horse</span> <span class="keyword">implements</span> <span class="title">Movable</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">legsCount</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">4</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">wingsCount</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="在Kotlin中"><a href="#在Kotlin中" class="headerlink" title="在Kotlin中"></a>在Kotlin中</h2><p>一开始我们有</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">interface</span> <span class="title">Movable</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">fun</span> <span class="title">legsCount</span><span class="params">()</span></span> : <span class="built_in">Int</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Horse</span> : <span class="type">Movable &#123;</span></span></span><br><span class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">legsCount</span><span class="params">()</span></span> = <span class="number">4</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>随后我们可以轻松地扩展它</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">interface</span> <span class="title">Movable</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">fun</span> <span class="title">legsCount</span><span class="params">()</span></span> : <span class="built_in">Int</span></span><br><span class="line">    <span class="function"><span class="keyword">fun</span> <span class="title">wingsCount</span><span class="params">()</span></span> : <span class="built_in">Int</span> &#123; <span class="keyword">return</span> <span class="number">0</span> &#125; <span class="comment">// 注意这里可以为方法提供默认实现</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Horse</span> : <span class="type">Movable &#123;</span></span></span><br><span class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">legsCount</span><span class="params">()</span></span> = <span class="number">4</span> <span class="comment">// 实现类不需进行任何变动</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>甚至可以做的更加复杂，而<code>Horse</code>类不需要因此进行任何改动！</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">interface</span> <span class="title">Movable</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">fun</span> <span class="title">legsCount</span><span class="params">()</span></span>: <span class="built_in">Int</span> &#123; <span class="keyword">return</span> <span class="number">0</span> &#125;</span><br><span class="line">    <span class="function"><span class="keyword">fun</span> <span class="title">wingsCount</span><span class="params">()</span></span>: <span class="built_in">Int</span> &#123; <span class="keyword">return</span> <span class="number">0</span> &#125;</span><br><span class="line">    <span class="function"><span class="keyword">fun</span> <span class="title">canFly</span><span class="params">()</span></span>: <span class="built_in">Boolean</span> &#123; <span class="keyword">return</span> wingsCount() &gt; <span class="number">1</span> &#125;</span><br><span class="line">    <span class="function"><span class="keyword">fun</span> <span class="title">canWalk</span><span class="params">()</span></span>: <span class="built_in">Boolean</span> &#123; <span class="keyword">return</span> legsCount() &gt; <span class="number">1</span> &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Horse</span> : <span class="type">Movable &#123;</span></span></span><br><span class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">legsCount</span><span class="params">()</span></span> = <span class="number">4</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="Kotlin使接口真正地“可覆写”"><a href="#Kotlin使接口真正地“可覆写”" class="headerlink" title="Kotlin使接口真正地“可覆写”"></a>Kotlin使接口真正地“可覆写”</h1><p>剑桥大辞典里对于“override”的定义是</p>
+<blockquote>
+<p>to decide against or refuse to accept a previous decision, an order, a person, etc.</p>
+</blockquote>
+<p>在Java世界中，接口没有覆写任何东西。</p>
+<p>但是在Kotlin世界里，见如下例子</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">interface</span> <span class="title">Movable</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">fun</span> <span class="title">legsCount</span><span class="params">()</span></span> : <span class="built_in">Int</span> &#123; <span class="keyword">return</span> <span class="number">0</span> &#125;</span><br><span class="line">    <span class="function"><span class="keyword">fun</span> <span class="title">wingsCount</span><span class="params">()</span></span> : <span class="built_in">Int</span> &#123; <span class="keyword">return</span> <span class="number">0</span> &#125;</span><br><span class="line">    <span class="function"><span class="keyword">fun</span> <span class="title">canFly</span><span class="params">()</span></span> : <span class="built_in">Boolean</span> &#123; <span class="keyword">return</span> wingsCount() &gt; <span class="number">1</span> &#125;</span><br><span class="line">    <span class="function"><span class="keyword">fun</span> <span class="title">canWalk</span><span class="params">()</span></span> : <span class="built_in">Boolean</span> &#123; <span class="keyword">return</span> legsCount() &gt; <span class="number">1</span> &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Horse</span> : <span class="type">Movable &#123;</span></span></span><br><span class="line">    <span class="keyword">var</span> isSick = <span class="literal">false</span></span><br><span class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">legsCount</span><span class="params">()</span></span> = <span class="number">4</span></span><br><span class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">canWalk</span><span class="params">()</span></span> : <span class="built_in">Boolean</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (isSick) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">false</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">super</span>.canWalk()</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>如果我们让<code>isSick = true</code>，那么无论这个生物有多少条腿，<code>canWalk()</code>方法都会返回<code>false</code>。嗯，真正意义上的“覆写”。</p>
+<h1 id="Kotlin使接口更像一个对象"><a href="#Kotlin使接口更像一个对象" class="headerlink" title="Kotlin使接口更像一个对象"></a>Kotlin使接口更像一个对象</h1><p>在Java世界（我认为包括Java8和9），接口并不允许包含常量之外的任何属性。</p>
+<p>充其量我们可以声明一个变量的存取方法，例如<code>legsCount()</code>。</p>
+<h2 id="在Kotlin中-1"><a href="#在Kotlin中-1" class="headerlink" title="在Kotlin中"></a>在Kotlin中</h2><p>Kotlin允许接口中包含属性。</p>
+<p>比起这种写法</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">interface</span> <span class="title">Movable</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">fun</span> <span class="title">legsCount</span><span class="params">()</span></span>: <span class="built_in">Int</span></span><br><span class="line">    <span class="function"><span class="keyword">fun</span> <span class="title">canWalk</span><span class="params">()</span></span> = legsCount() &gt; <span class="number">1</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Horse</span> : <span class="type">Movable &#123;</span></span></span><br><span class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">legsCount</span><span class="params">()</span></span> = <span class="number">4</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>你可以将其简化成</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">interface</span> <span class="title">Movable</span> </span>&#123;</span><br><span class="line">    <span class="keyword">val</span> legsCount : <span class="built_in">Int</span></span><br><span class="line">    <span class="function"><span class="keyword">fun</span> <span class="title">canWalk</span><span class="params">()</span></span>: <span class="built_in">Boolean</span> = legsCount &gt; <span class="number">1</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Horse</span> : <span class="type">Movable &#123;</span></span></span><br><span class="line">    <span class="keyword">override</span> <span class="keyword">val</span> legsCount = <span class="number">4</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>在接口中使用属性有一些局限，它不可以有backfield属性，意味着它不可变。所以它仍然是无状态的。</p>
+</blockquote>
+<blockquote>
+<p>此外，不允许在接口中为属性赋初值。</p>
+</blockquote>
+<h1 id="Kotlin使接口更好地为组合服务"><a href="#Kotlin使接口更好地为组合服务" class="headerlink" title="Kotlin使接口更好地为组合服务"></a>Kotlin使接口更好地为组合服务</h1><p>你也许听说过“组合胜过继承”原则。Kotlin让它变得更加简单。</p>
+<p>假设你有<code>Horse</code>和<code>Dog</code>。它们都是有4条腿的动物。</p>
+<p>一种写法如下</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">interface</span> <span class="title">Movable</span> </span>&#123;</span><br><span class="line">    <span class="keyword">val</span> legsCount : <span class="built_in">Int</span></span><br><span class="line">    <span class="function"><span class="keyword">fun</span> <span class="title">canWalk</span><span class="params">()</span></span> = legsCount &gt; <span class="number">1</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Horse</span> : <span class="type">Movable &#123;</span></span></span><br><span class="line">    <span class="keyword">override</span> <span class="keyword">val</span> legsCount = <span class="number">4</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Dog</span> : <span class="type">Movable &#123;</span></span></span><br><span class="line">    <span class="keyword">override</span> <span class="keyword">val</span> legsCount = <span class="number">4</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这种写法太繁琐，具体表现在如下地方</p>
+<ul>
+<li>在每一个实现类里都重复<code>override val legsCount = 4</code>的代码段</li>
+<li>如果我们有更多要覆写的方法，或者更多4条腿的类，我们必须重复做一样的事</li>
+<li>未来某一天，如果我们必须把<code>4</code>改成<code>four</code>，或者增加更多功能……</li>
+</ul>
+<p>这将是一个灾难。太难扩展了。</p>
+<h2 id="也许我们可以利用类的继承关系？"><a href="#也许我们可以利用类的继承关系？" class="headerlink" title="也许我们可以利用类的继承关系？"></a>也许我们可以利用类的继承关系？</h2><figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">interface</span> <span class="title">Movable</span> </span>&#123;</span><br><span class="line">    <span class="keyword">val</span> legsCount: <span class="built_in">Int</span></span><br><span class="line">    <span class="function"><span class="keyword">fun</span> <span class="title">canWalk</span><span class="params">()</span></span> = legsCount &gt; <span class="number">1</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">open</span> <span class="class"><span class="keyword">class</span> <span class="title">FourLegged</span> : <span class="type">Movable &#123;</span></span></span><br><span class="line">    <span class="keyword">override</span> <span class="keyword">val</span> legsCount = <span class="number">4</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Horse</span> : <span class="type">FourLegged</span></span>()</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Dog</span> : <span class="type">FourLegged</span></span>()</span><br></pre></td></tr></table></figure>
+<p>但是这种写法违背了“组合胜于继承”原则。<code>Horse</code>和<code>Dog</code>不仅仅是<code>FourLegged</code>，也可以是其他什么东西，这种写法让他们不可扩展成为其他类型（例如：<code>Pet</code>）。</p>
+<p>这是不可扩展的☹️</p>
+<h2 id="让我们用组合代替继承（传统写法）"><a href="#让我们用组合代替继承（传统写法）" class="headerlink" title="让我们用组合代替继承（传统写法）"></a>让我们用组合代替继承（传统写法）</h2><figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">interface</span> <span class="title">Movable</span> </span>&#123;</span><br><span class="line">    <span class="keyword">val</span> legsCount: <span class="built_in">Int</span></span><br><span class="line">    <span class="function"><span class="keyword">fun</span> <span class="title">canWalk</span><span class="params">()</span></span> = legsCount &gt; <span class="number">1</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">object</span> FourLegged : Movable &#123;</span><br><span class="line">    <span class="keyword">override</span> <span class="keyword">val</span> legsCount = <span class="number">4</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Horse</span> : <span class="type">Movable &#123;</span></span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">val</span> movable = FourLegged</span><br><span class="line">    <span class="keyword">override</span> <span class="keyword">val</span> legsCount</span><br><span class="line">    <span class="keyword">get</span>() = movable.legsCount</span><br><span class="line">&#125;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Dog</span> : <span class="type">Movable &#123;</span></span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">val</span> movable = FourLegged</span><br><span class="line">    <span class="keyword">override</span> <span class="keyword">val</span> legsCount</span><br><span class="line">    <span class="keyword">get</span>() = movable.legsCount</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>不知道你怎么想，我并不喜欢这种写法，所以让我们稍事改动…</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">interface</span> <span class="title">Movable</span> </span>&#123;</span><br><span class="line">    <span class="keyword">val</span> legsCount: <span class="built_in">Int</span></span><br><span class="line">    <span class="function"><span class="keyword">fun</span> <span class="title">canWalk</span><span class="params">()</span></span> = legsCount &gt; <span class="number">1</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">object</span> FourLegged : Movable &#123;</span><br><span class="line">    <span class="keyword">override</span> <span class="keyword">val</span> legsCount = <span class="number">4</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">open</span> <span class="class"><span class="keyword">class</span> <span class="title">MovableImpl</span></span>(<span class="keyword">private</span> <span class="keyword">val</span> movable: Movable) : Movable &#123;</span><br><span class="line">    <span class="keyword">override</span> <span class="keyword">val</span> legsCount</span><br><span class="line">        <span class="keyword">get</span>() = movable.legsCount</span><br><span class="line">&#125;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Horse</span> : <span class="type">MovableImpl</span></span>(FourLegged)</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Dog</span> : <span class="type">MovableImpl</span></span>(FourLegged)</span><br></pre></td></tr></table></figure>
+<p>现在这种写法要好一些，因为它的扩展性更好，假设未来我们同时有<code>FourLegged</code>和<code>TwoLegged</code>，我们可以很方便地替换它们。</p>
+<p>但是我仍然不喜欢这种写法，因为我不得不继承自类<code>MovableImpl</code>。所幸我们有Kotlin，我们看下Kotlin如何处理此类问题…</p>
+<h2 id="Kotlin的方式：使用By代理简化组合写法"><a href="#Kotlin的方式：使用By代理简化组合写法" class="headerlink" title="Kotlin的方式：使用By代理简化组合写法"></a>Kotlin的方式：使用By代理简化组合写法</h2><p>在Kotlin的接口写法中，我们可以使用<code>By</code>关键字轻松实现代理模式。来看看</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">interface</span> <span class="title">Movable</span> </span>&#123;</span><br><span class="line">    <span class="keyword">val</span> legsCount: <span class="built_in">Int</span></span><br><span class="line">    <span class="function"><span class="keyword">fun</span> <span class="title">canWalk</span><span class="params">()</span></span> = legsCount &gt; <span class="number">1</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">object</span> FourLegged : Movable &#123;</span><br><span class="line">    <span class="keyword">override</span> <span class="keyword">val</span> legsCount = <span class="number">4</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Horse</span> : <span class="type">Movable by FourLegged</span></span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Dog</span> : <span class="type">Movable by FourLegged</span></span></span><br></pre></td></tr></table></figure>
+<p>太棒了！🤩。相信你也看得出这种写法的好处。</p>
+<p>如果你想对“组合胜于继承”有更深入的了解，可以阅读以下这篇文章：</p>
+<p><a href="https://proandroiddev.com/composition-over-inheritance-in-kotlin-way-fe341159bf1c" target="_blank" rel="noopener">Composition over inheritance in Kotlin way</a></p>
+<h1 id="Kotlin使接口更好地实现多重继承"><a href="#Kotlin使接口更好地实现多重继承" class="headerlink" title="Kotlin使接口更好地实现多重继承"></a>Kotlin使接口更好地实现多重继承</h1><p>在Java7中使用多重继承是一件痛苦的事，因为我们不得不实现所有的接口，并覆写其中全部方法。</p>
+<blockquote>
+<p>译者注：原文这里用的是<strong>inherit from all interfaces</strong>，可见原作者对“继承”和“实现”并不是严格区分。实际上在Java中不可以“多重继承”（对抽象类而言），而应当是“多重实现”（对接口而言）。</p>
+</blockquote>
+<p>即使这样做，也无法从父类中继承任何属性。（当然了，Java的接口里是不允许有非常量属性的）</p>
+<h2 id="在Kotlin中-2"><a href="#在Kotlin中-2" class="headerlink" title="在Kotlin中"></a>在Kotlin中</h2><p>借助于By代理，我们来看看下面这个例子</p>
+<p>假设我们的动物接口有两个属性</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">interface</span> <span class="title">Movable</span> </span>&#123;</span><br><span class="line">    <span class="keyword">val</span> legsCount: <span class="built_in">Int</span></span><br><span class="line">    <span class="function"><span class="keyword">fun</span> <span class="title">canWalk</span><span class="params">()</span></span> = legsCount &gt; <span class="number">1</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">interface</span> <span class="title">Pet</span> </span>&#123;</span><br><span class="line">    <span class="keyword">val</span> name: String</span><br><span class="line">    <span class="function"><span class="keyword">fun</span> <span class="title">liveInhouse</span><span class="params">()</span></span> = <span class="literal">false</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>让我们提供一些更具体的内容（也就是接口实现），以便于我们可以使新创建的类使用这些具体内容（代理）。</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">object</span> FourLegged : Movable &#123;</span><br><span class="line">    <span class="keyword">override</span> <span class="keyword">val</span> legsCount = <span class="number">4</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">InHousePet</span></span>(<span class="keyword">override</span> <span class="keyword">val</span> name: String) : Pet &#123;</span><br><span class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">liveInHouse</span><span class="params">()</span></span> = <span class="literal">true</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>然后我们可以创建<code>Cat</code>类了，它是一个<code>FourLegged</code>动物，并且也是<code>InHousePet</code>。所以为了同时继承这两点，我们采用如下写法</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">CatBy</span></span>(name: String) :</span><br><span class="line">    Pet <span class="keyword">by</span> InHousePet(name), Movable <span class="keyword">by</span> FourLegged</span><br></pre></td></tr></table></figure>
+<p>只要你愿意，可以增加更多的属性</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">classCatBy(name: String, trainer: Trainer):</span><br><span class="line">        Pet <span class="keyword">by</span> InHousePet(name),</span><br><span class="line">        Movable <span class="keyword">by</span> FourLegged,</span><br><span class="line">        Trainable <span class="keyword">by</span> Professional(trainer)</span><br></pre></td></tr></table></figure>
+<p>或者，你也可以覆写其中的值，只要你愿意！</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">classCatBy(name: String, trainer: Trainer):</span><br><span class="line">        Pet <span class="keyword">by</span> InHousePet(name),</span><br><span class="line">        Movable <span class="keyword">by</span> FourLegged,</span><br><span class="line">        Trainable <span class="keyword">by</span> Professional(trainer) &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">override</span> <span class="keyword">val</span> legsCount: <span class="built_in">Int</span></span><br><span class="line">        <span class="keyword">get</span>() = <span class="number">100</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">liveInHouse</span><span class="params">()</span></span> = <span class="literal">true</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>感觉自己像是在写C++🤪</p>
+<hr>
+<h1 id="译后感"><a href="#译后感" class="headerlink" title="译后感"></a>译后感</h1><p>在Kotlin的接口中可以声明只读属性，其实就相当于Java的<code>getXXX</code>方法，只不过通过Kotlin一贯的<code>get/set</code>省略写法进行了简化。</p>
+<p><code>by</code>关键字用于代理，是Kotlin里面中阶的知识，我们可以为一个接口声明一个代理对象，从而分散目标类的职责。</p>
+<p>在其它方面，Kotlin中的接口写法相比于Java并没有本质上的改动。</p>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    
+    <div class="content">
+        
+<span class="post-time">
+    最后更新时间：<time datetime="2020-03-16T14:40:06.628Z" itemprop="dateUpdated">2020-03-16 22:40:06</time>
+</span><br>
+
+
+        
+        本文系作者原创，如转载请注明出处。欢迎留言讨论，或通过邮件进行沟通～
+        
+    </div>
+    
+    <footer>
+        <a href="https://lilei.pro">
+            <img src="/img/avatar.jpeg" alt="Li Lei">
+            Li Lei
+        </a>
+    </footer>
+</blockquote>
+
+        
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Kotlin/">Kotlin</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://lilei.pro/2020/03/16/Kotlin-made-Interface-so-much-better/&title=《Kotlin让接口写法如此简单》 — 柘个角落&pic=https://lilei.pro/img/avatar.jpeg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://lilei.pro/2020/03/16/Kotlin-made-Interface-so-much-better/&title=《Kotlin让接口写法如此简单》 — 柘个角落&source=技术与生活上的点滴积累" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://lilei.pro/2020/03/16/Kotlin-made-Interface-so-much-better/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《Kotlin让接口写法如此简单》 — 柘个角落&url=https://lilei.pro/2020/03/16/Kotlin-made-Interface-so-much-better/&via=https://lilei.pro" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://lilei.pro/2020/03/16/Kotlin-made-Interface-so-much-better/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/2020/03/16/Android-SDK-versions/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">一文带你读懂compileSdkVersion、minSdkVersion与targetSdkVersion</h4>
+      </a>
+    </div>
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2020/03/03/weekly-2020-03-01/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">本周知识积累[2020/03] ViewPager使用指南；Kotlin单例写法；MediaPlayer状态机</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+    <!-- Valine Comments -->
+    <div class="comments vcomment" id="comments"></div>
+    <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+    <script src="//unpkg.com/valine@latest/dist/Valine.min.js"></script>
+    <!-- Valine Comments script -->
+    <script>
+        var GUEST_INFO = ['nick','mail','link'];
+        var guest_info = 'nick,mail,link'.split(',').filter(function(item){
+          return GUEST_INFO.indexOf(item) > -1
+        });
+        new Valine({
+            el: '#comments',
+            notify: 'false' == 'true',
+            verify: 'true' == 'true',
+            appId: "khG3rBt0nWda7lxDUHpS3Sq0-gzGzoHsz",
+            appKey: "btFkQfcBgJeCRm55mYmUgA5d",
+            avatar: "mm",
+            placeholder: "欢迎讨论",
+            guest_info: guest_info.length == 0 ? GUEST_INFO : guest_info,
+            pageSize: "10"
+        })
+    </script>
+    <!-- Valine Comments end -->
+
+
+
+
+
+
+
+</article>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>博客内容遵循 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">知识共享 署名 - 非商业性 - 相同方式共享 4.0 国际协议</a></span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>Li Lei &copy; 2015 - 2020</span>
+            <span>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://lilei.pro/2020/03/16/Kotlin-made-Interface-so-much-better/&title=《Kotlin让接口写法如此简单》 — 柘个角落&pic=https://lilei.pro/img/avatar.jpeg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://lilei.pro/2020/03/16/Kotlin-made-Interface-so-much-better/&title=《Kotlin让接口写法如此简单》 — 柘个角落&source=技术与生活上的点滴积累" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://lilei.pro/2020/03/16/Kotlin-made-Interface-so-much-better/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《Kotlin让接口写法如此简单》 — 柘个角落&url=https://lilei.pro/2020/03/16/Kotlin-made-Interface-so-much-better/&via=https://lilei.pro" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://lilei.pro/2020/03/16/Kotlin-made-Interface-so-much-better/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAN4AAADeCAAAAAB3DOFrAAACtElEQVR42u3ay24bMRAEQP3/TzvXAI7W3TOkoQC1J2H1WBYPJNUzr1d8fX27/r6ffzK5/3y9blx4eHh466E/DyKBJd96HnTyO9EU4OHh4V3jJQ9IHp9sFc9PnE3u2/t4eHh4H8ZLlv52+0nGgIeHh/d/8XJSnhU8bxJ4eHh4n8mbLdn7Y/c+5jiWteDh4eFdqCJ9zusr9T08PDy8dVX9RmRwKviIRouHh4d3gZcvuG1c2373eQz5cRkPDw/vd3izYlXSFrDfQjYBBx4eHt493qYdahNntNtDzquHjoeHhxfzZst93gTQTkdS6CqmHg8PD+8Cbx8H5IfmZEB5uasojOHh4eEd5eUBa31OL4teOb4ITfDw8PAu8Gahbbu1tFO2KZJFWQseHh7eUV4euSbvnlro88gjCiPw8PDwjvJmG8OmmWDWRDXMWvDw8PAO8fJyfrsltNFtWwwrImA8PDy8y7xZyT/ZZjbtBattBg8PD+8Qr20amDU/tRM3a9Iqesrw8PDwjq72p0pQs9A2jxtmpTg8PDy8PS/5M588eHNQPnVA/8drPDw8vAu8tqTU3s9LWW0cXI8BDw8P7xAvL3HlYcRrdLVbURRJ4OHh4V3j5X/4Z0fndhLzcOSHceLh4eFd4OV/+GcbQ9vwOmvzKqp8eHh4eBd4+zv5oDe/Vp/W8fDw8C7w9o9JYoJnfHu8LjYGPDw8vAu8tojVTkF7FJ41H0RlMDw8PLwFbxZAzD7fNhPkk/v2XTw8PLwLvE1gkW8YbRFr83p44eHh4ZW8dnHPS2J54aqdrKK0hoeHh3eNl0cJm0JakZEcqnDh4eHhfQ4vjx5mMUcbWLydSjw8PLwP4OVl/k0YMbsOHKnx8PDwYt6pJfvUdORlsx++hYeHh3eBN+vVyqPeNrpdhbb7PAMPDw/v6foD1GADJ6GXyDQAAAAASUVORK5CYII=" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: false };
+
+
+</script>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/main.min.js"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/search.min.js" async></script>
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

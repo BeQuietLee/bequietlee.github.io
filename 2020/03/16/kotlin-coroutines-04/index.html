@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    
+    <title>Kotlin 协程基础课 04.协程原理小探——从包装异步请求为同步说起 | 柘个角落 | IF YOU WANT SOMETHING, GO GET IT. PERIOD.</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="Kotlin">
+    <meta name="description" content="这是《Kotlin 协程基础课》的第4篇，也是最后一篇文章。   我不在意十年后的自己是什么样子，我在意的是，十年后的我怎么看现在的自己。  协程是强大的工具，通过前面三篇文章我们介绍了什么是协程、如何使用协程、协程里的CoroutineContext到底是个什么玩意儿。本文是《Kotlin协程基础课》系列的最后一篇文章，将从原理上进行简要的介绍。 从混合开发说起对Java开发者而言，“回调”是">
+<meta name="keywords" content="Kotlin">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Kotlin 协程基础课 04.协程原理小探——从包装异步请求为同步说起">
+<meta property="og:url" content="https://lilei.pro/2020/03/16/kotlin-coroutines-04/index.html">
+<meta property="og:site_name" content="柘个角落">
+<meta property="og:description" content="这是《Kotlin 协程基础课》的第4篇，也是最后一篇文章。   我不在意十年后的自己是什么样子，我在意的是，十年后的我怎么看现在的自己。  协程是强大的工具，通过前面三篇文章我们介绍了什么是协程、如何使用协程、协程里的CoroutineContext到底是个什么玩意儿。本文是《Kotlin协程基础课》系列的最后一篇文章，将从原理上进行简要的介绍。 从混合开发说起对Java开发者而言，“回调”是">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2020-03-16T15:15:56.907Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Kotlin 协程基础课 04.协程原理小探——从包装异步请求为同步说起">
+<meta name="twitter:description" content="这是《Kotlin 协程基础课》的第4篇，也是最后一篇文章。   我不在意十年后的自己是什么样子，我在意的是，十年后的我怎么看现在的自己。  协程是强大的工具，通过前面三篇文章我们介绍了什么是协程、如何使用协程、协程里的CoroutineContext到底是个什么玩意儿。本文是《Kotlin协程基础课》系列的最后一篇文章，将从原理上进行简要的介绍。 从混合开发说起对Java开发者而言，“回调”是">
+    
+        <link rel="alternate" type="application/atom+xml" title="柘个角落" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/img/favicon.ico">
+    <link rel="stylesheet" href="//unpkg.com/hexo-theme-material-indigo@latest/css/style.css">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/avatar.jpeg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">Li Lei</h5>
+          <a href="mailto:bequietlee#gmail.com" title="bequietlee#gmail.com" class="mail">bequietlee#gmail.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                文章
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+                标签
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/bequietlee" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/2019/03/10/links"  >
+                <i class="icon icon-lg icon-link"></i>
+                友情链接
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">Kotlin 协程基础课 04.协程原理小探——从包装异步请求为同步说起</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">Kotlin 协程基础课 04.协程原理小探——从包装异步请求为同步说起</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2020-03-16T15:14:41.000Z" itemprop="datePublished" class="page-time">
+  2020-03-16
+</time>
+
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#从混合开发说起"><span class="post-toc-number">1.</span> <span class="post-toc-text">从混合开发说起</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#一个回调Demo"><span class="post-toc-number">1.1.</span> <span class="post-toc-text">一个回调Demo</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#将异步转化为同步"><span class="post-toc-number">1.2.</span> <span class="post-toc-text">将异步转化为同步</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#suspendCoroutine是如何工作的"><span class="post-toc-number">2.</span> <span class="post-toc-text">suspendCoroutine是如何工作的</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#大纲"><span class="post-toc-number">3.</span> <span class="post-toc-text">大纲</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#混合开发，从把异步请求转换为同步说起"><span class="post-toc-number">4.</span> <span class="post-toc-text">混合开发，从把异步请求转换为同步说起</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#异步接口"><span class="post-toc-number">4.1.</span> <span class="post-toc-text">异步接口</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#转换同步"><span class="post-toc-number">4.2.</span> <span class="post-toc-text">转换同步</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#协程内部如何将异步转换为同步"><span class="post-toc-number">5.</span> <span class="post-toc-text">协程内部如何将异步转换为同步</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#suspendCoroutine"><span class="post-toc-number">5.1.</span> <span class="post-toc-text">suspendCoroutine</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#todo"><span class="post-toc-number">5.2.</span> <span class="post-toc-text">todo</span></a></li></ol></li></ol>
+        </nav>
+    </aside>
+
+
+<article id="post-kotlin-coroutines-04"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">Kotlin 协程基础课 04.协程原理小探——从包装异步请求为同步说起</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2020-03-16 23:14:41" datetime="2020-03-16T15:14:41.000Z"  itemprop="datePublished">2020-03-16</time>
+
+            
+
+
+            
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <blockquote>
+<p>这是《Kotlin 协程基础课》的第4篇，也是最后一篇文章。</p>
+</blockquote>
+<blockquote>
+<p>我不在意十年后的自己是什么样子，我在意的是，十年后的我怎么看现在的自己。</p>
+</blockquote>
+<p>协程是强大的工具，通过前面三篇文章我们介绍了什么是协程、如何使用协程、协程里的CoroutineContext到底是个什么玩意儿。本文是《Kotlin协程基础课》系列的最后一篇文章，将从原理上进行简要的介绍。</p>
+<h1 id="从混合开发说起"><a href="#从混合开发说起" class="headerlink" title="从混合开发说起"></a>从混合开发说起</h1><p>对Java开发者而言，“回调”是再常见不过的概念了。从各种SDK到我们自己开发的代码，处处充满了回调。某个任务需要长时间执行，同时我们希望能在任务完成时得到通知，在函数参数里加上一个回调对象，用以收取结果，是十分常见的解决方案。</p>
+<h2 id="一个回调Demo"><a href="#一个回调Demo" class="headerlink" title="一个回调Demo"></a>一个回调Demo</h2><p>我们假设有个耗时计算任务，sleep指定时间然后返回数值，代码如下。</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 耗时函数，将运算结果在回调中返回</span></span><br><span class="line"><span class="comment">// 只能在工作线程里调用</span></span><br><span class="line"><span class="function"><span class="keyword">fun</span> <span class="title">calcSlowly</span><span class="params">(inp: <span class="type">Int</span>, callback: <span class="type">CalcTaskCallback</span>&lt;<span class="type">Int</span>&gt;)</span></span> &#123;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        println(<span class="string">"calcSlowly inp=<span class="variable">$inp</span> in thread: <span class="subst">$&#123;Thread.currentThread().name&#125;</span>"</span>)</span><br><span class="line">        <span class="keyword">val</span> result = inp * <span class="number">1000</span>L</span><br><span class="line">        Thread.sleep(result)</span><br><span class="line">        callback.onSuccess(result.toInt())</span><br><span class="line">    &#125; <span class="keyword">catch</span> (e: Exception) &#123;</span><br><span class="line">        println(<span class="string">"Fail to calc"</span>)</span><br><span class="line">        callback.onFailure(<span class="number">-1</span>, <span class="string">"Fail"</span>)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>为了获取计算的结果，我们传入了<code>callback</code>参数，用以接收计算结果，或者异常信息。</p>
+<p>调用它的代码样例如下，用一个匿名内部对象接收回调：</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">fun</span> <span class="title">execCalcTaskAsync</span><span class="params">()</span></span> &#123;</span><br><span class="line">    Thread(Runnable &#123;</span><br><span class="line">        calcSlowly(<span class="number">3</span>, <span class="keyword">object</span> : CalcTaskCallback&lt;<span class="built_in">Int</span>&gt; &#123;</span><br><span class="line">            <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">onSuccess</span><span class="params">(result: <span class="type">Int</span>)</span></span> &#123;</span><br><span class="line">                println(<span class="string">"onSuccess, result=<span class="variable">$result</span>, in thread: <span class="subst">$&#123;Thread.currentThread().name&#125;</span>"</span>)</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">onFailure</span><span class="params">(code: <span class="type">Int</span>, msg: <span class="type">String</span>)</span></span> &#123;</span><br><span class="line">                println(<span class="string">"onFailure, code=<span class="variable">$code</span>, msg=<span class="variable">$msg</span>, in thread: <span class="subst">$&#123;Thread.currentThread().name&#125;</span>"</span>)</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;)</span><br><span class="line">    &#125;).start()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这种回调写法在Java中再常见不过了。但是它却有着不小的隐患：</p>
+<ol>
+<li>嵌套太多，成为“回调地狱”；</li>
+<li>传入的callback如果是Activity会引起泄露；</li>
+<li>代码阅读起来不直观。</li>
+</ol>
+<p>这几个隐患不详述了，接下来看看在Kotlin中如何将异步回调转换为同步请求。</p>
+<h2 id="将异步转化为同步"><a href="#将异步转化为同步" class="headerlink" title="将异步转化为同步"></a>将异步转化为同步</h2><p>通过协程的<code>suspendCoroutine</code>关键字，可以将异步回调转换为同步调用，上例改写方法如下，</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 包装异步为同步</span></span><br><span class="line">suspend <span class="function"><span class="keyword">fun</span> <span class="title">calcSlowlySync</span><span class="params">(inp: <span class="type">Int</span>)</span></span>: <span class="built_in">Int</span> =</span><br><span class="line">    suspendCoroutine &#123; cont -&gt;</span><br><span class="line">        calcSlowly(inp, <span class="keyword">object</span>: CalcTaskCallback&lt;<span class="built_in">Int</span>&gt; &#123;</span><br><span class="line">            <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">onSuccess</span><span class="params">(result: <span class="type">Int</span>)</span></span> &#123;</span><br><span class="line">                cont.resume(result)</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">onFailure</span><span class="params">(code: <span class="type">Int</span>, msg: <span class="type">String</span>)</span></span> &#123;</span><br><span class="line">                cont.resumeWithException(Exception(<span class="string">"code=<span class="variable">$code</span>, msg=<span class="variable">$msg</span>"</span>))</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;)</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>改写之后，就可以在协程内部愉快地使用这个同步方法进行耗时计算了。</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">launch(Dispatchers.DEFAULT) &#123;</span><br><span class="line">    <span class="keyword">val</span> result = calcSlowlySync(<span class="number">100</span>)</span><br><span class="line">    println(<span class="string">"result=<span class="variable">$result</span>"</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="suspendCoroutine是如何工作的"><a href="#suspendCoroutine是如何工作的" class="headerlink" title="suspendCoroutine是如何工作的"></a>suspendCoroutine是如何工作的</h1><p>todo</p>
+<hr>
+<p>原始代码<code>MainCoroutine.kt</code></p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">fun</span> <span class="title">main</span><span class="params">(args: <span class="type">Array</span>&lt;<span class="type">String</span>&gt;)</span></span> &#123;</span><br><span class="line">    runBlocking &#123;</span><br><span class="line">        <span class="keyword">val</span> job = GlobalScope.launch &#123;</span><br><span class="line">            <span class="keyword">val</span> result = calcSlowly(<span class="number">123</span>)</span><br><span class="line">            println(<span class="string">"result = <span class="variable">$result</span>"</span>)</span><br><span class="line">        &#125;</span><br><span class="line">        job.join()</span><br><span class="line">    &#125;</span><br><span class="line">    print(<span class="string">"FINISH"</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 延时计算</span></span><br><span class="line"><span class="keyword">private</span> suspend <span class="function"><span class="keyword">fun</span> <span class="title">calcSlowly</span><span class="params">(inp: <span class="type">Int</span>)</span></span>: <span class="built_in">Int</span> = withContext(Dispatchers.Default) &#123;</span><br><span class="line">    delay(<span class="number">1000</span>L)</span><br><span class="line">    inp * <span class="number">10</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>反编译后生成4个文件</p>
+<ol>
+<li>MainCoroutineKt.class，</li>
+<li>MainCoroutineKt$main$1.class</li>
+<li>MainCoroutineKt$main$1$job$1.class</li>
+<li>MainCoroutineKt$calcSlowly$2.class</li>
+</ol>
+<h1 id="大纲"><a href="#大纲" class="headerlink" title="大纲"></a>大纲</h1><h1 id="混合开发，从把异步请求转换为同步说起"><a href="#混合开发，从把异步请求转换为同步说起" class="headerlink" title="混合开发，从把异步请求转换为同步说起"></a>混合开发，从把异步请求转换为同步说起</h1><h2 id="异步接口"><a href="#异步接口" class="headerlink" title="异步接口"></a>异步接口</h2><h2 id="转换同步"><a href="#转换同步" class="headerlink" title="转换同步"></a>转换同步</h2><h1 id="协程内部如何将异步转换为同步"><a href="#协程内部如何将异步转换为同步" class="headerlink" title="协程内部如何将异步转换为同步"></a>协程内部如何将异步转换为同步</h1><h2 id="suspendCoroutine"><a href="#suspendCoroutine" class="headerlink" title="suspendCoroutine"></a>suspendCoroutine</h2><h2 id="todo"><a href="#todo" class="headerlink" title="todo"></a>todo</h2>
+        </div>
+
+        <blockquote class="post-copyright">
+    
+    <div class="content">
+        
+<span class="post-time">
+    最后更新时间：<time datetime="2020-03-16T15:15:56.907Z" itemprop="dateUpdated">2020-03-16 23:15:56</time>
+</span><br>
+
+
+        
+        本文系作者原创，如转载请注明出处。欢迎留言讨论，或通过邮件进行沟通～
+        
+    </div>
+    
+    <footer>
+        <a href="https://lilei.pro">
+            <img src="/img/avatar.jpeg" alt="Li Lei">
+            Li Lei
+        </a>
+    </footer>
+</blockquote>
+
+        
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Kotlin/">Kotlin</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://lilei.pro/2020/03/16/kotlin-coroutines-04/&title=《Kotlin 协程基础课 04.协程原理小探——从包装异步请求为同步说起》 — 柘个角落&pic=https://lilei.pro/img/avatar.jpeg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://lilei.pro/2020/03/16/kotlin-coroutines-04/&title=《Kotlin 协程基础课 04.协程原理小探——从包装异步请求为同步说起》 — 柘个角落&source=技术与生活上的点滴积累" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://lilei.pro/2020/03/16/kotlin-coroutines-04/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《Kotlin 协程基础课 04.协程原理小探——从包装异步请求为同步说起》 — 柘个角落&url=https://lilei.pro/2020/03/16/kotlin-coroutines-04/&via=https://lilei.pro" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://lilei.pro/2020/03/16/kotlin-coroutines-04/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/2020/03/16/Go-through-jetpack-data-binding-L2/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">通关Jetpack之 Data Binding：第2课 接口纵览</h4>
+      </a>
+    </div>
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2020/03/16/Go-through-jetpack-data-binding-L1/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">通关Jetpack之 Data Binding：第1课 需求实战</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+    <!-- Valine Comments -->
+    <div class="comments vcomment" id="comments"></div>
+    <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+    <script src="//unpkg.com/valine@latest/dist/Valine.min.js"></script>
+    <!-- Valine Comments script -->
+    <script>
+        var GUEST_INFO = ['nick','mail','link'];
+        var guest_info = 'nick,mail,link'.split(',').filter(function(item){
+          return GUEST_INFO.indexOf(item) > -1
+        });
+        new Valine({
+            el: '#comments',
+            notify: 'false' == 'true',
+            verify: 'true' == 'true',
+            appId: "khG3rBt0nWda7lxDUHpS3Sq0-gzGzoHsz",
+            appKey: "btFkQfcBgJeCRm55mYmUgA5d",
+            avatar: "mm",
+            placeholder: "欢迎讨论",
+            guest_info: guest_info.length == 0 ? GUEST_INFO : guest_info,
+            pageSize: "10"
+        })
+    </script>
+    <!-- Valine Comments end -->
+
+
+
+
+
+
+
+</article>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>博客内容遵循 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">知识共享 署名 - 非商业性 - 相同方式共享 4.0 国际协议</a></span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>Li Lei &copy; 2015 - 2020</span>
+            <span>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://lilei.pro/2020/03/16/kotlin-coroutines-04/&title=《Kotlin 协程基础课 04.协程原理小探——从包装异步请求为同步说起》 — 柘个角落&pic=https://lilei.pro/img/avatar.jpeg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://lilei.pro/2020/03/16/kotlin-coroutines-04/&title=《Kotlin 协程基础课 04.协程原理小探——从包装异步请求为同步说起》 — 柘个角落&source=技术与生活上的点滴积累" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://lilei.pro/2020/03/16/kotlin-coroutines-04/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《Kotlin 协程基础课 04.协程原理小探——从包装异步请求为同步说起》 — 柘个角落&url=https://lilei.pro/2020/03/16/kotlin-coroutines-04/&via=https://lilei.pro" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://lilei.pro/2020/03/16/kotlin-coroutines-04/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACG0lEQVR42u3aS07EQAwFwLn/pQeJfcKznUEad/UKAUq6srD8e73i8/49+W/et+f++Vf/88DBwMD4Wkbyyqsr3j9hwi5/DgwMjAMYeRBMePeY5KPkd8PAwMC4etkkEN9fFAMDA+PZgFt9WR6sMTAwMHpFbP6CXik7atthYGCsZlQHA//58wfnGxgYGF/CeLdOEi7zsWUeXi+fjIGBsZpx30pL4ltSylafU01GMTAwdjPytn6vQM3L3VGwxsDAOICRx+anEsfe4kUhcmNgYKxjzK/7VIu/uUyGgYGxmpEkfNVhZ2/Y0MNjYGCcwJgExPsBZDX4JkNNDAyMkxm95G+S3uV/jZJFDAyMYxjJ8kS+YFG9XBKgL9NKDAyM1YzeomqvEB3tg8SBGwMDYzdjkrTlTbq8QO19VgwMjNMY80A5GXw2U0MMDIyljDzM5cPIfDzw2HAUAwNjKaPa5Lq/4nx40EslMTAwdjMKY8I4Eaz+3GvwYWBgnMmoDgB6yVx1saNchWNgYKxm9C6aNPR7pW+1SYeBgbGbkbfyq+ljwi70BfO1DAwMjEWMd/H0ytdesC58IAwMjNWMSZibjxDmbTsMDIxzGHmxWs005yPMPNBjYGCcwOgNDArLEONw/MfHxcDAwCima/kiRdLaiz4NBgYGRjFl7JW4o2QUAwPjAEaviV9docjXO17Vg4GBsZox2dT4RPlaXVPDwMBYzfgBIlBBz5uQEz4AAAAASUVORK5CYII=" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: false };
+
+
+</script>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/main.min.js"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/search.min.js" async></script>
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

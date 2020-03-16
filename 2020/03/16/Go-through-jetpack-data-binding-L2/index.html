@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    
+    <title>通关Jetpack之 Data Binding：第2课 接口纵览 | 柘个角落 | IF YOU WANT SOMETHING, GO GET IT. PERIOD.</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="Kotlin,Jetpack">
+    <meta name="description" content="这是《通关Jetpack》系列的第2篇文章   我没什么能耐，不能给你们更好的生活，唯一能做的，是挡在你们前边。——《误杀》  在上一篇文章中，通过实例介绍了Data Binding的概念和用法，本篇文章则从更丰富的细节上介绍Data Binding的种种用法。 ##创建Data Binding的两种方式 在代码里，如果要获取到Data Binding对象，有2种方式 方式一：一步到位的Data">
+<meta name="keywords" content="Kotlin,Jetpack">
+<meta property="og:type" content="article">
+<meta property="og:title" content="通关Jetpack之 Data Binding：第2课 接口纵览">
+<meta property="og:url" content="https://lilei.pro/2020/03/16/Go-through-jetpack-data-binding-L2/index.html">
+<meta property="og:site_name" content="柘个角落">
+<meta property="og:description" content="这是《通关Jetpack》系列的第2篇文章   我没什么能耐，不能给你们更好的生活，唯一能做的，是挡在你们前边。——《误杀》  在上一篇文章中，通过实例介绍了Data Binding的概念和用法，本篇文章则从更丰富的细节上介绍Data Binding的种种用法。 ##创建Data Binding的两种方式 在代码里，如果要获取到Data Binding对象，有2种方式 方式一：一步到位的Data">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2020-03-16T15:13:20.424Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="通关Jetpack之 Data Binding：第2课 接口纵览">
+<meta name="twitter:description" content="这是《通关Jetpack》系列的第2篇文章   我没什么能耐，不能给你们更好的生活，唯一能做的，是挡在你们前边。——《误杀》  在上一篇文章中，通过实例介绍了Data Binding的概念和用法，本篇文章则从更丰富的细节上介绍Data Binding的种种用法。 ##创建Data Binding的两种方式 在代码里，如果要获取到Data Binding对象，有2种方式 方式一：一步到位的Data">
+    
+        <link rel="alternate" type="application/atom+xml" title="柘个角落" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/img/favicon.ico">
+    <link rel="stylesheet" href="//unpkg.com/hexo-theme-material-indigo@latest/css/style.css">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/avatar.jpeg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">Li Lei</h5>
+          <a href="mailto:bequietlee#gmail.com" title="bequietlee#gmail.com" class="mail">bequietlee#gmail.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                文章
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+                标签
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/bequietlee" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/2019/03/10/links"  >
+                <i class="icon icon-lg icon-link"></i>
+                友情链接
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">通关Jetpack之 Data Binding：第2课 接口纵览</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">通关Jetpack之 Data Binding：第2课 接口纵览</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2020-03-16T15:18:48.000Z" itemprop="datePublished" class="page-time">
+  2020-03-16
+</time>
+
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#方式一：一步到位的DataBindingUtil。"><span class="post-toc-number">1.</span> <span class="post-toc-text">方式一：一步到位的DataBindingUtil。</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#方式二：单独使用LayoutInflater"><span class="post-toc-number">2.</span> <span class="post-toc-text">方式二：单独使用LayoutInflater</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#表达式用法"><span class="post-toc-number"></span> <span class="post-toc-text">表达式用法</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#可以在布局文件中使用的表达式"><span class="post-toc-number">1.</span> <span class="post-toc-text">可以在布局文件中使用的表达式</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#NULL则替换"><span class="post-toc-number">2.</span> <span class="post-toc-text">NULL则替换</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#读取属性值"><span class="post-toc-number">3.</span> <span class="post-toc-text">读取属性值</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#读取同一布局文件里其它的View"><span class="post-toc-number">4.</span> <span class="post-toc-text">读取同一布局文件里其它的View</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#集合的写法"><span class="post-toc-number">5.</span> <span class="post-toc-text">集合的写法</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#String字面量"><span class="post-toc-number">6.</span> <span class="post-toc-text">String字面量</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#引用静态资源"><span class="post-toc-number">7.</span> <span class="post-toc-text">引用静态资源</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#事件处理"><span class="post-toc-number"></span> <span class="post-toc-text">事件处理</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#方法引用"><span class="post-toc-number">1.</span> <span class="post-toc-text">方法引用</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#监听绑定"><span class="post-toc-number">2.</span> <span class="post-toc-text">监听绑定</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#导入、变量与引入"><span class="post-toc-number"></span> <span class="post-toc-text">导入、变量与引入</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#导入"><span class="post-toc-number">1.</span> <span class="post-toc-text">导入</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#变量"><span class="post-toc-number">2.</span> <span class="post-toc-text">变量</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#引入"><span class="post-toc-number">3.</span> <span class="post-toc-text">引入</span></a></li></ol>
+        </nav>
+    </aside>
+
+
+<article id="post-Go-through-jetpack-data-binding-L2"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">通关Jetpack之 Data Binding：第2课 接口纵览</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2020-03-16 23:18:48" datetime="2020-03-16T15:18:48.000Z"  itemprop="datePublished">2020-03-16</time>
+
+            
+
+
+            
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <blockquote>
+<p>这是《通关Jetpack》系列的第2篇文章</p>
+</blockquote>
+<blockquote>
+<p>我没什么能耐，不能给你们更好的生活，唯一能做的，是挡在你们前边。——《误杀》</p>
+</blockquote>
+<p>在上一篇文章中，通过实例介绍了Data Binding的概念和用法，本篇文章则从更丰富的细节上介绍Data Binding的种种用法。</p>
+<p>##创建Data Binding的两种方式</p>
+<p>在代码里，如果要获取到Data Binding对象，有2种方式</p>
+<h3 id="方式一：一步到位的DataBindingUtil。"><a href="#方式一：一步到位的DataBindingUtil。" class="headerlink" title="方式一：一步到位的DataBindingUtil。"></a>方式一：一步到位的<code>DataBindingUtil</code>。</h3><p>在<code>onCreate</code>中，可以同时完成设置布局文件+创建Binding对象两个动作。</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">onCreate</span><span class="params">(savedInstanceState: <span class="type">Bundle</span>?)</span></span> &#123;</span><br><span class="line">    <span class="keyword">super</span>.onCreate(savedInstanceState)</span><br><span class="line">    <span class="keyword">val</span> binding: ActivityMainBinding = DataBindingUtil.setContentView(</span><br><span class="line">            <span class="keyword">this</span>, R.layout.activity_main)</span><br><span class="line">    binding.user = User(<span class="string">"Test"</span>, <span class="string">"User"</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>或者在<code>Fragment</code>、<code>ListView</code>或者<code>RecyclerView</code>的初始方法中。</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">val</span> listItemBinding = DataBindingUtil.inflate(layoutInflater, R.layout.list_item, viewGroup, <span class="literal">false</span>)</span><br></pre></td></tr></table></figure>
+<h3 id="方式二：单独使用LayoutInflater"><a href="#方式二：单独使用LayoutInflater" class="headerlink" title="方式二：单独使用LayoutInflater"></a>方式二：单独使用<code>LayoutInflater</code></h3><p>如果已经调用了<code>setContentView()</code>，则可以在之后单独使用<code>inflate</code>方法来获取Binding对象。</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">val</span> binding: ActivityMainBinding = ActivityMainBinding.inflate(getLayoutInflater())</span><br></pre></td></tr></table></figure>
+<p>对于<code>Fragment</code>、<code>ListView</code>或者<code>RecyclerView</code>也同理。</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">val</span> listItemBinding = ListItemBinding.inflate(layoutInflater, viewGroup, <span class="literal">false</span>)</span><br></pre></td></tr></table></figure>
+<h2 id="表达式用法"><a href="#表达式用法" class="headerlink" title="表达式用法"></a>表达式用法</h2><h3 id="可以在布局文件中使用的表达式"><a href="#可以在布局文件中使用的表达式" class="headerlink" title="可以在布局文件中使用的表达式"></a>可以在布局文件中使用的表达式</h3><p>可以在布局文件中使用丰富的表达式，列举如下，暂不举例。</p>
+<ul>
+<li>数学运算符 <code>+ - / * %</code></li>
+<li>字符串拼接 <code>+</code></li>
+<li>逻辑算式 <code>&amp;&amp; ||</code></li>
+<li>二元运算符 <code>&amp; | ^</code></li>
+<li>一元运算符 <code>+ - ! ~</code></li>
+<li>三目运算符 <code>?:</code></li>
+<li>移位运算 <code>&gt;&gt; &gt;&gt;&gt; &lt;&lt;</code></li>
+<li>比较运算 <code>== &gt; &lt; &gt;= &lt;=</code>（注意在xml中需要将<code>&lt;</code>转义写为<code>&amp;lt;</code>）</li>
+<li><code>instanceof</code></li>
+<li>小括号 <code>()</code></li>
+<li>字面量 字符、字符串、数字以及<code>null</code></li>
+<li>类型转换</li>
+<li>方法调用</li>
+<li>属性读取</li>
+<li>数组读取 <code>[]</code></li>
+</ul>
+<h3 id="NULL则替换"><a href="#NULL则替换" class="headerlink" title="NULL则替换"></a>NULL则替换</h3><p>NULL则替换表达式（<code>??</code>）很好用，可以避免很多NPE的场景。</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">// NULL则替换</span><br><span class="line">android:text="@&#123;user.displayName ?? user.lastName&#125;"</span><br><span class="line">// 等价于</span><br><span class="line">android:text="@&#123;user.displayName != null ? user.displayName : user.lastName&#125;"</span><br></pre></td></tr></table></figure>
+<h3 id="读取属性值"><a href="#读取属性值" class="headerlink" title="读取属性值"></a>读取属性值</h3><p>其实对于 a. public属性 b. 带有getter的属性 c. 可观测的属性<code>ObservableField</code>，它们在xml里的读取写法都是相同的，都是<code>对象.属性</code>。</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">android:text="@&#123;user.name&#125;"</span><br></pre></td></tr></table></figure>
+<h3 id="读取同一布局文件里其它的View"><a href="#读取同一布局文件里其它的View" class="headerlink" title="读取同一布局文件里其它的View"></a>读取同一布局文件里其它的View</h3><blockquote>
+<p>尽管很少用到，但还是介绍一下。</p>
+</blockquote>
+<p>比如我有两个TextView，id无分别是<code>text_view_name</code>和<code>text_view_nickname</code>，在第二个TextView里可以访问第一个TextView的文本，则可以这么写，需要留意的就是会自动将id转为驼峰命名。</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">TextView</span></span></span><br><span class="line"><span class="tag">    <span class="attr">...</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:text</span>=<span class="string">"@&#123;textViewName.text&#125;"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">...</span></span></span><br><span class="line"><span class="tag">    /&gt;</span></span><br></pre></td></tr></table></figure>
+<h3 id="集合的写法"><a href="#集合的写法" class="headerlink" title="集合的写法"></a>集合的写法</h3><p>在xml里同样可以使用集合Data，并通过<code>[]</code>来获取集合中特定的元素。</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">data</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">import</span> <span class="attr">type</span>=<span class="string">"android.util.SparseArray"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">import</span> <span class="attr">type</span>=<span class="string">"java.util.Map"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">import</span> <span class="attr">type</span>=<span class="string">"java.util.List"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">variable</span> <span class="attr">name</span>=<span class="string">"list"</span> <span class="attr">type</span>=<span class="string">"List&amp;lt;String&gt;"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">variable</span> <span class="attr">name</span>=<span class="string">"sparse"</span> <span class="attr">type</span>=<span class="string">"SparseArray&amp;lt;String&gt;"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">variable</span> <span class="attr">name</span>=<span class="string">"map"</span> <span class="attr">type</span>=<span class="string">"Map&amp;lt;String, String&gt;"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">variable</span> <span class="attr">name</span>=<span class="string">"index"</span> <span class="attr">type</span>=<span class="string">"int"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">variable</span> <span class="attr">name</span>=<span class="string">"key"</span> <span class="attr">type</span>=<span class="string">"String"</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">data</span>&gt;</span></span><br><span class="line">…</span><br><span class="line">android:text="@&#123;list[index]&#125;"</span><br><span class="line">…</span><br><span class="line">android:text="@&#123;sparse[index]&#125;"</span><br><span class="line">…</span><br><span class="line">android:text="@&#123;map[key]&#125;"</span><br></pre></td></tr></table></figure>
+<h3 id="String字面量"><a href="#String字面量" class="headerlink" title="String字面量"></a>String字面量</h3><p>在xml文件中，如果要使用双引号<code>&quot;</code>，则可以将外部的双引号替换为单引号<code>&#39;</code>。或者在应当使用双引号的地方使用反引号。</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- 单引号替代双引号 --&gt;</span></span><br><span class="line">android:text='@&#123;map["firstName"]&#125;'</span><br><span class="line"><span class="comment">&lt;!-- 反引号替代双引号 --&gt;</span></span><br><span class="line">android:text="@&#123;map[`firstName`]&#125;"</span><br></pre></td></tr></table></figure>
+<h3 id="引用静态资源"><a href="#引用静态资源" class="headerlink" title="引用静态资源"></a>引用静态资源</h3><p>引用多个静态资源的语法如下。</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">android:padding="@&#123;larege ? @dimen/largePadding : @dimen/smallPadding&#125;"</span><br><span class="line">android:text="@&#123;@string/nameFormat(firstName, lastName)&#125;"</span><br><span class="line">android:text="@&#123;@plurals/banana(bananaCount)&#125;"</span><br></pre></td></tr></table></figure>
+<h2 id="事件处理"><a href="#事件处理" class="headerlink" title="事件处理"></a>事件处理</h2><p>Data binding允许你为View绑定各种各样的事件处理函数，作为布局文件里的一项属性，大部分命名格式为<code>android:onXXXX</code>，对应的View接口为<code>View.OnXXXXListener</code>。有两种方式处理事件。</p>
+<ul>
+<li>方法引用：在表达式中使用方法签名。Data Binding会将方法与对象包装成一个Listener并设置给View。</li>
+<li>监听绑定：Lambda表达式，Data Binding对此同样生成一个Listener，供事件触发时调用。</li>
+</ul>
+<h3 id="方法引用"><a href="#方法引用" class="headerlink" title="方法引用"></a>方法引用</h3><p>就像你可以为<code>onClick</code>指明绑定的方法一样，也可以为View的各种事件绑定ViewModel中的方法。在编译时会对此进行检查，如果方法不存在，或是签名错误，则直接报错。“方法引用”会在编译时创建一个Listener，相应的，“监听绑定”则在事件触发时才创建Listener。一个方法引用绑定的例子如下。</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyHandlers</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">fun</span> <span class="title">onClickFriend</span><span class="params">(view: <span class="type">View</span>)</span></span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>我们希望在<code>onClick</code>时触发<code>onClickFriend</code>方法，则写法如下。注意：表达式中的签名与类文件里面方法签名必须完全一致。</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version="1.0" encoding="utf-8"?&gt;</span><br><span class="line"><span class="tag">&lt;<span class="name">layout</span> <span class="attr">xmlns:android</span>=<span class="string">"http://schemas.android.com/apk/res/android"</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">data</span>&gt;</span></span><br><span class="line">       <span class="tag">&lt;<span class="name">variable</span> <span class="attr">name</span>=<span class="string">"handlers"</span> <span class="attr">type</span>=<span class="string">"com.example.MyHandlers"</span>/&gt;</span></span><br><span class="line">       <span class="tag">&lt;<span class="name">variable</span> <span class="attr">name</span>=<span class="string">"user"</span> <span class="attr">type</span>=<span class="string">"com.example.User"</span>/&gt;</span></span><br><span class="line">   <span class="tag">&lt;/<span class="name">data</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">LinearLayout</span></span></span><br><span class="line"><span class="tag">       <span class="attr">android:orientation</span>=<span class="string">"vertical"</span></span></span><br><span class="line"><span class="tag">       <span class="attr">android:layout_width</span>=<span class="string">"match_parent"</span></span></span><br><span class="line"><span class="tag">       <span class="attr">android:layout_height</span>=<span class="string">"match_parent"</span>&gt;</span></span><br><span class="line">       <span class="tag">&lt;<span class="name">TextView</span> <span class="attr">android:layout_width</span>=<span class="string">"wrap_content"</span></span></span><br><span class="line"><span class="tag">           <span class="attr">android:layout_height</span>=<span class="string">"wrap_content"</span></span></span><br><span class="line"><span class="tag">           <span class="attr">android:text</span>=<span class="string">"@&#123;user.firstName&#125;"</span></span></span><br><span class="line"><span class="tag">           <span class="attr">android:onClick</span>=<span class="string">"@&#123;handlers::onClickFriend&#125;"</span>/&gt;</span></span><br><span class="line">   <span class="tag">&lt;/<span class="name">LinearLayout</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">layout</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h3 id="监听绑定"><a href="#监听绑定" class="headerlink" title="监听绑定"></a>监听绑定</h3><p>监听绑定的自由度更大，它允许你运行任意的代码。限制之处则在于，方法的返回值必须与表达式期望的值相匹配。</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Presneter</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">fun</span> <span class="title">onSaveClick</span><span class="params">(task: <span class="type">Task</span>)</span></span> &#123;&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>我们可以将以上方法绑定在View的<code>onClick</code>上面。因为这里多了<code>task</code>参数，故无法使用方法引用来写。</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version="1.0" encoding="utf-8"?&gt;</span><br><span class="line"><span class="tag">&lt;<span class="name">layout</span> <span class="attr">xmlns:android</span>=<span class="string">"http://schemas.android.com/apk/res/android"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">data</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">variable</span> <span class="attr">name</span>=<span class="string">"task"</span> <span class="attr">type</span>=<span class="string">"com.android.example.Task"</span> /&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">variable</span> <span class="attr">name</span>=<span class="string">"presenter"</span> <span class="attr">type</span>=<span class="string">"com.android.example.Presenter"</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">data</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">LinearLayout</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:layout_width</span>=<span class="string">"match_parent"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:layout_height</span>=<span class="string">"match_parent"</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">Button</span></span></span><br><span class="line"><span class="tag">            <span class="attr">android:layout_width</span>=<span class="string">"wrap_content"</span></span></span><br><span class="line"><span class="tag">            <span class="attr">android:layout_height</span>=<span class="string">"wrap_content"</span></span></span><br><span class="line"><span class="tag">            <span class="attr">android:onClick</span>=<span class="string">"@&#123;() -&gt; presenter.onSaveClick(task)&#125;"</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">LinearLayout</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">layout</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>如果需要用到View本身，则可以使用<code>android:onClick=&quot;@{(view) -&gt; presenter.onSaveClick(task)}&quot;</code>。如果处理函数里也要用到View，则函数签名写作。</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Presenter</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">fun</span> <span class="title">onSaveClick</span><span class="params">(view: <span class="type">View</span>, task: <span class="type">Task</span>)</span></span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>还可以为方法增加更多的参数，比如对于<code>CheckBox</code>的<code>isChecked</code>属性。</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Presenter</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">fun</span> <span class="title">onCompletedChanged</span><span class="params">(task: <span class="type">Task</span>, completed: <span class="type">Boolean</span>)</span></span>&#123;&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">CheckBox</span> <span class="attr">android:layout_width</span>=<span class="string">"wrap_content"</span> <span class="attr">android:layout_height</span>=<span class="string">"wrap_content"</span></span></span><br><span class="line"><span class="tag">      <span class="attr">android:onCheckedChanged</span>=<span class="string">"@&#123;(cb, isChecked) -&gt; presenter.completeChanged(task, isChecked)&#125;"</span> /&gt;</span></span><br></pre></td></tr></table></figure>
+<p>对于返回值非void的情况，函数签名必须匹配。比如<code>onLongClick</code>方法，要返回<code>boolean</code>类型的值，表示事件是否被消费。</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Presenter</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">fun</span> <span class="title">onLongClick</span><span class="params">(view: <span class="type">View</span>, task: <span class="type">Task</span>)</span></span>: <span class="built_in">Boolean</span> &#123; &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">android:onLongClick="@&#123;(theView) -&gt; presenter.onLongClick(theView, task)&#125;"</span><br></pre></td></tr></table></figure>
+<p>也可以在表达式里使用三目运算符，用<code>void</code>表示不响应事件。</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">android:onClick="@&#123;(v) -&gt; v.isVisible() ? doSomething() : void&#125;"</span><br></pre></td></tr></table></figure>
+<p>忠告：把复杂的业务逻辑放在Kotlin/Java代码中处理，而非xml表达式。</p>
+<h2 id="导入、变量与引入"><a href="#导入、变量与引入" class="headerlink" title="导入、变量与引入"></a>导入、变量与引入</h2><ul>
+<li>导入（Imports）：在xml中引入外部类</li>
+<li>变量（Variables）：声明在xml中使用的变量</li>
+<li>引入（Incluces）：帮助我们构建更加复杂的UI</li>
+</ul>
+<h3 id="导入"><a href="#导入" class="headerlink" title="导入"></a>导入</h3><p>在<code>&lt;data&gt;</code>块进行导入，导入后就可以在xml表达式里使用相应的类。如下例的<code>View</code>类。</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">data</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">import</span> <span class="attr">type</span>=<span class="string">"android.view.View"</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">data</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">TextView</span></span></span><br><span class="line"><span class="tag">   <span class="attr">android:text</span>=<span class="string">"@&#123;user.lastName&#125;"</span></span></span><br><span class="line"><span class="tag">   <span class="attr">android:layout_width</span>=<span class="string">"wrap_content"</span></span></span><br><span class="line"><span class="tag">   <span class="attr">android:layout_height</span>=<span class="string">"wrap_content"</span></span></span><br><span class="line"><span class="tag">   <span class="attr">android:visibility</span>=<span class="string">"@&#123;user.isAdult ? View.VISIBLE : View.GONE&#125;"</span>/&gt;</span></span><br></pre></td></tr></table></figure>
+<p>可以在表达式中进行强制类型转换，如把<code>user.connection</code>强转为<code>User</code>。</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">TextView</span></span></span><br><span class="line"><span class="tag">   <span class="attr">android:text</span>=<span class="string">"@&#123;((User)(user.connection)).lastName&#125;"</span></span></span><br><span class="line"><span class="tag">   <span class="attr">android:layout_width</span>=<span class="string">"wrap_content"</span></span></span><br><span class="line"><span class="tag">   <span class="attr">android:layout_height</span>=<span class="string">"wrap_content"</span>/&gt;</span></span><br></pre></td></tr></table></figure>
+<p>在import后，可以在表达式中使用静态方法。</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">data</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">import</span> <span class="attr">type</span>=<span class="string">"com.example.MyStringUtils"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">variable</span> <span class="attr">name</span>=<span class="string">"user"</span> <span class="attr">type</span>=<span class="string">"com.example.User"</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">data</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">TextView</span></span></span><br><span class="line"><span class="tag">   <span class="attr">android:text</span>=<span class="string">"@&#123;MyStringUtils.capitalize(user.lastName)&#125;"</span></span></span><br><span class="line"><span class="tag">   <span class="attr">android:layout_width</span>=<span class="string">"wrap_content"</span></span></span><br><span class="line"><span class="tag">   <span class="attr">android:layout_height</span>=<span class="string">"wrap_content"</span>/&gt;</span></span><br></pre></td></tr></table></figure>
+<p>作为Data Binding类库的默认行为，<code>java.lang.*</code>已经自动引入。</p>
+<h3 id="变量"><a href="#变量" class="headerlink" title="变量"></a>变量</h3><p>声明变量，从而在表达式中引用这些变量，变量的赋值来自于Binding对象。对于同名的<code>portrait</code>和<code>landscape</code>布局文件，它们的变量声明会进行合并，因此注意在处理这种场景时，不要发生命名冲突。对于未赋值的变量，在运行时会取它们的默认值：<code>0</code>、<code>false</code>、<code>null</code>等等。</p>
+<p>Data Binding类库同样内置了<code>context</code>变量，供调用者在表达式中使用，它等价于<code>View.getContext()</code>。</p>
+<h3 id="引入"><a href="#引入" class="headerlink" title="引入"></a>引入</h3><p>在进行复杂UI构件时，如果用到了<code>include</code>标签，可以将变量从父布局传递给子布局。如下例，<code>user</code>对象被传递给了子布局。</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version="1.0" encoding="utf-8"?&gt;</span><br><span class="line"><span class="tag">&lt;<span class="name">layout</span> <span class="attr">xmlns:android</span>=<span class="string">"http://schemas.android.com/apk/res/android"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">xmlns:bind</span>=<span class="string">"http://schemas.android.com/apk/res-auto"</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">data</span>&gt;</span></span><br><span class="line">       <span class="tag">&lt;<span class="name">variable</span> <span class="attr">name</span>=<span class="string">"user"</span> <span class="attr">type</span>=<span class="string">"com.example.User"</span>/&gt;</span></span><br><span class="line">   <span class="tag">&lt;/<span class="name">data</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">LinearLayout</span></span></span><br><span class="line"><span class="tag">       <span class="attr">android:orientation</span>=<span class="string">"vertical"</span></span></span><br><span class="line"><span class="tag">       <span class="attr">android:layout_width</span>=<span class="string">"match_parent"</span></span></span><br><span class="line"><span class="tag">       <span class="attr">android:layout_height</span>=<span class="string">"match_parent"</span>&gt;</span></span><br><span class="line">       <span class="tag">&lt;<span class="name">include</span> <span class="attr">layout</span>=<span class="string">"@layout/name"</span></span></span><br><span class="line"><span class="tag">           <span class="attr">bind:user</span>=<span class="string">"@&#123;user&#125;"</span>/&gt;</span></span><br><span class="line">       <span class="tag">&lt;<span class="name">include</span> <span class="attr">layout</span>=<span class="string">"@layout/contact"</span></span></span><br><span class="line"><span class="tag">           <span class="attr">bind:user</span>=<span class="string">"@&#123;user&#125;"</span>/&gt;</span></span><br><span class="line">   <span class="tag">&lt;/<span class="name">LinearLayout</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">layout</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>但是，Data Binding并不支持<code>merge</code>标签，试图在<code>merge</code>过程中传递变量是无效的。</p>
+<p>【未完待续】</p>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    
+    <div class="content">
+        
+<span class="post-time">
+    最后更新时间：<time datetime="2020-03-16T15:13:20.424Z" itemprop="dateUpdated">2020-03-16 23:13:20</time>
+</span><br>
+
+
+        
+        本文系作者原创，如转载请注明出处。欢迎留言讨论，或通过邮件进行沟通～
+        
+    </div>
+    
+    <footer>
+        <a href="https://lilei.pro">
+            <img src="/img/avatar.jpeg" alt="Li Lei">
+            Li Lei
+        </a>
+    </footer>
+</blockquote>
+
+        
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Jetpack/">Jetpack</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Kotlin/">Kotlin</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://lilei.pro/2020/03/16/Go-through-jetpack-data-binding-L2/&title=《通关Jetpack之 Data Binding：第2课 接口纵览》 — 柘个角落&pic=https://lilei.pro/img/avatar.jpeg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://lilei.pro/2020/03/16/Go-through-jetpack-data-binding-L2/&title=《通关Jetpack之 Data Binding：第2课 接口纵览》 — 柘个角落&source=技术与生活上的点滴积累" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://lilei.pro/2020/03/16/Go-through-jetpack-data-binding-L2/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《通关Jetpack之 Data Binding：第2课 接口纵览》 — 柘个角落&url=https://lilei.pro/2020/03/16/Go-through-jetpack-data-binding-L2/&via=https://lilei.pro" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://lilei.pro/2020/03/16/Go-through-jetpack-data-binding-L2/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between flex-row-reverse">
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2020/03/16/kotlin-coroutines-04/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">Kotlin 协程基础课 04.协程原理小探——从包装异步请求为同步说起</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+    <!-- Valine Comments -->
+    <div class="comments vcomment" id="comments"></div>
+    <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+    <script src="//unpkg.com/valine@latest/dist/Valine.min.js"></script>
+    <!-- Valine Comments script -->
+    <script>
+        var GUEST_INFO = ['nick','mail','link'];
+        var guest_info = 'nick,mail,link'.split(',').filter(function(item){
+          return GUEST_INFO.indexOf(item) > -1
+        });
+        new Valine({
+            el: '#comments',
+            notify: 'false' == 'true',
+            verify: 'true' == 'true',
+            appId: "khG3rBt0nWda7lxDUHpS3Sq0-gzGzoHsz",
+            appKey: "btFkQfcBgJeCRm55mYmUgA5d",
+            avatar: "mm",
+            placeholder: "欢迎讨论",
+            guest_info: guest_info.length == 0 ? GUEST_INFO : guest_info,
+            pageSize: "10"
+        })
+    </script>
+    <!-- Valine Comments end -->
+
+
+
+
+
+
+
+</article>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>博客内容遵循 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">知识共享 署名 - 非商业性 - 相同方式共享 4.0 国际协议</a></span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>Li Lei &copy; 2015 - 2020</span>
+            <span>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://lilei.pro/2020/03/16/Go-through-jetpack-data-binding-L2/&title=《通关Jetpack之 Data Binding：第2课 接口纵览》 — 柘个角落&pic=https://lilei.pro/img/avatar.jpeg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://lilei.pro/2020/03/16/Go-through-jetpack-data-binding-L2/&title=《通关Jetpack之 Data Binding：第2课 接口纵览》 — 柘个角落&source=技术与生活上的点滴积累" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://lilei.pro/2020/03/16/Go-through-jetpack-data-binding-L2/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《通关Jetpack之 Data Binding：第2课 接口纵览》 — 柘个角落&url=https://lilei.pro/2020/03/16/Go-through-jetpack-data-binding-L2/&via=https://lilei.pro" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://lilei.pro/2020/03/16/Go-through-jetpack-data-binding-L2/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAN4AAADeCAAAAAB3DOFrAAACvUlEQVR42u3aMXLkMAwEQP//0770qmxxBwCx3qAVuWRpyWYgoob4+oqv7/+un/d/PvN0PxnladzkF5oXHh4e3mDq5ymeJ3EGJ++eF/S8lI9LgIeHh7fGO3+m8w99wktI1WV6vI+Hh4f3kbzenfmIeHh4eJ/PO4cFeUF8q6TGw8PD+1teEkbkk66mqZMi+1rWgoeHh1f7nWhyn/P3yvkeHh4e3qWPdS+KnS/T/MLDw8Pb4PVaB6pFdq9Yz5uxXjyPh4eHt8ZLPtDzAHdyMHYeEQ8PD+89vGoI2/tM54db1aO4KJ/Gw8PDW+blH/r8Tq+pK1/WxwXCw8PDW+PlgULejFVtTZi0duHh4eG9n1d4YZ58tAruaszxGEbg4eHhjXn5Q/kHPSm1qxtMvv1EOQoeHh7egJdHBvmGkZfU+UFXtaUADw8Pb4+Xl7zVKCHBzEdMol48PDy8u7zzT/TK6OQgLVmI6lHcL+/i4eHhLfDy8rQXqiZPzoOJaBPCw8PDW+D1YojegVm1RWASkeDh4eHd5U2i214UO490CzPHw8PDW+Mlk8iL3UlRXo0zXoyLh4eHt8ar9in1KvS8jE7GLTRd4eHh4V3l9Vqmkvg1DxSqEXBzufHw8PAu8XobQ/WZWxtJHhDj4eHh7fF6E8pD3mp7wd1x8fDw8PZ41WOtauHbm1a+LRViCDw8PLwFXnLMn0cSt7acPMBtZtV4eHh4V3lJWFAdOC+48/ACDw8P7z287+J1LfmIj/zzRfllmfDw8PAWeNUPblJMV39tEn/0Whbw8PDw5rxkM5i0XuVldx5VFLYfPDw8vDVeXs5WP/rVKLa3zZT/jYeHh/dGXvUoq1rRV0PkF2/h4eHhfQAvuVMNW/OivLxweHh4eGu8SRiRhwvVADdvwFqMcfHw8PAGB2AbQUa1CSDZTvDw8PDWeP8A6n1uu6X6haMAAAAASUVORK5CYII=" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: false };
+
+
+</script>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/main.min.js"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/search.min.js" async></script>
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

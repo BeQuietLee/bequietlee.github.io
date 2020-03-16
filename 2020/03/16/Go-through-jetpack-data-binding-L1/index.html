@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    
+    <title>通关Jetpack之 Data Binding：第1课 需求实战 | 柘个角落 | IF YOU WANT SOMETHING, GO GET IT. PERIOD.</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="Kotlin,Jetpack">
+    <meta name="description" content="这是《通关Jetpack》系列的第1篇文章   有些人沦为平庸，有的人金玉其外、败絮其中。可未来某一天，不经意间你会遇到一个彩虹般绚丽的人，从此以后，其他人就不过是匆匆浮云。  Data Binding是什么在学习一项新知识、新技能之前，必须问的问题是这门技术是什么、将为我们带来什么有益的改变。我们来看一下Data Binding。 Data Binding是什么Data Binding是由Go">
+<meta name="keywords" content="Kotlin,Jetpack">
+<meta property="og:type" content="article">
+<meta property="og:title" content="通关Jetpack之 Data Binding：第1课 需求实战">
+<meta property="og:url" content="https://lilei.pro/2020/03/16/Go-through-jetpack-data-binding-L1/index.html">
+<meta property="og:site_name" content="柘个角落">
+<meta property="og:description" content="这是《通关Jetpack》系列的第1篇文章   有些人沦为平庸，有的人金玉其外、败絮其中。可未来某一天，不经意间你会遇到一个彩虹般绚丽的人，从此以后，其他人就不过是匆匆浮云。  Data Binding是什么在学习一项新知识、新技能之前，必须问的问题是这门技术是什么、将为我们带来什么有益的改变。我们来看一下Data Binding。 Data Binding是什么Data Binding是由Go">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://codelabs.developers.google.com/codelabs/android-databinding/img/94376396329952d2.png">
+<meta property="og:updated_time" content="2020-03-16T15:10:43.566Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="通关Jetpack之 Data Binding：第1课 需求实战">
+<meta name="twitter:description" content="这是《通关Jetpack》系列的第1篇文章   有些人沦为平庸，有的人金玉其外、败絮其中。可未来某一天，不经意间你会遇到一个彩虹般绚丽的人，从此以后，其他人就不过是匆匆浮云。  Data Binding是什么在学习一项新知识、新技能之前，必须问的问题是这门技术是什么、将为我们带来什么有益的改变。我们来看一下Data Binding。 Data Binding是什么Data Binding是由Go">
+<meta name="twitter:image" content="https://codelabs.developers.google.com/codelabs/android-databinding/img/94376396329952d2.png">
+    
+        <link rel="alternate" type="application/atom+xml" title="柘个角落" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/img/favicon.ico">
+    <link rel="stylesheet" href="//unpkg.com/hexo-theme-material-indigo@latest/css/style.css">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/avatar.jpeg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">Li Lei</h5>
+          <a href="mailto:bequietlee#gmail.com" title="bequietlee#gmail.com" class="mail">bequietlee#gmail.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                文章
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+                标签
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/bequietlee" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/2019/03/10/links"  >
+                <i class="icon icon-lg icon-link"></i>
+                友情链接
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">通关Jetpack之 Data Binding：第1课 需求实战</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">通关Jetpack之 Data Binding：第1课 需求实战</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2020-03-16T15:08:48.000Z" itemprop="datePublished" class="page-time">
+  2020-03-16
+</time>
+
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Data-Binding是什么"><span class="post-toc-number">1.</span> <span class="post-toc-text">Data Binding是什么</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#Data-Binding是什么-1"><span class="post-toc-number">1.1.</span> <span class="post-toc-text">Data Binding是什么</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#Data-Binding将为我们带来怎样的改变"><span class="post-toc-number">1.2.</span> <span class="post-toc-text">Data Binding将为我们带来怎样的改变</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#假想一种需求场景"><span class="post-toc-number">2.</span> <span class="post-toc-text">假想一种需求场景</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#没有Data-Binding时的写法"><span class="post-toc-number">2.1.</span> <span class="post-toc-text">没有Data Binding时的写法</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#静态数据绑定UI"><span class="post-toc-number">2.2.</span> <span class="post-toc-text">静态数据绑定UI</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#双向Data-Binding的写法"><span class="post-toc-number">2.3.</span> <span class="post-toc-text">双向Data Binding的写法</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#参考资料"><span class="post-toc-number">3.</span> <span class="post-toc-text">参考资料</span></a></li></ol>
+        </nav>
+    </aside>
+
+
+<article id="post-Go-through-jetpack-data-binding-L1"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">通关Jetpack之 Data Binding：第1课 需求实战</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2020-03-16 23:08:48" datetime="2020-03-16T15:08:48.000Z"  itemprop="datePublished">2020-03-16</time>
+
+            
+
+
+            
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <blockquote>
+<p>这是《通关Jetpack》系列的第1篇文章</p>
+</blockquote>
+<blockquote>
+<p>有些人沦为平庸，有的人金玉其外、败絮其中。可未来某一天，不经意间你会遇到一个彩虹般绚丽的人，从此以后，其他人就不过是匆匆浮云。</p>
+</blockquote>
+<h2 id="Data-Binding是什么"><a href="#Data-Binding是什么" class="headerlink" title="Data Binding是什么"></a>Data Binding是什么</h2><p>在学习一项新知识、新技能之前，必须问的问题是这门技术是什么、将为我们带来什么有益的改变。我们来看一下Data Binding。</p>
+<h3 id="Data-Binding是什么-1"><a href="#Data-Binding是什么-1" class="headerlink" title="Data Binding是什么"></a>Data Binding是什么</h3><p>Data Binding是由Google推出的一个库（Library），用来解决数据变化与UI显示同步的问题。</p>
+<p>Data Binding常常与MVVM一同出现，这并不意味着它们是同一类东西。MVVM是设计模式/编程思想，ViewModel是其中一个组成部分。而Data Binding则是实现这门思想的一种工具。</p>
+<h3 id="Data-Binding将为我们带来怎样的改变"><a href="#Data-Binding将为我们带来怎样的改变" class="headerlink" title="Data Binding将为我们带来怎样的改变"></a>Data Binding将为我们带来怎样的改变</h3><p>做应用开发，很大一部分精力都用于处理UI和数据的同步问题。在传统实现方式里，数据从服务器返回了，此时要手动调用<code>updateView</code>一类的方法更新UI；同样，当用户操作UI上的元素时，会通过<code>Listener</code>等监听，更新到内存的数据中——这是逻辑式写法，而Data Binding则是通过声明式的写法，将数据-UI解耦，从而可以简化控制流，让我们把注意力集中在复杂的业务逻辑上，而非UI同步。</p>
+<p>我们首先从<a href="https://codelabs.developers.google.com/codelabs/android-databinding" target="_blank" rel="noopener">codelab</a>的实例入手，学习如何使用Data Binding。然后会深入介绍Data Binding的API，最后则是从原理角度阐述它是如何工作的。预计分成3篇文章。</p>
+<h2 id="假想一种需求场景"><a href="#假想一种需求场景" class="headerlink" title="假想一种需求场景"></a>假想一种需求场景</h2><p>以这样一个App为例，它需要显示一段静态的文本（左侧），以及可点击的<strong>LIKE</strong>按钮（右侧），点击该按钮时会提升欢迎度数值并实时显示在UI上，最后，欢迎度数值每达到一个阶段，会在屏幕右侧显示不同阶段的图片。</p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://codelabs.developers.google.com/codelabs/android-databinding/img/94376396329952d2.png" alt="sample app" title="">
+                </div>
+                <div class="image-caption">sample app</div>
+            </figure>
+<h3 id="没有Data-Binding时的写法"><a href="#没有Data-Binding时的写法" class="headerlink" title="没有Data Binding时的写法"></a>没有Data Binding时的写法</h3><p>首先是没有使用Data Binding时，传统的MVVM写法，已省略无关代码。</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// SimpleViewModel.kt</span></span><br><span class="line"><span class="comment">// ViewModel，对应页面上的静态部分、动态部分以及点击监听函数</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">SimpleViewModel</span> : <span class="type">ViewModel</span></span>() &#123;</span><br><span class="line">    <span class="keyword">val</span> name = <span class="string">"Grace"</span></span><br><span class="line">    <span class="keyword">val</span> lastName = <span class="string">"Hopper"</span></span><br><span class="line">    <span class="keyword">var</span> likes = <span class="number">0</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// 点击监听函数</span></span><br><span class="line">    <span class="function"><span class="keyword">fun</span> <span class="title">onLike</span><span class="params">()</span></span> &#123;</span><br><span class="line">        likes++</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 不同阶段的欢迎度，基于like数计算</span></span><br><span class="line">    <span class="keyword">val</span> popularity: Popularity</span><br><span class="line">        <span class="keyword">get</span>() &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">when</span> &#123;</span><br><span class="line">                likes &gt; <span class="number">9</span> -&gt; Popularity.STAR</span><br><span class="line">                likes &gt; <span class="number">4</span> -&gt; Popularity.POPULAR</span><br><span class="line">                <span class="keyword">else</span> -&gt; Popularity.NORMAL</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// PlainOldActivity.kt，UI层</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">PlainOldActivity</span> : <span class="type">AppCompatActivity</span></span>() &#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Activity当中维护一个成员变量</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">val</span> viewModel <span class="keyword">by</span> lazy &#123; ViewModelProviders.of(<span class="keyword">this</span>).<span class="keyword">get</span>(SimpleViewModel::<span class="class"><span class="keyword">class</span>.<span class="title">java</span>) &#125;</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">onCreate</span><span class="params">(savedInstanceState: <span class="type">Bundle</span>?)</span></span> &#123;</span><br><span class="line">        <span class="keyword">super</span>.onCreate(savedInstanceState)</span><br><span class="line"></span><br><span class="line">        setContentView(R.layout.plain_activity)</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 缺点1：当数据发生变化时，需要手动更新UI</span></span><br><span class="line">        updateName()</span><br><span class="line">        updateLikes()</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 缺点2：在UI类中包含业务逻辑</span></span><br><span class="line">    <span class="function"><span class="keyword">fun</span> <span class="title">onLike</span><span class="params">(view: <span class="type">View</span>)</span></span> &#123;</span><br><span class="line">        viewModel.onLike()</span><br><span class="line">        updateLikes()</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 缺点3：太多的findViewById</span></span><br><span class="line">    <span class="keyword">private</span> <span class="function"><span class="keyword">fun</span> <span class="title">updateName</span><span class="params">()</span></span> &#123;</span><br><span class="line">        findViewById&lt;TextView&gt;(R.id.plain_name).text = viewModel.name</span><br><span class="line">        findViewById&lt;TextView&gt;(R.id.plain_lastname).text = viewModel.lastName</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 缺点4：多次调用findViewById</span></span><br><span class="line">    <span class="comment">// 缺点5：包含未经测试的逻辑</span></span><br><span class="line">    <span class="comment">// 缺点6：即使数据未发生变化，也会更新View</span></span><br><span class="line">    <span class="keyword">private</span> <span class="function"><span class="keyword">fun</span> <span class="title">updateLikes</span><span class="params">()</span></span> &#123;</span><br><span class="line">        findViewById&lt;TextView&gt;(R.id.likes).text = viewModel.likes.toString()</span><br><span class="line">        findViewById&lt;ProgressBar&gt;(R.id.progressBar).progress =</span><br><span class="line">            (viewModel.likes * <span class="number">100</span> / <span class="number">5</span>).coerceAtMost(<span class="number">100</span>)</span><br><span class="line">        <span class="keyword">val</span> image = findViewById&lt;ImageView&gt;(R.id.imageView)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">val</span> color = getAssociatedColor(viewModel.popularity, <span class="keyword">this</span>)</span><br><span class="line"></span><br><span class="line">        ImageViewCompat.setImageTintList(image, ColorStateList.valueOf(color))</span><br><span class="line"></span><br><span class="line">        image.setImageDrawable(getDrawablePopularity(viewModel.popularity, <span class="keyword">this</span>))</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="function"><span class="keyword">fun</span> <span class="title">getAssociatedColor</span><span class="params">(popularity: <span class="type">Popularity</span>, context: <span class="type">Context</span>)</span></span>: <span class="built_in">Int</span> &#123;</span><br><span class="line">        <span class="comment">// ...</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="function"><span class="keyword">fun</span> <span class="title">getDrawablePopularity</span><span class="params">(popularity: <span class="type">Popularity</span>, context: <span class="type">Context</span>)</span></span>: Drawable? &#123;</span><br><span class="line">        <span class="comment">// ...</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这么简单一个页面，光是列出来的缺点就有6条之多，无法想象当业务逻辑复杂起来后，代码将会增长到何种程度。接下来，让我们看看Data Binding如何解决上述问题的。</p>
+<h3 id="静态数据绑定UI"><a href="#静态数据绑定UI" class="headerlink" title="静态数据绑定UI"></a>静态数据绑定UI</h3><p>gradle从1.5.0版本开始支持data binding首先需要在project的<code>build.gradle</code>文件里打开开关，</p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">android &#123;</span><br><span class="line">...</span><br><span class="line">    dataBinding &#123;</span><br><span class="line">        enabled <span class="literal">true</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>相比于普通布局，data binding布局文件在最外层增加了<code>&lt;layout&gt;</code>标签，<code>&lt;layout&gt;</code>标签内部则由<code>&lt;data&gt;</code>标签和原布局组成。对于需要重构成data binding的布局文件，将鼠标选中最外层布局，会自动提示 <strong>Convert to data binding layout</strong>。一个data binding布局如下所示：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">layout</span> <span class="attr">xmlns:android</span>=<span class="string">"http://schemas.android.com/apk/res/android"</span></span></span><br><span class="line"><span class="tag">       <span class="attr">xmlns:app</span>=<span class="string">"http://schemas.android.com/apk/res-auto"</span></span></span><br><span class="line"><span class="tag">       <span class="attr">xmlns:tools</span>=<span class="string">"http://schemas.android.com/tools"</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">data</span>&gt;</span></span><br><span class="line"></span><br><span class="line">   <span class="tag">&lt;/<span class="name">data</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">androidx.constraintlayout.widget.ConstraintLayout</span></span></span><br><span class="line"><span class="tag">           <span class="attr">android:layout_width</span>=<span class="string">"match_parent"</span></span></span><br><span class="line"><span class="tag">           <span class="attr">android:layout_height</span>=<span class="string">"match_parent"</span>&gt;</span></span><br><span class="line"></span><br><span class="line">       <span class="tag">&lt;<span class="name">TextView</span></span></span><br><span class="line"><span class="tag"><span class="attr">...</span></span></span><br></pre></td></tr></table></figure>
+<p><code>&lt;data&gt;</code>标签中的变量，可以在布局文件里进行调用，也支持简单的表达式，比如<code>if...else...</code>、类型转换、字符串拼接。表达式的格式为<code>@{...}</code>。虽然表达式很强大，但是不要滥用，否则会使布局文件过于复杂，难以维护。</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">android:text="@&#123;String.valueOf(index + 1)&#125;"</span><br><span class="line">android:visibility="@&#123;age <span class="tag">&lt; <span class="attr">13</span> ? <span class="attr">View.GONE</span> <span class="attr">:</span> <span class="attr">View.VISIBLE</span>&#125;"</span></span><br><span class="line"><span class="tag"><span class="attr">android:transitionName</span>=<span class="string">'@&#123;"image_" + id&#125;'</span></span></span><br></pre></td></tr></table></figure>
+<p>基于上述知识，我们为属性name和last name声明变量。</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">data</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">variable</span> <span class="attr">name</span>=<span class="string">"name"</span> <span class="attr">type</span>=<span class="string">"String"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">variable</span> <span class="attr">name</span>=<span class="string">"lastName"</span> <span class="attr">type</span>=<span class="string">"String"</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">data</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>从而可以在布局文件中直接使用它们。</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">TextView</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:id</span>=<span class="string">"@+id/plain_name"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:text</span>=<span class="string">"@&#123;name&#125;"</span> /&gt;</span></span><br></pre></td></tr></table></figure>
+<p>目前为止已经完成了布局文件的编写，需要一个时机，将数据塞给布局文件，可以在<code>onCreate</code>里做这件事。</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// onCreate</span></span><br><span class="line">setConetntView(R.layout.plain_activity)</span><br><span class="line"><span class="keyword">val</span> binding: PlainActivityBinding = DataBindingUtil.setContgentView(<span class="keyword">this</span>, R.layout.plain_activity)</span><br><span class="line">binding.name = <span class="string">"Lei"</span></span><br><span class="line">binding.lastName = <span class="string">"Li"</span></span><br></pre></td></tr></table></figure>
+<p>如此即可，不需要<code>findViewById</code>、<code>setText</code>，甚至不关心UI里到底是TextView还是EditText甚至自定义控件，要做的事情只是给成员变量赋值。处理完了静态文本，接下来看看如何响应UI的点击LIKE事件。要知道，这里我们同样也不用<code>findViewById</code>以及<code>setOnClickListener</code>的。</p>
+<p>首先回忆一下最早的点击事件处理方式——在布局文件中，<code>onClick=onLike</code>，这样自动关联起来Activity中的<code>onLike</code>方法，虽然直观，但带来的后果就是绑死了布局文件与Activity，根本无法复用。其实Data Binding的处理方式与此类似，只不过它增加了一个<strong>ViewModel</strong>层。</p>
+<blockquote>
+<p>在计算机软件领域，没有什么问题是增加一个中间层不能解决的，如果就，那就加两层。</p>
+</blockquote>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">data</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">variable</span></span></span><br><span class="line"><span class="tag">            <span class="attr">name</span>=<span class="string">"viewmodel"</span></span></span><br><span class="line"><span class="tag">            <span class="attr">type</span>=<span class="string">"com.example.android.databinding.basicsample.data.SimpleViewModel"</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">data</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p><code>&lt;data&gt;</code>中不再是简单的String，而是一个<strong>SimpleViewModel</strong>类型对象，该类在上文中可以看到，它包含<code>name</code>、<code>lastName</code>字段，以及一个处理LIKE++事件的<code>onLike</code>方法。有了这个<code>viewmodel</code>对象，就可以在接下来的布局里面这样使用了。且比上种写法更好的地方在于，编译器会检查<code>onLike</code>方法是否存在，如果不存在则编译时就会异常。</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">TextView</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:id</span>=<span class="string">"@+id/plain_name"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:text</span>=<span class="string">"@&#123;viewmodel.name&#125;"</span></span></span><br><span class="line"><span class="tag"><span class="attr">...</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">TextView</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:id</span>=<span class="string">"@+id/plain_lastname"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:text</span>=<span class="string">"@&#123;viewmodel.lastName&#125;"</span></span></span><br><span class="line"><span class="tag"><span class="attr">...</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">Button</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:onClick</span>=<span class="string">"@&#123;() -&gt; viewmodel.onLike()&#125;"</span></span></span><br><span class="line"><span class="tag"><span class="attr">...</span> /&gt;</span></span><br></pre></td></tr></table></figure>
+<p>对于<code>viewmodel</code>的赋值，则在<strong>onCreate</strong>里面直接<code>binding.viewmodel = viewModel</code>就可以。但是如果我们把<code>likes</code>属性绑定到布局文件的某个TextView上（注意这里不要直接让<code>android:text=&quot;@{viewmodel.lines}&quot;</code>，因为这会导致运行时读取id=0的字符串资源，从而异常），会发现即使通过<code>onLike()</code>增长了LIKE，但在UI上并没有体现，LIKE数始终显示为0。这是因为目前为止我们进行的绑定都是<strong>静态</strong>且<strong>单向</strong>绑定，下一节我们将学习双向绑定，从而让LIKES的数目实时显示在UI上。</p>
+<h3 id="双向Data-Binding的写法"><a href="#双向Data-Binding的写法" class="headerlink" title="双向Data Binding的写法"></a>双向Data Binding的写法</h3><p>所谓“双向”Data Binding，是指对于View而言，在初始化时可以自动从data里获取数据，对于data而言，当它们的值发生变化时，能自动通知UI显示相应数值。对于这种发生变化时能通知UI的数据，称之为具有“可观察性”，即<strong>observable</strong>。有多重途径生成一个可观察的对象，比如<code>observable classes</code>、<code>observable fields</code>，以及最通用也最好用的<code>LiveData</code>。声明可观察对象的方式如下。带有前置下划线<code>_</code>的变量为私有变量，是可变的，不对外进行暴露。每个私有变量都拥有一个<code>LiveData&lt;T&gt;</code>类型的接口变量，用于提供给布局文件读取。</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">val</span> _name = MutableLiveData(<span class="string">"Ada"</span>)</span><br><span class="line"><span class="keyword">private</span> <span class="keyword">val</span> _lastName = MutableLiveData(<span class="string">"Lovelace"</span>)</span><br><span class="line"><span class="keyword">private</span> <span class="keyword">val</span> _likes =  MutableLiveData(<span class="number">0</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">val</span> name: LiveData&lt;String&gt; = _name</span><br><span class="line"><span class="keyword">val</span> lastName: LiveData&lt;String&gt; = _lastName</span><br><span class="line"><span class="keyword">val</span> likes: LiveData&lt;<span class="built_in">Int</span>&gt; = _likes</span><br></pre></td></tr></table></figure>
+<p>同时需要在Activity的<code>onCreate()</code>方法中，为<code>binding</code>对象的<code>lifecycleOwner</code>赋值（为Activity）。如果不做这一步，数据的变化就无法被观测到。</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">onCreate</span><span class="params">(SavedInstanceState: <span class="type">Bundle</span>?)</span></span> &#123;</span><br><span class="line">    ...</span><br><span class="line">    binding.lifecycleOwner = <span class="keyword">this</span></span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>对于<code>popularity</code>，同样将其声明为<code>LiveData</code>类型。这里注意，并没有私有的<code>_popularity</code>，因为它的值实际上是根据<code>likes</code>计算得到的。因此通过<code>Transformations.map()</code>操作，从一个<code>MutableLiveData</code>类型的<code>_likes</code>对象计算出<code>LiveData</code>类型的<code>popularity</code>。关于<code>Transformation</code>的使用，可以看<a href="https://developer.android.com/reference/android/arch/lifecycle/Transformations" target="_blank" rel="noopener">这篇文章</a>。</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// popularity is exposed as LiveData using a Transformation instead of a @Bindable property.</span></span><br><span class="line"><span class="keyword">val</span> popularity: LiveData&lt;Popularity&gt; = Transformations.map(_likes) &#123;</span><br><span class="line">    <span class="keyword">when</span> &#123;</span><br><span class="line">        it &gt; <span class="number">9</span> -&gt; Popularity.STAR</span><br><span class="line">        it &gt; <span class="number">4</span> -&gt; Popularity.POPULAR</span><br><span class="line">        <span class="keyword">else</span> -&gt; Popularity.NORMAL</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>此时，在<code>onLike()</code>中我们直接修改<code>_likes</code>的值，就会 通知到UI自动发生调整了。</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">fun</span> <span class="title">onLike</span><span class="params">()</span></span> &#123;</span><br><span class="line">    _likes.value = (_likes.value ?: <span class="number">0</span>) + <span class="number">1</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>此处简单介绍下其实现原理，Data Binding库里面包含众多Adapters（适配器），见<a href="https://android.googlesource.com/platform/frameworks/data-binding/+/master/extensions/baseAdapters/src/main/java/android/databinding/adapters/" target="_blank" rel="noopener">源码</a>。对于xml布局文件里的UI组件，需要设置的属性均声明了相应的<strong>静态</strong>设值方法，比如对于<code>TextView</code>的<code>android:text</code>属性，就有如下<code>setText(TextView, CharSequence)</code>方法。当text值发生变更时，就会调用到这个方法。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@BindingAdapter</span>(<span class="string">"android:text"</span>)</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">setText</span><span class="params">(TextView view, CharSequence text)</span> </span>&#123;</span><br><span class="line">    <span class="comment">// Some checks removed for clarity</span></span><br><span class="line">    view.setText(text);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>此时还剩下两点功能没有完成，分别是LIKE按钮下方的进度条没有实时增加，以及LIKE图片没有更新。先看进度条相关的事项。对于进度条有3点需求，分别是：</p>
+<ol>
+<li>当LIKES=0时，进度条隐藏</li>
+<li>当LIKES增加时，进度条实时增长，且每5个LIKE一个循环，进度条归零</li>
+<li>当进度条拉满时，颜色变深</li>
+</ol>
+<p>这些需求都可以通过自定义<code>BindingAdapter</code>来实现，它可以为xml元素创建任意的自定义属性，并通过代码读取该属性，进而对xml元素原生的属性进行修改。在任意包下创建一个<code>BindingAdapters.kt</code>文件（不要担心路径，因为编译时会自动识别注解），借助于Kotlin的顶层函数，可以不声明<code>BindingAdapter</code>类而直接写函数。我们为所有的<code>View</code>创建一个<code>app:hideIfZero</code>属性，控制当该属性为0时隐藏UI元素。</p>
+<p><em>当LIKES=0时，进度条隐藏</em></p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@BindingAdapter(<span class="meta-string">"app:hideIfZero"</span>)</span></span><br><span class="line"><span class="function"><span class="keyword">fun</span> <span class="title">hideIfZero</span><span class="params">(view: <span class="type">View</span>, number: <span class="type">Int</span>)</span></span> &#123;</span><br><span class="line">    view.visibility = <span class="keyword">if</span> (number == <span class="number">0</span>) View.GONE <span class="keyword">else</span> View.VISIBLE</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>随后在xml布局文件中将该属性与<code>viewmodel.likes</code>进行绑定，这样当likes=0时，进度条就会自动隐藏。</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">ProgressBar</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:id</span>=<span class="string">"@+id/progressBar"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">app:hideIfZero</span>=<span class="string">"@&#123;viewmodel.likes&#125;"</span></span></span><br><span class="line"><span class="tag"><span class="attr">...</span></span></span><br></pre></td></tr></table></figure>
+<p><em>当LIKES增加时，进度条实时增长，且每5个LIKE一个循环，进度条归零</em></p>
+<p>参考上面的<code>hideIfZero</code>属性，我们这次同样用自定义<code>BindingAdapter</code>来实现。不同之处在于，这次我们需要同时读取两个属性，在<code>@BindingAdapter</code>注解里面，通过字符串数组<code>[&quot;app:progressScaled&quot;, &quot;android:max&quot;]</code>来声明，同时<code>requireAll = true</code>表示必须两个属性都在xml得到声明时，才会调用该方法进行处理。如果有任一个没有赋值，则不进行方法。与之相对应的<code>requiredAll = false</code>则对至少一个属性进行相应，对于没有声明的属性会使用其默认值。</p>
+<p><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.ranges/coerce-at-most.html" target="_blank" rel="noopener">coerceAtMost</a>是Kotlin提供的扩展函数，表示“最大不超过<code>max</code>”。</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@BindingAdapter(value = [<span class="meta-string">"app:progressScaled"</span>, <span class="meta-string">"android:max"</span>], requireAll = true)</span></span><br><span class="line"><span class="function"><span class="keyword">fun</span> <span class="title">setProgress</span><span class="params">(progressBar: <span class="type">ProgressBar</span>, likes: <span class="type">Int</span>, max: <span class="type">Int</span>)</span></span> &#123;</span><br><span class="line">    progressBar.progress = (likes * max / <span class="number">5</span>).coerceAtMost(max)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>相应地，在布局文件中声明<code>app:progressScaled</code>和<code>android:max</code>两个属性。</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">ProgressBar</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:id</span>=<span class="string">"@+id/progressBar"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:hideIfZero</span>=<span class="string">"@&#123;viewmodel.likes&#125;"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:progressScaled</span>=<span class="string">"@&#123;viewmodel.likes&#125;"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:max</span>=<span class="string">"@&#123;100&#125;"</span></span></span><br><span class="line"><span class="tag">    /&gt;</span></span><br></pre></td></tr></table></figure>
+<p><em>当进度条拉满时，颜色变深</em></p>
+<p>如果前面的知识都已经掌握，这里也就不难了。我们声明一个自定义属性<code>app:progressTint</code>，表示会影响到progressBar的外显颜色，输入为popularity，方法内部先根据popularity计算出color（注意这里使用到的Context为View的Context），然后再将其设置到progressBar的<code>progressTintList</code>属性上。</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@BindingAdapter(<span class="meta-string">"app:progressTint"</span>)</span></span><br><span class="line"><span class="function"><span class="keyword">fun</span> <span class="title">tintPopularity</span><span class="params">(view: <span class="type">ProgressBar</span>, popularity: <span class="type">Popularity</span>)</span></span> &#123;</span><br><span class="line">    <span class="keyword">val</span> color = getAssociatedColor(popularity, view.context)</span><br><span class="line">    <span class="keyword">if</span> (Build.VERSION.SDK_INT &gt;= Build.VERSION_CODES.LOLLIPOP) &#123;</span><br><span class="line">        view.progressTintList = ColorStateList.valueOf(color)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>随后还有一个功能，是根据不同的popularity显示不同的图片，可以把它当做课后作业，参考答案<a href="https://codelabs.developers.google.com/codelabs/android-databinding/#9" target="_blank" rel="noopener">在这里</a>。</p>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ul>
+<li><a href="https://codelabs.developers.google.com/codelabs/android-databinding" target="_blank" rel="noopener">https://codelabs.developers.google.com/codelabs/android-databinding</a></li>
+</ul>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    
+    <div class="content">
+        
+<span class="post-time">
+    最后更新时间：<time datetime="2020-03-16T15:10:43.566Z" itemprop="dateUpdated">2020-03-16 23:10:43</time>
+</span><br>
+
+
+        
+        本文系作者原创，如转载请注明出处。欢迎留言讨论，或通过邮件进行沟通～
+        
+    </div>
+    
+    <footer>
+        <a href="https://lilei.pro">
+            <img src="/img/avatar.jpeg" alt="Li Lei">
+            Li Lei
+        </a>
+    </footer>
+</blockquote>
+
+        
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Jetpack/">Jetpack</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Kotlin/">Kotlin</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://lilei.pro/2020/03/16/Go-through-jetpack-data-binding-L1/&title=《通关Jetpack之 Data Binding：第1课 需求实战》 — 柘个角落&pic=https://lilei.pro/img/avatar.jpeg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://lilei.pro/2020/03/16/Go-through-jetpack-data-binding-L1/&title=《通关Jetpack之 Data Binding：第1课 需求实战》 — 柘个角落&source=技术与生活上的点滴积累" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://lilei.pro/2020/03/16/Go-through-jetpack-data-binding-L1/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《通关Jetpack之 Data Binding：第1课 需求实战》 — 柘个角落&url=https://lilei.pro/2020/03/16/Go-through-jetpack-data-binding-L1/&via=https://lilei.pro" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://lilei.pro/2020/03/16/Go-through-jetpack-data-binding-L1/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/2020/03/16/kotlin-coroutines-04/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">Kotlin 协程基础课 04.协程原理小探——从包装异步请求为同步说起</h4>
+      </a>
+    </div>
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2020/03/16/Android-SDK-versions/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">一文带你读懂compileSdkVersion、minSdkVersion与targetSdkVersion</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+    <!-- Valine Comments -->
+    <div class="comments vcomment" id="comments"></div>
+    <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+    <script src="//unpkg.com/valine@latest/dist/Valine.min.js"></script>
+    <!-- Valine Comments script -->
+    <script>
+        var GUEST_INFO = ['nick','mail','link'];
+        var guest_info = 'nick,mail,link'.split(',').filter(function(item){
+          return GUEST_INFO.indexOf(item) > -1
+        });
+        new Valine({
+            el: '#comments',
+            notify: 'false' == 'true',
+            verify: 'true' == 'true',
+            appId: "khG3rBt0nWda7lxDUHpS3Sq0-gzGzoHsz",
+            appKey: "btFkQfcBgJeCRm55mYmUgA5d",
+            avatar: "mm",
+            placeholder: "欢迎讨论",
+            guest_info: guest_info.length == 0 ? GUEST_INFO : guest_info,
+            pageSize: "10"
+        })
+    </script>
+    <!-- Valine Comments end -->
+
+
+
+
+
+
+
+</article>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>博客内容遵循 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">知识共享 署名 - 非商业性 - 相同方式共享 4.0 国际协议</a></span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>Li Lei &copy; 2015 - 2020</span>
+            <span>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://lilei.pro/2020/03/16/Go-through-jetpack-data-binding-L1/&title=《通关Jetpack之 Data Binding：第1课 需求实战》 — 柘个角落&pic=https://lilei.pro/img/avatar.jpeg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://lilei.pro/2020/03/16/Go-through-jetpack-data-binding-L1/&title=《通关Jetpack之 Data Binding：第1课 需求实战》 — 柘个角落&source=技术与生活上的点滴积累" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://lilei.pro/2020/03/16/Go-through-jetpack-data-binding-L1/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《通关Jetpack之 Data Binding：第1课 需求实战》 — 柘个角落&url=https://lilei.pro/2020/03/16/Go-through-jetpack-data-binding-L1/&via=https://lilei.pro" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://lilei.pro/2020/03/16/Go-through-jetpack-data-binding-L1/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAN4AAADeCAAAAAB3DOFrAAACvElEQVR42u3a22rEMAwFwP7/T7fQp0Kb7JFkZSlMnpa9OB4vxOLIHx/x9fl9/X79853f19UI+a/uRzh24eHh4bWmfn+z+/cTQHWxktfRAuHh4eGt8ZLN4J6dfzMfIV+Uy/fx8PDw3sq7f+jP8Uk9jIeHh/d/efeASRE8nw8eHh7eM7wkjMhhyY3z4rv3HTw8PLw93qQB9q7XD/X38PDw8Ipd9aTwzT/Nw9nemH/8Fg8PD2+BN49Kq5M+9dxOYhE8PDy8PV71oEACqAa182bYixHw8PDw1ng5rPfoT/B5IJLPBA8PD2+Dl5e5eYurdyAg3zaqhw/w8PDw5rxq0dyLcXsHBfIli/4rPDw8vEO8+Y3zgLX6q3yeLz7Fw8PDW+Odqs2TEHZCLW8VeHh4eEd5vVK42irLY4Ukri0sMR4eHt4CL3/gTraNauurOk4hn8bDw8Mb85Lb9Erk/PGdt9nKh67w8PDwHuElTa/qJpGX2r1g4nKB8PDw8NZ4Z1v+kyMFeRgRbUJ4eHh4a7xeWJBEt9Vg93BTDQ8PD++Rfn3+CC4kxMEGMI85kpHx8PDwTvGqG0PePCusa7GRNjpThoeHh3eI1wsdqkemkuMI1ai3cIAADw8Pb8zba0dVW/6ngozmfoWHh4cX83rlbG8jmZTaeXx8+cfg4eHhHeJt3L668fRK7ShuxsPDw1vm9QrfcmkbLE2VffkdPDw8vAVecmjgbNSbhA69EKR5JgIPDw+vyPssXtWoN0HOY9/LMfHw8PAWePOHbz50Pq38UEIeHOPh4eGd5fUK4rxorgYQ81gEDw8P7xleNcPIg4Zqg21UHFdPluHh4eEt85IH96ShNW90Xba+8PDw8N7Ky5egx66Wzi/GxMPDw1vjzcOIZHIJPv9OtD3g4eHhLfAmkevktFce0Ra2gXlggYeHh3c3ky9fJRg8Q9o2OgAAAABJRU5ErkJggg==" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: false };
+
+
+</script>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/main.min.js"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/search.min.js" async></script>
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>
