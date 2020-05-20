@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    
+    <title>AndroidWeekly#413 学习笔记 | 柘个角落 | IF YOU WANT SOMETHING, GO GET IT. PERIOD.</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="Android,Android Weekly">
+    <meta name="description" content="5月17日，星期日。今天是第#413期Android Weekly的学习笔记。  Concurrency Frameworks in Android are Overrated                                                                                             Why Frameworks?">
+<meta name="keywords" content="Android,Android Weekly">
+<meta property="og:type" content="article">
+<meta property="og:title" content="AndroidWeekly#413 学习笔记">
+<meta property="og:url" content="https://lilei.pro/2020/05/20/AndroidWeekly-413/index.html">
+<meta property="og:site_name" content="柘个角落">
+<meta property="og:description" content="5月17日，星期日。今天是第#413期Android Weekly的学习笔记。  Concurrency Frameworks in Android are Overrated                                                                                             Why Frameworks?">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://lilei.pro/img/20200520_androidweekly413/concurrency_frameworks_overrated.jpeg">
+<meta property="og:image" content="https://lilei.pro/img/20200520_androidweekly413/twitter_splash.gif">
+<meta property="og:updated_time" content="2020-05-20T15:41:20.647Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="AndroidWeekly#413 学习笔记">
+<meta name="twitter:description" content="5月17日，星期日。今天是第#413期Android Weekly的学习笔记。  Concurrency Frameworks in Android are Overrated                                                                                             Why Frameworks?">
+<meta name="twitter:image" content="https://lilei.pro/img/20200520_androidweekly413/concurrency_frameworks_overrated.jpeg">
+    
+        <link rel="alternate" type="application/atom+xml" title="柘个角落" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/img/favicon.ico">
+    <link rel="stylesheet" href="//unpkg.com/hexo-theme-material-indigo@latest/css/style.css">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/avatar.jpeg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">Li Lei</h5>
+          <a href="mailto:bequietlee#gmail.com" title="bequietlee#gmail.com" class="mail">bequietlee#gmail.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                文章
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+                标签
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/bequietlee" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/2019/03/10/links"  >
+                <i class="icon icon-lg icon-link"></i>
+                友情链接
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">AndroidWeekly#413 学习笔记</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">AndroidWeekly#413 学习笔记</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2020-05-20T15:35:01.000Z" itemprop="datePublished" class="page-time">
+  2020-05-20
+</time>
+
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Concurrency-Frameworks-in-Android-are-Overrated"><span class="post-toc-number">1.</span> <span class="post-toc-text">Concurrency Frameworks in Android are Overrated</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#需求简述"><span class="post-toc-number">1.1.</span> <span class="post-toc-text">需求简述</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#只用原生的并发原语实现"><span class="post-toc-number">1.2.</span> <span class="post-toc-text">只用原生的并发原语实现</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#增加异常和重试处理"><span class="post-toc-number">1.3.</span> <span class="post-toc-text">增加异常和重试处理</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#并发运行优化效率"><span class="post-toc-number">1.4.</span> <span class="post-toc-text">并发运行优化效率</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#将异步的网络操作同步化"><span class="post-toc-number">1.5.</span> <span class="post-toc-text">将异步的网络操作同步化</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#防止并发调用，避免进入异常状态"><span class="post-toc-number">1.6.</span> <span class="post-toc-text">防止并发调用，避免进入异常状态</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#Coroutines-实现"><span class="post-toc-number">1.7.</span> <span class="post-toc-text">Coroutines 实现</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#RxJava-实现"><span class="post-toc-number">1.8.</span> <span class="post-toc-text">RxJava 实现</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Restore-RecyclerView-scroll-position"><span class="post-toc-number">2.</span> <span class="post-toc-text">Restore RecyclerView scroll position</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#丢失的位置"><span class="post-toc-number">2.1.</span> <span class="post-toc-text">丢失的位置</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#恢复位置"><span class="post-toc-number">2.2.</span> <span class="post-toc-text">恢复位置</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#MergeAdapter-RecyclerView的另一新特性"><span class="post-toc-number">2.3.</span> <span class="post-toc-text">MergeAdapter: RecyclerView的另一新特性</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Clean-Dagger"><span class="post-toc-number">3.</span> <span class="post-toc-text">Clean Dagger</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Creating-the-Twitter-splash-screen-in-the-simplest-way-possible"><span class="post-toc-number">4.</span> <span class="post-toc-text">Creating the Twitter splash screen in the simplest way possible</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#视频：How-To-Stay-Up-To-Date-As-A-Mobile-Developer"><span class="post-toc-number">5.</span> <span class="post-toc-text">视频：How To Stay Up To Date As A Mobile Developer?</span></a></li></ol>
+        </nav>
+    </aside>
+
+
+<article id="post-AndroidWeekly-413"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">AndroidWeekly#413 学习笔记</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2020-05-20 23:35:01" datetime="2020-05-20T15:35:01.000Z"  itemprop="datePublished">2020-05-20</time>
+
+            
+
+
+            
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <blockquote>
+<p>5月17日，星期日。今天是第<a href="https://androidweekly.net/issues/issue-413" target="_blank" rel="noopener">#413</a>期Android Weekly的学习笔记。</p>
+</blockquote>
+<h2 id="Concurrency-Frameworks-in-Android-are-Overrated"><a href="#Concurrency-Frameworks-in-Android-are-Overrated" class="headerlink" title="Concurrency Frameworks in Android are Overrated"></a>Concurrency Frameworks in Android are Overrated</h2><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="/img/20200520_androidweekly413/concurrency_frameworks_overrated.jpeg" alt="Why Frameworks?" title="">
+                </div>
+                <div class="image-caption">Why Frameworks?</div>
+            </figure>
+<p><a href="https://www.techyourchance.com/concurrency-frameworks-overrated-android/" target="_blank" rel="noopener">https://www.techyourchance.com/concurrency-frameworks-overrated-android/</a></p>
+<p>今天的首发文章质量不错，Vasiliy抛出一个观点“Android下的并发框架都是过度设计的，实际上你可以不借助任何框架写出干净的并发代码”，并通过样例代码佐证自己的这一观点。</p>
+<h3 id="需求简述"><a href="#需求简述" class="headerlink" title="需求简述"></a>需求简述</h3><p>模拟一个合并文件并上传的过程，文件操作和网络操作必须在工作线程进行，并在主线程通知UI操作结果。</p>
+<ol>
+<li>把两组文件分别进行合并</li>
+<li>把合并结果进行压缩</li>
+<li>上传压缩后的zip包到服务器</li>
+<li>通知操作结果</li>
+</ol>
+<h3 id="只用原生的并发原语实现"><a href="#只用原生的并发原语实现" class="headerlink" title="只用原生的并发原语实现"></a>只用原生的并发原语实现</h3><p>第一个版本没有考虑太多性能，在工作线程顺序执行耗时操作，并通过Handler通知UI线程。在最终一步网络操作的回调里，通知执行结果。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">UploadFilesUseCase</span> <span class="keyword">extends</span> <span class="title">BaseObservable</span>&lt;<span class="title">UploadFilesUseCase</span>.<span class="title">Listener</span>&gt; </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">Listener</span> </span>&#123;</span><br><span class="line">        <span class="function"><span class="keyword">void</span> <span class="title">onFilesUploaded</span><span class="params">()</span></span>;</span><br><span class="line">        <span class="function"><span class="keyword">void</span> <span class="title">onFilesUploadFailed</span><span class="params">()</span></span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> Handler uiHandler = <span class="keyword">new</span> Handler(Looper.getMainLooper());</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">uploadFiles</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">new</span> Thread(() -&gt; uploadFilesSync()).start();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@WorkerThread</span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">uploadFilesSync</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        File mergedA = processAndMergeFilesOfTypeA();</span><br><span class="line">        File mergedB = processAndMergeFilesOfTypeB();</span><br><span class="line">        File archive = compressMergedFiles(mergedA, mergedB);</span><br><span class="line"></span><br><span class="line">        HttpManager.getInstance.uploadFiles(</span><br><span class="line">                archive,</span><br><span class="line">                <span class="keyword">new</span> HttpRequestListener() &#123;</span><br><span class="line">                    <span class="meta">@Override</span></span><br><span class="line">                    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onDone</span><span class="params">(<span class="keyword">int</span> code, <span class="keyword">byte</span>[] body)</span> </span>&#123;</span><br><span class="line">                        <span class="keyword">if</span> (code / <span class="number">100</span> == <span class="number">2</span>) &#123;</span><br><span class="line">                            notifySuccess();</span><br><span class="line">                        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                            notifyFailure();</span><br><span class="line">                        &#125;</span><br><span class="line">                    &#125;</span><br><span class="line"></span><br><span class="line">                    <span class="meta">@Override</span></span><br><span class="line">                    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onFailure</span><span class="params">()</span> </span>&#123;</span><br><span class="line">                        notifyFailure();</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">        );</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@WorkerThread</span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> File <span class="title">processAndMergeFilesOfTypeA</span><span class="params">()</span> </span>&#123; ... &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@WorkerThread</span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> File <span class="title">processAndMergeFilesOfTypeB</span><span class="params">()</span> </span>&#123; ... &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@WorkerThread</span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> File <span class="title">compressMergedFiles</span><span class="params">(File fileA, File fileB)</span> </span>&#123; ... &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">notifySuccess</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        uiHandler.post(() -&gt; &#123;</span><br><span class="line">            <span class="keyword">for</span> (Listener listener : getListeners()) &#123;</span><br><span class="line">                listener.onFilesUploaded();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">notifyFailure</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        uiHandler.post(() -&gt; &#123;</span><br><span class="line">            <span class="keyword">for</span> (Listener listener : getListeners()) &#123;</span><br><span class="line">                listener.onFilesUploadFailed();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="增加异常和重试处理"><a href="#增加异常和重试处理" class="headerlink" title="增加异常和重试处理"></a>增加异常和重试处理</h3><p>如果合并文件、压缩文件过程中可能抛出异常，如下函数签名所示：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@WorkerThread</span></span><br><span class="line"><span class="function"><span class="keyword">private</span> File <span class="title">processAndMergeFilesOfTypeA</span><span class="params">()</span> <span class="keyword">throws</span> OperationFailedException </span>&#123; ... &#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@WorkerThread</span></span><br><span class="line"><span class="function"><span class="keyword">private</span> File <span class="title">processAndMergeFilesOfTypeB</span><span class="params">()</span> <span class="keyword">throws</span> OperationFailedException </span>&#123; ... &#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@WorkerThread</span></span><br><span class="line"><span class="function"><span class="keyword">private</span> File <span class="title">compressMergedFiles</span><span class="params">(File fileA, File fileB)</span> <span class="keyword">throws</span> OperationFailedException </span>&#123; ... &#125;</span><br></pre></td></tr></table></figure>
+<p>则通过<code>try...catch</code>进行捕获，并通知失败。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">    File mergedA = processAndMergeFilesOfTypeA();</span><br><span class="line">    File mergedB = processAndMergeFilesOfTypeB();</span><br><span class="line">    archive = compressMergedFiles(mergedA, mergedB);</span><br><span class="line">&#125; <span class="keyword">catch</span> (OperationFailedException e) &#123;</span><br><span class="line">    notifyFailure();</span><br><span class="line">    <span class="keyword">return</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>然后我们加上重试机制，当前已经重试的次数作为参数传入<code>uploadFilesSync</code>函数，并把原来<code>notifyFailuer</code>处均替换为<code>retryOrFail(retryCount)</code>调用，其实现如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@WorkerThread</span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">retryOrFail</span><span class="params">(<span class="keyword">int</span> currentRetryCount)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (currentRetryCount &gt;= MAX_RETRIES - <span class="number">1</span>) &#123;</span><br><span class="line">        notifyFailure();</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        uploadFilesSync(currentRetryCount + <span class="number">1</span>); <span class="comment">// 重试次数+1</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="并发运行优化效率"><a href="#并发运行优化效率" class="headerlink" title="并发运行优化效率"></a>并发运行优化效率</h3><p>注意到两处merge文件的操作是可以并行处理的，因此在工作线程之外分起两个线程，并通过<code>CountDownLatch(2)</code>来等待两个线程处理完成。由于涉及并发赋值操作，必须使用<code>AtomicReference</code>保证赋值操作的原子性！</p>
+<blockquote>
+<p>这段代码实现太优美了！</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@WorkerThread</span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">uploadFilesSync</span><span class="params">(<span class="keyword">int</span> retryCount)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">final</span> AtomicReference&lt;File&gt; mergedA = <span class="keyword">new</span> AtomicReference&lt;&gt;(<span class="keyword">null</span>);</span><br><span class="line">    <span class="keyword">final</span> AtomicReference&lt;File&gt; mergedB = <span class="keyword">new</span> AtomicReference&lt;&gt;(<span class="keyword">null</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">final</span> CountDownLatch countDownLatch = <span class="keyword">new</span> CountDownLatch(<span class="number">2</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">new</span> Thread(() -&gt; &#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            mergedA.set(processAndMergeFilesOfTypeA());</span><br><span class="line">        &#125; <span class="keyword">catch</span> (OperationFailedException e) &#123;</span><br><span class="line">            <span class="comment">// log the exception</span></span><br><span class="line">        &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">            countDownLatch.countDown();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;).start();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">new</span> Thread(() -&gt; &#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            mergedB.set(processAndMergeFilesOfTypeB());</span><br><span class="line">        &#125; <span class="keyword">catch</span> (OperationFailedException e) &#123;</span><br><span class="line">            <span class="comment">// log the exception</span></span><br><span class="line">        &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">            countDownLatch.countDown();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;).start();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        countDownLatch.await();</span><br><span class="line">    &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(<span class="string">"unexpected interrupt"</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (mergedA.get() == <span class="keyword">null</span> || mergedB.get() == <span class="keyword">null</span>) &#123;</span><br><span class="line">        retryOrFail(retryCount);</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 后续是合并&amp;上传的代码，省略</span></span><br></pre></td></tr></table></figure>
+<h3 id="将异步的网络操作同步化"><a href="#将异步的网络操作同步化" class="headerlink" title="将异步的网络操作同步化"></a>将异步的网络操作同步化</h3><p>作者在文中提到，由于在接手开发时，已经有了基于回调的网络框架，因此在以上代码里均使用了回调方式处理网络结果。如果回调过多的话，会产生“回调地狱”，因此，进一步优化，将异步通过<code>CountDownLatch(1)</code>转化为同步方法。返回值为<code>int</code>类型，并且会抛出运行时异常。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@WorkerThread</span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">int</span> <span class="title">uploadFileToServer</span><span class="params">(File archive)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">final</span> AtomicInteger responseCode = <span class="keyword">new</span> AtomicInteger(<span class="number">0</span>);</span><br><span class="line">    <span class="keyword">final</span> CountDownLatch countDownLatch = <span class="keyword">new</span> CountDownLatch(<span class="number">1</span>);</span><br><span class="line">    HttpManager.getInstance.uploadFiles(</span><br><span class="line">            archive,</span><br><span class="line">            <span class="keyword">new</span> HttpRequestListener() &#123;</span><br><span class="line">                <span class="meta">@Override</span></span><br><span class="line">                <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onDone</span><span class="params">(<span class="keyword">int</span> code, <span class="keyword">byte</span>[] body)</span> </span>&#123;</span><br><span class="line">                    responseCode.set(code);</span><br><span class="line">                    countDownLatch.countDown();</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="meta">@Override</span></span><br><span class="line">                <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onFailure</span><span class="params">()</span> </span>&#123;</span><br><span class="line">                    responseCode.set(<span class="number">0</span>);</span><br><span class="line">                    countDownLatch.countDown();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">    );</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        countDownLatch.await();</span><br><span class="line">    &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(<span class="string">"unexpected interrupt"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> responseCode.get();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="防止并发调用，避免进入异常状态"><a href="#防止并发调用，避免进入异常状态" class="headerlink" title="防止并发调用，避免进入异常状态"></a>防止并发调用，避免进入异常状态</h3><p>尽管上述的业务需求都已经实现，对于这种场景，还有一种隐形的技术考虑：不可以在同一时间将同一份数据上传多次，这会导致意料之外的bug，严重的话甚至会损坏服务器的数据。</p>
+<p>通过<a href="https://gist.github.com/techyourchance/44670734917d4ce085224a62cb9edf81" target="_blank" rel="noopener">BaseBusyObservable</a>，提供了一个<code>AtomicBoolean</code>类型的标志位，说明当前任务的执行状态，并且在开始上传文件时申请进入<code>busy</code>，在上传结束时释放。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">UploadFilesUseCase</span> <span class="keyword">extends</span> <span class="title">BaseBusyObservable</span>&lt;<span class="title">UploadFilesUseCase</span>.<span class="title">Listener</span>&gt; </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">Listener</span> </span>&#123;</span><br><span class="line">        <span class="function"><span class="keyword">void</span> <span class="title">onFilesUploaded</span><span class="params">()</span></span>;</span><br><span class="line">        <span class="function"><span class="keyword">void</span> <span class="title">onFilesUploadFailed</span><span class="params">()</span></span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> <span class="keyword">static</span> <span class="keyword">int</span> MAX_RETRIES = <span class="number">3</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> Handler uiHandler = <span class="keyword">new</span> Handler(Looper.getMainLooper());</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">uploadFiles</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (!isFreeAndBecomeBusy()) &#123; <span class="comment">// 申请进入busy</span></span><br><span class="line">            <span class="comment">// log concurrent invocation attempt</span></span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">new</span> Thread(() -&gt; uploadFilesSync(<span class="number">0</span>)).start();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@WorkerThread</span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">uploadFilesSync</span><span class="params">(<span class="keyword">int</span> retryCount)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">final</span> AtomicReference&lt;File&gt; mergedA = <span class="keyword">new</span> AtomicReference&lt;&gt;(<span class="keyword">null</span>);</span><br><span class="line">        <span class="keyword">final</span> AtomicReference&lt;File&gt; mergedB = <span class="keyword">new</span> AtomicReference&lt;&gt;(<span class="keyword">null</span>);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">final</span> CountDownLatch countDownLatch = <span class="keyword">new</span> CountDownLatch(<span class="number">2</span>);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">new</span> Thread(() -&gt; &#123;</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                mergedA.set(processAndMergeFilesOfTypeA());</span><br><span class="line">            &#125; <span class="keyword">catch</span> (OperationFailedException e) &#123;</span><br><span class="line">                <span class="comment">// log the exception</span></span><br><span class="line">            &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">                countDownLatch.countDown();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;).start();</span><br><span class="line"></span><br><span class="line">        <span class="keyword">new</span> Thread(() -&gt; &#123;</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                mergedB.set(processAndMergeFilesOfTypeB());</span><br><span class="line">            &#125; <span class="keyword">catch</span> (OperationFailedException e) &#123;</span><br><span class="line">                <span class="comment">// log the exception</span></span><br><span class="line">            &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">                countDownLatch.countDown();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;).start();</span><br><span class="line"></span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            countDownLatch.await();</span><br><span class="line">        &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(<span class="string">"unexpected interrupt"</span>);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (mergedA.get() == <span class="keyword">null</span> || mergedB.get() == <span class="keyword">null</span>) &#123;</span><br><span class="line">            retryOrFail(retryCount);</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        File archive;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            archive = compressMergedFiles(mergedA.get(), mergedB.get());</span><br><span class="line">        &#125; <span class="keyword">catch</span> (OperationFailedException e) &#123;</span><br><span class="line">            retryOrFail(retryCount);</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">       <span class="keyword">int</span> responseCode = uploadFileToServer(archive);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (responseCode / <span class="number">100</span> == <span class="number">2</span>) &#123;</span><br><span class="line">            deleteTempDir();</span><br><span class="line">            notifySuccess();</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            retryOrFail(retryCount);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@WorkerThread</span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">int</span> <span class="title">uploadFileToServer</span><span class="params">(File archive)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">final</span> AtomicInteger responseCode = <span class="keyword">new</span> AtomicInteger(<span class="number">0</span>);</span><br><span class="line">        <span class="keyword">final</span> CountDownLatch countDownLatch = <span class="keyword">new</span> CountDownLatch(<span class="number">1</span>);</span><br><span class="line"></span><br><span class="line">        HttpManager.getInstance.uploadFiles(</span><br><span class="line">                archive,</span><br><span class="line">                <span class="keyword">new</span> HttpRequestListener() &#123;</span><br><span class="line">                    <span class="meta">@Override</span></span><br><span class="line">                    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onDone</span><span class="params">(<span class="keyword">int</span> code, <span class="keyword">byte</span>[] body)</span> </span>&#123;</span><br><span class="line">                        responseCode.set(code);</span><br><span class="line">                        countDownLatch.countDown();</span><br><span class="line">                    &#125;</span><br><span class="line"></span><br><span class="line">                    <span class="meta">@Override</span></span><br><span class="line">                    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onFailure</span><span class="params">()</span> </span>&#123;</span><br><span class="line">                        responseCode.set(<span class="number">0</span>);</span><br><span class="line">                        countDownLatch.countDown();</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">        );</span><br><span class="line"></span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            countDownLatch.await();</span><br><span class="line">        &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(<span class="string">"unexpected interrupt"</span>);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> responseCode.get();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@WorkerThread</span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">retryOrFail</span><span class="params">(<span class="keyword">int</span> currentRetryCount)</span> </span>&#123;</span><br><span class="line">        deleteTempDir();</span><br><span class="line">        <span class="keyword">if</span> (currentRetryCount &gt;= MAX_RETRIES - <span class="number">1</span>) &#123;</span><br><span class="line">            notifyFailure();</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        uploadFilesSync(currentRetryCount + <span class="number">1</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@WorkerThread</span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> File <span class="title">processAndMergeFilesOfTypeA</span><span class="params">()</span> <span class="keyword">throws</span> OperationFailedException </span>&#123; ... &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@WorkerThread</span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> File <span class="title">processAndMergeFilesOfTypeB</span><span class="params">()</span> <span class="keyword">throws</span> OperationFailedException </span>&#123; ... &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@WorkerThread</span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> File <span class="title">compressMergedFiles</span><span class="params">(File fileA, File fileB)</span> <span class="keyword">throws</span> OperationFailedException </span>&#123; ... &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@WorkerThread</span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">deleteTempDir</span><span class="params">()</span> </span>&#123; ... &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">notifySuccess</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        uiHandler.post(() -&gt; &#123;</span><br><span class="line">            <span class="keyword">for</span> (Listener listener : getListeners()) &#123;</span><br><span class="line">                listener.onFilesUploaded();</span><br><span class="line">            &#125;</span><br><span class="line">            becomeNotBusy(); <span class="comment">// 申请离开busy</span></span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">notifyFailure</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        uiHandler.post(() -&gt; &#123;</span><br><span class="line">            <span class="keyword">for</span> (Listener listener : getListeners()) &#123;</span><br><span class="line">                listener.onFilesUploadFailed();</span><br><span class="line">            &#125;</span><br><span class="line">            becomeNotBusy(); <span class="comment">// 申请离开busy</span></span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>以下分别是协程实现、Rxjava实现，很难说它们孰优孰劣，但毫无疑问的是，这两个框架都需要一些学习成本，并且代码在理解起来不如并发原语看起来清晰。在作者Vasiliy看来，他会避免把自己的项目与任何第三方框架进行耦合。以及，RxJava已经度过了它的巅峰期。</p>
+<h3 id="Coroutines-实现"><a href="#Coroutines-实现" class="headerlink" title="Coroutines 实现"></a>Coroutines 实现</h3><p><a href="https://gist.github.com/ATizik/0431c0313d3d0596de3ce9a0fc82b29f" target="_blank" rel="noopener">https://gist.github.com/ATizik/0431c0313d3d0596de3ce9a0fc82b29f</a></p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">UploadFilesUsecase</span></span>() : BaseObservable&lt;UploadFilesUsecase.Listener&gt;() &#123;</span><br><span class="line">    <span class="class"><span class="keyword">interface</span> <span class="title">Listener</span> </span>&#123;</span><br><span class="line">        <span class="function"><span class="keyword">fun</span> <span class="title">onFilesUploaded</span><span class="params">()</span></span></span><br><span class="line">        <span class="function"><span class="keyword">fun</span> <span class="title">onFilesUploadFailed</span><span class="params">()</span></span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">val</span> MAX_RETRIES = <span class="number">3</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">val</span> mutex = Mutex()</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">val</span> scope = CoroutineScope(SupervisorJob() + Dispatchers.IO)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">fun</span> <span class="title">uploadFiles</span><span class="params">()</span></span>:<span class="built_in">Boolean</span> = mutex.tryWithLock &#123;</span><br><span class="line">        scope.launch &#123;</span><br><span class="line">            repeat(MAX_RETRIES) &#123; retryCount -&gt;</span><br><span class="line">                <span class="keyword">try</span> &#123;</span><br><span class="line">                    <span class="keyword">val</span> files = listOf(</span><br><span class="line">                            async &#123; processAndMergeFilesOfTypeA() &#125;,</span><br><span class="line">                            async &#123; processAndMergeFilesOfTypeB() &#125;)</span><br><span class="line">                            .map &#123; it.await() &#125;</span><br><span class="line"></span><br><span class="line">                    <span class="keyword">val</span> archive = compressMergedFiles(files)</span><br><span class="line"></span><br><span class="line">                    uploadFileToServer(archive)</span><br><span class="line"></span><br><span class="line">                    notifySuccess()</span><br><span class="line">                &#125; <span class="keyword">catch</span> (t: Throwable) &#123;</span><br><span class="line">                    <span class="comment">//log exception</span></span><br><span class="line">                    <span class="keyword">if</span> (retryCount == MAX_RETRIES - <span class="number">1</span>) &#123;</span><br><span class="line">                        notifyFaillure()</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">                    deleteTempDir()</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> suspend <span class="function"><span class="keyword">fun</span> <span class="title">uploadFileToServer</span><span class="params">(archive: <span class="type">File</span>)</span></span> = suspendCoroutine&lt;<span class="built_in">Int</span>&gt; &#123; cont -&gt;</span><br><span class="line">        HttpManager.uploadFiles(archive,</span><br><span class="line">                onDone = &#123; code: <span class="built_in">Int</span>, body: ByteArray -&gt;</span><br><span class="line">                    <span class="keyword">if</span> (code / <span class="number">100</span> == <span class="number">2</span>) &#123;</span><br><span class="line">                        cont.resume(code)</span><br><span class="line">                    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                        cont.resumeWithException(Throwable())</span><br><span class="line">                    &#125;</span><br><span class="line"></span><br><span class="line">                &#125;,</span><br><span class="line">                onFailure = &#123;</span><br><span class="line">                    cont.resumeWithException(Throwable())</span><br><span class="line">                &#125;</span><br><span class="line">        )</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> suspend <span class="function"><span class="keyword">fun</span> <span class="title">processAndMergeFilesOfTypeA</span><span class="params">()</span></span>: File = TODO()</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> suspend <span class="function"><span class="keyword">fun</span> <span class="title">processAndMergeFilesOfTypeB</span><span class="params">()</span></span>: File = TODO()</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> suspend <span class="function"><span class="keyword">fun</span> <span class="title">compressMergedFiles</span><span class="params">(files: <span class="type">List</span>&lt;<span class="type">File</span>&gt;)</span></span>: File = TODO()</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="function"><span class="keyword">fun</span> <span class="title">deleteTempDir</span><span class="params">()</span></span>: <span class="built_in">Unit</span> = TODO()</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="function"><span class="keyword">fun</span> <span class="title">notifySuccess</span><span class="params">()</span></span> &#123;</span><br><span class="line">        MainScope().launch &#123; listeners.forEach &#123; it.onFilesUploaded() &#125; &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="function"><span class="keyword">fun</span> <span class="title">notifyFaillure</span><span class="params">()</span></span> &#123;</span><br><span class="line">        MainScope().launch &#123; listeners.forEach &#123; it.onFilesUploadFailed() &#125; &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="RxJava-实现"><a href="#RxJava-实现" class="headerlink" title="RxJava 实现"></a>RxJava 实现</h3><p><a href="https://gist.github.com/kakai248/d3ac349cf2aa54da7a935fc1ab23024b" target="_blank" rel="noopener">https://gist.github.com/kakai248/d3ac349cf2aa54da7a935fc1ab23024b</a></p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">UploadFilesUseCase</span></span>(</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">val</span> schedulerProvider: SchedulerProvider,</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">val</span> httpManager: HttpManager</span><br><span class="line">) &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">var</span> operation: Completable? = <span class="literal">null</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">fun</span> <span class="title">uploadFiles</span><span class="params">()</span></span>: Completable = synchronized(<span class="keyword">this</span>) &#123;</span><br><span class="line">        operation</span><br><span class="line">            ?: (doUploadFiles()</span><br><span class="line">                .doFinally &#123; operation = <span class="literal">null</span> &#125;</span><br><span class="line">                .cache()</span><br><span class="line">                .also &#123; operation = it &#125;)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="function"><span class="keyword">fun</span> <span class="title">doUploadFiles</span><span class="params">()</span></span>: Completable =</span><br><span class="line">        Singles</span><br><span class="line">            .zip(</span><br><span class="line">                processAndMergeFilesOfTypeA().subscribeOn(schedulerProvider.io),</span><br><span class="line">                processAndMergeFilesOfTypeB().subscribeOn(schedulerProvider.io)</span><br><span class="line">            )</span><br><span class="line">            .flatMap &#123; (fileA, fileB) -&gt; compressMergedFiles(fileA, fileB) &#125;</span><br><span class="line">            .flatMap(::uploadFileToServer)</span><br><span class="line">            .ignoreElement()</span><br><span class="line">            .doOnComplete(::deleteTempDir)</span><br><span class="line">            .doOnError &#123; deleteTempDir() &#125;</span><br><span class="line">            .retry(MAX_RETRIES)</span><br><span class="line">            .observeOn(schedulerProvider.ui)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="function"><span class="keyword">fun</span> <span class="title">uploadFileToServer</span><span class="params">(archive: <span class="type">File</span>)</span></span> =</span><br><span class="line">        httpManager.uploadFiles(archive)</span><br><span class="line">            .map &#123; response -&gt;</span><br><span class="line">                <span class="keyword">if</span> (response.code / <span class="number">100</span> != <span class="number">2</span>) &#123;</span><br><span class="line">                    <span class="keyword">throw</span> OperationFailedException()</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="function"><span class="keyword">fun</span> <span class="title">processAndMergeFilesOfTypeA</span><span class="params">()</span></span>: Single&lt;File&gt; = Single.just(File(<span class="string">""</span>))</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="function"><span class="keyword">fun</span> <span class="title">processAndMergeFilesOfTypeB</span><span class="params">()</span></span>: Single&lt;File&gt; = Single.just(File(<span class="string">""</span>))</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="function"><span class="keyword">fun</span> <span class="title">compressMergedFiles</span><span class="params">(fileA: <span class="type">File</span>, fileB: <span class="type">File</span>)</span></span>: Single&lt;File&gt; = Single.just(File(<span class="string">""</span>))</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="function"><span class="keyword">fun</span> <span class="title">deleteTempDir</span><span class="params">()</span></span> &#123;&#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">companion</span> <span class="keyword">object</span> &#123;</span><br><span class="line">        <span class="keyword">private</span> const <span class="keyword">val</span> MAX_RETRIES = <span class="number">3</span>L</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">HttpManager</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">fun</span> <span class="title">uploadFiles</span><span class="params">(archive: <span class="type">File</span>)</span></span>: Single&lt;Response&gt; = Single.just(Response(<span class="number">200</span>, byteArrayOf()))</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Response</span></span>(</span><br><span class="line">    <span class="keyword">val</span> code: <span class="built_in">Int</span>,</span><br><span class="line">    <span class="keyword">val</span> body: ByteArray</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">OperationFailedException</span> : <span class="type">Throwable</span></span>()</span><br></pre></td></tr></table></figure>
+<h2 id="Restore-RecyclerView-scroll-position"><a href="#Restore-RecyclerView-scroll-position" class="headerlink" title="Restore RecyclerView scroll position"></a>Restore RecyclerView scroll position</h2><p><a href="https://medium.com/androiddevelopers/restore-recyclerview-scroll-position-a8fbdc9a9334" target="_blank" rel="noopener">https://medium.com/androiddevelopers/restore-recyclerview-scroll-position-a8fbdc9a9334</a></p>
+<h3 id="丢失的位置"><a href="#丢失的位置" class="headerlink" title="丢失的位置"></a>丢失的位置</h3><p>我们知道当Activity/Fragment重建后，Adapter的数据会重新加载（往往是异步的），在RecyclerView进行layout之前，数据没有加载完成的话，会导致RecyclerView失去之前的状态，最直观表现是滑动位置归零。</p>
+<p>Google在<a href="https://developer.android.com/jetpack/androidx/releases/recyclerview" target="_blank" rel="noopener">RecyclerView的1.2.0-alpha02</a>版本提供了一个新的API，可以让Adapter<strong>阻塞layout过程直至它数据恢复完毕</strong>，用以解决RecyclerView状态不一致的问题。</p>
+<h3 id="恢复位置"><a href="#恢复位置" class="headerlink" title="恢复位置"></a>恢复位置</h3><p>有多种方式可以恢复之前丢失的滑动位置，最好的方法时确保在第一次layout之前，已经设置好了<code>Adapter</code>的状态，若要达成这种效果，数据断然不可存储在Activity/Fragment中，而是应担使用ViewModel或者独立的Repository。如果不使用这个方法，其它的手段要么过于复杂，要么容易出错（比如误用<code>LayoutManager.onRestoreInstanceState</code>）。</p>
+<p><code>recyclerview:1.2.0-alpha02</code>提供的解决方案是，在<code>Adapter</code>类中新增了一个接口，设置状态恢复策略（restoration policy），对应的枚举是<a href="https://developer.android.com/reference/androidx/recyclerview/widget/RecyclerView.Adapter.StateRestorationPolicy" target="_blank" rel="noopener">StateRestorationPolicy</a>。共有3种枚举值。</p>
+<ul>
+<li>ALLOW —— 默认值，直接恢复RecyclerView的状态</li>
+<li>PREVENT_WHEN_EMPTY —— 仅当adapter非空（<code>adapter.getItemCount() &gt; 0</code>）时才去恢复RecyclerView的状态。如果你的数据是异步加载的，RecyclerView会一直等到数据加载完毕才去恢复自身状态。一个特殊场景是，如果你的Adapter包含Header或者Footer时，你应当适用下一种策略<code>PREVENT</code>，除非你使用了同样在1.2.0-alpha2版本新增的<code>MergeAdapter</code>——它会等待自己所有的adapter进入就绪状态。</li>
+<li>PREVENT —— 推迟所有的状态恢复，直至你设置了<code>ALLOW</code>或者<code>PREVENT_WHEN_EMPTY</code></li>
+</ul>
+<p>有了这个接口，可以很直接地通过以下设置，达成RecyclerView恢复状态的目的：</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">adapter.restorationPolicy = PREVENT_WHEN_EMPTY</span><br></pre></td></tr></table></figure>
+<h3 id="MergeAdapter-RecyclerView的另一新特性"><a href="#MergeAdapter-RecyclerView的另一新特性" class="headerlink" title="MergeAdapter: RecyclerView的另一新特性"></a>MergeAdapter: RecyclerView的另一新特性</h3><p>同样在<code>1.2.0-alpha2</code>版本中也提出了另一个重磅功能——<a href="https://developer.android.com/reference/androidx/recyclerview/widget/MergeAdapter" target="_blank" rel="noopener">MergeAdapter</a>，它类似于开源框架<a href="https://github.com/drakeet/MultiType" target="_blank" rel="noopener">MultiType</a>，可以在同一个RecyclerView中组合多个Adapter，从而显示多种样式。可以阅读这篇文章<a href="https://medium.com/androiddevelopers/merge-adapters-sequentially-with-mergeadapter-294d2942127a" target="_blank" rel="noopener">Merge adapters sequentially with MergeAdapter</a>进一步了解。</p>
+<h2 id="Clean-Dagger"><a href="#Clean-Dagger" class="headerlink" title="Clean Dagger"></a>Clean Dagger</h2><p><a href="https://proandroiddev.com/clean-dagger-f248eda5790b" target="_blank" rel="noopener">https://proandroiddev.com/clean-dagger-f248eda5790b</a></p>
+<p>关于在Android平台使用DI的一些建议。作者的总结具有借鉴意义：</p>
+<p>选择何种框架，这属于实现细节的问题，这些决定应当尽可能晚地做出。一个良好的体系结构不应当依赖于框架的选择。一些项目被描述为“Dagger驱动的架构”，这实际上是错误的。 </p>
+<p><strong> DI是你应用组件之间的胶水，而非骨架。</strong></p>
+<h2 id="Creating-the-Twitter-splash-screen-in-the-simplest-way-possible"><a href="#Creating-the-Twitter-splash-screen-in-the-simplest-way-possible" class="headerlink" title="Creating the Twitter splash screen in the simplest way possible"></a>Creating the Twitter splash screen in the simplest way possible</h2><p><a href="https://proandroiddev.com/android-motionlayout-twitter-splash-screen-b5755ed56ee8" target="_blank" rel="noopener">https://proandroiddev.com/android-motionlayout-twitter-splash-screen-b5755ed56ee8</a></p>
+<p>仿照Twitter实现的开屏扩张动画。</p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="/img/20200520_androidweekly413/twitter_splash.gif" alt="Twitter Splash" title="">
+                </div>
+                <div class="image-caption">Twitter Splash</div>
+            </figure>
+<h2 id="视频：How-To-Stay-Up-To-Date-As-A-Mobile-Developer"><a href="#视频：How-To-Stay-Up-To-Date-As-A-Mobile-Developer" class="headerlink" title="视频：How To Stay Up To Date As A Mobile Developer?"></a>视频：How To Stay Up To Date As A Mobile Developer?</h2><p><a href="https://www.youtube.com/watch?v=BvOn4fAIS34" target="_blank" rel="noopener">https://www.youtube.com/watch?v=BvOn4fAIS34</a></p>
+<p>主要是宏观方面给Android开发者提出的一些建议：</p>
+<ol>
+<li>没有必要掌握Android开发的方方面面，而且也不现实</li>
+<li>在掌握APP基本开发知识的基础上，找一个自己感兴趣的方向进行深入学习</li>
+<li>接上一条，最好是可以在工作中应用该技术，但是应当注意不要引入尚测试阶段不稳定的特性</li>
+<li>初级工程师需要掌握页面、网络请求、构建等基础知识，资深工程师应当在框架方面有相当程度的见解</li>
+</ol>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    
+    <div class="content">
+        
+<span class="post-time">
+    最后更新时间：<time datetime="2020-05-20T15:41:20.647Z" itemprop="dateUpdated">2020-05-20 23:41:20</time>
+</span><br>
+
+
+        
+        本文系作者原创，如转载请注明出处。欢迎留言讨论，或通过邮件进行沟通～
+        
+    </div>
+    
+    <footer>
+        <a href="https://lilei.pro">
+            <img src="/img/avatar.jpeg" alt="Li Lei">
+            Li Lei
+        </a>
+    </footer>
+</blockquote>
+
+        
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Android/">Android</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Android-Weekly/">Android Weekly</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://lilei.pro/2020/05/20/AndroidWeekly-413/&title=《AndroidWeekly#413 学习笔记》 — 柘个角落&pic=https://lilei.pro/img/avatar.jpeg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://lilei.pro/2020/05/20/AndroidWeekly-413/&title=《AndroidWeekly#413 学习笔记》 — 柘个角落&source=技术与生活上的点滴积累" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://lilei.pro/2020/05/20/AndroidWeekly-413/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《AndroidWeekly#413 学习笔记》 — 柘个角落&url=https://lilei.pro/2020/05/20/AndroidWeekly-413/&via=https://lilei.pro" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://lilei.pro/2020/05/20/AndroidWeekly-413/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between flex-row-reverse">
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2020/03/16/Go-through-jetpack-data-binding-L2/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">通关Jetpack之 Data Binding：第2课 接口纵览</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+    <!-- Valine Comments -->
+    <div class="comments vcomment" id="comments"></div>
+    <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+    <script src="//unpkg.com/valine@latest/dist/Valine.min.js"></script>
+    <!-- Valine Comments script -->
+    <script>
+        var GUEST_INFO = ['nick','mail','link'];
+        var guest_info = 'nick,mail,link'.split(',').filter(function(item){
+          return GUEST_INFO.indexOf(item) > -1
+        });
+        new Valine({
+            el: '#comments',
+            notify: 'false' == 'true',
+            verify: 'true' == 'true',
+            appId: "khG3rBt0nWda7lxDUHpS3Sq0-gzGzoHsz",
+            appKey: "btFkQfcBgJeCRm55mYmUgA5d",
+            avatar: "mm",
+            placeholder: "欢迎讨论",
+            guest_info: guest_info.length == 0 ? GUEST_INFO : guest_info,
+            pageSize: "10"
+        })
+    </script>
+    <!-- Valine Comments end -->
+
+
+
+
+
+
+
+</article>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>博客内容遵循 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">知识共享 署名 - 非商业性 - 相同方式共享 4.0 国际协议</a></span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>Li Lei &copy; 2015 - 2020</span>
+            <span>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://lilei.pro/2020/05/20/AndroidWeekly-413/&title=《AndroidWeekly#413 学习笔记》 — 柘个角落&pic=https://lilei.pro/img/avatar.jpeg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://lilei.pro/2020/05/20/AndroidWeekly-413/&title=《AndroidWeekly#413 学习笔记》 — 柘个角落&source=技术与生活上的点滴积累" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://lilei.pro/2020/05/20/AndroidWeekly-413/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《AndroidWeekly#413 学习笔记》 — 柘个角落&url=https://lilei.pro/2020/05/20/AndroidWeekly-413/&via=https://lilei.pro" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://lilei.pro/2020/05/20/AndroidWeekly-413/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACMUlEQVR42u3aQW7DMAwF0dz/0u62RWplPmUHMDlaFYFs6XnBUqReLzyOt/H79/c5Z8+ePfU+/3XHkCFDxmMZx3Kst7hGEipfd72KDBkyJjDONrfeSi0QEyrfmwwZMmSQOWSk4VWGDBky7mPUDsC1dWXIkDGNwVO99S/kwMkLcLecxWXIkPFABq+6f//vW/obMmTIeBTjCEfaziTbOraHDBkyejN4gEvTMjJzJ+DKkCFjGiOdml6eQMUyvGKcPsqQIePhDN4+TDeaFs5q7cw/Ga4MGTJaM/iLSPgjC/NWAQrZMmTIGMAgKVrakuSXLWpXMf6pGsqQIaM1Yyfg8oQyTvjwfBkyZPRm7Jf1eT2PBOudC2QyZMjoyiAvJUU3nlBelXR+yHBlyJDRlJE2HdMCWe26GArNMmTIGMOoHWvTJmXaHggyWRkyZAxg8DJWGjRJIshbAujOiAwZMhox0mNkrbjGmwHpp5QhQ8YcRnoxggfonfeQ32XIkDGHsVOav6pJSS5brN8jQ4aMyYx0kCX55oLmgQwZMgYw9luV/MialuTQx5UhQ8YARpq0bTUdw1ZEXGKTIUNGI8YRjtqz/GhabHPKkCGjNWPnaHrVxQueqtbCugwZMnowauEyXTJNSdf5bJwgypAhowXj2jIcKc/V/gN8OIvLkCFDRpiu7RT9bw+4MmTIGMbgx1degIvbqDJkyBjASIv1HF97lnxiGTJkzGHUjo5p05F/jloLQYYMGU0ZP57z0T+H6NRBAAAAAElFTkSuQmCC" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: false };
+
+
+</script>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/main.min.js"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/search.min.js" async></script>
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>
