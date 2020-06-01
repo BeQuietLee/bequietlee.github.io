@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    
+    <title>AndroidWeekly#414 学习笔记 | 柘个角落 | IF YOU WANT SOMETHING, GO GET IT. PERIOD.</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="Android,Android Weekly">
+    <meta name="description" content="5月26日，星期二。今天是第#414期Android Weekly的学习笔记。  ViewModel and SavedStatehandle: always retain statehttps://www.rockandnull.com/viewmodel-savedstate/  一篇关于ViewModel数据恢复的小文。  进程清理和数据恢复我们知道ViewModel可以解决诸如Orien">
+<meta name="keywords" content="Android,Android Weekly">
+<meta property="og:type" content="article">
+<meta property="og:title" content="AndroidWeekly#414 学习笔记">
+<meta property="og:url" content="https://lilei.pro/2020/06/01/AndroidWeekly-414/index.html">
+<meta property="og:site_name" content="柘个角落">
+<meta property="og:description" content="5月26日，星期二。今天是第#414期Android Weekly的学习笔记。  ViewModel and SavedStatehandle: always retain statehttps://www.rockandnull.com/viewmodel-savedstate/  一篇关于ViewModel数据恢复的小文。  进程清理和数据恢复我们知道ViewModel可以解决诸如Orien">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://lilei.pro/img/20200601_andoridweekly414/lifecycle_viewmodel.png">
+<meta property="og:image" content="https://lilei.pro/img/20200601_andoridweekly414/lifecycle_translucent.png">
+<meta property="og:image" content="https://lilei.pro/img/20200601_andoridweekly414/lifecycle_translucent_home.png">
+<meta property="og:image" content="https://lilei.pro/img/20200601_andoridweekly414/lifecycle_single_top.png">
+<meta property="og:image" content="https://lilei.pro/img/20200601_andoridweekly414/lifecycle_single_task.png">
+<meta property="og:image" content="https://lilei.pro/img/20200601_andoridweekly414/routine.png">
+<meta property="og:image" content="https://lilei.pro/img/20200601_andoridweekly414/routine.png">
+<meta property="og:image" content="https://lilei.pro/img/20200601_andoridweekly414/routine.png">
+<meta property="og:updated_time" content="2020-06-01T00:04:08.270Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="AndroidWeekly#414 学习笔记">
+<meta name="twitter:description" content="5月26日，星期二。今天是第#414期Android Weekly的学习笔记。  ViewModel and SavedStatehandle: always retain statehttps://www.rockandnull.com/viewmodel-savedstate/  一篇关于ViewModel数据恢复的小文。  进程清理和数据恢复我们知道ViewModel可以解决诸如Orien">
+<meta name="twitter:image" content="https://lilei.pro/img/20200601_andoridweekly414/lifecycle_viewmodel.png">
+    
+        <link rel="alternate" type="application/atom+xml" title="柘个角落" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/img/favicon.ico">
+    <link rel="stylesheet" href="//unpkg.com/hexo-theme-material-indigo@latest/css/style.css">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/avatar.jpeg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">Li Lei</h5>
+          <a href="mailto:bequietlee#gmail.com" title="bequietlee#gmail.com" class="mail">bequietlee#gmail.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                文章
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+                标签
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/bequietlee" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/2019/03/10/links"  >
+                <i class="icon icon-lg icon-link"></i>
+                友情链接
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">AndroidWeekly#414 学习笔记</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">AndroidWeekly#414 学习笔记</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2020-05-31T23:56:45.000Z" itemprop="datePublished" class="page-time">
+  2020-06-01
+</time>
+
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#ViewModel-and-SavedStatehandle-always-retain-state"><span class="post-toc-number">1.</span> <span class="post-toc-text">ViewModel and SavedStatehandle: always retain state</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#进程清理和数据恢复"><span class="post-toc-number">1.1.</span> <span class="post-toc-text">进程清理和数据恢复</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#ViewModel-SaveState-的使用"><span class="post-toc-number">1.2.</span> <span class="post-toc-text">ViewModel-SaveState 的使用</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#不包含构造参数的ViewModel"><span class="post-toc-number">1.3.</span> <span class="post-toc-text">不包含构造参数的ViewModel</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#包含构造参数的ViewModel"><span class="post-toc-number">1.4.</span> <span class="post-toc-text">包含构造参数的ViewModel</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#结合LiveData使用"><span class="post-toc-number">1.5.</span> <span class="post-toc-text">结合LiveData使用</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#模拟低内存场景"><span class="post-toc-number">1.6.</span> <span class="post-toc-text">模拟低内存场景</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#The-Android-Lifecycle-cheat-sheet-—-part-IV-ViewModels-Translucent-Activities-and-Launch-Modes"><span class="post-toc-number">2.</span> <span class="post-toc-text">The Android Lifecycle cheat sheet — part IV : ViewModels, Translucent Activities and Launch Modes</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#ViewModels"><span class="post-toc-number">2.1.</span> <span class="post-toc-text">ViewModels</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#透明Activity"><span class="post-toc-number">2.2.</span> <span class="post-toc-text">透明Activity</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#Launch-Modes"><span class="post-toc-number">2.3.</span> <span class="post-toc-text">Launch Modes</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Understanding-Kotlin-Coroutines-with-this-mental-model"><span class="post-toc-number">3.</span> <span class="post-toc-text">Understanding Kotlin Coroutines with this mental model</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#Routines"><span class="post-toc-number">3.1.</span> <span class="post-toc-text">Routines</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#Coroutines"><span class="post-toc-number">3.2.</span> <span class="post-toc-text">Coroutines</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#Coroutine思维模型要点"><span class="post-toc-number">3.3.</span> <span class="post-toc-text">Coroutine思维模型要点</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Kotlin-withContext-vs-Async-await"><span class="post-toc-number">4.</span> <span class="post-toc-text">Kotlin withContext vs Async-await</span></a></li></ol>
+        </nav>
+    </aside>
+
+
+<article id="post-AndroidWeekly-414"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">AndroidWeekly#414 学习笔记</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2020-06-01 07:56:45" datetime="2020-05-31T23:56:45.000Z"  itemprop="datePublished">2020-06-01</time>
+
+            
+
+
+            
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <blockquote>
+<p>5月26日，星期二。今天是<a href="https://androidweekly.net/issues/issue-414" target="_blank" rel="noopener">第#414期Android Weekly</a>的学习笔记。</p>
+</blockquote>
+<h2 id="ViewModel-and-SavedStatehandle-always-retain-state"><a href="#ViewModel-and-SavedStatehandle-always-retain-state" class="headerlink" title="ViewModel and SavedStatehandle: always retain state"></a>ViewModel and SavedStatehandle: always retain state</h2><p><a href="https://www.rockandnull.com/viewmodel-savedstate/" target="_blank" rel="noopener">https://www.rockandnull.com/viewmodel-savedstate/</a></p>
+<blockquote>
+<p>一篇关于ViewModel数据恢复的小文。</p>
+</blockquote>
+<h3 id="进程清理和数据恢复"><a href="#进程清理和数据恢复" class="headerlink" title="进程清理和数据恢复"></a>进程清理和数据恢复</h3><p>我们知道ViewModel可以解决诸如Orientation切换时，Activity/Fragment销毁重建的数据保存问题。然而，有时甚至连ViewModel自身也会被销毁，这种情况发生在应用位于后台且内存不足的情况下，系统会<a href="https://developer.android.com/topic/performance/memory-overview" target="_blank" rel="noopener">杀死进程</a>。杀死进程的顺序是<strong>Least Recently Used (LRU)</strong>。</p>
+<p>如果对此什么都不做的话，默认行为是重启App，如果想要在这个过程中重新恢复到App被清理前的页面，就必须通过类似<code>onSaveInstanceState</code>的方法来保存数据。</p>
+<p>对此，Jetpack提供了<a href="https://developer.android.com/topic/libraries/architecture/viewmodel-savedstate" target="_blank" rel="noopener">ViewModel’s Saved State module</a>组件，通过它，可以方便地恢复ViewModel状态。</p>
+<h3 id="ViewModel-SaveState-的使用"><a href="#ViewModel-SaveState-的使用" class="headerlink" title="ViewModel-SaveState 的使用"></a>ViewModel-SaveState 的使用</h3><p>通过gradle接入，在<a href="https://developer.android.com/jetpack/androidx/releases/lifecycle#declaring_dependencies" target="_blank" rel="noopener">这里</a>查看最新版本。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">implementation &quot;androidx.lifecycle:lifecycle-viewmodel-savedstate:$lifecycle_version&quot;</span><br></pre></td></tr></table></figure>
+<h3 id="不包含构造参数的ViewModel"><a href="#不包含构造参数的ViewModel" class="headerlink" title="不包含构造参数的ViewModel"></a>不包含构造参数的ViewModel</h3><p>在构造器里增加一个<code>SavedStateHandle</code>类型的参数。</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyViewModel</span></span>(<span class="keyword">private</span> <span class="keyword">val</span> state: SavedStateHandle) : ViewModel() &#123;</span><br><span class="line"> <span class="comment">// some other code</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>然后通过代理方式重写<code>model</code>。</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">override</span> <span class="keyword">val</span> model <span class="keyword">by</span> viewModels&lt;MyVioewModel&gt;</span><br></pre></td></tr></table></figure>
+<h3 id="包含构造参数的ViewModel"><a href="#包含构造参数的ViewModel" class="headerlink" title="包含构造参数的ViewModel"></a>包含构造参数的ViewModel</h3><p>对于包含参数的ViewModel（通过ViewModelFactory初始化），需要继承<code>AbstractSavedStateViweModelFactory</code>类以实现SaveState功能。</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyViewModelFactory</span></span>(owner: SavedStateRegistryOwner,</span><br><span class="line">                                     <span class="keyword">private</span> <span class="keyword">val</span> myId: <span class="built_in">Int</span>,</span><br><span class="line">                                     defaultArgs: Bundle? = <span class="literal">null</span></span><br><span class="line">) : AbstractSavedStateViewModelFactory(owner, defaultArgs) &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="type">&lt;T : ViewModel?&gt;</span> <span class="title">create</span><span class="params">(</span></span></span><br><span class="line"><span class="function"><span class="params">        key: <span class="type">String</span>,</span></span></span><br><span class="line"><span class="function"><span class="params">        modelClass: <span class="type">Class</span>&lt;<span class="type">T</span>&gt;,</span></span></span><br><span class="line"><span class="function"><span class="params">        handle: <span class="type">SavedStateHandle</span></span></span></span><br><span class="line"><span class="function"><span class="params">    )</span></span>: T = MyViewModel(handle, myId) <span class="keyword">as</span> T</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>然后在ViewModel里进行代理：</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">override</span> <span class="keyword">val</span> model <span class="keyword">by</span> viewModels&lt;MyViewModel&gt; &#123;</span><br><span class="line">    MyViewModelFactory(<span class="keyword">this</span>, args.myId)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="结合LiveData使用"><a href="#结合LiveData使用" class="headerlink" title="结合LiveData使用"></a>结合LiveData使用</h3><p>通过Key-Value方式获取LiveData对象，而非直接构建。同一个Key往往会返回同一个Value，因为是持久化保存数据，<code>Item</code>类必须实现<code>Parcellable</code>接口，或者更简便地，通过<code>@Parcelize</code>注解，关于<code>Parcelize</code>可以阅读<a href="https://github.com/Kotlin/KEEP/blob/master/proposals/extensions/android-parcelable.md" target="_blank" rel="noopener">KEEP的这篇文章</a>。</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyViewModel</span></span>(<span class="keyword">private</span> <span class="keyword">val</span> savedStateHandle: SavedStateHandle) : ViewModel() &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">val</span> itemsLiveData = savedStateHandle.getLiveData&lt;Item&gt;(<span class="string">"itemsKey"</span>)</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// some other code</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="模拟低内存场景"><a href="#模拟低内存场景" class="headerlink" title="模拟低内存场景"></a>模拟低内存场景</h3><ol>
+<li>启动你的APP</li>
+<li>切换到后台</li>
+<li>执行<code>adb shell am kill your.package.name</code></li>
+<li>再次启动APP</li>
+</ol>
+<p>注意<code>SavedSateHandle</code>只能处理ViewModel中的数据，对于全局的静态单例，仍然需要通过人工的方式处理。</p>
+<h2 id="The-Android-Lifecycle-cheat-sheet-—-part-IV-ViewModels-Translucent-Activities-and-Launch-Modes"><a href="#The-Android-Lifecycle-cheat-sheet-—-part-IV-ViewModels-Translucent-Activities-and-Launch-Modes" class="headerlink" title="The Android Lifecycle cheat sheet — part IV : ViewModels, Translucent Activities and Launch Modes"></a>The Android Lifecycle cheat sheet — part IV : ViewModels, Translucent Activities and Launch Modes</h2><p><a href="https://medium.com/androiddevelopers/the-android-lifecycle-cheat-sheet-part-iv-49946659b094" target="_blank" rel="noopener">https://medium.com/androiddevelopers/the-android-lifecycle-cheat-sheet-part-iv-49946659b094</a></p>
+<p><strong>Android Lifecycle cheat sheet</strong> 是Jose Alcerreca写的一系列生命周期总结文章，通过简单直观的图片表达。</p>
+<p>第4期主要分析ViewModel、透明Activity和不同启动模式下的生命周期。</p>
+<h3 id="ViewModels"><a href="#ViewModels" class="headerlink" title="ViewModels"></a>ViewModels</h3><p>应用于Activity和Fragment，在<code>onCreate</code>结束时初始化，在其销毁时销毁自身。</p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="/img/20200601_andoridweekly414/lifecycle_viewmodel.png" alt="lifecycle_viewmodel.png" title="">
+                </div>
+                <div class="image-caption">lifecycle_viewmodel.png</div>
+            </figure>
+<h3 id="透明Activity"><a href="#透明Activity" class="headerlink" title="透明Activity"></a>透明Activity</h3><p>通过<code>android:windowIsTranslucent</code>属性将Activity设定为透明，当在一个透明Activity上启动新的Activity时，原透明Activity只会执行<code>onPause</code>，并不会<code>onStop</code>，并且在他Pause的时候，还可以接受UI事件。</p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="/img/20200601_andoridweekly414/lifecycle_translucent.png" alt="lifecycle_translucent.png" title="">
+                </div>
+                <div class="image-caption">lifecycle_translucent.png</div>
+            </figure>
+<p>当按下Home键时，位于底层的透明Activity会进入<code>onStop</code>状态，并且当用户切换回应用后，依次执行<code>onRestart</code>和<code>onStart</code>。</p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="/img/20200601_andoridweekly414/lifecycle_translucent_home.png" alt="lifecycle_translucent_home.png" title="">
+                </div>
+                <div class="image-caption">lifecycle_translucent_home.png</div>
+            </figure>
+<h3 id="Launch-Modes"><a href="#Launch-Modes" class="headerlink" title="Launch Modes"></a>Launch Modes</h3><p>关于启动模式的建议是——只使用默认的<strong>standard</strong>启动模式。更多细节可以参阅这篇文章：<a href="https://medium.com/androiddevelopers/tasks-and-the-back-stack-dbb7c3b0f6d4" target="_blank" rel="noopener">Tasks and Back Stack</a>。</p>
+<p>这是<code>SINGLE_TOP</code>模式下的生命周期&amp;栈情况。</p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="/img/20200601_andoridweekly414/lifecycle_single_top.png" alt="lifecycle_single_top.png" title="">
+                </div>
+                <div class="image-caption">lifecycle_single_top.png</div>
+            </figure>
+<p>然后是<code>SINGLE_TASK</code>，再次强调，强烈不建议使用这种启动模式。</p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="/img/20200601_andoridweekly414/lifecycle_single_task.png" alt="lifecycle_single_task.png" title="">
+                </div>
+                <div class="image-caption">lifecycle_single_task.png</div>
+            </figure>
+<h2 id="Understanding-Kotlin-Coroutines-with-this-mental-model"><a href="#Understanding-Kotlin-Coroutines-with-this-mental-model" class="headerlink" title="Understanding Kotlin Coroutines with this mental model"></a>Understanding Kotlin Coroutines with this mental model</h2><p><a href="https://www.lukaslechner.com/understanding-kotlin-coroutines-with-this-mental-model/" target="_blank" rel="noopener">https://www.lukaslechner.com/understanding-kotlin-coroutines-with-this-mental-model/</a></p>
+<p>什么是思维模型（Mental Model）</p>
+<ul>
+<li>思维模型是我们理解世界的方式</li>
+<li>我们通过思维模型将负责的事情简化</li>
+<li>思维模型藐视事物如何运行</li>
+</ul>
+<p>简单说，思维模型让我们知道How it works。</p>
+<h3 id="Routines"><a href="#Routines" class="headerlink" title="Routines"></a>Routines</h3><p><strong>Coroutine</strong>由<strong>CO</strong>和<strong>ROUTINE</strong>两部分构成，<strong>Routine</strong>的概念是，一旦启动，就会执行完。而<strong>CO</strong>则为其赋予了并行的含义。</p>
+<p>routine的运行方式如下，1和2顺序执行。</p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="/img/20200601_andoridweekly414/routine.png" alt="routine.png" title="">
+                </div>
+                <div class="image-caption">routine.png</div>
+            </figure>
+<h3 id="Coroutines"><a href="#Coroutines" class="headerlink" title="Coroutines"></a>Coroutines</h3><p>在调用后会立即返回，1和2的完成先后顺序不固定。</p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="/img/20200601_andoridweekly414/routine.png" alt="coroutines.png" title="">
+                </div>
+                <div class="image-caption">coroutines.png</div>
+            </figure>
+<p>Coroutine内部调用<code>suspend</code>函数的地方被称为“suspension point”，即中断点。</p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="/img/20200601_andoridweekly414/routine.png" alt="suspension_point.png" title="">
+                </div>
+                <div class="image-caption">suspension_point.png</div>
+            </figure>
+<h3 id="Coroutine思维模型要点"><a href="#Coroutine思维模型要点" class="headerlink" title="Coroutine思维模型要点"></a>Coroutine思维模型要点</h3><ol>
+<li>Coroutine可以在调用后立即返回，在中断点中断后，过一段时间恢复</li>
+<li>你可以通过Coroutine在不切换线程的情况下，执行并发任务，从而达到更高的运行效率</li>
+<li>Coroutine是线程之上的抽象，一个Coroutine内部的代码也可以运行在不同线程上</li>
+<li>编译器将<code>suspend</code>函数转换为常规函数，同时增加一个<code>Cotinuation</code>类型的参数，这是一种状态机</li>
+<li><code>delay()</code>函数是非阻塞的，它使用类似<code>handler.postDelayed()</code>的方式实现</li>
+</ol>
+<h2 id="Kotlin-withContext-vs-Async-await"><a href="#Kotlin-withContext-vs-Async-await" class="headerlink" title="Kotlin withContext vs Async-await"></a>Kotlin withContext vs Async-await</h2><p><a href="https://blog.mindorks.com/kotlin-withcontext-vs-async-await" target="_blank" rel="noopener">https://blog.mindorks.com/kotlin-withcontext-vs-async-await</a></p>
+<p>最后一篇依然是关于Coroutine，作者介绍了两种启动协程的方式<code>withContext</code>与<code>async-await</code>的应用场景，守则如下。</p>
+<ul>
+<li>它们都可以用来获取结果</li>
+<li>不需要并行执行时，用<code>withContext</code></li>
+<li>当且仅当需要并行时，用<code>async</code></li>
+</ul>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    
+    <div class="content">
+        
+<span class="post-time">
+    最后更新时间：<time datetime="2020-06-01T00:04:08.270Z" itemprop="dateUpdated">2020-06-01 08:04:08</time>
+</span><br>
+
+
+        
+        本文系作者原创，如转载请注明出处。欢迎留言讨论，或通过邮件进行沟通～
+        
+    </div>
+    
+    <footer>
+        <a href="https://lilei.pro">
+            <img src="/img/avatar.jpeg" alt="Li Lei">
+            Li Lei
+        </a>
+    </footer>
+</blockquote>
+
+        
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Android/">Android</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Android-Weekly/">Android Weekly</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://lilei.pro/2020/06/01/AndroidWeekly-414/&title=《AndroidWeekly#414 学习笔记》 — 柘个角落&pic=https://lilei.pro/img/avatar.jpeg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://lilei.pro/2020/06/01/AndroidWeekly-414/&title=《AndroidWeekly#414 学习笔记》 — 柘个角落&source=技术与生活上的点滴积累" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://lilei.pro/2020/06/01/AndroidWeekly-414/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《AndroidWeekly#414 学习笔记》 — 柘个角落&url=https://lilei.pro/2020/06/01/AndroidWeekly-414/&via=https://lilei.pro" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://lilei.pro/2020/06/01/AndroidWeekly-414/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/2020/06/01/AndroidWeekly-415/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">AndroidWeekly#415 学习笔记</h4>
+      </a>
+    </div>
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2020/05/20/AndroidWeekly-413/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">AndroidWeekly#413 学习笔记</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+    <!-- Valine Comments -->
+    <div class="comments vcomment" id="comments"></div>
+    <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+    <script src="//unpkg.com/valine@latest/dist/Valine.min.js"></script>
+    <!-- Valine Comments script -->
+    <script>
+        var GUEST_INFO = ['nick','mail','link'];
+        var guest_info = 'nick,mail,link'.split(',').filter(function(item){
+          return GUEST_INFO.indexOf(item) > -1
+        });
+        new Valine({
+            el: '#comments',
+            notify: 'false' == 'true',
+            verify: 'true' == 'true',
+            appId: "khG3rBt0nWda7lxDUHpS3Sq0-gzGzoHsz",
+            appKey: "btFkQfcBgJeCRm55mYmUgA5d",
+            avatar: "mm",
+            placeholder: "欢迎讨论",
+            guest_info: guest_info.length == 0 ? GUEST_INFO : guest_info,
+            pageSize: "10"
+        })
+    </script>
+    <!-- Valine Comments end -->
+
+
+
+
+
+
+
+</article>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>博客内容遵循 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">知识共享 署名 - 非商业性 - 相同方式共享 4.0 国际协议</a></span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>Li Lei &copy; 2015 - 2020</span>
+            <span>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://lilei.pro/2020/06/01/AndroidWeekly-414/&title=《AndroidWeekly#414 学习笔记》 — 柘个角落&pic=https://lilei.pro/img/avatar.jpeg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://lilei.pro/2020/06/01/AndroidWeekly-414/&title=《AndroidWeekly#414 学习笔记》 — 柘个角落&source=技术与生活上的点滴积累" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://lilei.pro/2020/06/01/AndroidWeekly-414/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《AndroidWeekly#414 学习笔记》 — 柘个角落&url=https://lilei.pro/2020/06/01/AndroidWeekly-414/&via=https://lilei.pro" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://lilei.pro/2020/06/01/AndroidWeekly-414/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACIklEQVR42u3bSW7DMAwF0Nz/0inQVYE28ifpBLX1tDJST88LQhz6eMTr+b1+Hv/+pXrV+szHOxYGBsZlGc/lSs4569o1/tX5GBgY+zCqQfDV7RLM+unVUI6BgYGxfrk1rBpeMTAwMM5irB+WH+dbQwwMDIxeYlndDp51hxNycQwMjAsyeo2Bzxy/vb+BgYHx7xnP8crbk2cF2T+uwsDAuDWjWlZL0tpeSzIv20W5OAYGxo0Y+QW9FDfB9Mp8GBgY+zCqYxC9Ev87XhoDA2NPRpJeTv5aSEeDj4iBgbEnI0lZJ6MSeRitfjgMDIx7MyZhMXlYLxnOgy8GBsY+jHzEYfJaybOaKTEGBsYGjGoy2Qu+k4HUAwwGBsYGjF7Uynm9TWRhfBYDA2MzRqFKV5yBz5PSpKlZ+D8ADAyMizPyUFvFT5B5cMfAwNiBkWzmquWzfIuZF+AO0mMMDIyNGUkyOd8+VtPjg8YABgbGrRnnBsf8uFqeO9gaYmBg3I6RF7l64fiswIqBgbEzo/pCE95ZL31QL8TAwLgdIylv5cNe+SBFtRWRfzIMDIz7MZ7FNUlZq+MUhVIgBgbGrRmTwn0+lpGH3d6HwMDA2IGRp5EJYP57LyXGwMDYgdELsutrJ3dIwvcf+1wMDAyMuHA2L/rnHwgDAwPjM0lss1WJgYGxGSNPYidDXfPifrPLgYGBcXFGLyhXw24e0PPmxKi/gYGBcQ3GF2yxj9VB9rgNAAAAAElFTkSuQmCC" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: false };
+
+
+</script>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/main.min.js"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/search.min.js" async></script>
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>
