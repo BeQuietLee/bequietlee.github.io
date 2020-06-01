@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    
+    <title>麻雀虽小，五脏俱全——下载库PRDownloader源码解析 | 柘个角落 | IF YOU WANT SOMETHING, GO GET IT. PERIOD.</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="Android,源码解析">
+    <meta name="description" content="You don’t even know me! I have the rest of my life to find out.   前言，为什么选择研究下载框架从2020年4月份，自己开始做外销游戏中心模块后，就一直在关注Android平台下载功能的实现思路与方法。优秀的开源下载框架并不多，在GitHub上可以找到以下几个：  FileDownloader，是流利说团队开源的一款下载框架，支持">
+<meta name="keywords" content="Android,源码解析">
+<meta property="og:type" content="article">
+<meta property="og:title" content="麻雀虽小，五脏俱全——下载库PRDownloader源码解析">
+<meta property="og:url" content="https://lilei.pro/2020/06/01/prdownloader/index.html">
+<meta property="og:site_name" content="柘个角落">
+<meta property="og:description" content="You don’t even know me! I have the rest of my life to find out.   前言，为什么选择研究下载框架从2020年4月份，自己开始做外销游戏中心模块后，就一直在关注Android平台下载功能的实现思路与方法。优秀的开源下载框架并不多，在GitHub上可以找到以下几个：  FileDownloader，是流利说团队开源的一款下载框架，支持">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://lilei.pro/img/20200601_prdownloader/prdownloader.png">
+<meta property="og:updated_time" content="2020-06-01T00:11:27.258Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="麻雀虽小，五脏俱全——下载库PRDownloader源码解析">
+<meta name="twitter:description" content="You don’t even know me! I have the rest of my life to find out.   前言，为什么选择研究下载框架从2020年4月份，自己开始做外销游戏中心模块后，就一直在关注Android平台下载功能的实现思路与方法。优秀的开源下载框架并不多，在GitHub上可以找到以下几个：  FileDownloader，是流利说团队开源的一款下载框架，支持">
+<meta name="twitter:image" content="https://lilei.pro/img/20200601_prdownloader/prdownloader.png">
+    
+        <link rel="alternate" type="application/atom+xml" title="柘个角落" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/img/favicon.ico">
+    <link rel="stylesheet" href="//unpkg.com/hexo-theme-material-indigo@latest/css/style.css">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/avatar.jpeg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">Li Lei</h5>
+          <a href="mailto:bequietlee#gmail.com" title="bequietlee#gmail.com" class="mail">bequietlee#gmail.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                文章
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+                标签
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/bequietlee" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/2019/03/10/links"  >
+                <i class="icon icon-lg icon-link"></i>
+                友情链接
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">麻雀虽小，五脏俱全——下载库PRDownloader源码解析</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">麻雀虽小，五脏俱全——下载库PRDownloader源码解析</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2020-06-01T00:09:02.000Z" itemprop="datePublished" class="page-time">
+  2020-06-01
+</time>
+
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#前言，为什么选择研究下载框架"><span class="post-toc-number">1.</span> <span class="post-toc-text">前言，为什么选择研究下载框架</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#表面，接入和使用PRDownloader"><span class="post-toc-number">2.</span> <span class="post-toc-text">表面，接入和使用PRDownloader</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#启动下载"><span class="post-toc-number">2.1.</span> <span class="post-toc-text">启动下载</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#暂停和恢复下载"><span class="post-toc-number">2.2.</span> <span class="post-toc-text">暂停和恢复下载</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#取消下载"><span class="post-toc-number">2.3.</span> <span class="post-toc-text">取消下载</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#获取下载状态"><span class="post-toc-number">2.4.</span> <span class="post-toc-text">获取下载状态</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#清空临时文件"><span class="post-toc-number">2.5.</span> <span class="post-toc-text">清空临时文件</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#原理部分"><span class="post-toc-number">3.</span> <span class="post-toc-text">原理部分</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#初始化部分，PRDownloader-initialize"><span class="post-toc-number">3.1.</span> <span class="post-toc-text">初始化部分，PRDownloader.initialize()</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#HttpClient"><span class="post-toc-number">3.1.1.</span> <span class="post-toc-text">HttpClient</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#DBHelper"><span class="post-toc-number">3.1.2.</span> <span class="post-toc-text">DBHelper</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#DownloadRequestQueue"><span class="post-toc-number">3.1.3.</span> <span class="post-toc-text">DownloadRequestQueue</span></a></li></ol></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#提交下载任务，PRDownloader-download-url-dirPath-fileName"><span class="post-toc-number">3.2.</span> <span class="post-toc-text">提交下载任务，PRDownloader.download(url, dirPath, fileName)</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#构建下载任务"><span class="post-toc-number">3.2.1.</span> <span class="post-toc-text">构建下载任务</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#设置下载回调"><span class="post-toc-number">3.2.2.</span> <span class="post-toc-text">设置下载回调</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#开始下载"><span class="post-toc-number">3.2.3.</span> <span class="post-toc-text">开始下载</span></a></li></ol></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#DownloadRunnable，下载具体实现"><span class="post-toc-number">3.3.</span> <span class="post-toc-text">DownloadRunnable，下载具体实现</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#总结，如何做一个极简版本的下载框架"><span class="post-toc-number">4.</span> <span class="post-toc-text">总结，如何做一个极简版本的下载框架</span></a></li></ol>
+        </nav>
+    </aside>
+
+
+<article id="post-prdownloader"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">麻雀虽小，五脏俱全——下载库PRDownloader源码解析</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2020-06-01 08:09:02" datetime="2020-06-01T00:09:02.000Z"  itemprop="datePublished">2020-06-01</time>
+
+            
+
+
+            
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <blockquote>
+<ul>
+<li>You don’t even know me!</li>
+<li>I have the rest of my life to find out.</li>
+</ul>
+</blockquote>
+<h2 id="前言，为什么选择研究下载框架"><a href="#前言，为什么选择研究下载框架" class="headerlink" title="前言，为什么选择研究下载框架"></a>前言，为什么选择研究下载框架</h2><p>从2020年4月份，自己开始做外销游戏中心模块后，就一直在关注Android平台下载功能的实现思路与方法。优秀的开源下载框架并不多，在GitHub上可以找到以下几个：</p>
+<ul>
+<li><a href="https://github.com/lingochamp/FileDownloader" target="_blank" rel="noopener">FileDownloader</a>，是流利说团队开源的一款下载框架，支持多线程、分块、断点续传等功能。已进化为新项目<a href="https://github.com/lingochamp/okdownload" target="_blank" rel="noopener">OKDownload</a>，旧的FileDownloader不再维护。</li>
+<li><a href="https://github.com/lingochamp/okdownload" target="_blank" rel="noopener">OKDownload</a>，同样是流利说团队出品，是FileDownloader的进化版，在原有基础上进行全方位优化，并增加了大量的自动化测试。</li>
+<li><a href="https://github.com/MindorksOpenSource/PRDownloader" target="_blank" rel="noopener">PRDownloader</a>，是印度的一个开源项目团队<a href="https://github.com/MindorksOpenSource" target="_blank" rel="noopener">MindOrks</a>出品的下载框架。支持多任务、断点续传，不支持分块下载。相比于前面两个流利说的框架，逻辑更为简单清晰，适合进行学习研究。</li>
+</ul>
+<h2 id="表面，接入和使用PRDownloader"><a href="#表面，接入和使用PRDownloader" class="headerlink" title="表面，接入和使用PRDownloader"></a>表面，接入和使用PRDownloader</h2><p>把自吹自擂的东西抛到一边，一个框架做的好不好，很重要一点是接入它以及使用起来是否方便。接入这点没什么好说的，通过gradle引入即可，目前最新的版本号为<code>0.6.0</code>，尚不是稳定版本。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">implementation &apos;com.mindorks.android:prdownloader:0.6.0&apos;</span><br></pre></td></tr></table></figure>
+<p>同时在manifest文件里声明访问网络的权限：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">uses-permission</span> <span class="attr">android:name</span>=<span class="string">"android.permission.INTERNET"</span>/&gt;</span></span><br></pre></td></tr></table></figure>
+<p>接下来是使用部分，第一步是在<code>Application.onCreate()</code>中进行初始化，使用默认构造参数即可：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">PRDownloader.initialize(getApplicationContext());</span><br></pre></td></tr></table></figure>
+<p>也可进行定制，定制项为是否使用数据库（支持进程重启后恢复下载）、读取超时、连接超时等：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Enabling database for resume support even after the application is killed:</span></span><br><span class="line">PRDownloaderConfig config = PRDownloaderConfig.newBuilder()</span><br><span class="line">                .setDatabaseEnabled(<span class="keyword">true</span>)</span><br><span class="line">                .build();</span><br><span class="line">PRDownloader.initialize(getApplicationContext(), config);</span><br><span class="line"></span><br><span class="line"><span class="comment">// Setting timeout globally for the download network requests:</span></span><br><span class="line">PRDownloaderConfig config = PRDownloaderConfig.newBuilder()</span><br><span class="line">                .setReadTimeout(<span class="number">30_000</span>)</span><br><span class="line">                .setConnectTimeout(<span class="number">30_000</span>)</span><br><span class="line">                .build();</span><br><span class="line">PRDownloader.initialize(getApplicationContext(), config);</span><br></pre></td></tr></table></figure>
+<p>进行完初始化后，就可以在Activity里面调用下载功能了。</p>
+<h3 id="启动下载"><a href="#启动下载" class="headerlink" title="启动下载"></a>启动下载</h3><p>使用静态方法<code>PRDownloader.download(url, dirPath, fileName)</code>进行下载，会返回一个<code>downloadId</code>，该id用于后续的暂停、恢复、获取状态等操作。在启动下载时，也可设置下载进度、成功、失败监听。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> downloadId = PRDownloader.download(url, dirPath, fileName)</span><br><span class="line">                        .build()</span><br><span class="line">                        .setOnStartOrResumeListener(<span class="keyword">new</span> OnStartOrResumeListener() &#123;</span><br><span class="line">                            <span class="meta">@Override</span></span><br><span class="line">                            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onStartOrResume</span><span class="params">()</span> </span>&#123;</span><br><span class="line">                               </span><br><span class="line">                            &#125;</span><br><span class="line">                        &#125;)</span><br><span class="line">                        .setOnPauseListener(<span class="keyword">new</span> OnPauseListener() &#123;</span><br><span class="line">                            <span class="meta">@Override</span></span><br><span class="line">                            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onPause</span><span class="params">()</span> </span>&#123;</span><br><span class="line">                               </span><br><span class="line">                            &#125;</span><br><span class="line">                        &#125;)</span><br><span class="line">                        .setOnCancelListener(<span class="keyword">new</span> OnCancelListener() &#123;</span><br><span class="line">                            <span class="meta">@Override</span></span><br><span class="line">                            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onCancel</span><span class="params">()</span> </span>&#123;</span><br><span class="line">                                </span><br><span class="line">                            &#125;</span><br><span class="line">                        &#125;)</span><br><span class="line">                        .setOnProgressListener(<span class="keyword">new</span> OnProgressListener() &#123;</span><br><span class="line">                            <span class="meta">@Override</span></span><br><span class="line">                            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onProgress</span><span class="params">(Progress progress)</span> </span>&#123;</span><br><span class="line">                               </span><br><span class="line">                            &#125;</span><br><span class="line">                        &#125;)</span><br><span class="line">                        .start(<span class="keyword">new</span> OnDownloadListener() &#123;</span><br><span class="line">                            <span class="meta">@Override</span></span><br><span class="line">                            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onDownloadComplete</span><span class="params">()</span> </span>&#123;</span><br><span class="line">                               </span><br><span class="line">                            &#125;</span><br><span class="line"></span><br><span class="line">                            <span class="meta">@Override</span></span><br><span class="line">                            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onError</span><span class="params">(Error error)</span> </span>&#123;</span><br><span class="line">                               </span><br><span class="line">                            &#125;</span><br><span class="line">                        &#125;);</span><br></pre></td></tr></table></figure>
+<h3 id="暂停和恢复下载"><a href="#暂停和恢复下载" class="headerlink" title="暂停和恢复下载"></a>暂停和恢复下载</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 暂停</span></span><br><span class="line">PRDownloader.pause(downloadId);</span><br><span class="line"><span class="comment">// 恢复</span></span><br><span class="line">PRDownloader.resume(downloadId);</span><br></pre></td></tr></table></figure>
+<h3 id="取消下载"><a href="#取消下载" class="headerlink" title="取消下载"></a>取消下载</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Cancel with the download id</span></span><br><span class="line">PRDownloader.cancel(downloadId);</span><br><span class="line"><span class="comment">// The tag can be set to any request and then can be used to cancel the request</span></span><br><span class="line">PRDownloader.cancel(TAG);</span><br><span class="line"><span class="comment">// Cancel all the requests</span></span><br><span class="line">PRDownloader.cancelAll();</span><br></pre></td></tr></table></figure>
+<h3 id="获取下载状态"><a href="#获取下载状态" class="headerlink" title="获取下载状态"></a>获取下载状态</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Status status = PRDownloader.getStatus(downloadId);</span><br></pre></td></tr></table></figure>
+<h3 id="清空临时文件"><a href="#清空临时文件" class="headerlink" title="清空临时文件"></a>清空临时文件</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Method to clean up temporary resumed files which is older than the given day</span></span><br><span class="line">PRDownloader.cleanUp(days);</span><br></pre></td></tr></table></figure>
+<h2 id="原理部分"><a href="#原理部分" class="headerlink" title="原理部分"></a>原理部分</h2><h3 id="初始化部分，PRDownloader-initialize"><a href="#初始化部分，PRDownloader-initialize" class="headerlink" title="初始化部分，PRDownloader.initialize()"></a>初始化部分，PRDownloader.initialize()</h3><p>PRDownloader维护了一个全局的下载器，在开始下载前需要进行初始化，代码位于<code>PRDownloader.java</code>。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">initialize</span><span class="params">(Context context, PRDownloaderConfig config)</span> </span>&#123;</span><br><span class="line">    ComponentHolder.getInstance().init(context, config);</span><br><span class="line">    DownloadRequestQueue.initialize();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><code>ComponentHolder</code>明显是一个单例，其中维护了以下变量：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">int</span> readTimeout; <span class="comment">// 网络读取超时</span></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">int</span> connectTimeout; <span class="comment">// 网络连接超时</span></span><br><span class="line"><span class="keyword">private</span> String userAgent; <span class="comment">// UA</span></span><br><span class="line"><span class="keyword">private</span> HttpClient httpClient;</span><br><span class="line"><span class="keyword">private</span> DbHelper dbHelper;</span><br></pre></td></tr></table></figure>
+<p>我们可以对这些变量自由配置，或者使用<code>PRDownloaderConfig.newBuilder().build()</code>的默认实现，配置对象位于类<code>PRDownloaderConfig.java</code>当中，基于构建器模式。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">Builder</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> readTimeout = Constants.DEFAULT_READ_TIMEOUT_IN_MILLS;</span><br><span class="line">    <span class="keyword">int</span> connectTimeout = Constants.DEFAULT_CONNECT_TIMEOUT_IN_MILLS;</span><br><span class="line">    String userAgent = Constants.DEFAULT_USER_AGENT;</span><br><span class="line">    HttpClient httpClient = <span class="keyword">new</span> DefaultHttpClient();</span><br><span class="line">    <span class="keyword">boolean</span> databaseEnabled = <span class="keyword">false</span>;</span><br><span class="line">    <span class="comment">// 以下省略无关代码</span></span><br></pre></td></tr></table></figure>
+<p>复杂一些的对象是网络<code>HttpClient</code>和数据库<code>DBHelper</code>，下面单独进行解读。</p>
+<h4 id="HttpClient"><a href="#HttpClient" class="headerlink" title="HttpClient"></a>HttpClient</h4><p>封装了网络请求的具体实现，定义接口<code>HttpClient</code>，并提供了默认实现<code>DefaultHttpClient</code>。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// HttpClient.java</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">HttpClient</span> <span class="keyword">extends</span> <span class="title">Cloneable</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function">HttpClient <span class="title">clone</span><span class="params">()</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">connect</span><span class="params">(DownloadRequest request)</span> <span class="keyword">throws</span> IOException</span>;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">getResponseCode</span><span class="params">()</span> <span class="keyword">throws</span> IOException</span>;</span><br><span class="line"></span><br><span class="line">    <span class="function">InputStream <span class="title">getInputStream</span><span class="params">()</span> <span class="keyword">throws</span> IOException</span>;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">long</span> <span class="title">getContentLength</span><span class="params">()</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="function">String <span class="title">getResponseHeader</span><span class="params">(String name)</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">close</span><span class="params">()</span></span>;</span><br><span class="line"></span><br><span class="line">    Map&lt;String, List&lt;String&gt;&gt; getHeaderFields();</span><br><span class="line"></span><br><span class="line">    <span class="function">InputStream <span class="title">getErrorStream</span><span class="params">()</span> <span class="keyword">throws</span> IOException</span>;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>默认的实现采用了<code>URLConnection</code>方案，基于这种封装设计，可以无缝切换到<code>OkHttp</code>等实现，出于篇幅考虑，这里不再贴出<a href="https://github.com/MindorksOpenSource/PRDownloader/blob/master/prdownloader/src/main/java/com/downloader/httpclient/DefaultHttpClient.java" target="_blank" rel="noopener">DefaultHttpClient</a>具体实现。</p>
+<h4 id="DBHelper"><a href="#DBHelper" class="headerlink" title="DBHelper"></a>DBHelper</h4><p>同样采用了接口设计，主要操作对象为<code>DownloadModel</code>，有CRUD功能，此外还有<code>updateProgress</code>方法，用以更新下载进度。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// DBHelper.java</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">DbHelper</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function">DownloadModel <span class="title">find</span><span class="params">(<span class="keyword">int</span> id)</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">insert</span><span class="params">(DownloadModel model)</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">update</span><span class="params">(DownloadModel model)</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">updateProgress</span><span class="params">(<span class="keyword">int</span> id, <span class="keyword">long</span> downloadedBytes, <span class="keyword">long</span> lastModifiedAt)</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">remove</span><span class="params">(<span class="keyword">int</span> id)</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="function">List&lt;DownloadModel&gt; <span class="title">getUnwantedModels</span><span class="params">(<span class="keyword">int</span> days)</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">clear</span><span class="params">()</span></span>;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// DownloadModel.java</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">DownloadModel</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> id; <span class="comment">// 唯一id</span></span><br><span class="line">    <span class="keyword">private</span> String url; <span class="comment">// 下载地址</span></span><br><span class="line">    <span class="keyword">private</span> String eTag; <span class="comment">// Response中的ETag字段</span></span><br><span class="line">    <span class="keyword">private</span> String dirPath; <span class="comment">// 下载目录</span></span><br><span class="line">    <span class="keyword">private</span> String fileName; <span class="comment">// 保存的文件名</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">long</span> totalBytes; <span class="comment">// 总大小</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">long</span> downloadedBytes; <span class="comment">// 已下载大小，每次同步下载进度时会更新该字段</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">long</span> lastModifiedAt; <span class="comment">// 更新时间，每次同步下载进度时会更新该字段</span></span><br><span class="line">    <span class="comment">// 以下无关getter/setter代码省略</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>以上是<code>PRDownloader</code>默认的全局配置，可以看到除了定义一些网络请求常量外，比较重要的是维护了两个单例：HttpClient和DBHelper。在<code>PRDownloader.initialize()</code>方法里，它还对<code>DownloadRequestQueue</code>进行了初始化，我们继续分析这部分代码。</p>
+<h4 id="DownloadRequestQueue"><a href="#DownloadRequestQueue" class="headerlink" title="DownloadRequestQueue"></a>DownloadRequestQueue</h4><p>它也是单例实现，是一个全局下载任务队列，其初始化函数调用了构造方法，初始化内部的请求Map、序列号发生器。请求Map用以在全局维护下载任务，Key为下载任务id，Value为下载任务。序列号发生器用来给每个任务生成唯一的序列id，作用是提供任务排序依据。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// DownloadRequestQueue.java</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">DownloadRequestQueue</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> DownloadRequestQueue instance;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> Map&lt;Integer, DownloadRequest&gt; currentRequestMap;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> AtomicInteger sequenceGenerator;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="title">DownloadRequestQueue</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        currentRequestMap = <span class="keyword">new</span> ConcurrentHashMap&lt;&gt;();</span><br><span class="line">        sequenceGenerator = <span class="keyword">new</span> AtomicInteger();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">initialize</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        getInstance();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> DownloadRequestQueue <span class="title">getInstance</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (instance == <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="keyword">synchronized</span> (DownloadRequestQueue.class) &#123;</span><br><span class="line">                <span class="keyword">if</span> (instance == <span class="keyword">null</span>) &#123;</span><br><span class="line">                    instance = <span class="keyword">new</span> DownloadRequestQueue();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> instance;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<h3 id="提交下载任务，PRDownloader-download-url-dirPath-fileName"><a href="#提交下载任务，PRDownloader-download-url-dirPath-fileName" class="headerlink" title="提交下载任务，PRDownloader.download(url, dirPath, fileName)"></a>提交下载任务，PRDownloader.download(url, dirPath, fileName)</h3><p>完成初始化以后，就可以使用PRDownloader的各项功能，以下载为例探究其内部的实现。</p>
+<p>启动下载的入口是<code>PRDownloader.download(url, dirPath, fileName)</code>，启动流程为 构建下载任务-&gt;设置下载回调-&gt;启动下载任务。</p>
+<h4 id="构建下载任务"><a href="#构建下载任务" class="headerlink" title="构建下载任务"></a>构建下载任务</h4><p>DownloadRequest的构建同样采用构建器模式，入参为下载链接、存储的路径和文件名。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// PRDownloader.java</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> DownloadRequestBuilder <span class="title">download</span><span class="params">(String url, String dirPath, String fileName)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> DownloadRequestBuilder(url, dirPath, fileName);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// DownloadRequestBuilder.java</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">DownloadRequestBuilder</span> <span class="keyword">implements</span> <span class="title">RequestBuilder</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    String url;</span><br><span class="line">    String dirPath;</span><br><span class="line">    String fileName;</span><br><span class="line">    Priority priority = Priority.MEDIUM;</span><br><span class="line">    Object tag;</span><br><span class="line">    <span class="keyword">int</span> readTimeout;</span><br><span class="line">    <span class="keyword">int</span> connectTimeout;</span><br><span class="line">    String userAgent;</span><br><span class="line">    HashMap&lt;String, List&lt;String&gt;&gt; headerMap;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">DownloadRequestBuilder</span><span class="params">(String url, String dirPath, String fileName)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.url = url;</span><br><span class="line">        <span class="keyword">this</span>.dirPath = dirPath;</span><br><span class="line">        <span class="keyword">this</span>.fileName = fileName;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 以下省略无关代码</span></span><br></pre></td></tr></table></figure>
+<p><code>DownloadRequestBuilder</code>是<code>DownloadRequest</code>的构建器，主要起作用的属性只有3个：url、dirPath、fileName，其它属性与PRDownloaderConfig类里面的重复了，并没有使用到。</p>
+<p><code>DownloadRequest</code>是一个下载任务的呈现，是一个动态的东西，它跟<code>DownloadModel</code>的区别在于：</p>
+<ul>
+<li>DownloadModel：是静态的，记录任务在某个时间点的状态（id，地址链接，总大小，已下载大小，更新时间），用于持久化，并且能从持久化数据源里恢复</li>
+<li>DownloadRequestBuilder：是动态的，不仅包含<code>DownloadModel</code>，还有下载时的各种回调（OnProgressListener、OnDownloadListener、OnStartListener等），此外还有重要的一个字段<code>downloadId</code>，是下载任务的唯一标识符</li>
+</ul>
+<h4 id="设置下载回调"><a href="#设置下载回调" class="headerlink" title="设置下载回调"></a>设置下载回调</h4><p>下载过程中有多种回调：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 开始下载回调</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">OnStartOrResumeListener</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">onStartOrResume</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 暂停回调</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">OnPauseListener</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">onPause</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 下载取消回调</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">OnCancelListener</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">onCancel</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 下载完成/失败回调，叫onFinishListener更好</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">OnDownloadListener</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">onDownloadComplete</span><span class="params">()</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">onError</span><span class="params">(Error error)</span></span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 下载进度回调</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">OnProgressListener</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">onProgress</span><span class="params">(Progress progress)</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>可以在<code>DownloadRequest</code>对象上调用<code>setXXXListener()</code>方法，用以设置下载过程中的回调。设置完成之后，回调是如何发生作用的呢？这就到了【开始下载】的逻辑里。</p>
+<h4 id="开始下载"><a href="#开始下载" class="headerlink" title="开始下载"></a>开始下载</h4><p>调用<code>DownloadRequest.start</code>方法开始下载任务。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// DownloadRequest.java</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">start</span><span class="params">(OnDownloadListener onDownloadListener)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.onDownloadListener = onDownloadListener;</span><br><span class="line">    downloadId = Utils.getUniqueId(url, dirPath, fileName);</span><br><span class="line">    DownloadRequestQueue.getInstance().addRequest(<span class="keyword">this</span>);</span><br><span class="line">    <span class="keyword">return</span> downloadId;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>关键的一句命令在<code>DownloadRequestQueue.getInstance().addRequest(this)</code></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// DownloadRequestQueue.java</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">addRequest</span><span class="params">(DownloadRequest request)</span> </span>&#123;</span><br><span class="line">    currentRequestMap.put(request.getDownloadId(), request);</span><br><span class="line">    request.setStatus(Status.QUEUED);</span><br><span class="line">    request.setSequenceNumber(getSequenceNumber());</span><br><span class="line">    request.setFuture(Core.getInstance()</span><br><span class="line">            .getExecutorSupplier()</span><br><span class="line">            .forDownloadTasks()</span><br><span class="line">            .submit(<span class="keyword">new</span> DownloadRunnable(request)));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><code>addRequest</code>的过程，是提交下载任务到执行队列的过程。<code>Core.getInstance().getExecutorSupplier().forDownloadTasks()</code>获取到了一个线程池，该线程池用以执行下载任务。</p>
+<p><code>Core.java</code>是单例，持有一个<code>ExecutorSupplier</code>的实现，后者提供三种Executor，分别用于下载、后台任务、UI任务。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Core.java</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Core</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> Core instance = <span class="keyword">null</span>;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> ExecutorSupplier executorSupplier;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="title">Core</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.executorSupplier = <span class="keyword">new</span> DefaultExecutorSupplier();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Core <span class="title">getInstance</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (instance == <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="keyword">synchronized</span> (Core.class) &#123;</span><br><span class="line">                <span class="keyword">if</span> (instance == <span class="keyword">null</span>) &#123;</span><br><span class="line">                    instance = <span class="keyword">new</span> Core();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> instance;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> ExecutorSupplier <span class="title">getExecutorSupplier</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> executorSupplier;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">shutDown</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (instance != <span class="keyword">null</span>) &#123;</span><br><span class="line">            instance = <span class="keyword">null</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// ExecutorSupplier.java</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">ExecutorSupplier</span> </span>&#123;</span><br><span class="line">    <span class="function">DownloadExecutor <span class="title">forDownloadTasks</span><span class="params">()</span></span>;</span><br><span class="line">    <span class="function">Executor <span class="title">forBackgroundTasks</span><span class="params">()</span></span>;</span><br><span class="line">    <span class="function">Executor <span class="title">forMainThreadTasks</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// DefaultExecutorSupplier.java</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">DefaultExecutorSupplier</span> <span class="keyword">implements</span> <span class="title">ExecutorSupplier</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 下载线程池大小，内核数*2+1</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> DEFAULT_MAX_NUM_THREADS = <span class="number">2</span> * Runtime.getRuntime().availableProcessors() + <span class="number">1</span>;</span><br><span class="line">    <span class="comment">// 下载Executor</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> DownloadExecutor networkExecutor;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> Executor backgroundExecutor;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> Executor mainThreadExecutor;</span><br><span class="line"></span><br><span class="line">    DefaultExecutorSupplier() &#123;</span><br><span class="line">        ThreadFactory backgroundPriorityThreadFactory = <span class="keyword">new</span> PriorityThreadFactory(Process.THREAD_PRIORITY_BACKGROUND);</span><br><span class="line">        networkExecutor = <span class="keyword">new</span> DownloadExecutor(DEFAULT_MAX_NUM_THREADS, backgroundPriorityThreadFactory);</span><br><span class="line">        <span class="comment">// 后台任务单线程Executor</span></span><br><span class="line">        backgroundExecutor = Executors.newSingleThreadExecutor();</span><br><span class="line">        <span class="comment">// 主线程Executor</span></span><br><span class="line">        mainThreadExecutor = <span class="keyword">new</span> MainThreadExecutor();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> DownloadExecutor <span class="title">forDownloadTasks</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> networkExecutor;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Executor <span class="title">forBackgroundTasks</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> backgroundExecutor;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Executor <span class="title">forMainThreadTasks</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> mainThreadExecutor;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><code>Executor.submit()</code>返回一个<code>Future</code>对象，将其保存在<code>DownloadRequest</code>中，用来进行取消任务。</p>
+<p>具体的下载逻辑，在<code>DownloadRunnable</code>中。</p>
+<h3 id="DownloadRunnable，下载具体实现"><a href="#DownloadRunnable，下载具体实现" class="headerlink" title="DownloadRunnable，下载具体实现"></a>DownloadRunnable，下载具体实现</h3><p>从名字上就可以看出它是一个用来提交给Executor的Runnable，关键方法<code>run()</code>是耗时操作，阻塞子线程，直至执行完成后通知request中的各个监听者。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// DownloadRunnable.java</span></span><br><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    request.setStatus(Status.RUNNING);</span><br><span class="line">    DownloadTask downloadTask = DownloadTask.create(request);</span><br><span class="line">    Response response = downloadTask.run();</span><br><span class="line">    <span class="keyword">if</span> (response.isSuccessful()) &#123;</span><br><span class="line">        request.deliverSuccess();</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (response.isPaused()) &#123;</span><br><span class="line">        request.deliverPauseEvent();</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (response.getError() != <span class="keyword">null</span>) &#123;</span><br><span class="line">        request.deliverError(response.getError());</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (!response.isCancelled()) &#123;</span><br><span class="line">        request.deliverError(<span class="keyword">new</span> Error());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Response.java，包装执行结果字段</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Response</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> Error error;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">boolean</span> isSuccessful;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">boolean</span> isPaused;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">boolean</span> isCancelled;</span><br><span class="line">    <span class="comment">// 以下getter/setter代码省略</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>提交任务的逻辑被转交给<code>DownloadTask</code>，它的<code>create</code>是构建方法，新建自身的实例并返回，主要关注它的<code>run()</code>方法，其中执行了下载的真正逻辑，在下面的代码里，我把关键处都加上注释。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 最好加上@WorkerThread注释</span></span><br><span class="line"><span class="function">Response <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    Response response = <span class="keyword">new</span> Response();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (request.getStatus() == Status.CANCELLED) &#123;</span><br><span class="line">        response.setCancelled(<span class="keyword">true</span>);</span><br><span class="line">        <span class="keyword">return</span> response;</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (request.getStatus() == Status.PAUSED) &#123;</span><br><span class="line">        response.setPaused(<span class="keyword">true</span>);</span><br><span class="line">        <span class="keyword">return</span> response;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        <span class="comment">// 进度回调handler，通知UI进度情况</span></span><br><span class="line">        <span class="keyword">if</span> (request.getOnProgressListener() != <span class="keyword">null</span>) &#123;</span><br><span class="line">            progressHandler = <span class="keyword">new</span> ProgressHandler(request.getOnProgressListener());</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        tempPath = Utils.getTempPath(request.getDirPath(), request.getFileName());</span><br><span class="line"></span><br><span class="line">        File file = <span class="keyword">new</span> File(tempPath);</span><br><span class="line">        <span class="comment">// 通过downloadId查询历史任务</span></span><br><span class="line">        DownloadModel model = getDownloadModelIfAlreadyPresentInDatabase();</span><br><span class="line">        <span class="comment">// 如果有历史任务，且之前下载的文件仍然存在，则继续之前的下载</span></span><br><span class="line">        <span class="keyword">if</span> (model != <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="keyword">if</span> (file.exists()) &#123;</span><br><span class="line">                request.setTotalBytes(model.getTotalBytes());</span><br><span class="line">                request.setDownloadedBytes(model.getDownloadedBytes());</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                <span class="comment">// 历史文件被清除了，则删除对应的历史任务</span></span><br><span class="line">                removeNoMoreNeededModelFromDatabase();</span><br><span class="line">                request.setDownloadedBytes(<span class="number">0</span>);</span><br><span class="line">                request.setTotalBytes(<span class="number">0</span>);</span><br><span class="line">                model = <span class="keyword">null</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// HttpClient用以连接网络</span></span><br><span class="line">        httpClient = ComponentHolder.getInstance().getHttpClient();</span><br><span class="line"></span><br><span class="line">        httpClient.connect(request);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (request.getStatus() == Status.CANCELLED) &#123;</span><br><span class="line">            response.setCancelled(<span class="keyword">true</span>);</span><br><span class="line">            <span class="keyword">return</span> response;</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (request.getStatus() == Status.PAUSED) &#123;</span><br><span class="line">            response.setPaused(<span class="keyword">true</span>);</span><br><span class="line">            <span class="keyword">return</span> response;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 重定向（上限10次），读取header中的Location字段作为新的URL</span></span><br><span class="line">        httpClient = Utils.getRedirectedConnectionIfAny(httpClient, request);</span><br><span class="line"></span><br><span class="line">        responseCode = httpClient.getResponseCode();</span><br><span class="line"></span><br><span class="line">        eTag = httpClient.getResponseHeader(Constants.ETAG);</span><br><span class="line">        <span class="comment">// 是历史任务，则先比对etag是否发生变化，若变化则重新下载</span></span><br><span class="line">        <span class="keyword">if</span> (checkIfFreshStartRequiredAndStart(model)) &#123;</span><br><span class="line">            model = <span class="keyword">null</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// Response Code 落在[200,300) 为Successful</span></span><br><span class="line">        <span class="keyword">if</span> (!isSuccessful()) &#123;</span><br><span class="line">            Error error = <span class="keyword">new</span> Error();</span><br><span class="line">            error.setServerError(<span class="keyword">true</span>);</span><br><span class="line">            error.setServerErrorMessage(convertStreamToString(httpClient.getErrorStream()));</span><br><span class="line">            error.setHeaderFields(httpClient.getHeaderFields());</span><br><span class="line">            error.setResponseCode(responseCode);</span><br><span class="line">            response.setError(error);</span><br><span class="line">            <span class="keyword">return</span> response;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 设置任务支持断点续传与否</span></span><br><span class="line">        setResumeSupportedOrNot();</span><br><span class="line">        <span class="comment">// 若是历史任务，则读取记录过的总大小</span></span><br><span class="line">        totalBytes = request.getTotalBytes();</span><br><span class="line">        <span class="comment">// 若不支持断点续传则删除历史文件</span></span><br><span class="line">        <span class="keyword">if</span> (!isResumeSupported) &#123;</span><br><span class="line">            deleteTempFile();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (totalBytes == <span class="number">0</span>) &#123;</span><br><span class="line">            totalBytes = httpClient.getContentLength(); <span class="comment">// 从Header里读取大小</span></span><br><span class="line">            request.setTotalBytes(totalBytes);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 不支持断点续传的任务，插入数据库也没有，索性不插入</span></span><br><span class="line">        <span class="keyword">if</span> (isResumeSupported &amp;&amp; model == <span class="keyword">null</span>) &#123;</span><br><span class="line">            createAndInsertNewModel();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (request.getStatus() == Status.CANCELLED) &#123;</span><br><span class="line">            response.setCancelled(<span class="keyword">true</span>);</span><br><span class="line">            <span class="keyword">return</span> response;</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (request.getStatus() == Status.PAUSED) &#123;</span><br><span class="line">            response.setPaused(<span class="keyword">true</span>);</span><br><span class="line">            <span class="keyword">return</span> response;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 通知外部监听者：我开始下载了</span></span><br><span class="line">        request.deliverStartEvent();</span><br><span class="line">        <span class="comment">// 接下来开始写文件</span></span><br><span class="line">        inputStream = httpClient.getInputStream();</span><br><span class="line"></span><br><span class="line">        <span class="keyword">byte</span>[] buff = <span class="keyword">new</span> <span class="keyword">byte</span>[BUFFER_SIZE];</span><br><span class="line">        <span class="comment">// 文件不存在则创建文件</span></span><br><span class="line">        <span class="keyword">if</span> (!file.exists()) &#123;</span><br><span class="line">            <span class="keyword">if</span> (file.getParentFile() != <span class="keyword">null</span> &amp;&amp; !file.getParentFile().exists()) &#123;</span><br><span class="line">                <span class="keyword">if</span> (file.getParentFile().mkdirs()) &#123;</span><br><span class="line">                    <span class="comment">//noinspection ResultOfMethodCallIgnored</span></span><br><span class="line">                    file.createNewFile();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                <span class="comment">//noinspection ResultOfMethodCallIgnored</span></span><br><span class="line">                file.createNewFile();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 具体实现为RAF</span></span><br><span class="line">        <span class="keyword">this</span>.outputStream = FileDownloadRandomAccessFile.create(file);</span><br><span class="line">        <span class="comment">// 因为是RAF，支持随机写</span></span><br><span class="line">        <span class="keyword">if</span> (isResumeSupported &amp;&amp; request.getDownloadedBytes() != <span class="number">0</span>) &#123;</span><br><span class="line">            outputStream.seek(request.getDownloadedBytes());</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 先检查任务状态，若暂停或取消，则直接返回</span></span><br><span class="line">        <span class="comment">// 在do-while循环里也有此检查</span></span><br><span class="line">        <span class="keyword">if</span> (request.getStatus() == Status.CANCELLED) &#123;</span><br><span class="line">            response.setCancelled(<span class="keyword">true</span>);</span><br><span class="line">            <span class="keyword">return</span> response;</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (request.getStatus() == Status.PAUSED) &#123;</span><br><span class="line">            response.setPaused(<span class="keyword">true</span>);</span><br><span class="line">            <span class="keyword">return</span> response;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// do-while循环下载文件</span></span><br><span class="line">        <span class="keyword">do</span> &#123;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">final</span> <span class="keyword">int</span> byteCount = inputStream.read(buff, <span class="number">0</span>, BUFFER_SIZE); <span class="comment">// BUFFER_SIZE=4Kb</span></span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> (byteCount == -<span class="number">1</span>) &#123;</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            outputStream.write(buff, <span class="number">0</span>, byteCount);</span><br><span class="line"></span><br><span class="line">            request.setDownloadedBytes(request.getDownloadedBytes() + byteCount);</span><br><span class="line">            <span class="comment">// ProgressHandler发送下载进度通知给监听者</span></span><br><span class="line">            sendProgress();</span><br><span class="line">            <span class="comment">// 同时满足两个条件时，更新数据库：1.数据量&gt;65536，2.时间差&gt;2s</span></span><br><span class="line">            syncIfRequired(outputStream);</span><br><span class="line">            <span class="comment">// 实施检查任务状态，是否取消或暂停</span></span><br><span class="line">            <span class="keyword">if</span> (request.getStatus() == Status.CANCELLED) &#123;</span><br><span class="line">                response.setCancelled(<span class="keyword">true</span>);</span><br><span class="line">                <span class="keyword">return</span> response;</span><br><span class="line">            &#125; <span class="keyword">else</span> <span class="keyword">if</span> (request.getStatus() == Status.PAUSED) &#123;</span><br><span class="line">                sync(outputStream);</span><br><span class="line">                response.setPaused(<span class="keyword">true</span>);</span><br><span class="line">                <span class="keyword">return</span> response;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">        &#125; <span class="keyword">while</span> (<span class="keyword">true</span>);</span><br><span class="line">        <span class="comment">// 下载完成，重命名文件</span></span><br><span class="line">        <span class="keyword">final</span> String path = Utils.getPath(request.getDirPath(), request.getFileName());</span><br><span class="line"></span><br><span class="line">        Utils.renameFileName(tempPath, path);</span><br><span class="line"></span><br><span class="line">        response.setSuccessful(<span class="keyword">true</span>);</span><br><span class="line">        <span class="comment">// 删除数据库多余记录</span></span><br><span class="line">        <span class="keyword">if</span> (isResumeSupported) &#123;</span><br><span class="line">            removeNoMoreNeededModelFromDatabase();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125; <span class="keyword">catch</span> (IOException | IllegalAccessException e) &#123;</span><br><span class="line">        <span class="keyword">if</span> (!isResumeSupported) &#123;</span><br><span class="line">            deleteTempFile();</span><br><span class="line">        &#125;</span><br><span class="line">        Error error = <span class="keyword">new</span> Error();</span><br><span class="line">        error.setConnectionError(<span class="keyword">true</span>);</span><br><span class="line">        error.setConnectionException(e);</span><br><span class="line">        response.setError(error);</span><br><span class="line">    &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">        closeAllSafely(outputStream);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> response;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="总结，如何做一个极简版本的下载框架"><a href="#总结，如何做一个极简版本的下载框架" class="headerlink" title="总结，如何做一个极简版本的下载框架"></a>总结，如何做一个极简版本的下载框架</h2><p>在大众点评的第一年，从事预订模块开发时，第一次从王旭刚口中听到了“MVP”的概念——Minimum Viable Version，最小可行版本。参考PRDownloader，对于一个下载框架而言，兼顾可维护性、可扩展性和概念的独立性，至少应当具备以下特点。</p>
+<p>自下而上地看</p>
+<ul>
+<li>抽象的下载对象，可持久化，支持从数据库中恢复——对应DownloadModel</li>
+<li>执行下载的对象，职责是进行网络连接，并写入文件——对应DownloadTask</li>
+<li>下载任务，包含下载进度、状态回调——对应DownloadRequest</li>
+<li>全局下载管理器，维护正在下载的任务列表，通常为单例——对应DownloadRequestQueue</li>
+<li>线程池，进行前后台任务分发——对应ExecutorSupplier</li>
+</ul>
+<p>以上这些部分，对外都要隐藏起来，并统一包装到PRDownloader对象中，以便抽象和解耦。</p>
+<p>最后的最后，献上一张PRDownloader的类图（哈哈哈哈，偏不放在文章开头）</p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="/img/20200601_prdownloader/prdownloader.png" alt="PRDownloader" title="">
+                </div>
+                <div class="image-caption">PRDownloader</div>
+            </figure>
+        </div>
+
+        <blockquote class="post-copyright">
+    
+    <div class="content">
+        
+<span class="post-time">
+    最后更新时间：<time datetime="2020-06-01T00:11:27.258Z" itemprop="dateUpdated">2020-06-01 08:11:27</time>
+</span><br>
+
+
+        
+        本文系作者原创，如转载请注明出处。欢迎留言讨论，或通过邮件进行沟通～
+        
+    </div>
+    
+    <footer>
+        <a href="https://lilei.pro">
+            <img src="/img/avatar.jpeg" alt="Li Lei">
+            Li Lei
+        </a>
+    </footer>
+</blockquote>
+
+        
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Android/">Android</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/源码解析/">源码解析</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://lilei.pro/2020/06/01/prdownloader/&title=《麻雀虽小，五脏俱全——下载库PRDownloader源码解析》 — 柘个角落&pic=https://lilei.pro/img/avatar.jpeg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://lilei.pro/2020/06/01/prdownloader/&title=《麻雀虽小，五脏俱全——下载库PRDownloader源码解析》 — 柘个角落&source=技术与生活上的点滴积累" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://lilei.pro/2020/06/01/prdownloader/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《麻雀虽小，五脏俱全——下载库PRDownloader源码解析》 — 柘个角落&url=https://lilei.pro/2020/06/01/prdownloader/&via=https://lilei.pro" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://lilei.pro/2020/06/01/prdownloader/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between flex-row-reverse">
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2020/06/01/AndroidWeekly-415/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">AndroidWeekly#415 学习笔记</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+    <!-- Valine Comments -->
+    <div class="comments vcomment" id="comments"></div>
+    <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+    <script src="//unpkg.com/valine@latest/dist/Valine.min.js"></script>
+    <!-- Valine Comments script -->
+    <script>
+        var GUEST_INFO = ['nick','mail','link'];
+        var guest_info = 'nick,mail,link'.split(',').filter(function(item){
+          return GUEST_INFO.indexOf(item) > -1
+        });
+        new Valine({
+            el: '#comments',
+            notify: 'false' == 'true',
+            verify: 'true' == 'true',
+            appId: "khG3rBt0nWda7lxDUHpS3Sq0-gzGzoHsz",
+            appKey: "btFkQfcBgJeCRm55mYmUgA5d",
+            avatar: "mm",
+            placeholder: "欢迎讨论",
+            guest_info: guest_info.length == 0 ? GUEST_INFO : guest_info,
+            pageSize: "10"
+        })
+    </script>
+    <!-- Valine Comments end -->
+
+
+
+
+
+
+
+</article>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>博客内容遵循 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">知识共享 署名 - 非商业性 - 相同方式共享 4.0 国际协议</a></span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>Li Lei &copy; 2015 - 2020</span>
+            <span>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://lilei.pro/2020/06/01/prdownloader/&title=《麻雀虽小，五脏俱全——下载库PRDownloader源码解析》 — 柘个角落&pic=https://lilei.pro/img/avatar.jpeg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://lilei.pro/2020/06/01/prdownloader/&title=《麻雀虽小，五脏俱全——下载库PRDownloader源码解析》 — 柘个角落&source=技术与生活上的点滴积累" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://lilei.pro/2020/06/01/prdownloader/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《麻雀虽小，五脏俱全——下载库PRDownloader源码解析》 — 柘个角落&url=https://lilei.pro/2020/06/01/prdownloader/&via=https://lilei.pro" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://lilei.pro/2020/06/01/prdownloader/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAK4AAACuCAAAAACKZ2kyAAABw0lEQVR42u3aQW7DMAwEQP//0+kD2jq7VCQ4wOgUJLE19oGgSF5XvF7B+v3P5G7XjoWLi7vMnSFy1v0uuQEXF/c8N9nsPhjd3yfh3htwcXGfzE3Czf33yevAxcX9Lm6S9LTpES4u7jO5bQqywjp0VsPFxV3g5lXKfZ+31HdxcXFH3Fe5kmvb9KjYHRcX9wg3DyhtS7UtixTtWFxc3M3czyYobVmkfTW4uLhnuEstjTIw5cWOIsXBxcU9ws1bqu3QVd6gffMicHFxj3CTQNMOVCWF13ZfXFzck9zkglmnI0fXhx9cXNyD3JUS6sqR5j7R+TeQ4eLibuDOmqlt6jPD/fF/XFzc49ykMNE2U2cFlyiQ4eLibuOutEjzYax8aKNoz+Di4m7mtkEn3yBJbup9cXFxD3Jn7dU2wuTlkqgnjIuLu5k7G5tIwtBVrjdX4eLibua+ytWOU+THqujBcHFxj3Db4FIUND9UrRk+DC4u7jK3Pn4EJY/8nm05FRcX9yS3LYOujGd94KyGi4v7SG7+a3v0GlZNcHFxH8BNtmzbq5EQFxf3IHd2UFlPgOqWDC4u7hHurPE5G7Noy6NL9V1cXNwJ9wcwdAEvLwAcdAAAAABJRU5ErkJggg==" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: false };
+
+
+</script>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/main.min.js"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/search.min.js" async></script>
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>
