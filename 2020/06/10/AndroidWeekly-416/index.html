@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    
+    <title>AndroidWeekly#416 学习笔记 | 柘个角落 | IF YOU WANT SOMETHING, GO GET IT. PERIOD.</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="Android,Android Weekly">
+    <meta name="description" content="https://androidweekly.net/issues/issue-416  Designing and Working with Single View States on Androidhttps://zsmb.co/designing-and-working-with-single-view-states-on-android/ ViewState是用于标识View状态的对象，通过">
+<meta name="keywords" content="Android,Android Weekly">
+<meta property="og:type" content="article">
+<meta property="og:title" content="AndroidWeekly#416 学习笔记">
+<meta property="og:url" content="https://lilei.pro/2020/06/10/AndroidWeekly-416/index.html">
+<meta property="og:site_name" content="柘个角落">
+<meta property="og:description" content="https://androidweekly.net/issues/issue-416  Designing and Working with Single View States on Androidhttps://zsmb.co/designing-and-working-with-single-view-states-on-android/ ViewState是用于标识View状态的对象，通过">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://lilei.pro/img/20200610_andoridweekly416/loading_loaded_error.png">
+<meta property="og:image" content="https://lilei.pro/img/20200610_andoridweekly416/load_more.png">
+<meta property="og:image" content="https://lilei.pro/img/20200610_andoridweekly416/upload_sample.png">
+<meta property="og:updated_time" content="2020-06-10T00:36:32.642Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="AndroidWeekly#416 学习笔记">
+<meta name="twitter:description" content="https://androidweekly.net/issues/issue-416  Designing and Working with Single View States on Androidhttps://zsmb.co/designing-and-working-with-single-view-states-on-android/ ViewState是用于标识View状态的对象，通过">
+<meta name="twitter:image" content="https://lilei.pro/img/20200610_andoridweekly416/loading_loaded_error.png">
+    
+        <link rel="alternate" type="application/atom+xml" title="柘个角落" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/img/favicon.ico">
+    <link rel="stylesheet" href="//unpkg.com/hexo-theme-material-indigo@latest/css/style.css">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/avatar.jpeg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">Li Lei</h5>
+          <a href="mailto:bequietlee#gmail.com" title="bequietlee#gmail.com" class="mail">bequietlee#gmail.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                文章
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+                标签
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/bequietlee" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/2019/03/10/links"  >
+                <i class="icon icon-lg icon-link"></i>
+                友情链接
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">AndroidWeekly#416 学习笔记</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">AndroidWeekly#416 学习笔记</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2020-06-10T00:32:22.000Z" itemprop="datePublished" class="page-time">
+  2020-06-10
+</time>
+
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Designing-and-Working-with-Single-View-States-on-Android"><span class="post-toc-number">1.</span> <span class="post-toc-text">Designing and Working with Single View States on Android</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#用例：加载联系人信息"><span class="post-toc-number">1.1.</span> <span class="post-toc-text">用例：加载联系人信息</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#共用data类"><span class="post-toc-number">1.2.</span> <span class="post-toc-text">共用data类</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#Sealed-classes（密封类）"><span class="post-toc-number">1.3.</span> <span class="post-toc-text">Sealed classes（密封类）</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#共享数据，独立状态"><span class="post-toc-number">1.4.</span> <span class="post-toc-text">共享数据，独立状态</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#更加复杂的UI"><span class="post-toc-number">1.5.</span> <span class="post-toc-text">更加复杂的UI</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#使用-ConstraintLayout-Groups-简化"><span class="post-toc-number">1.6.</span> <span class="post-toc-text">使用 ConstraintLayout Groups 简化</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Easy-Android-Scopes"><span class="post-toc-number">2.</span> <span class="post-toc-text">Easy Android Scopes</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Jetpack-ViewModel-and-string-resources"><span class="post-toc-number">3.</span> <span class="post-toc-text">Jetpack ViewModel and string resources</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#方案一：使用ResourceId"><span class="post-toc-number">3.1.</span> <span class="post-toc-text">方案一：使用ResourceId</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#方案二：使用资源工厂类（Resources-Helper）"><span class="post-toc-number">3.2.</span> <span class="post-toc-text">方案二：使用资源工厂类（Resources Helper）</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#在ViewModel中使用Context"><span class="post-toc-number">3.3.</span> <span class="post-toc-text">在ViewModel中使用Context</span></a></li></ol></li></ol>
+        </nav>
+    </aside>
+
+
+<article id="post-AndroidWeekly-416"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">AndroidWeekly#416 学习笔记</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2020-06-10 08:32:22" datetime="2020-06-10T00:32:22.000Z"  itemprop="datePublished">2020-06-10</time>
+
+            
+
+
+            
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <p><a href="https://androidweekly.net/issues/issue-416" target="_blank" rel="noopener">https://androidweekly.net/issues/issue-416</a> </p>
+<h2 id="Designing-and-Working-with-Single-View-States-on-Android"><a href="#Designing-and-Working-with-Single-View-States-on-Android" class="headerlink" title="Designing and Working with Single View States on Android"></a>Designing and Working with Single View States on Android</h2><p><a href="https://zsmb.co/designing-and-working-with-single-view-states-on-android/" target="_blank" rel="noopener">https://zsmb.co/designing-and-working-with-single-view-states-on-android/</a></p>
+<p><strong>ViewState</strong>是用于标识View状态的对象，通过ViewState，可以将View的显示逻辑与控制逻辑抽离。在MVI、MVVM等设计模式中都可以看到它的身影。</p>
+<h3 id="用例：加载联系人信息"><a href="#用例：加载联系人信息" class="headerlink" title="用例：加载联系人信息"></a>用例：加载联系人信息</h3><p>这个页面有三个状态：Loading、Loaded、Error。</p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="/img/20200610_andoridweekly416/loading_loaded_error.png" alt="loading_loaded_error.png" title="">
+                </div>
+                <div class="image-caption">loading_loaded_error.png</div>
+            </figure>
+<h3 id="共用data类"><a href="#共用data类" class="headerlink" title="共用data类"></a>共用data类</h3><ul>
+<li>优点：类数目最少</li>
+<li>缺点：会出现诸如<code>errored=true, loading=true</code>的异常状态</li>
+</ul>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">data</span> <span class="class"><span class="keyword">class</span> <span class="title">ProfileViewState</span></span>(</span><br><span class="line">        <span class="keyword">val</span> errored: <span class="built_in">Boolean</span> = <span class="literal">false</span>,</span><br><span class="line">        <span class="keyword">val</span> loading: <span class="built_in">Boolean</span> = <span class="literal">false</span>,</span><br><span class="line">        <span class="keyword">val</span> name: String? = <span class="literal">null</span>,</span><br><span class="line">        <span class="keyword">val</span> email: String? = <span class="literal">null</span></span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+<h3 id="Sealed-classes（密封类）"><a href="#Sealed-classes（密封类）" class="headerlink" title="Sealed classes（密封类）"></a>Sealed classes（密封类）</h3><ul>
+<li>优点：防止进入错误状态</li>
+<li>缺点：无法共用数据</li>
+</ul>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">sealed</span> <span class="class"><span class="keyword">class</span> <span class="title">ProfileViewState</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">object</span> Loading : ProfileViewState()</span><br><span class="line"></span><br><span class="line"><span class="keyword">object</span> Error : ProfileViewState()</span><br><span class="line"></span><br><span class="line"><span class="keyword">data</span> <span class="class"><span class="keyword">class</span> <span class="title">ProfileLoaded</span></span>(</span><br><span class="line">    <span class="keyword">val</span> name: String,</span><br><span class="line">    <span class="keyword">val</span> email: String</span><br><span class="line">) : ProfileViewState()</span><br></pre></td></tr></table></figure>
+<p><code>View</code>类里面的绘制方法如下，注意<code>exhaustive</code>扩展函数能够在我们的<code>when</code>语句漏写某个分支时，在编译过程就抛出异常。</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="function"><span class="keyword">fun</span> <span class="title">render</span><span class="params">(viewState: <span class="type">ProfileViewState</span>)</span></span> &#123;</span><br><span class="line">    <span class="keyword">when</span> (viewState) &#123;</span><br><span class="line">        Loading -&gt; &#123;</span><br><span class="line">            viewFlipper.displayedChild = Flipper.LOADING</span><br><span class="line">        &#125;</span><br><span class="line">        Error -&gt; &#123;</span><br><span class="line">            viewFlipper.displayedChild = Flipper.ERROR</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">is</span> ProfileLoaded -&gt; &#123;</span><br><span class="line">            viewFlipper.displayedChild = Flipper.CONTENT</span><br><span class="line">            profileNameText.text = viewState.name</span><br><span class="line">            profileEmailText.text = viewState.email</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;.exhaustive</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><code>ViewFlipper</code>可以用来展示多个Children中的一个：</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ProfileFragment</span> : <span class="type">Fragment</span></span>() &#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">object</span> Flipper &#123;</span><br><span class="line">        const <span class="keyword">val</span> LOADING = <span class="number">0</span></span><br><span class="line">        const <span class="keyword">val</span> CONTENT = <span class="number">1</span></span><br><span class="line">        const <span class="keyword">val</span> ERROR = <span class="number">2</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// ... </span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>布局文件：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">ViewFlipper</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:id</span>=<span class="string">"@+id/viewFlipper"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:layout_width</span>=<span class="string">"match_parent"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:layout_height</span>=<span class="string">"match_parent"</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">include</span> <span class="attr">layout</span>=<span class="string">"@layout/profile_loading"</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">include</span> <span class="attr">layout</span>=<span class="string">"@layout/profile_content"</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">include</span> <span class="attr">layout</span>=<span class="string">"@layout/profile_error"</span> /&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;/<span class="name">ViewFlipper</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h3 id="共享数据，独立状态"><a href="#共享数据，独立状态" class="headerlink" title="共享数据，独立状态"></a>共享数据，独立状态</h3><p>如列表下滑加载更多，已经获取到的item仍然显示在界面上。</p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="/img/20200610_andoridweekly416/load_more.png" alt="load_more.png" title="">
+                </div>
+                <div class="image-caption">load_more.png</div>
+            </figure>
+<p>使用<code>data class</code>来做ViewState。</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// data class</span></span><br><span class="line"><span class="keyword">data</span> <span class="class"><span class="keyword">class</span> <span class="title">ListViewState</span></span>(</span><br><span class="line">    <span class="keyword">val</span> isLoading: <span class="built_in">Boolean</span>,</span><br><span class="line">    <span class="keyword">val</span> items: List&lt;String&gt;</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="comment">// View.java</span></span><br><span class="line"><span class="keyword">private</span> <span class="function"><span class="keyword">fun</span> <span class="title">render</span><span class="params">(viewState: <span class="type">ListViewState</span>)</span></span> &#123;</span><br><span class="line">    progressBar.isVisible = viewState.isLoading</span><br><span class="line">    wordAdapter.submitList(viewState.items)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 增加Error状态</span></span><br><span class="line"><span class="keyword">sealed</span> <span class="class"><span class="keyword">class</span> <span class="title">ListViewState</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">object</span> Error: ListViewState()</span><br><span class="line"></span><br><span class="line"><span class="keyword">data</span> <span class="class"><span class="keyword">class</span> <span class="title">ListReady</span></span>(</span><br><span class="line">    <span class="keyword">val</span> isLoading: <span class="built_in">Boolean</span>,</span><br><span class="line">    <span class="keyword">val</span> items: List&lt;String&gt;</span><br><span class="line">): ListViewState()</span><br></pre></td></tr></table></figure>
+<h3 id="更加复杂的UI"><a href="#更加复杂的UI" class="headerlink" title="更加复杂的UI"></a>更加复杂的UI</h3><p>对于包含更多元素的UI，在<code>when</code>语句之前要将共用逻辑抽出，以简化<code>when</code>代码块。</p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="/img/20200610_andoridweekly416/upload_sample.png" alt="upload_sample.png" title="">
+                </div>
+                <div class="image-caption">upload_sample.png</div>
+            </figure>
+<p>复杂写法，每个分支里处理所有UI元素，容易遗漏，维护困难：</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="function"><span class="keyword">fun</span> <span class="title">render</span><span class="params">(viewState: <span class="type">UploadViewState</span>)</span></span> &#123;</span><br><span class="line">    <span class="keyword">when</span> (viewState) &#123;</span><br><span class="line">        Initial -&gt; &#123;</span><br><span class="line">            uploadProgressText.isVisible = <span class="literal">false</span></span><br><span class="line">            progressBar.isVisible = <span class="literal">false</span></span><br><span class="line">            uploadDoneIcon.isVisible = <span class="literal">false</span></span><br><span class="line">            uploadStatusText.isVisible = <span class="literal">false</span></span><br><span class="line">            retryUploadButton.isVisible = <span class="literal">false</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">is</span> UploadInProgress -&gt; &#123;</span><br><span class="line">            uploadProgressText.isVisible = <span class="literal">true</span></span><br><span class="line">            progressBar.isVisible = <span class="literal">true</span></span><br><span class="line">            uploadDoneIcon.isVisible = <span class="literal">false</span></span><br><span class="line">            uploadStatusText.isVisible = <span class="literal">false</span></span><br><span class="line">            retryUploadButton.isVisible = <span class="literal">false</span></span><br><span class="line">            progressBar.setProgressWithAnimation(viewState.percentage.toFloat())</span><br><span class="line">            uploadProgressText.text = <span class="string">"<span class="subst">$&#123;viewState.percentage&#125;</span>%"</span></span><br><span class="line">        &#125;</span><br><span class="line">        UploadFailed -&gt; &#123;</span><br><span class="line">            uploadProgressText.isVisible = <span class="literal">false</span></span><br><span class="line">            progressBar.isVisible = <span class="literal">false</span></span><br><span class="line">            uploadDoneIcon.isVisible = <span class="literal">false</span></span><br><span class="line">            uploadStatusText.isVisible = <span class="literal">true</span></span><br><span class="line">            uploadStatusText.text = <span class="string">"Sorry, something went wrong."</span></span><br><span class="line">            retryUploadButton.isVisible = <span class="literal">true</span></span><br><span class="line">        &#125;</span><br><span class="line">        UploadSuccess -&gt; &#123;</span><br><span class="line">            uploadProgressText.isVisible = <span class="literal">false</span></span><br><span class="line">            progressBar.isVisible = <span class="literal">false</span></span><br><span class="line">            uploadDoneIcon.isVisible = <span class="literal">true</span></span><br><span class="line">            uploadStatusText.isVisible = <span class="literal">true</span></span><br><span class="line">            uploadStatusText.text = <span class="string">"Upload complete!"</span></span><br><span class="line">            retryUploadButton.isVisible = <span class="literal">false</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;.exhaustive</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>简化写法，提取各个状态专有UI元素，优先处理；<code>when</code>语句只处理共享UI元素：</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="function"><span class="keyword">fun</span> <span class="title">render</span><span class="params">(viewState: <span class="type">UploadViewState</span>)</span></span> &#123;</span><br><span class="line">    uploadProgressText.isVisible = viewState <span class="keyword">is</span> UploadInProgress</span><br><span class="line">    progressBar.isVisible = viewState <span class="keyword">is</span> UploadInProgress</span><br><span class="line">    retryUploadButton.isVisible = viewState <span class="keyword">is</span> UploadFailed</span><br><span class="line">    uploadDoneIcon.isVisible = viewState <span class="keyword">is</span> UploadSuccess</span><br><span class="line">    uploadStatusText.isVisible = </span><br><span class="line">        viewState <span class="keyword">is</span> UploadFailed || viewState <span class="keyword">is</span> UploadSuccess</span><br><span class="line"></span><br><span class="line">    <span class="keyword">when</span> (viewState) &#123;</span><br><span class="line">        Initial -&gt; &#123;</span><br><span class="line">            <span class="comment">// Empty</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">is</span> UploadInProgress -&gt; &#123;</span><br><span class="line">            progressBar.setProgressWithAnimation(viewState.percentage.toFloat())</span><br><span class="line">            uploadProgressText.text = <span class="string">"<span class="subst">$&#123;viewState.percentage.toInt()&#125;</span>%"</span></span><br><span class="line">        &#125;</span><br><span class="line">        UploadFailed -&gt; &#123;</span><br><span class="line">            uploadStatusText.text = <span class="string">"Sorry, something went wrong."</span></span><br><span class="line">        &#125;</span><br><span class="line">        UploadSuccess -&gt; &#123;</span><br><span class="line">            uploadStatusText.text = <span class="string">"Upload complete!"</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;.exhaustive</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="使用-ConstraintLayout-Groups-简化"><a href="#使用-ConstraintLayout-Groups-简化" class="headerlink" title="使用 ConstraintLayout Groups 简化"></a>使用 ConstraintLayout Groups 简化</h3><p>一个<code>Group</code>可以同时控制多个View的可见性。</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">androidx.constraintlayout.widget.Group</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:id</span>=<span class="string">"@+id/errorViews"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:layout_width</span>=<span class="string">"wrap_content"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:layout_height</span>=<span class="string">"wrap_content"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">app:constraint_referenced_ids</span>=<span class="string">"errorTitle, errorIcon, errorMessage"</span> /&gt;</span></span><br></pre></td></tr></table></figure>
+<h2 id="Easy-Android-Scopes"><a href="#Easy-Android-Scopes" class="headerlink" title="Easy Android Scopes"></a>Easy Android Scopes</h2><p><a href="https://ryanharter.com/blog/2020/03/easy-android-scopes/" target="_blank" rel="noopener">https://ryanharter.com/blog/2020/03/easy-android-scopes/</a></p>
+<p>介绍Activity、Fragment发生Configuration Changed事件时的数据保存方法，类似AndroidX中的ViewModel。</p>
+<p>作者实现了自己的一套<code>Scoped Delegate</code>方案。</p>
+<h2 id="Jetpack-ViewModel-and-string-resources"><a href="#Jetpack-ViewModel-and-string-resources" class="headerlink" title="Jetpack ViewModel and string resources"></a>Jetpack ViewModel and string resources</h2><p><a href="https://www.rockandnull.com/android-viewmodel-resources/" target="_blank" rel="noopener">https://www.rockandnull.com/android-viewmodel-resources/</a></p>
+<p>在使用ViewModel时，作者试图将ViewModel实现与Android解耦，以便ViewModel可以无缝迁移到其它平台（如iOS、Web）。文中提供了两种思路。</p>
+<h3 id="方案一：使用ResourceId"><a href="#方案一：使用ResourceId" class="headerlink" title="方案一：使用ResourceId"></a>方案一：使用ResourceId</h3><p>将资源id作为LiveData进行发送，而非字符串本身。</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// ViewModel.java</span></span><br><span class="line"><span class="keyword">val</span> errorMessageLiveData = MutableLiveData&lt;<span class="built_in">Int</span>&gt;()</span><br><span class="line">[...]</span><br><span class="line">errorMessageLiveData.value = R.string.error_message_1</span><br><span class="line"></span><br><span class="line"><span class="comment">// Activity.java</span></span><br><span class="line">errorMessageLiveData.observe(<span class="keyword">this</span>, Observer &#123;</span><br><span class="line">        Toast.makeText(context, getString(it), Toast.LENGTH_LONG).show()   </span><br><span class="line">    &#125;</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+<h3 id="方案二：使用资源工厂类（Resources-Helper）"><a href="#方案二：使用资源工厂类（Resources-Helper）" class="headerlink" title="方案二：使用资源工厂类（Resources Helper）"></a>方案二：使用资源工厂类（Resources Helper）</h3><p>该类用于抽象不同平台的资源获取方式。</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ResourcesHelper</span></span>(<span class="keyword">private</span> <span class="keyword">val</span> applicationContext: Context) &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">val</span> errorMessage</span><br><span class="line">        <span class="keyword">get</span>() = applicationContext.getString(R.string.error_message)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>将该类注入（inject）到<code>ViewModel</code>中，可以使其独立于不同平台实现，并且能够进行mock/fake。</p>
+<h3 id="在ViewModel中使用Context"><a href="#在ViewModel中使用Context" class="headerlink" title="在ViewModel中使用Context"></a>在ViewModel中使用Context</h3><p>使用<code>AndroidViewModel</code>代替<code>ViewModel</code>。</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyViewModel</span></span>(<span class="keyword">private</span> <span class="keyword">val</span> application: Application) : AndroidViewModel(application) &#123;</span><br><span class="line">    <span class="keyword">val</span> errorMessage</span><br><span class="line">        <span class="keyword">get</span>() = application.resources.getString(R.string.some_string)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这种写法有一个问题是，<a href="https://medium.com/androiddevelopers/locale-changes-and-the-androidviewmodel-antipattern-84eb677660d9" target="_blank" rel="noopener">用户切换语言无法生效</a>。以及在测试时必须人工提供一个Context对象。</p>
+<p>## </p>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    
+    <div class="content">
+        
+<span class="post-time">
+    最后更新时间：<time datetime="2020-06-10T00:36:32.642Z" itemprop="dateUpdated">2020-06-10 08:36:32</time>
+</span><br>
+
+
+        
+        本文系作者原创，如转载请注明出处。欢迎留言讨论，或通过邮件进行沟通～
+        
+    </div>
+    
+    <footer>
+        <a href="https://lilei.pro">
+            <img src="/img/avatar.jpeg" alt="Li Lei">
+            Li Lei
+        </a>
+    </footer>
+</blockquote>
+
+        
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Android/">Android</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Android-Weekly/">Android Weekly</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://lilei.pro/2020/06/10/AndroidWeekly-416/&title=《AndroidWeekly#416 学习笔记》 — 柘个角落&pic=https://lilei.pro/img/avatar.jpeg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://lilei.pro/2020/06/10/AndroidWeekly-416/&title=《AndroidWeekly#416 学习笔记》 — 柘个角落&source=技术与生活上的点滴积累" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://lilei.pro/2020/06/10/AndroidWeekly-416/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《AndroidWeekly#416 学习笔记》 — 柘个角落&url=https://lilei.pro/2020/06/10/AndroidWeekly-416/&via=https://lilei.pro" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://lilei.pro/2020/06/10/AndroidWeekly-416/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between flex-row-reverse">
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2020/06/01/prdownloader/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">麻雀虽小，五脏俱全——下载库PRDownloader源码解析</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+    <!-- Valine Comments -->
+    <div class="comments vcomment" id="comments"></div>
+    <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+    <script src="//unpkg.com/valine@latest/dist/Valine.min.js"></script>
+    <!-- Valine Comments script -->
+    <script>
+        var GUEST_INFO = ['nick','mail','link'];
+        var guest_info = 'nick,mail,link'.split(',').filter(function(item){
+          return GUEST_INFO.indexOf(item) > -1
+        });
+        new Valine({
+            el: '#comments',
+            notify: 'false' == 'true',
+            verify: 'true' == 'true',
+            appId: "khG3rBt0nWda7lxDUHpS3Sq0-gzGzoHsz",
+            appKey: "btFkQfcBgJeCRm55mYmUgA5d",
+            avatar: "mm",
+            placeholder: "欢迎讨论",
+            guest_info: guest_info.length == 0 ? GUEST_INFO : guest_info,
+            pageSize: "10"
+        })
+    </script>
+    <!-- Valine Comments end -->
+
+
+
+
+
+
+
+</article>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>博客内容遵循 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">知识共享 署名 - 非商业性 - 相同方式共享 4.0 国际协议</a></span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>Li Lei &copy; 2015 - 2020</span>
+            <span>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://lilei.pro/2020/06/10/AndroidWeekly-416/&title=《AndroidWeekly#416 学习笔记》 — 柘个角落&pic=https://lilei.pro/img/avatar.jpeg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://lilei.pro/2020/06/10/AndroidWeekly-416/&title=《AndroidWeekly#416 学习笔记》 — 柘个角落&source=技术与生活上的点滴积累" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://lilei.pro/2020/06/10/AndroidWeekly-416/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《AndroidWeekly#416 学习笔记》 — 柘个角落&url=https://lilei.pro/2020/06/10/AndroidWeekly-416/&via=https://lilei.pro" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://lilei.pro/2020/06/10/AndroidWeekly-416/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACNUlEQVR42u3aQY6EMAxE0b7/pZntSDTwywktxflZIRQNvF7UBNufD17Hv3W+T/acd56vr+5MWzJkyFiWcdyuqz0p457En3v1FBkyZOzAuEqwWdc8ZO93Xt6XIUOGjPAImAYoB8uQIUMGYdy/Ot8z/lwZMmTsxiBRmJLGC3CvfIvLkCFjQQavuv/++pX+hgwZMpZiHOEaCc1Z7/DlrWTIkNGawQOOY+7vjzQDHv6+DBkyWjP4Vh67pABXGz6Lj48yZMhYnDGrmMVL/GnzEo1oyJAhYwMGaTSS0QpyyOMBHUS2DBkytmHMKpOlwxa1UYwvVUMZMmRswEhDMB3RiA98eL8MGTJ2YKRhN7eUP6FRKkOGjNaMtExfu+aFtqEWqQwZMpoy0pgjLcbagAVpNjwMhMmQIaM1gxfReJszbVimwxaxWIYMGcsyeAjWivtpIY9/QqN+rAwZMlowxuN1/KXJaMXDB7YMGTK2ZPDDWa0BWYvXoL8hQ4aMRozxA9zIsbIW2Q/RLEOGjKYMXj5LR7v4gEWt0Ia6HDJkyGjE4OUzgk9blbV3+KQ5LUOGjMUZs5qXvOnIi2voH4MMGTKaMo5w1YY20liP25wyZMhozRgPu9qgWK30XxwXkyFDRgsGPxqmvPd+mviAKEOGjBaMWvDxI116uIx3ypAhQ0Y4EjFe9H89cGXIkLENIw3KNKzJzyFDhox9GLxYT2I3eDxoMKA4liFDRmtG7dOxVqQjR8NaC0GGDBlNGX9LGdE/Q50QKgAAAABJRU5ErkJggg==" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: false };
+
+
+</script>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/main.min.js"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/search.min.js" async></script>
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>
